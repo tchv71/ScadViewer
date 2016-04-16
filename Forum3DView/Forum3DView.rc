@@ -1,0 +1,440 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+LANGUAGE LANG_RUSSIAN, SUBLANG_NEUTRAL
+#pragma code_page(1251)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SCALE DIALOGEX 0, 0, 130, 258
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_GRID,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,27,116,221
+    COMBOBOX        IDC_COMBO_NUM,89,9,31,230,CBS_DROPDOWNLIST | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Г",IDC_BUTTON_HOT,29,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Х",IDC_BUTTON_COLD,49,7,18,16,BS_BITMAP
+    PUSHBUTTON      "С",IDC_BUTTON_GRAY,69,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Г",IDC_BUTTON_UNIFORM,7,7,18,16,BS_BITMAP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_SCALE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 123
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 248
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral (Default) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUD)
+LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
+#pragma code_page(1251)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_THUMB_SIZE_SYNC     BITMAP                  "res\\ThumbProp.bmp"
+#endif    // Neutral (Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian (Russia) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DEPTH DIALOGEX 0, 0, 14, 106
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Slider1",IDC_SLIDER_DEPTH,"msctls_trackbar32",TBS_AUTOTICKS | TBS_VERT | WS_TABSTOP,2,2,10,90
+END
+
+IDD_CAMERA DIALOGEX 0, 0, 85, 12
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_BORDER
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Slider1",IDC_SLIDER_FLENGTH,"msctls_trackbar32",TBS_AUTOTICKS | WS_TABSTOP,10,0,48,9
+    RTEXT           "130",IDC_STATIC_FLENGTH,59,1,11,8
+    LTEXT           "мм",IDC_STATIC_MM,72,1,13,8
+    CONTROL         "",IDC_CHECK_CHANGE_DIST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,1,10,8
+END
+
+IDD_DEFORM_SCALE DIALOGEX 0, 0, 14, 92
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Slider1",IDC_SLIDER_DEFORM_SCALE,"msctls_trackbar32",TBS_AUTOTICKS | TBS_VERT | WS_TABSTOP,2,1,10,78
+END
+
+IDD_RES_PARAMS DIALOGEX 0, 0, 85, 12
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_BORDER
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    COMBOBOX        IDC_COMBO_FACTOR,2,0,33,94,CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_LOAD,37,0,48,95,CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Укажите значение - разделитель"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,96,27,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,155,27,50,14
+    EDITTEXT        IDC_EDIT_VALUE,7,7,198,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DEPTH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 99
+    END
+
+    IDD_CAMERA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 78
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 5
+    END
+
+    IDD_DEFORM_SCALE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 78
+    END
+
+    IDD_RES_PARAMS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 78
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 5
+    END
+
+    IDD_DIALOG_DELIM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 41
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_UPARROW             BITMAP                  "res\\uparrow.bmp"
+IDB_DNARROW             BITMAP                  "res\\dnarrow.bmp"
+IDB_HOT                 BITMAP                  "res\\hot.bmp"
+IDB_COLD                BITMAP                  "res\\cold.bmp"
+IDB_GRAY                BITMAP                  "res\\gray.bmp"
+IDB_UNIFORM             BITMAP                  "res\\uniform.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Forum3DView.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_HOT                 ICON                    "res\\hot.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    ID_IND_FILE_COUNT       " "
+    ID_IND_FILE_INFO        " "
+END
+
+#endif    // Russian (Russia) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAIN_TOOLBAR        BITMAP                  "res\\Toolbar.bmp"
+IDR_CUT_TOOLBAR         BITMAP                  "res\\CutToolbar.bmp"
+IDR_FILTERS_TOOLBAR     BITMAP                  "res\\main_too.bmp"
+IDR_RESULTS_TOOLBAR     BITMAP                  "res\\results_.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ScadViewer.ico"
+IDR_SCADVITYPE          ICON                    "res\\ScadViewerDoc.ico"
+IDI_FORUM_VIEWER        ICON                    "res\\ForumView.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURSOR_ZOOM_IN_OUT  CURSOR                  "res\\ZoomInOut.cur"
+IDC_CURSOR_ZOOM         CURSOR                  "res\\Zoom.cur"
+IDC_CURSOR_WALK         CURSOR                  "res\\WALK.CUR"
+IDC_CURSOR_ROTATE       CURSOR                  "res\\Rotate.cur"
+IDC_CURSOR_PAN          CURSOR                  "res\\Pan.cur"
+IDC_CURSOR_LOOKAROUND   CURSOR                  "res\\LookAround.CUR"
+IDC_CURSOR_INV_CUT      CURSOR                  "res\\InvCut.cur"
+IDC_CURSOR_CUT          CURSOR                  "res\\Cut.cur"
+IDC_CURSOR_SELECT       CURSOR                  "res\\Select.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAIN_TOOLBAR TOOLBAR 16, 16
+BEGIN
+    BUTTON      ID_VIEW_ZOOM_IN
+    BUTTON      ID_VIEW_ZOOM_OUT
+    BUTTON      ID_VIEW_ZOOM_ALL
+    SEPARATOR
+    BUTTON      ID_VIEW_MODE_ZOOM_WIN
+    BUTTON      ID_VIEW_MODE_PAN
+    BUTTON      ID_VIEW_MODE_ROTATE
+    BUTTON      ID_VIEW_MODE_SELECT
+    BUTTON      ID_VIEW_MODE_WALK
+    BUTTON      ID_VIEW_MODE_LOOK_AROUND
+    BUTTON      ID_VIEW_PERSPECTIVE
+    SEPARATOR
+    BUTTON      ID_PROJECTION
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_FILE_PRINT_PREVIEW
+    BUTTON      ID_EXPORT_TO_DXF
+    SEPARATOR
+    BUTTON      ID_VIEW_MODE_WIREFRAME
+    BUTTON      ID_VIEW_MODE_SOLID
+    BUTTON      ID_VIEW_MODE_ELEMENTBORDERS
+    BUTTON      ID_VIEW_MODE_TRANSPARENT
+    SEPARATOR
+    BUTTON      ID_LIGHT
+    BUTTON      ID_TOOLS_OPTIONS
+    BUTTON      ID_VIEW_3DVIEWS_TOP
+    BUTTON      ID_VIEW_3DVIEWS_BOTTOM
+    BUTTON      ID_VIEW_3DVIEWS_LEFT
+    BUTTON      ID_VIEW_3DVIEWS_RIGHT
+    BUTTON      ID_VIEW_3DVIEWS_FRONT
+    BUTTON      ID_VIEW_3DVIEWS_BACK
+    BUTTON      ID_VIEW_3DVIEWS_SW_ISO
+    BUTTON      ID_VIEW_3DVIEWS_SE_ISO
+    BUTTON      ID_VIEW_3DVIEWS_NE_ISO
+    BUTTON      ID_VIEW_3DVIEWS_NW_ISO
+    BUTTON      ID_VIEW_3DVIEWS_DIMETRY
+    BUTTON      ID_DROPARROW
+    BUTTON      ID_BUTTON32785
+END
+
+IDR_CUT_TOOLBAR TOOLBAR 16, 16
+BEGIN
+    BUTTON      ID_CUT
+    BUTTON      ID_INV_CUT
+    BUTTON      ID_CUT_UNDO
+    BUTTON      ID_NO_CUT
+END
+
+IDR_FILTERS_TOOLBAR TOOLBAR 16, 16
+BEGIN
+    BUTTON      ID_VIEW_ELEMENTS_NODES
+    BUTTON      ID_VIEW_ELEMENTS_CONSTRAINTS
+    BUTTON      ID_VIEW_ELEMENTS_AXES
+    BUTTON      ID_VIEW_ELEMENTS_BARS
+    BUTTON      ID_VIEW_ELEMENTS_PLATES
+    BUTTON      ID_VIEW_ELEMENTS_SOLIDS
+    SEPARATOR
+    BUTTON      ID_VIEW_RESULTS
+    SEPARATOR
+    BUTTON      ID_VIEW_ELEMENTS_COLUMNS
+    BUTTON      ID_VIEW_ELEMENTS_BEAMS
+    BUTTON      ID_VIEW_ELEMENTS_WALLS
+    BUTTON      ID_VIEW_ELEMENTS_SLABS
+    BUTTON      ID_VIEW_ELEMENTS_ROOFS
+    BUTTON      ID_VIEW_SHOWBARPROFILE
+    BUTTON      ID_VIEW_SHOWPLATETHICKNESS
+    BUTTON      ID_DROPARROW
+    BUTTON      ID_BAR_IMG
+    BUTTON      ID_BUTTON32774
+    BUTTON      ID_PLATE_IMG
+    BUTTON      ID_BUTTON32776
+    BUTTON      ID_SELECT_SHOW_ELEMENT_PLATE
+    BUTTON      ID_HIDE_ELEMENT_PLATE
+    BUTTON      ID_SELECT_HIDE_ELEMENT
+END
+
+IDR_RESULTS_TOOLBAR TOOLBAR 16, 16
+BEGIN
+    BUTTON      IDC_BTN_ISOLINES
+    BUTTON      IDC_BTN_VALUES
+    BUTTON      IDC_BTN_EGGS
+    BUTTON      ID_FACTOR_GROUP
+    BUTTON      ID_DROPARROW
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\Forum3DView.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

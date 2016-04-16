@@ -1,0 +1,199 @@
+# Microsoft Developer Studio Generated Dependency File, included by ScadViewer.mak
+
+.\Mp4PlayerMFC.cpp : \
+	".\3DVector.h"\
+	".\Cutter.h"\
+	".\DepthDialogBar.h"\
+	".\DetViewOpts.h"\
+	".\DirChangeListener.h"\
+	".\DockFolderWnd.h"\
+	".\FileProc.h"\
+	".\FolderListCtrl.h"\
+	".\FolderTreeDockingWnd.h"\
+	".\Forum3DView\CameraDialogBar.h"\
+	".\Forum3DView\Forum3DView.h"\
+	".\MainScadViewerFrame.h"\
+	".\model.h"\
+	".\MouseManipulatorWnd.h"\
+	".\Mp4PlayerMFC.h"\
+	".\Mp4View.h"\
+	".\Renderer.h"\
+	".\Rotate.h"\
+	".\sc3dpoint.h"\
+	".\SCAD3DMdlSettings.h"\
+	".\SCADFolderTreeCtrl.hxx"\
+	".\ScadViewer.h"\
+	".\ScadViewerDoc.h"\
+	".\ScadViewerFrm.h"\
+	".\SCADViewerStatBar.h"\
+	".\ScadViewerView.h"\
+	".\SettingManager.h"\
+	".\SvTypes.h"\
+	".\View3DBox.h"\
+	".\ViewGeometry.h"\
+	".\ViewLib.h"\
+	
+
+.\ScadViewer.cpp : \
+	".\3DVector.h"\
+	".\Cutter.h"\
+	".\DepthDialogBar.h"\
+	".\DetViewOpts.h"\
+	".\DirChangeListener.h"\
+	".\DockFolderWnd.h"\
+	".\FileProc.h"\
+	".\FolderListCtrl.h"\
+	".\FolderTreeDockingWnd.h"\
+	".\Forum3DView\CameraDialogBar.h"\
+	".\Forum3DView\Forum3DView.h"\
+	".\MainScadViewerFrame.h"\
+	".\model.h"\
+	".\MouseManipulatorWnd.h"\
+	".\Renderer.h"\
+	".\Rotate.h"\
+	".\sc3dpoint.h"\
+	".\SCAD3DMdlSettings.h"\
+	".\SCADFolderTreeCtrl.hxx"\
+	".\ScadViewer.h"\
+	".\ScadViewerDoc.h"\
+	".\ScadViewerFrm.h"\
+	".\SCADViewerStatBar.h"\
+	".\ScadViewerView.h"\
+	".\SettingManager.h"\
+	".\SvTypes.h"\
+	".\View3DBox.h"\
+	".\ViewGeometry.h"\
+	".\ViewLib.h"\
+	
+
+.\ScadViewer.rc : \
+	".\res\ScadViewer.ico"\
+	".\res\ScadViewer.rc2"\
+	".\Version.h"\
+	{$(INCLUDE)}"Foundation\sflres.h"\
+	{$(INCLUDE)}"toolkit\secres.h"\
+	
+
+.\StdAfx.cpp : \
+	"..\..\..\..\program files\microsoft platform sdk\include\propidl.h"\
+	"..\..\..\..\program files\microsoft platform sdk\include\reason.h"\
+	"..\..\..\..\program files\microsoft platform sdk\include\shldisp.h"\
+	"..\..\..\..\program files\microsoft platform sdk\include\shobjidl.h"\
+	"..\..\..\..\program files\microsoft platform sdk\include\shtypes.h"\
+	"..\..\..\..\program files\microsoft platform sdk\include\specstrings.h"\
+	"..\..\..\..\program files\microsoft platform sdk\include\stralign.h"\
+	"..\..\..\..\program files\microsoft platform sdk\include\tvout.h"\
+	"..\..\..\..\stingray\include\foundation\bwdef.h"\
+	"..\..\..\..\stingray\include\foundation\controls\mfc\secbtns.h"\
+	"..\..\..\..\stingray\include\foundation\controls\mfc\secwell.h"\
+	"..\..\..\..\stingray\include\foundation\graphics\mfc\secdc.h"\
+	"..\..\..\..\stingray\include\foundation\graphics\mfc\secrect.h"\
+	"..\..\..\..\stingray\include\foundation\graphics\mfc\sloadbmp.h"\
+	"..\..\..\..\stingray\include\foundation\guidcast.h"\
+	"..\..\..\..\stingray\include\foundation\image.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jchuff.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jconfig.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jdct.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jdhuff.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jerror.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jinclude.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jmemsys.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jmorecfg.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jpegint.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\jpeglib.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\secdib.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\secimage.h"\
+	"..\..\..\..\stingray\include\foundation\image\mfc\secjpeg.h"\
+	"..\..\..\..\stingray\include\foundation\patterns.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\composite.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\factory.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\iterator.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\mfc\collect.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\mfc\collectmfc.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\mfc\factoryp.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\mfc\listen.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\mfc\plugin.h"\
+	"..\..\..\..\stingray\include\foundation\patterns\subjectobserver.h"\
+	"..\..\..\..\stingray\include\foundation\refcount.h"\
+	"..\..\..\..\stingray\include\foundation\sflcommon.h"\
+	"..\..\..\..\stingray\include\foundation\sfldef.h"\
+	"..\..\..\..\stingray\include\foundation\sflguids.h"\
+	"..\..\..\..\stingray\include\foundation\sflversion.h"\
+	"..\..\..\..\stingray\include\foundation\stwarn.h"\
+	"..\..\..\..\stingray\include\foundation\stwarnp.h"\
+	"..\..\..\..\stingray\include\toolkit\bwdef.h"\
+	"..\..\..\..\stingray\include\toolkit\cmnstrt.h"\
+	"..\..\..\..\stingray\include\toolkit\lstbxedt.h"\
+	"..\..\..\..\stingray\include\toolkit\ot_dockingwindows.h"\
+	"..\..\..\..\stingray\include\toolkit\ot_progress.h"\
+	"..\..\..\..\stingray\include\toolkit\ot_toolbar.h"\
+	"..\..\..\..\stingray\include\toolkit\ot_treectrl.h"\
+	"..\..\..\..\stingray\include\toolkit\perstree.h"\
+	"..\..\..\..\stingray\include\toolkit\progress.h"\
+	"..\..\..\..\stingray\include\toolkit\prover.h"\
+	"..\..\..\..\stingray\include\toolkit\sbarcore.h"\
+	"..\..\..\..\stingray\include\toolkit\sbardlg.h"\
+	"..\..\..\..\stingray\include\toolkit\sbardock.h"\
+	"..\..\..\..\stingray\include\toolkit\sbarmgr.h"\
+	"..\..\..\..\stingray\include\toolkit\sbarstat.h"\
+	"..\..\..\..\stingray\include\toolkit\sbartool.h"\
+	"..\..\..\..\stingray\include\toolkit\sdockcnt.h"\
+	"..\..\..\..\stingray\include\toolkit\sdocksta.h"\
+	"..\..\..\..\stingray\include\toolkit\secaux.h"\
+	"..\..\..\..\stingray\include\toolkit\secdll.h"\
+	"..\..\..\..\stingray\include\toolkit\secopt.h"\
+	"..\..\..\..\stingray\include\toolkit\secres_pro.h"\
+	"..\..\..\..\stingray\include\toolkit\secver.h"\
+	"..\..\..\..\stingray\include\toolkit\slstbasec.h"\
+	"..\..\..\..\stingray\include\toolkit\slstbasev.h"\
+	"..\..\..\..\stingray\include\toolkit\slstclnt.h"\
+	"..\..\..\..\stingray\include\toolkit\slstcore.h"\
+	"..\..\..\..\stingray\include\toolkit\slstctip.h"\
+	"..\..\..\..\stingray\include\toolkit\slstctl.h"\
+	"..\..\..\..\stingray\include\toolkit\slstedit.h"\
+	"..\..\..\..\stingray\include\toolkit\slstvw.h"\
+	"..\..\..\..\stingray\include\toolkit\smsgfilt.h"\
+	"..\..\..\..\stingray\include\toolkit\soledock.h"\
+	"..\..\..\..\stingray\include\toolkit\stdmenubtn.h"\
+	"..\..\..\..\stingray\include\toolkit\swinfrm.h"\
+	"..\..\..\..\stingray\include\toolkit\swinmdi.h"\
+	"..\..\..\..\stingray\include\toolkit\swsmgrex.h"\
+	"..\..\..\..\stingray\include\toolkit\tbarcust.h"\
+	"..\..\..\..\stingray\include\toolkit\tbarmgr.h"\
+	"..\..\..\..\stingray\include\toolkit\tbarpage.h"\
+	"..\..\..\..\stingray\include\toolkit\tbarsdlg.h"\
+	"..\..\..\..\stingray\include\toolkit\tbartrck.h"\
+	"..\..\..\..\stingray\include\toolkit\tbmpmenu.h"\
+	"..\..\..\..\stingray\include\toolkit\tbmpmgr.h"\
+	"..\..\..\..\stingray\include\toolkit\tbtn2prt.h"\
+	"..\..\..\..\stingray\include\toolkit\tbtncmbo.h"\
+	"..\..\..\..\stingray\include\toolkit\tbtnmenu.h"\
+	"..\..\..\..\stingray\include\toolkit\tbtnstd.h"\
+	"..\..\..\..\stingray\include\toolkit\tbtntxt.h"\
+	"..\..\..\..\stingray\include\toolkit\tbtnwnd.h"\
+	"..\..\..\..\stingray\include\toolkit\tmenufrm.h"\
+	"..\..\..\..\stingray\include\toolkit\trbasec.h"\
+	"..\..\..\..\stingray\include\toolkit\trbasev.h"\
+	"..\..\..\..\stingray\include\toolkit\trcore.h"\
+	"..\..\..\..\stingray\include\toolkit\trctlx.h"\
+	"..\..\..\..\stingray\include\toolkit\treenode.h"\
+	"..\..\..\..\stingray\include\toolkit\trvwx.h"\
+	"..\..\..\..\stingray\include\toolkit\wksexdlg.h"\
+	"..\..\BUILDINGBLOCKS\Bin\Debug\DSMP4.dll"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"basetsd.h"\
+	{$(INCLUDE)}"Foundation\sflres.h"\
+	{$(INCLUDE)}"guiddef.h"\
+	{$(INCLUDE)}"toolkit\secres.h"\
+	
+
+!IF  "$(CFG)" == "ScadViewer - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ScadViewer - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "ScadViewer - Win32 Debug11"
+
+!ELSEIF  "$(CFG)" == "ScadViewer - Win32 Release11"
+
+!ENDIF 
+

@@ -1,0 +1,63 @@
+LIBRARY     AZIP32.DLL
+
+EXPORTS
+    addZIP_InMemory               = _addZIP_InMemory@16                 
+    addZIP_SFXExtractTo           = _addZIP_SFXExtractTo@4              
+    addZIP@0                       @2   ; addZIP
+    addZIP_Abort                   @3   ; addZIP_Abort
+    addZIP_AppendTo                @4   ; addZIP_AppendTo
+    addZIP_ArchiveName@4           @5   ; addZIP_ArchiveName
+    addZIP_BuildSFX                @6   ; addZIP_BuildSFX
+    addZIP_ClearAttributes         @7   ; addZIP_ClearAttributes
+    addZIP_Comment                 @8   ; addZIP_Comment
+    addZIP_Delete                  @9   ; addZIP_Delete
+    addZIP_DeleteComment           @10  ; addZIP_DeleteComment
+    addZIP_DisplayComment          @11  ; addZIP_DisplayComment
+    addZIP_Encrypt                 @12  ; addZIP_Encrypt
+    addZIP_Exclude                 @13  ; addZIP_Exclude
+    addZIP_ExcludeListFile         @14  ; addZIP_ExcludeListFile
+    addZIP_Freshen                 @15  ; addZIP_Freshen
+    addZIP_FromMemory              @16  ; addZIP_FromMemory
+    addZIP_GetLastError            @17  ; addZIP_GetLastError
+    addZIP_GetLastWarning          @18  ; addZIP_GetLastWarning
+    addZIP_GetVersion              @19  ; addZIP_GetVersion
+    addZIP_Include@4               @20  ; addZIP_Include
+    addZIP_IncludeArchive          @21  ; addZIP_IncludeArchive
+    addZIP_IncludeDirectoryEntries @22  ; addZIP_IncludeDirectoryEntries
+    addZIP_IncludeEmptyDirectoryEntries @23  ; addZIP_IncludeEmptyDirectoryEntries
+    addZIP_IncludeFilesNewer       @24  ; addZIP_IncludeFilesNewer
+    addZIP_IncludeFilesOlder       @25  ; addZIP_IncludeFilesOlder
+    addZIP_IncludeHidden           @26  ; addZIP_IncludeHidden
+    addZIP_IncludeListFile         @27  ; addZIP_IncludeListFile
+    addZIP_IncludeReadOnly         @28  ; addZIP_IncludeReadOnly
+    addZIP_IncludeSystem           @29  ; addZIP_IncludeSystem
+    addZIP_Initialise@0            @30  ; addZIP_Initialise
+    addZIP_InstallCallback@4       @31  ; addZIP_InstallCallback
+    addZIP_InstallCallbackEx       @32  ; addZIP_InstallCallbackEx
+    addZIP_KeepCompatible          @58  ; addZIP_KeepCompatible
+    addZIP_Move                    @33  ; addZIP_Move
+    addZIP_Overwrite               @34  ; addZIP_Overwrite
+    addZIP_Recurse                 @35  ; addZIP_Recurse
+    addZIP_Register                @36  ; addZIP_Register
+    addZIP_SFXAutoExecute          @37  ; addZIP_SFXAutoExecute
+    addZIP_SFXAutoPasswordPrompt   @38  ; addZIP_SFXAutoPasswordPrompt
+    addZIP_SFXRestoreStructure     @39  ; addZIP_SFXRestoreStructure
+    addZIP_SFXStub                 @40  ; addZIP_SFXStub
+    addZIP_SaveAttributes          @41  ; addZIP_SaveAttributes
+    addZIP_SaveConfiguration       @42  ; addZIP_SaveConfiguration
+    addZIP_SaveRelativeTo          @43  ; addZIP_SaveRelativeTo
+    addZIP_SaveStructure@4         @44  ; addZIP_SaveStructure
+    addZIP_SetArchiveDate          @45  ; addZIP_SetArchiveDate
+    addZIP_SetCompressionLevel@4   @46  ; addZIP_SetCompressionLevel
+    addZIP_SetParentWindowHandle@4 @47  ; addZIP_SetParentWindowHandle
+    addZIP_SetTempDrive            @48  ; addZIP_SetTempDrive
+    addZIP_SetWindowHandle         @49  ; addZIP_SetWindowHandle
+    addZIP_Span                    @50  ; addZIP_Span
+    addZIP_SpanCreateImages        @51  ; addZIP_SpanCreateImages
+    addZIP_SpanSizes               @52  ; addZIP_SpanSizes
+    addZIP_Store                   @53  ; addZIP_Store
+    addZIP_ToMemory                @54  ; addZIP_ToMemory
+    addZIP_Update                  @55  ; addZIP_Update
+    addZIP_UseLFN                  @56  ; addZIP_UseLFN
+    addZIP_View                    @57  ; addZIP_View
+    zip__DlgBoxProc                @1   ; zip__DlgBoxProc

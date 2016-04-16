@@ -1,0 +1,116 @@
+ 
+// Commands (ID_* and IDM_*) 
+HID_SCAD_VIEW_DBLCLICK                  0x10066
+HID_CAMERA_CHANGED                      0x10111
+HID_VIEW_ZOOM_IN                        0x18003
+HID_VIEW_ZOOM_OUT                       0x18004
+HID_VIEW_ZOOM_ALL                       0x18005
+HID_BUTTON32774                         0x18006
+HID_VIEW_MODE_ZOOM_WIN                  0x18007
+HID_BUTTON32776                         0x18008
+HID_VIEW_MODE_PAN                       0x18009
+HID_VIEW_MODE_ROTATE                    0x1800A
+HID_BAR_IMG                             0x1800A
+HID_VIEW_MODE_WALK                      0x1800B
+HID_PLATE_IMG                           0x1800B
+HID_VIEW_MODE_LOOK_AROUND               0x1800C
+HID_VIEW_PERSPECTIVE                    0x1800D
+HID_VIEW_MODE_SELECT                    0x1800E
+HID_BUTTON32785                         0x18011
+HID_VIEW_MODE_WIREFRAME                 0x1801A
+HID_VIEW_MODE_SOLID                     0x1801B
+HID_VIEW_MODE_ELEMENTBORDERS            0x1801C
+HID_VIEW_MODE_TRANSPARENT               0x1801D
+HID_TOOLS_OPTIONS                       0x1801E
+HID_SHOW_PROFILES                       0x18020
+HID_VIEW_SHOWBARPROFILE                 0x18022
+HID_VIEW_SHOWPLATETHICKNESS             0x18023
+HID_VIEW_ELEMENTS_NODES                 0x1802A
+HID_VIEW_ELEMENTS_CONSTRAINTS           0x1802B
+HID_VIEW_ELEMENTS_BARS                  0x1802C
+HID_VIEW_ELEMENTS_PLATES                0x1802D
+HID_VIEW_ELEMENTS_SOLIDS                0x1802E
+HID_VIEW_ELEMENTS_WALLS                 0x18030
+HID_VIEW_ELEMENTS_SLABS                 0x18031
+HID_VIEW_ELEMENTS_ROOFS                 0x18032
+HID_VIEW_ELEMENTS_BEAMS                 0x18034
+HID_VIEW_ELEMENTS_COLUMNS               0x18036
+HID_CUT                                 0x18037
+HID_INV_CUT                             0x18038
+HID_CUT_UNDO                            0x18039
+HID_NO_CUT                              0x1803A
+HID_VIEW_FRAGMENTS                      0x1803B
+HID_PROJECTION                          0x18040
+HID_VIEW_3DVIEWS_TOP                    0x18041
+HID_VIEW_3DVIEWS_BOTTOM                 0x18042
+HID_VIEW_3DVIEWS_LEFT                   0x18043
+HID_VIEW_3DVIEWS_RIGHT                  0x18044
+HID_VIEW_3DVIEWS_FRONT                  0x18045
+HID_VIEW_3DVIEWS_BACK                   0x18046
+HID_VIEW_3DVIEWS_SW_ISO                 0x18047
+HID_VIEW_3DVIEWS_SE_ISO                 0x18048
+HID_VIEW_3DVIEWS_NE_ISO                 0x18049
+HID_VIEW_3DVIEWS_NW_ISO                 0x1804A
+HID_VIEW_3DVIEWS_DIMETRY                0x1804B
+HID_VIEW_THUMBNAIL                      0x180E8
+HID_VIEW_LARGE_ICON                     0x180E9
+HID_VIEW_SMALL_ICON                     0x180EA
+HID_FILE_DELETE                         0x180ED
+HID_EXPORT_TO_DXF                       0x180EE
+HID_EXPORT_FOLDER_TO_RTF                0x180EF
+HID_BARS_HORIZONTAL                     0x19C42
+HID_BARS_VERTICAL                       0x19C43
+HID_BARS_SLANTED                        0x19C44
+HID_PLATES_HORIZONTAL                   0x19C45
+HID_PLATES_SLANTED                      0x19C46
+HID_PLATES_VERTICAL                     0x19C47
+HID_VIEW_FOLDER_TREE                    0x19C48
+HID_VIEW_FOLDER_VIEW                    0x19C49
+HID_DROPARROW                           0x19C4A
+HID_FILE_EDIT                           0x19C4B
+HID_CONTEXT_INSTRUMENTS                 0x19C4C
+HID_CONTEXT_CUT                         0x19C4D
+HID_CONTEXT_CAMERA                      0x19C4E
+HID_CONTEXT_DEPTH                       0x19C4F
+HID_TREE_EXPLORER                       0x19C50
+HID_FILE_CALCRES_DELETE                 0x19C51
+HID_FILE_CALCRES_SEL_DELETE             0x19C52
+HID_CONTEXT_FILTERS                     0x19C53
+HID_EXPORT_TO_BMP                       0x19C54
+HID_SELECT_HIDE_ELEMENT                 0x19C55
+HID_HIDE_ELEMENT_PLATE                  0x19C56
+HID_SELECT_SHOW_ELEMENT_PLATE           0x19C57
+HID_VIEW_ELEMENTS_AXES                  0x19C58
+HID_MENU_VIEW_REFRESH                   0x19C59
+HID_VIEW_RESULTS                        0x19C60
+HID_FACTOR_DISPLACEMENTS                0x19C64
+HID_FACTOR_STRESSFIELDS                 0x19C65
+HID_FACTOR_STRESSCOLOURMAP              0x19C66
+HID_FACTOR_GROUP                        0x19C67
+HID_LIGHT                               0x19C68
+ 
+// Prompts (IDP_*) 
+ 
+// Resources (IDR_*) 
+HIDR_POPUP_MENUS                        0x20066
+HIDR_MAINFRAME                          0x20080
+HIDR_SCADVITYPE                         0x20081
+HIDR_CUT_TOOLBAR                        0x2008E
+HIDR_FILTERS_TOOLBAR                    0x20090
+HIDR_RESULTS_TOOLBAR                    0x2009B
+HIDR_FOLDER_LIST                        0x20101
+HIDR_MAIN_TOOLBAR                       0x207D0
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+HIDD_DEPTH                              0x2006B
+HIDD_RESULTS                            0x2006C
+HIDD_ABORT_ZIP                          0x2006D
+HIDD_SAVE_BMP                           0x2006E
+HIDD_TAB_RTF                            0x2010C
+HIDD_TAB_MATERIAL                       0x2010D
+HIDD_TAB_GENERAL                        0x2010E
+HIDD_DEFORM_SCALE                       0x20110
+HIDD_CAMERA                             0x203E9
+ 
+// Frame Controls (IDW_*) 

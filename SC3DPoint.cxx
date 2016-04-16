@@ -1,0 +1,29 @@
+//////////////////////////////////////////////////////////////////////
+//
+// SC3DPoint.cxx: implementation of the SC3DPoint class
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "SC3DPoint.h"
+#include <D3dx8math.h>
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+//		SC3DPoint
+//////////////////////////////////////////////////////////////////////
+
+template SC3DPointVector;
+template SC3DPointPtrVector;
+
+void SC3DPoint::Normalize()
+{
+	D3DXVECTOR3 v( m_fX, m_fY, m_fZ );
+	
+	D3DXVec3Normalize( (D3DXVECTOR3*)this, (D3DXVECTOR3*)this );
+}

@@ -1,0 +1,50 @@
+ 
+// Commands (ID_* and IDM_*) 
+HID_VIEW_ZOOM_IN                        0x18003
+HID_VIEW_ZOOM_OUT                       0x18004
+HID_VIEW_ZOOM_ALL                       0x18005
+HID_VIEW_MODE_ZOOM_WIN                  0x18007
+HID_VIEW_MODE_PAN                       0x18009
+HID_VIEW_MODE_ROTATE                    0x1800A
+HID_VIEW_MODE_WALK                      0x1800B
+HID_VIEW_MODE_LOOK_AROUND               0x1800C
+HID_VIEW_PERSPECTIVE                    0x1800D
+HID_VIEW_MODE_WIREFRAME                 0x1801A
+HID_VIEW_MODE_SOLID                     0x1801B
+HID_VIEW_MODE_ELEMENTBORDERS            0x1801C
+HID_VIEW_MODE_TRANSPARENT               0x1801D
+HID_TOOLS_OPTIONS                       0x1801E
+HID_SHOW_PROFILES                       0x18020
+HID_VIEW_SHOWBARPROFILE                 0x18022
+HID_VIEW_SHOWPLATETHICKNESS             0x18023
+HID_VIEW_ELEMENTS_NODES                 0x1802A
+HID_VIEW_ELEMENTS_CONSTRAINTS           0x1802B
+HID_VIEW_ELEMENTS_BARS                  0x1802C
+HID_VIEW_ELEMENTS_PLATES                0x1802D
+HID_VIEW_ELEMENTS_SOLIDS                0x1802E
+HID_VIEW_ELEMENTS_WALLS                 0x18030
+HID_VIEW_ELEMENTS_SLABS                 0x18031
+HID_VIEW_ELEMENTS_ROOFS                 0x18032
+HID_VIEW_ELEMENTS_BEAMS                 0x18034
+HID_VIEW_ELEMENTS_COLUMNS               0x18036
+HID_CUT                                 0x18037
+HID_INV_CUT                             0x18038
+HID_CUT_UNDO                            0x18039
+HID_NO_CUT                              0x1803A
+HID_VIEW_FRAGMENTS                      0x1803B
+ 
+// Prompts (IDP_*) 
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20080
+HIDR_SCADVITYPE                         0x20081
+HIDR_CUT_TOOLBAR                        0x2008E
+HIDR_MAIN_TOOLBAR                       0x207D0
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+HIDD_TAB_RTF                            0x2010C
+HIDD_TAB_MATERIAL                       0x2010D
+HIDD_TAB_GENERAL                        0x2010E
+ 
+// Frame Controls (IDW_*) 

@@ -243,3 +243,36 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/BerkleyDB/build_windows/VS10
+/BerkleyDB
+/Debug11
+/debug11_2003
+/Debug21
+/Forum3DView/Debug11
+/Forum3DView/Debug11_2003
+/Forum3DView/Debug21
+/Forum3DView/Forum3DView___Win32_Release11D
+/Forum3DView/Release11
+/Forum3DView/Release11_2003
+/Forum3DView/Release21
+/make
+/OglIso/Debug11
+/OglIso/Debug11_2003
+/OglIso/OglIso___Win32_Release11D
+/OglIso/Release11
+/OglIso/Release11_2003
+/Release11
+/release11_2003
+/Release21
+/ScadViewer.vcproj.7.10.old
+/ScadViewer.vcxproj.filters
+/ForumView_RUS/Release11_2003
+/ForumView_RUS/Release11
+/ForumView_RUS/Debug21
+/ForumView_RUS/Debug11
+/ForumView_RUS/ForumView_RUS.vcproj.7.10.old
+*.filters
+/ForumView_ENG/Debug21
+/ForumView_ENG/Release11
+/ForumView_ENG/Release11_2003
+/ForumView_ENG/Release21

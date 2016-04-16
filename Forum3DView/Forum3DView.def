@@ -1,0 +1,9 @@
+; Forum3DView.def : Declares the module parameters for the DLL.
+
+LIBRARY      "Forum3DView"
+DESCRIPTION  'Forum3DView Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+	; Forum3DView @2
+	SCForumMdl3DDraw @3

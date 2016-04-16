@@ -1,0 +1,6 @@
+// Microsoft Developer Studio generated Help ID include file.
+// Used by Forum3DView.rc
+//
+#define HIDC_CHECK_EGGS                 0x8110040a    // IDD_DEFORM_SCALE
+#define HIDC_CHECK_ISOLINES             0x81100408    // IDD_DEFORM_SCALE
+#define HIDC_CHECK_VALUES               0x81100409    // IDD_DEFORM_SCALE

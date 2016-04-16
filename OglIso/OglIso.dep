@@ -1,0 +1,10 @@
+# Microsoft Developer Studio Generated Dependency File, included by OglIso.mak
+
+.\OglIso.cpp : \
+	".\OglIso.h"\
+	
+
+.\StdAfx.cpp : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\StdAfx.h"\
+	
