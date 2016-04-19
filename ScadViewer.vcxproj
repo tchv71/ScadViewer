@@ -604,6 +604,14 @@ makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
     <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Debug11\azip32.dll" />
+    <None Include="Debug11\ClassHelp.dll" />
+    <None Include="Debug11\fem.dll" />
+    <None Include="Debug11\libdb44.dll" />
+    <None Include="Debug11\Profile11.dll" />
+    <None Include="Debug11\Result.dll" />
+    <None Include="Debug11\Schema.dll" />
+    <None Include="Debug11\SchemaRus.dll" />
     <None Include="DOC\Architecture\KiewView.mdl" />
     <None Include="DOC\Plan\ForumView-Nov-Dec2006-Jan2016.mpp" />
     <None Include="DOC\Plan\ForumView-Nov-Dec2006.mpp" />
