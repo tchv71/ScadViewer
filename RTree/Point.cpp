@@ -1,7 +1,7 @@
 #include "Point.h"
 
 
-namespace RTree
+namespace RTreeLib
 {
 
 Point::Point()

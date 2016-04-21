@@ -21,7 +21,7 @@
 #pragma once
 #include "Point.h"
 
-namespace RTree
+namespace RTreeLib
 {
 	const float EPS = 1e-6f;
 	class Rectangle

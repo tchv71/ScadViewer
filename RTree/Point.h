@@ -20,7 +20,7 @@
 // Ported to C# By Dror Gluska, April 9th, 2009
 // Ported to C++ By Dmitry Tsvetkov, April 21th, 2016
 
-namespace RTree
+namespace RTreeLib
 {
 	/// <summary>
 	/// Currently hardcoded to 3 dimensions, but could be extended.

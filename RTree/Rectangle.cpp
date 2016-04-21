@@ -1,7 +1,8 @@
 #include "Rectangle.h"
 #include <cmath>
+#include "RTree.h"
 
-namespace RTree
+namespace RTreeLib
 {
 
 	Rectangle::Rectangle()

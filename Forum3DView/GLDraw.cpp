@@ -19,6 +19,8 @@ GLDraw.cpp - Вывод модели с использованием OpenGL
 #include <algorithm>
 
 #include "GLDraw.h"
+#include "../RTree/RTree.h"
+#include <complex>
 #define Eps 1e-3
 
 //#define NO_DRAW
@@ -945,14 +947,13 @@ public:
 			return 2;
 		return (d-Norm.DotProduct(p0))/ d1;
 	}
-	bool BreakByPlaneOf( CSortedViewElement &Q, CGLDraw &glDraw, CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-	std::vector <CSortedViewElement> &vecSorted, int k,
-	std::vector <CSortedViewElement> &vecSortByX)
+	bool BreakByPlaneOf(CSortedViewElement &Q, CGLDraw &glDraw, CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
+	                    std::vector <CSortedViewElement> &vecSorted, int k)
 	{
 		if (Type == EL_QUAD)
-			return glDraw.BreakQuad(Vertexs, ProjectedVertexs, vecSorted, k, Q, vecSortByX, *this);
+			return glDraw.BreakQuad(Vertexs, ProjectedVertexs, vecSorted, k, Q,  *this);
 		else if (Type==EL_TRIANGLE)
-			return glDraw.BreakTriangle(Vertexs, ProjectedVertexs, vecSorted, k, Q, vecSortByX, *this);
+			return glDraw.BreakTriangle(Vertexs, ProjectedVertexs, vecSorted, k, Q,  *this);
 		return false;
 	}
 
@@ -1030,34 +1031,27 @@ inline bool ElLessXMax(CSortedViewElement el1, CSortedViewElement el2)
 typedef std::vector<CSortedViewElement>::iterator ItS;
 typedef std::vector<CSortedViewElement> VecS;
 
-static void EraseElement(VecS& vecSortByX, CSortedViewElement& El)
+static void EraseElement(CSortedViewElement& El)
 {
-	ItS it1 = std::lower_bound(vecSortByX.begin(), vecSortByX.end(), El, ElLessXMax);
-	while (it1->m_pOriginal != &El) ++it1;
-	vecSortByX.erase(it1);
 }
 
-static void InsertElement(VecS& vecSortByX, CSortedViewElement* pEl)
+static void InsertElement(CSortedViewElement* pEl)
 {
 	CSortedViewElement elNew1 = *pEl;
 	elNew1.m_pOriginal = pEl;
-	ItS it1 = std::lower_bound(vecSortByX.begin(), vecSortByX.end(), elNew1, ElLessXMax);
-	vecSortByX.insert(it1, elNew1);
 }
 
 
 void SwapElements(CSortedViewElement &P, CSortedViewElement &Q,
-	std::vector<CSortedViewElement> &vecSorted, int k, std::vector<CSortedViewElement>& vecSortByX)
+                  std::vector<CSortedViewElement> &vecSorted, int k)
 {
-	EraseElement(vecSortByX, P);
-	EraseElement(vecSortByX, Q);
+	//EraseElement(P);
+	//EraseElement(Q);
 	CSortedViewElement ElTmp = Q;
 	ElTmp.FragmentFlag = false;
 	Q = P;
 	Q = vecSorted[k];
 	vecSorted[k] = ElTmp;
-	InsertElement(vecSortByX, &vecSorted[k]);
-	InsertElement(vecSortByX, &Q);
 }
 
 void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
@@ -1092,6 +1086,8 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 
 	int k = 0;
 	FLOAT_TYPE fMaxXSpan=0;
+	RTreeLib::RTree<CSortedViewElement*> tree;
+
 	for(UINT i = 0; i < static_cast<UINT>(NumElements); i++)
 	{
 		CSortedViewElement	El(m_pGeometry->ElementArray[i]);
@@ -1102,6 +1098,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 		m_pViewPos->Rot->Rotate(pNorm[0], pNorm[1], pNorm[2]);
 		El.SetExtents(ProjectedVertexs);
 		vecSorted.push_back(El);
+		tree.Add(RTreeLib::Rectangle(El.xMin, El.yMin, El.xMax, El.yMax, 0, 0), &vecSorted[vecSorted.size() - 1]);
 		if (El.NumVertexs()>2)
 			fMaxXSpan = max(El.xMax-El.xMin,fMaxXSpan);
 		k++;
@@ -1134,14 +1131,13 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 			k++;
 			continue;
 		}
-		CSortedViewElement elSearch = P;
-		elSearch.xMax = P.xMin;
-		ItS it_curr = std::lower_bound(vecSortByX.begin(), vecSortByX.end(), elSearch, ElLessXMax);
-		for (ItS it = it_curr; it != vecSortByX.end() && it->xMax< P.xMax+fMaxXSpan && bCheckNextElement; ++it)
+		std::list<CSortedViewElement*> list = tree.Intersects(RTreeLib::Rectangle(P.xMin, P.yMin, P.xMax, P.yMax, 0, 0));
+
+		for (auto it = list.begin(); it != list.end() && bCheckNextElement; ++it)
 		{
-			CSortedViewElement &Q = *(it->m_pOriginal);
+			CSortedViewElement &Q = *((*it)->m_pOriginal);
 			int dist = &Q -&P;
-			if (dist<0)
+			if (dist<=0)
 				continue;
 
 			if (Q.NumVertexs() == 2 && P.NumVertexs()==2)
@@ -1166,7 +1162,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 			{
 				vecSwapped.push_back(Q);
 				vecSwapped.push_back(P);
-				SwapElements(P, Q, vecSorted, k, vecSortByX);
+				SwapElements(P, Q, vecSorted, k);
 
 				bCheckNextElement = false;
 				break;
@@ -1180,7 +1176,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 					Q.FragmentFlag = true;
 
 					for (size_t i=0; i<vecSwapped.size(); i++)
-						if (P.BreakByPlaneOf(vecSwapped[i], *this, Vertexs, ProjectedVertexs, vecSorted, k, vecSortByX))
+						if (P.BreakByPlaneOf(vecSwapped[i], *this, Vertexs, ProjectedVertexs, vecSorted, k))
 						{
 							bCheckNextElement = false;
 							break;
@@ -1209,7 +1205,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 					vecSwappedPrev = vecSwapped;
 					vecSwapped.clear();
 				}
-				else if (P.BreakByPlaneOf(Q, *this, Vertexs, ProjectedVertexs, vecSorted, k, vecSortByX))
+				else if (P.BreakByPlaneOf(Q, *this, Vertexs, ProjectedVertexs, vecSorted, k))
 					bCheckNextElement = false;
 				break;
 			}
@@ -1252,8 +1248,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 }
 
 bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& ProjectedVertexs,
-                            std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement& Q,
-                            std::vector<CSortedViewElement>& vecSortByX, CSortedViewElement& P) const
+                            std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement& Q, CSortedViewElement& P) const
 {
 	// Split P by plane of Q
 	// Mark and insert pieces of P
@@ -1292,11 +1287,11 @@ bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& Project
 					 CSortedViewElement el = P;
 					 if (j==i+2)
 					 {
-						 EraseElement(vecSortByX, P);
+						 EraseElement(P);
 						 vecSorted[k].Points[i+1]=nNewPoints;
 						 vecSorted[k].Points[i+2]=nNewPoints+1;
 						 vecSorted[k].SetExtents(ProjectedVertexs);
-						 InsertElement(vecSortByX, &vecSorted[k]);
+						 InsertElement( &vecSorted[k]);
 
 						 elNew.Type = EL_QUAD;
 						 elNew.Points[0] = nNewPoints;
@@ -1305,15 +1300,15 @@ bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& Project
 						 elNew.Points[3] = nNewPoints+1;
 						 elNew.SetExtents(ProjectedVertexs);
 						 vecSorted.push_back(elNew);
-						 InsertElement(vecSortByX, &vecSorted[vecSorted.size()-1]);
+						 InsertElement(&vecSorted[vecSorted.size()-1]);
 						 return true;
 					 } else if (j==i+1)
 					 {
-						 EraseElement(vecSortByX, P);
+						 EraseElement(P);
 						 vecSorted[k].Points[i]=nNewPoints;
 						 vecSorted[k].Points[(i+2)%P.NumVertexs()]=nNewPoints+1;
 						 vecSorted[k].SetExtents(ProjectedVertexs);
-						 InsertElement(vecSortByX, &vecSorted[k]);
+						 InsertElement(&vecSorted[k]);
 
 						 elNew.Type = EL_QUAD;
 						 elNew.Points[0] = nNewPoints;
@@ -1322,7 +1317,7 @@ bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& Project
 						 elNew.Points[3] = el.Points[i];
 						 elNew.SetExtents(ProjectedVertexs);
 						 vecSorted.push_back(elNew);
-						 InsertElement(vecSortByX, &vecSorted[vecSorted.size()-1]);
+						 InsertElement(&vecSorted[vecSorted.size()-1]);
 						 return true;
 					 }
 				 }
@@ -1333,7 +1328,7 @@ bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& Project
 }
 
 bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-		std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement &Q, std::vector<CSortedViewElement> &vecSortByX,
+		std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement &Q, 
 		CSortedViewElement &P) const
 {
 	// Split P by plane of Q
@@ -1374,11 +1369,11 @@ bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVe
                      if (j==i+2)
                      {
 
-                         EraseElement(vecSortByX, P);
+                         EraseElement(P);
                          vecSorted[k].Points[i+1]=nNewPoints;
                          vecSorted[k].Points[i+2]=nNewPoints+1;
                          vecSorted[k].SetExtents(ProjectedVertexs);
-                         InsertElement(vecSortByX, &vecSorted[k]);
+                         InsertElement(&vecSorted[k]);
 
                          elNew.Points[0] = nNewPoints;
                          elNew.Points[1] = el.Points[i+1];
@@ -1386,15 +1381,15 @@ bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVe
                          elNew.Points[3] = nNewPoints+1;
                          elNew.SetExtents(ProjectedVertexs);
                          vecSorted.push_back(elNew);
-                         InsertElement(vecSortByX, &vecSorted[vecSorted.size()-1]);
+                         InsertElement(&vecSorted[vecSorted.size()-1]);
 						 return true;
                      } else if (j==i+1)
                      {
-                         EraseElement(vecSortByX, P);
+                         EraseElement(P);
                          vecSorted[k].Points[(i+1)]=nNewPoints;
                          vecSorted[k].Points[(i+2)%P.NumVertexs()]=nNewPoints+1;
                          vecSorted[k].SetExtents(ProjectedVertexs);
-                         InsertElement(vecSortByX, &vecSorted[k]);
+                         InsertElement(&vecSorted[k]);
 
 						 elNew.Type = EL_TRIANGLE;
                          elNew.Points[0] = nNewPoints;
@@ -1402,23 +1397,23 @@ bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVe
                          elNew.Points[2] = nNewPoints+1;
                          elNew.SetExtents(ProjectedVertexs);
                          vecSorted.push_back(elNew);
-                         InsertElement(vecSortByX, &vecSorted[vecSorted.size()-1]);
+                         InsertElement(&vecSorted[vecSorted.size()-1]);
 
                          elNew.Points[0] = nNewPoints+1;
                          elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
                          elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
                          elNew.SetExtents(ProjectedVertexs);
                          vecSorted.push_back(elNew);
-                         InsertElement(vecSortByX, &vecSorted[vecSorted.size()-1]);
+                         InsertElement(&vecSorted[vecSorted.size()-1]);
 						 return true;
                      }
                      else if (j==i+3)
                      {
-                         EraseElement(vecSortByX, P);
+                         EraseElement(P);
                          vecSorted[k].Points[i]=nNewPoints;
                          vecSorted[k].Points[i+3]=nNewPoints+1;
                          vecSorted[k].SetExtents(ProjectedVertexs);
-                         InsertElement(vecSortByX, &vecSorted[k]);
+                         InsertElement(&vecSorted[k]);
 
                          elNew.Type = EL_TRIANGLE;
                          elNew.Points[0] = nNewPoints;
@@ -1426,14 +1421,14 @@ bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVe
                          elNew.Points[2] = el.Points[i];
                          elNew.SetExtents(ProjectedVertexs);
                          vecSorted.push_back(elNew);
-                         InsertElement(vecSortByX, &vecSorted[vecSorted.size()-1]);
+                         InsertElement(&vecSorted[vecSorted.size()-1]);
 
                          elNew.Points[0] = nNewPoints+1;
                          elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
                          elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
                          elNew.SetExtents(ProjectedVertexs);
                          vecSorted.push_back(elNew);
-                         InsertElement(vecSortByX, &vecSorted[vecSorted.size()-1]);
+                         InsertElement(&vecSorted[vecSorted.size()-1]);
 						 return true;
                      }
                  }

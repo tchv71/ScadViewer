@@ -1954,6 +1954,11 @@
     <ClInclude Include="ViewGeometry.h" />
     <ClInclude Include="ViewLib.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RTree\RTree.vcxproj">
+      <Project>{e7db3f6c-5964-469b-97d0-d96dc5d88d53}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

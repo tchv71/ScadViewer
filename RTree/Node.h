@@ -18,10 +18,12 @@
 
 // Ported to C# By Dror Gluska, April 9th, 2009
 // Ported to C++ By Dmitry Tsvetkov, April 21th, 2016
+#pragma once
+#include "RTree.h"
 #include "Rectangle.h"
 #include <vector>
 
-namespace RTree
+namespace RTreeLib
 {
 
 	//import com.infomatiq.jsi.Rectangle;
@@ -32,28 +34,33 @@ namespace RTree
 	* @author aled@sourceforge.net
 	* @version 1.0b2p1
 	*/
-	template <typename T>
-	class Node<T>
+	const Rectangle NullRect = Rectangle(0, 0, 0, 0, 0, 0);
+	class Node
 	{
 	public:
-		 int nodeId = 0;
-		 Rectangle mbr;
-		 std::vector<Rectangle> entries;
-		 std::vector<int> ids;
-		 int level;
-		 int entryCount;
-		 bool bMbrInitialized;
-		 static const Rectangle NullRect = Rectangle(0, 0, 0, 0, 0, 0);
-
-		Node(int nodeId, int level, int maxNodeEntries): entryCount(0), bMbrInitialized(false)
+		int nodeId;
+		Rectangle mbr;
+		std::vector<Rectangle> entries;
+		std::vector<int> ids;
+		//typedef RTreeLib::
+		int level;
+		int entryCount;
+		bool bMbrInitialized;
+		Node() : entryCount(0), bMbrInitialized(false)
 		{
-			this.nodeId = nodeId;
-			this.level = level;
+			this->nodeId = 0;
+			this->level = 0;
+		}
+
+		Node(int nodeId, int level, int maxNodeEntries) : entryCount(0), bMbrInitialized(false)
+		{
+			this->nodeId = nodeId;
+			this->level = level;
 			entries.resize(maxNodeEntries);
 			ids.resize(maxNodeEntries);
 		}
 
-		 void addEntry(Rectangle r, int id)
+		void addEntry(Rectangle r, int id)
 		{
 			ids[entryCount] = id;
 			entries[entryCount] = r.copy();
@@ -99,7 +106,7 @@ namespace RTree
 		}
 
 		// delete entry. This is done by setting it to null and copying the last entry into its space.
-		 void deleteEntry(int i, int minNodeEntries)
+		void deleteEntry(int i, int minNodeEntries)
 		{
 			int lastIndex = entryCount - 1;
 			Rectangle deletedRectangle = entries[i];
@@ -123,7 +130,7 @@ namespace RTree
 
 		// oldRectangle is a rectangle that has just been deleted or made smaller.
 		// Thus, the MBR is only recalculated if the OldRectangle influenced the old MBR
-		 void recalculateMBR(Rectangle deletedRectangle)
+		void recalculateMBR(Rectangle deletedRectangle)
 		{
 			if (mbr.edgeOverlaps(deletedRectangle))
 			{
@@ -162,9 +169,9 @@ namespace RTree
 		/**
 		* eliminate null entries, move all entries to the start of the source node
 		*/
-		void reorganize(RTree<T> rtree)
+		void reorganize(int countdownIndex)
 		{
-			int countdownIndex = rtree.maxNodeEntries - 1;
+			//int countdownIndex = rtree.maxNodeEntries - 1;
 			for (int index = 0; index < entryCount; index++)
 			{
 				if (entries[index] == NullRect)
@@ -195,5 +202,4 @@ namespace RTree
 			return mbr;
 		}
 	};
-
 }

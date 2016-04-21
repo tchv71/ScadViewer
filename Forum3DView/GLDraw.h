@@ -65,13 +65,12 @@ protected:
 private:
 	//S3dPoint GetFontExtents(LPCTSTR pszText);
 	bool			BreakTriangle(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-						std::vector <CSortedViewElement> &vecSorted, int k, CSortedViewElement &ElTest,
-						std::vector <CSortedViewElement> &vecSortByX, 
-						CSortedViewElement &ElCurr) const;
+	    			              std::vector <CSortedViewElement> &vecSorted, int k, CSortedViewElement &ElTest,
+	    			              CSortedViewElement & ElCurr) const;
 
 	bool			BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-						std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement &ElTest, std::vector<CSortedViewElement>& vecSortByX,
-						CSortedViewElement &ElCurr) const;
+	    			          std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement &ElTest,
+	    			          CSortedViewElement & ElCurr) const;
 	void DrawAxeMarks(const S3dPoint &p1, const S3dPoint &p2, double len, double rad,  LPCTSTR pszName, double MVM[], double PJM[], int VP[]);
 	void DrawAxeMark(double wx, double wy, double wz, double nx, double ny, double MarkLen, double radius, LPCTSTR pszrName);
 	void DrawAxeZMark(const S3dPoint &p, LPCTSTR pszName, double MVM[], double PJM[], int VP[]);
