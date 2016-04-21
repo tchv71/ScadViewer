@@ -86,7 +86,7 @@ namespace RTreeLib
 		* @param min array containing the minimum value for each dimension; ie { min(x), min(y) }
 		* @param max array containing the maximum value for each dimension; ie { max(x), max(y) }
 		*/
-		void set(float min[], float max[]);
+		void set(const float min[], const float max[]);
 
 		/**
 		* Make a copy of this rectangle

@@ -1085,8 +1085,6 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 	vecSorted.reserve(NumElements*4);
 
 	int k = 0;
-	FLOAT_TYPE fMaxXSpan=0;
-	RTreeLib::RTree<CSortedViewElement*> tree;
 
 	for(UINT i = 0; i < static_cast<UINT>(NumElements); i++)
 	{
@@ -1098,9 +1096,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 		m_pViewPos->Rot->Rotate(pNorm[0], pNorm[1], pNorm[2]);
 		El.SetExtents(ProjectedVertexs);
 		vecSorted.push_back(El);
-		tree.Add(RTreeLib::Rectangle(El.xMin, El.yMin, El.xMax, El.yMax, 0, 0), &vecSorted[vecSorted.size() - 1]);
-		if (El.NumVertexs()>2)
-			fMaxXSpan = max(El.xMax-El.xMin,fMaxXSpan);
+		vecSorted[vecSorted.size() - 1].m_pOriginal = &vecSorted[vecSorted.size() - 1];
 		k++;
 	}
 
@@ -1109,11 +1105,13 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 	//	qsort(&vecSorted[0], NumElements, sizeof(CSortedViewElement), ElCompare);
 	std::sort(vecSorted.begin(), vecSorted.end(), ElLessZMin);
 
-#ifdef NEW_DEPTH_SORT
-	std::vector<CSortedViewElement> vecSortByX = vecSorted;
+	RTreeLib::RTree<CSortedViewElement*> tree;
 	for (UINT i=0; i<vecSorted.size(); i++)
-		vecSortByX[i].m_pOriginal = &vecSorted[i];
-	std::sort(vecSortByX.begin(), vecSortByX.end(), ElLessXMax);
+	{
+		CSortedViewElement& El = vecSorted[i];
+		tree.Add(RTreeLib::Rectangle(El.xMin, El.yMin, El.xMax, El.yMax, El.zMin, El.zMax), &vecSorted[i]);
+	}
+#ifdef NEW_DEPTH_SORT
 	CVectorType ptEye(m_pViewPos->Xorg,m_pViewPos->Yorg,m_pViewPos->Zorg);
 	m_pViewPos->Rot->Rotate(ptEye.v[0], ptEye.v[1], ptEye.v[2]);
 	bool bPersp = m_pViewPos->bPerspective; 
@@ -1131,11 +1129,11 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 			k++;
 			continue;
 		}
-		std::list<CSortedViewElement*> list = tree.Intersects(RTreeLib::Rectangle(P.xMin, P.yMin, P.xMax, P.yMax, 0, 0));
+		std::list<CSortedViewElement*> list = tree.Intersects(RTreeLib::Rectangle(P.xMin, P.yMin, P.xMax, P.yMax, P.zMin, P.zMax));
 
 		for (auto it = list.begin(); it != list.end() && bCheckNextElement; ++it)
 		{
-			CSortedViewElement &Q = *((*it)->m_pOriginal);
+			CSortedViewElement &Q = **it;
 			int dist = &Q -&P;
 			if (dist<=0)
 				continue;

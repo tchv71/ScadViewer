@@ -44,7 +44,7 @@ namespace RTreeLib
 		max[2] = fmax(z1, z2);
 	}
 
-	void Rectangle::set(float min[], float max[])
+	void Rectangle::set(const float min[], const float max[])
 	{
 		for (int i = 0; i < DIMENSIONS; i++)
 		{
@@ -205,7 +205,7 @@ namespace RTreeLib
 
 	bool Rectangle::CompareArrays(const float a1[], const float a2[])
 	{
-		if ((a1 == nullptr) || (a2 == nullptr))
+		if (a1 == nullptr || a2 == nullptr)
 			return false;
 		for (int i = 0; i < DIMENSIONS; i++)
 			if (fabs(a1[i] - a2[i])>EPS)
@@ -225,6 +225,6 @@ namespace RTreeLib
 
 	bool Rectangle::sameObject(const Rectangle& o) const
 	{
-		return *this == o;
+		return this == &o;
 	}
 }

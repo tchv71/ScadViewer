@@ -19,7 +19,6 @@
 // Ported to C# By Dror Gluska, April 9th, 2009
 // Ported to C++ By Dmitry Tsvetkov, April 21th, 2016
 #pragma once
-#include "RTree.h"
 #include "Rectangle.h"
 #include <vector>
 
@@ -46,160 +45,40 @@ namespace RTreeLib
 		int level;
 		int entryCount;
 		bool bMbrInitialized;
-		Node() : entryCount(0), bMbrInitialized(false)
-		{
-			this->nodeId = 0;
-			this->level = 0;
-		}
+		Node();
 
-		Node(int nodeId, int level, int maxNodeEntries) : entryCount(0), bMbrInitialized(false)
-		{
-			this->nodeId = nodeId;
-			this->level = level;
-			entries.resize(maxNodeEntries);
-			ids.resize(maxNodeEntries);
-		}
+		Node(int nodeId, int level, int maxNodeEntries);
 
-		void addEntry(Rectangle r, int id)
-		{
-			ids[entryCount] = id;
-			entries[entryCount] = r.copy();
-			entryCount++;
-			if (!bMbrInitialized)
-			{
-				mbr = r.copy();
-				bMbrInitialized = true;
-			}
-			else
-			{
-				mbr.add(r);
-			}
-		}
+		void addEntry(Rectangle r, int id);
 
-		void addEntryNoCopy(Rectangle r, int id)
-		{
-			ids[entryCount] = id;
-			entries[entryCount] = r;
-			entryCount++;
-			if (!bMbrInitialized)
-			{
-				mbr = r.copy();
-				bMbrInitialized = true;
-			}
-			else
-			{
-				mbr.add(r);
-			}
-		}
+		void addEntryNoCopy(Rectangle r, int id);
 
 		// Return the index of the found entry, or -1 if not found
-		int findEntry(Rectangle r, int id)
-		{
-			for (int i = 0; i < entryCount; i++)
-			{
-				if (id == ids[i] && r == entries[i])
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
+		int findEntry(Rectangle r, int id);
 
 		// delete entry. This is done by setting it to null and copying the last entry into its space.
-		void deleteEntry(int i, int minNodeEntries)
-		{
-			int lastIndex = entryCount - 1;
-			Rectangle deletedRectangle = entries[i];
-			entries[i] = NullRect;
-			if (i != lastIndex)
-			{
-				entries[i] = entries[lastIndex];
-				ids[i] = ids[lastIndex];
-				entries[lastIndex] = NullRect;
-			}
-			entryCount--;
-
-			// if there are at least minNodeEntries, adjust the MBR.
-			// otherwise, don't bother, as the Node<T> will be 
-			// eliminated anyway.
-			if (entryCount >= minNodeEntries)
-			{
-				recalculateMBR(deletedRectangle);
-			}
-		}
+		void deleteEntry(int i, int minNodeEntries);
 
 		// oldRectangle is a rectangle that has just been deleted or made smaller.
 		// Thus, the MBR is only recalculated if the OldRectangle influenced the old MBR
-		void recalculateMBR(Rectangle deletedRectangle)
-		{
-			if (mbr.edgeOverlaps(deletedRectangle))
-			{
-				mbr.set(entries[0].min, entries[0].max);
+		void recalculateMBR(Rectangle deletedRectangle);
 
-				for (int i = 1; i < entryCount; i++)
-				{
-					mbr.add(entries[i]);
-				}
-			}
-		}
+		int getEntryCount() const;
 
-		int getEntryCount() const
-		{
-			return entryCount;
-		}
+		Rectangle& getEntry(int index);
 
-		Rectangle& getEntry(int index)
-		{
-			if (index < entryCount)
-			{
-				return entries[index];
-			}
-			return entries[0];
-		}
-
-		int getId(int index)
-		{
-			if (index < entryCount)
-			{
-				return ids[index];
-			}
-			return -1;
-		}
+		int getId(int index);
 
 		/**
 		* eliminate null entries, move all entries to the start of the source node
 		*/
-		void reorganize(int countdownIndex)
-		{
-			//int countdownIndex = rtree.maxNodeEntries - 1;
-			for (int index = 0; index < entryCount; index++)
-			{
-				if (entries[index] == NullRect)
-				{
-					while (entries[countdownIndex] == NullRect && countdownIndex > index)
-					{
-						countdownIndex--;
-					}
-					entries[index] = entries[countdownIndex];
-					ids[index] = ids[countdownIndex];
-					entries[countdownIndex] = NullRect;
-				}
-			}
-		}
+		void reorganize(int countdownIndex);
 
-		bool isLeaf() const
-		{
-			return (level == 1);
-		}
+		bool isLeaf() const;
 
-		int getLevel() const
-		{
-			return level;
-		}
+		int getLevel() const;
 
-		Rectangle getMBR() const
-		{
-			return mbr;
-		}
+		Rectangle getMBR() const;
 	};
+
 }

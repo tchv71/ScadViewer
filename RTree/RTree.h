@@ -62,7 +62,7 @@ namespace RTreeLib
 		int maxNodeEntries;
 		int minNodeEntries;
 
-		// map of nodeId -&gt; Node&lt;T&gt; object
+		// map of nodeId -&gt; Node object
 		// [x] TODO eliminate this map - it should not be needed. Nodes
 		// can be found by traversing the tree.
 		//private TIntObjectHashMap nodeMap = new TIntObjectHashMap();
@@ -71,13 +71,13 @@ namespace RTreeLib
 		// internal consistency checking - set to true if debugging tree corruption
 		const bool INTERNAL_CONSISTENCY_CHECKING = false;
 
-		// used to mark the status of entries during a Node&lt;T&gt; split
+		// used to mark the status of entries during a Node split
 		const int ENTRY_STATUS_ASSIGNED = 0;
 		const int ENTRY_STATUS_UNASSIGNED = 1;
 		std::vector<BYTE> entryStatus;
 		std::vector<BYTE> initialEntryStatus;
 
-		// stacks used to store nodeId and entry index of each Node&lt;T&gt;
+		// stacks used to store nodeId and entry index of each Node
 		// from the root down to the leaf. Enables fast lookup
 		// of nodes when a split is propagated up the tree.
 		//private TIntStack parents = new TIntStack();
@@ -94,7 +94,7 @@ namespace RTreeLib
 		//private int highestUsedNodeId = rootNodeId; 
 		int highestUsedNodeId;// = 0;
 
-		// Deleted Node&lt;T&gt; objects are retained in the nodeMap, 
+		// Deleted Node objects are retained in the nodeMap, 
 		// so that they can be reused. Store the IDs of nodes
 		// which can be reused.
 		//private TIntStack deletedNodeIds = new TIntStack();
@@ -145,8 +145,8 @@ namespace RTreeLib
 			//log = LogManager.GetLogger(typeof(RTree<T>).FullName);
 			//deleteLog = LogManager.GetLogger(typeof(RTree<T>).FullName + "-delete");
 
-			// Obviously a Node&lt;T&gt; with less than 2 entries cannot be split.
-			// The Node&lt;T&gt; splitting algorithm will work with only 2 entries
+			// Obviously a Node with less than 2 entries cannot be split.
+			// The Node splitting algorithm will work with only 2 entries
 			// per node, but will be inefficient.
 			if (maxNodeEntries < 2)
 			{
@@ -197,9 +197,9 @@ namespace RTreeLib
 		void add(Rectangle r, int id, int level)
 		{
 			// I1 [Find position for new record] Invoke ChooseLeaf to select a 
-			// leaf Node&lt;T&gt; L in which to place r
-			Node n = chooseNode(r, level);
-			Node newLeaf;
+			// leaf Node L in which to place r
+			Node& n = chooseNode(r, level);
+			Node* newLeaf=nullptr;
 
 			// I2 [Add record to leaf node] If L has room for another entry, 
 			// install E. Otherwise invoke SplitNode to obtain L and LL containing
@@ -215,11 +215,11 @@ namespace RTreeLib
 
 			// I3 [Propagate changes upwards] Invoke AdjustTree on L, also passing LL
 			// if a split was performed
-			Node newNode = adjustTree(n, newLeaf);
+			Node* newNode = adjustTree(&n, newLeaf);
 
-			// I4 [Grow tree taller] If Node&lt;T&gt; split propagation caused the root to 
+			// I4 [Grow tree taller] If Node split propagation caused the root to 
 			// split, create a new root whose children are the two resulting nodes.
-			//if (newNode != null)
+			if (newNode != nullptr)
 			{
 				int oldRootNodeId = rootNodeId;
 				Node oldRoot = getNode(oldRootNodeId);
@@ -227,7 +227,7 @@ namespace RTreeLib
 				rootNodeId = getNextNodeId();
 				treeHeight++;
 				Node root(rootNodeId, treeHeight, maxNodeEntries);
-				root.addEntry(newNode.mbr, newNode.nodeId);
+				root.addEntry(newNode->mbr, newNode->nodeId);
 				root.addEntry(oldRoot.mbr, oldRoot.nodeId);
 				nodeMap.insert(std::make_pair(rootNodeId, root));
 			}
@@ -248,7 +248,7 @@ namespace RTreeLib
 
 			// FL1 [Search subtrees] If root is not a leaf, check each entry 
 			// to determine if it contains r. For each entry found, invoke
-			// findLeaf on the Node&lt;T&gt; pointed to by the entry, until r is found or
+			// findLeaf on the Node pointed to by the entry, until r is found or
 			// all entries have been checked.
 			parents.clear();
 			parents.push_front(rootNodeId);
@@ -482,7 +482,7 @@ namespace RTreeLib
 		{
 			Rectangle bounds;
 
-			Node n = getNode(getRootNodeId());
+			Node& n = getNode(getRootNodeId());
 			//if (n != null && n.getMBR() != null)
 			{
 				bounds = n.getMBR().copy();
@@ -502,7 +502,7 @@ namespace RTreeLib
 		//-------------------------------------------------------------------------
 private:
 		/**
-		* Get the next available Node&lt;T&gt; ID. Reuse deleted Node&lt;T&gt; IDs if
+		* Get the next available Node ID. Reuse deleted Node IDs if
 		* possible
 		*/
 		int getNextNodeId()
@@ -525,7 +525,7 @@ private:
 
 
 		/// <summary>
-		/// Get a Node&lt;T&gt; object, given the ID of the node.
+		/// Get a Node object, given the ID of the node.
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
@@ -535,7 +535,7 @@ private:
 		}
 public:
 		/// <summary>
-		/// Get the highest used Node&lt;T&gt; ID
+		/// Get the highest used Node ID
 		/// </summary>
 		/// <returns></returns>
 		int getHighestUsedNodeId() const
@@ -544,7 +544,7 @@ public:
 		}
 
 		/// <summary>
-		/// Get the root Node&lt;T&gt; ID
+		/// Get the root Node ID
 		/// </summary>
 		/// <returns></returns>
 		int getRootNodeId() const
@@ -559,8 +559,8 @@ private:
 		/// <param name="n"></param>
 		/// <param name="newRect"></param>
 		/// <param name="newId"></param>
-		/// <returns>return new Node&lt;T&gt; object.</returns>
-		Node splitNode(Node n, Rectangle newRect, int newId)
+		/// <returns>return new Node object.</returns>
+		Node* splitNode(Node & n, Rectangle newRect, int newId)
 		{
 			// [Pick first entry for each group] Apply algorithm pickSeeds to 
 			// choose two entries to be the first elements of the groups. Assign
@@ -576,8 +576,9 @@ private:
 
 			entryStatus = initialEntryStatus;
 
-			Node newNode(getNextNodeId(), n.level, maxNodeEntries);
-			nodeMap.insert(std::make_pair(newNode.nodeId, newNode));
+			int nodeId = getNextNodeId();
+			nodeMap.insert(std::make_pair(nodeId, Node(nodeId, n.level, maxNodeEntries)));
+			Node& newNode = nodeMap[nodeId];
 
 			pickSeeds(n, newRect, newId, newNode); // this also sets the entryCount to 1
 
@@ -625,11 +626,12 @@ private:
 
 			n.reorganize(this->maxNodeEntries-1);
 
-			// check that the MBR stored for each Node&lt;T&gt; is correct.
+			// check that the MBR stored for each Node is correct.
 			if (INTERNAL_CONSISTENCY_CHECKING)
 			{
 				if (!(n.mbr ==calculateMBR(n)))
 				{
+					DebugBreak();
 					//log.Error("Error: splitNode old Node MBR wrong");
 				}
 
@@ -648,7 +650,7 @@ private:
 			//	log.Debug("Node " + n.nodeId + " split. New area increased by " + percentageIncrease + "%");
 			//}
 
-			return newNode;
+			return &newNode;
 		}
 
 		/// <summary>
@@ -659,7 +661,7 @@ private:
 		/// <param name="newRect"></param>
 		/// <param name="newId"></param>
 		/// <param name="newNode"></param>
-		void pickSeeds(Node n, Rectangle newRect, int newId, Node newNode)
+		void pickSeeds(Node & n, Rectangle newRect, int newId, Node & newNode)
 		{
 			// Find extreme rectangles along all dimension. Along each dimension,
 			// find the entry whose rectangle has the highest low side, and the one 
@@ -668,7 +670,7 @@ private:
 			int highestLowIndex = 0;
 			int lowestHighIndex = 0;
 
-			// for the purposes of picking seeds, take the MBR of the Node&lt;T&gt; to include
+			// for the purposes of picking seeds, take the MBR of the Node to include
 			// the new rectangle aswell.
 			n.mbr.add(newRect);
 
@@ -761,7 +763,7 @@ private:
 
 
 		/// <summary>
-		/// Pick the next entry to be assigned to a group during a Node&lt;T&gt; split.
+		/// Pick the next entry to be assigned to a group during a Node split.
 		/// [Determine cost of putting each entry in each group] For each 
 		/// entry not yet in a group, calculate the area increase required
 		/// in the covering rectangles of each group  
@@ -769,7 +771,7 @@ private:
 		/// <param name="n"></param>
 		/// <param name="newNode"></param>
 		/// <returns></returns>
-		int pickNext(Node n, Node newNode)
+		int pickNext(Node & n, Node & newNode)
 		{
 			float maxDifference = -FLT_MAX;
 			int next = 0;
@@ -935,13 +937,12 @@ private:
 		* contain the nodeIds of all parents up to the root.
 		*/
 
-		void condenseTree(Node l)
+		void condenseTree(Node & l)
 		{
 			Rectangle oldRectangle(0, 0, 0, 0, 0, 0);
 			// CT1 [Initialize] Set n=l. Set the list of eliminated
 			// nodes to be empty.
 			Node n = l;
-			Node parent;
 			int parentEntry;
 
 			//TIntStack eliminatedNodeIds = new TIntStack();
@@ -951,7 +952,7 @@ private:
 			// let P be the parent of N, and let En be N's entry in P  
 			while (n.level != treeHeight)
 			{
-				parent = getNode(parents.front());
+				Node& parent = getNode(parents.front());
 				parents.pop_front();
 				parentEntry = parentsEntry.front();
 				parentsEntry.pop_front();
@@ -985,7 +986,7 @@ private:
 			// level as leaves of the main tree
 			while (eliminatedNodeIds.size() > 0)
 			{
-				Node e = getNode(eliminatedNodeIds.front());
+				Node& e = getNode(eliminatedNodeIds.front());
 				eliminatedNodeIds.pop_front();
 				for (int j = 0; j < e.entryCount; j++)
 				{
@@ -1004,7 +1005,7 @@ private:
 		Node& chooseNode(Rectangle r, int level)
 		{
 			// CL1 [Initialize] Set N to be the root node
-			Node& n = getNode(rootNodeId);
+			Node* n = &getNode(rootNodeId);
 			parents.clear();
 			parentsEntry.clear();
 
@@ -1016,55 +1017,55 @@ private:
 				//	log.Error("Could not get root Node (" + rootNodeId + ")");
 				//}
 
-				if (n.level == level)
+				if (n->level == level)
 				{
-					return n;
+					return *n;
 				}
 
 				// CL3 [Choose subtree] If N is not at the desired level, let F be the entry in N 
 				// whose rectangle FI needs least enlargement to include EI. Resolve
 				// ties by choosing the entry with the rectangle of smaller area.
-				float leastEnlargement = n.getEntry(0).enlargement(r);
+				float leastEnlargement = n->getEntry(0).enlargement(r);
 				int index = 0; // index of rectangle in subtree
-				for (int i = 1; i < n.entryCount; i++)
+				for (int i = 1; i < n->entryCount; i++)
 				{
-					Rectangle tempRectangle = n.getEntry(i);
+					Rectangle tempRectangle = n->getEntry(i);
 					float tempEnlargement = tempRectangle.enlargement(r);
 					if ((tempEnlargement < leastEnlargement) ||
 						((tempEnlargement == leastEnlargement) &&
-						(tempRectangle.area() < n.getEntry(index).area())))
+						(tempRectangle.area() < n->getEntry(index).area())))
 					{
 						index = i;
 						leastEnlargement = tempEnlargement;
 					}
 				}
 
-				parents.push_front(n.nodeId);
+				parents.push_front(n->nodeId);
 				parentsEntry.push_front(index);
 
-				// CL4 [Descend until a leaf is reached] Set N to be the child Node&lt;T&gt; 
+				// CL4 [Descend until a leaf is reached] Set N to be the child Node 
 				// pointed to by Fp and repeat from CL2
-				n = getNode(n.ids[index]);
+				n = &getNode(n->ids[index]);
 			}
 		}
 
 		/**
-		* Ascend from a leaf Node&lt;T&gt; L to the root, adjusting covering rectangles and
-		* propagating Node&lt;T&gt; splits as necessary.
+		* Ascend from a leaf Node L to the root, adjusting covering rectangles and
+		* propagating Node splits as necessary.
 		*/
-		Node adjustTree(Node n, Node nn)
+		Node* adjustTree(Node* n, Node* nn)
 		{
 			// AT1 [Initialize] Set N=L. If L was split previously, set NN to be 
 			// the resulting second node.
 
 			// AT2 [Check if done] If N is the root, stop
-			while (n.level != treeHeight)
+			while (n->level != treeHeight)
 			{
 
 				// AT3 [Adjust covering rectangle in parent entry] Let P be the parent 
 				// Node of N, and let En be N's entry in P. Adjust EnI so that it tightly
 				// encloses all entry rectangles in N.
-				Node parent = getNode(parents.front());
+				Node& parent = getNode(parents.front());
 				parents.pop_front();
 				int entry = parentsEntry.front();
 				parentsEntry.pop_front();
@@ -1076,9 +1077,9 @@ private:
 				//		n.nodeId + "; actually points to Node " + parent.ids[entry]);
 				//}
 
-				if (!(parent.entries[entry] ==n.mbr))
+				if (!(parent.entries[entry] ==n->mbr))
 				{
-					parent.entries[entry].set(n.mbr.min, n.mbr.max);
+					parent.entries[entry].set(n->mbr.min, n->mbr.max);
 					parent.mbr.set(parent.entries[0].min, parent.entries[0].max);
 					for (int i = 1; i < parent.entryCount; i++)
 					{
@@ -1091,24 +1092,23 @@ private:
 				// Enni enclosing all rectangles in NN. Add Enn to P if there is room. 
 				// Otherwise, invoke splitNode to produce P and PP containing Enn and
 				// all P's old entries.
-				Node newNode;
-				//if (nn != null)
+				Node *newNode = nullptr;
+				if (nn != nullptr)
 				{
 					if (parent.entryCount < maxNodeEntries)
 					{
-						parent.addEntry(nn.mbr, nn.nodeId);
+						parent.addEntry(nn->mbr, nn->nodeId);
 					}
 					else
 					{
-						newNode = splitNode(parent, nn.mbr.copy(), nn.nodeId);
+						newNode = splitNode(parent, nn->mbr.copy(), nn->nodeId);
 					}
 				}
 
 				// AT5 [Move up to next level] Set N = P and set NN = PP if a split 
 				// occurred. Repeat from AT2
-				n = parent;
+				n = &parent;
 				nn = newNode;
-
 				//parent = null;
 				//newNode = null;
 			}
@@ -1144,14 +1144,14 @@ private:
 				//log.Error("Error: Node " + nodeId + ", calculated MBR does not equal stored MBR");
 			}
 
-			if (/*expectedMBR != null &&*/ !(n.mbr ==expectedMBR))
+			if (!(expectedMBR == NullRect) && !(n.mbr ==expectedMBR))
 			{
 				DebugBreak();
 				//log.Error("Error: Node " + nodeId + ", expected MBR (from parent) does not equal stored MBR");
 			}
 
 			// Check for corruption where a parent entry is the same object as the child MBR
-			if (/*expectedMBR != null &&*/ n.mbr.sameObject(expectedMBR))
+			if (!(expectedMBR == NullRect) && n.mbr.sameObject(expectedMBR))
 			{
 				DebugBreak();
 				//log.Error("Error: Node " + nodeId + " MBR using same rectangle object as parent's entry");
