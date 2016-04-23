@@ -82,6 +82,9 @@ private:
 	void ProjectVertex(SViewVertex &pt, SViewVertex &v) const;
 	void EraseElement(CSortedViewElement& El) const;
 	void InsertElement(CSortedViewElement* pEl) const;
+	void SwapElements(CSortedViewElement& P, CSortedViewElement& Q) const;
+	static bool OrderIsRight(CSortedViewElement& P, CSortedViewElement& Q, const CViewVertexArray & Vertexs, const CViewVertexArray & ProjectedVertexs, CVectorType ptEye, bool bPersp);
+	bool SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & ProjectedVertexs, std::vector<CSortedViewElement> & vecSorted);
 	void SortElements(CViewElement * &Elements, int &NumElements);
 
 

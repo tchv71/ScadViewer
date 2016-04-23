@@ -403,6 +403,16 @@ namespace RTreeLib
 
 			add(r, id);
 		}
+
+		void Swap(T item1, T item2)
+		{
+			int id1 = ItemsToIds[item1];
+			int id2 = ItemsToIds[item2];
+			ItemsToIds[item1] = id2;
+			ItemsToIds[item2] = id1;
+			IdsToItems[id1] = item2;
+			IdsToItems[id2] = item1;
+		}
 		/// <summary>
 		/// Deletes an item from the spatial index
 		/// </summary>
