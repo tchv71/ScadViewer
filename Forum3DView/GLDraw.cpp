@@ -26,7 +26,7 @@ GLDraw.cpp - Вывод модели с использованием OpenGL
 //#define NO_DRAW
 #define NEW_DEPTH_SORT
 //#define COLOR_PLATES
-#define NO_ALPHA
+//#define NO_ALPHA
 
 
 inline void CGLDraw::SetGlColor(TColor c)
