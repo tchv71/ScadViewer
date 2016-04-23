@@ -800,7 +800,7 @@ public:
 	CSortedViewElement(const CViewElement &el)
 		: CViewElement(el), xMax(0), xMin(0), yMax(0), yMin(0), zMax(0), zMin(0), m_pOriginal(nullptr)
 	{
-		FragmentFlag = true;
+		//FragmentFlag = true;
 	}
 
 	void SetExtents(const CViewVertexArray &Vertexs)
@@ -952,11 +952,14 @@ public:
 	{
 		if (Type == EL_QUAD)
 			return glDraw.BreakQuad(Vertexs, ProjectedVertexs, vecSorted, k, Q,  *this);
-		else if (Type==EL_TRIANGLE)
+		if (Type==EL_TRIANGLE)
 			return glDraw.BreakTriangle(Vertexs, ProjectedVertexs, vecSorted, k, Q,  *this);
 		return false;
 	}
-
+	RTreeLib::Rectangle GetRect() const
+	{
+		return RTreeLib::Rectangle(xMin, yMin, xMax, yMax, 0, 0);
+	}
 
 	FLOAT_TYPE xMax;
 	FLOAT_TYPE xMin;
@@ -975,10 +978,9 @@ static int ElCompare(const void *a, const void *b)
 	FLOAT_TYPE	d = d1 - d2;
 	if(d < 0)
 		return -1;
-	else if(fabs(d) < Eps1)
+	if(fabs(d) < Eps1)
 		return 0;
-	else
-		return 1;
+	return 1;
 }
 
 static int ElCompareProj(const void *a, const void *b)
@@ -988,15 +990,14 @@ static int ElCompareProj(const void *a, const void *b)
 	FLOAT_TYPE	d = d2 - d1;
 	if(d < 0)
 		return -1;
-	else if(fabs(d) < Eps1)
+	if(fabs(d) < Eps1)
 		return 0;
-	else
-		return 1;
+	return 1;
 }
 
 
 
-static inline bool IsDisjoint(FLOAT_TYPE p1Min, FLOAT_TYPE p1Max, FLOAT_TYPE p2Min, FLOAT_TYPE p2Max)
+static bool IsDisjoint(FLOAT_TYPE p1Min, FLOAT_TYPE p1Max, FLOAT_TYPE p2Min, FLOAT_TYPE p2Max)
 {
 	return p2Max <p1Min || p2Min>p1Max;
 }
@@ -1031,14 +1032,20 @@ inline bool ElLessXMax(CSortedViewElement el1, CSortedViewElement el2)
 typedef std::vector<CSortedViewElement>::iterator ItS;
 typedef std::vector<CSortedViewElement> VecS;
 
-static void EraseElement(CSortedViewElement& El)
+void CGLDraw::EraseElement(CSortedViewElement& El) const
 {
+	if (!m_pTree)
+		return;
+	
+	m_pTree->Delete(El.GetRect(), &El);
 }
 
-static void InsertElement(CSortedViewElement* pEl)
+void CGLDraw::InsertElement(CSortedViewElement* pEl) const
 {
-	CSortedViewElement elNew1 = *pEl;
-	elNew1.m_pOriginal = pEl;
+	pEl->FragmentFlag = true;
+	if (!m_pTree)
+		return;
+	m_pTree->Add(pEl->GetRect(), pEl);
 }
 
 
@@ -1106,10 +1113,11 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 	std::sort(vecSorted.begin(), vecSorted.end(), ElLessZMin);
 
 	RTreeLib::RTree<CSortedViewElement*> tree;
+	m_pTree = &tree;
 	for (UINT i=0; i<vecSorted.size(); i++)
 	{
 		CSortedViewElement& El = vecSorted[i];
-		tree.Add(RTreeLib::Rectangle(El.xMin, El.yMin, El.xMax, El.yMax, El.zMin, El.zMax), &vecSorted[i]);
+		tree.Add(El.GetRect(), &vecSorted[i]);
 	}
 #ifdef NEW_DEPTH_SORT
 	CVectorType ptEye(m_pViewPos->Xorg,m_pViewPos->Yorg,m_pViewPos->Zorg);
@@ -1129,7 +1137,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 			k++;
 			continue;
 		}
-		std::list<CSortedViewElement*> list = tree.Intersects(RTreeLib::Rectangle(P.xMin, P.yMin, P.xMax, P.yMax, P.zMin, P.zMax));
+		std::list<CSortedViewElement*> list = tree.Intersects(P.GetRect());
 
 		for (auto it = list.begin(); it != list.end() && bCheckNextElement; ++it)
 		{
@@ -1165,49 +1173,46 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 				bCheckNextElement = false;
 				break;
 			}
-			else
+			if (!P.FragmentFlag && !Q.FragmentFlag)
 			{
-				if (!P.FragmentFlag && !Q.FragmentFlag)
-				{
-					//DebugBreak();
-					P.FragmentFlag = true;
-					Q.FragmentFlag = true;
+				//DebugBreak();
+				P.FragmentFlag = true;
+				Q.FragmentFlag = true;
 
+				//for (size_t i=0; i<vecSwapped.size(); i++)
+				//	if (P.BreakByPlaneOf(vecSwapped[i], *this, Vertexs, ProjectedVertexs, vecSorted, k))
+				//	{
+				//		bCheckNextElement = false;
+				//		break;
+				//	}
+				if (P.BreakByPlaneOf(Q, *this, Vertexs, ProjectedVertexs, vecSorted, k))
+					bCheckNextElement = false;
+				if (bCheckNextElement && vecSwapped.size() == vecSwappedPrev.size())
+				{
 					for (size_t i=0; i<vecSwapped.size(); i++)
-						if (P.BreakByPlaneOf(vecSwapped[i], *this, Vertexs, ProjectedVertexs, vecSorted, k))
+						if (
+							memcmp(&vecSwapped[i],&vecSwappedPrev[i],sizeof(CSortedViewElement))!=0 &&
+							i<vecSwappedPrev1.size() &&
+							memcmp(&vecSwapped[i],&vecSwappedPrev1[i],sizeof(CSortedViewElement))!=0
+						)
 						{
 							bCheckNextElement = false;
 							break;
 						}
-					//if (P.BreakByPlaneOf(Q, *this, Vertexs, ProjectedVertexs, vecSorted, k, vecSortByX))
-					//	bCheckNextElement = false;
-					if (bCheckNextElement && vecSwapped.size() == vecSwappedPrev.size())
-					{
-						for (size_t i=0; i<vecSwapped.size(); i++)
-							if (
-								memcmp(&vecSwapped[i],&vecSwappedPrev[i],sizeof(CSortedViewElement))!=0 &&
-								i<vecSwappedPrev1.size() &&
-								memcmp(&vecSwapped[i],&vecSwappedPrev1[i],sizeof(CSortedViewElement))!=0
-								)
-							{
-								bCheckNextElement = false;
-								break;
-							}
-					}
-					else
-						bCheckNextElement = false;
-					if (!bCheckNextElement && nSwapCount++ >10)
-						bCheckNextElement = true;
-					//bCheckNextElement = false;
-					vecSwappedPrev1 = vecSwappedPrev;
-					vecSwappedPrev = vecSwapped;
-					vecSwapped.clear();
 				}
-				else if (P.BreakByPlaneOf(Q, *this, Vertexs, ProjectedVertexs, vecSorted, k))
+				else
 					bCheckNextElement = false;
-				break;
+				if (!bCheckNextElement && nSwapCount++ >10)
+	``
+					bCheckNextElement = true;
+				//bCheckNextElement = false;
+				vecSwappedPrev1 = vecSwappedPrev;
+				vecSwappedPrev = vecSwapped;
+				vecSwapped.clear();
 			}
-
+			else if (P.BreakByPlaneOf(Q, *this, Vertexs, ProjectedVertexs, vecSorted, k))
+				bCheckNextElement = false;
+			break;
 		}
 		if (bCheckNextElement)
 		{
@@ -1234,7 +1239,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 #endif
 	}
 #endif
-
+	m_pTree = nullptr;
 	NumElements = int(vecSorted.size());
 	Elements = new CViewElement[NumElements];
 	for (k=0;k<int(vecSorted.size());k++)

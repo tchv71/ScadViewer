@@ -416,8 +416,8 @@ namespace RTreeLib
 			bool success = _delete(r, id);
 			if (success == true)
 			{
-				IdsToItems.Remove(id);
-				ItemsToIds.Remove(item);
+				IdsToItems.erase(id);
+				ItemsToIds.erase(item);
 			}
 			return success;
 		}
