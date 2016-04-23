@@ -117,7 +117,7 @@ namespace RTreeLib
 		/// <summary>
 		/// Initialize implementation dependent properties of the RTree.
 		/// </summary>
-		RTree() : treeHeight(1), rootNodeId(0), msize(0), highestUsedNodeId(0), idcounter(INT_MIN)
+		RTree() : treeHeight(1), rootNodeId(0), msize(0), highestUsedNodeId(0), idcounter(INT_MIN), maxNodeEntries(0), minNodeEntries(0)
 		{
 			init();
 		}
