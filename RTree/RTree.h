@@ -28,6 +28,7 @@
 #include <stack>
 #include <list>
 #include <debugapi.h>
+#include <unordered_map>
 
 namespace RTreeLib
 {
@@ -66,7 +67,8 @@ namespace RTreeLib
 		// [x] TODO eliminate this map - it should not be needed. Nodes
 		// can be found by traversing the tree.
 		//private TIntObjectHashMap nodeMap = new TIntObjectHashMap();
-		std::map<int, Node> nodeMap;
+		//std::map<int, Node> nodeMap;
+		std::unordered_map<int, Node> nodeMap;
 
 		// internal consistency checking - set to true if debugging tree corruption
 		const bool INTERNAL_CONSISTENCY_CHECKING = false;
@@ -107,8 +109,8 @@ namespace RTreeLib
 
 		//Added dictionaries to support generic objects..
 		//possibility to change the code to support objects without dictionaries.
-		std::map<int, T> IdsToItems;
-		std::map<T, int> ItemsToIds;
+		std::unordered_map<int, T> IdsToItems;
+		std::unordered_map<T, int> ItemsToIds;
 		volatile int idcounter;// = INT_MIN;
 
 		//the recursion methods require a [&] to retrieve data
