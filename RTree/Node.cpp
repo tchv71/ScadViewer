@@ -12,8 +12,8 @@ namespace RTreeLib
 	{
 		this->nodeId = nodeId;
 		this->level = level;
-		entries.resize(maxNodeEntries);
-		ids.resize(maxNodeEntries);
+		//entries.resize(maxNodeEntries);
+		//ids.resize(maxNodeEntries);
 	}
 
 	void Node::addEntry(Rectangle r, int id)

@@ -920,7 +920,7 @@ private:
 		/// <param name="v"></param>
 		/// <param name="n"></param>
 		template <class V>
-		void intersects(Rectangle r, V v, Node n)
+		void intersects(const Rectangle& r, const V& v, const Node& n)
 		{
 			for (int i = 0; i < n.entryCount; i++)
 			{
@@ -932,7 +932,7 @@ private:
 					}
 					else
 					{
-						Node childNode = getNode(n.ids[i]);
+						Node& childNode = getNode(n.ids[i]);
 						intersects(r, v, childNode);
 					}
 				}

@@ -34,13 +34,14 @@ namespace RTreeLib
 	* @version 1.0b2p1
 	*/
 	const Rectangle NullRect = Rectangle(0, 0, 0, 0, 0, 0);
+	const int MAX_ENTRIES = 10;
 	class Node
 	{
 	public:
 		int nodeId;
 		Rectangle mbr;
-		std::vector<Rectangle> entries;
-		std::vector<int> ids;
+		Rectangle entries[MAX_ENTRIES];
+		int ids[MAX_ENTRIES];
 		//typedef RTreeLib::
 		int level;
 		int entryCount;
