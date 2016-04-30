@@ -641,6 +641,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 		ApiElemGetInf(Schem, i+1, &e);
 		if (e.IsDeletet)
 			continue;
+		LPCSTR strName = ApiGetRigidName(Schem, e.TypeRigid);
 		if (m_bForumGeometry)
 		{
 			//void *p = *((void **)Schem);
@@ -648,7 +649,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 			UINT nSumQuantHoleNodes = 0;
 			for (UINT j=0; j<nHoles; j++)
 			{
-				UINT nQuantNodes;
+				UINT nQuantNodes=0;
 				const UINT *pNodes;
 				ApiElemGetHole(Schem, i+1, j+1, &nQuantNodes, &pNodes);
 				nSumQuantHoleNodes+=nQuantNodes;
