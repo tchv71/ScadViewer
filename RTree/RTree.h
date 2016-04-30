@@ -23,7 +23,6 @@
 //#include <string>
 #include "Node.h"
 #include "Rectangle.h"
-#include <map>
 #include <intsafe.h>
 #include <stack>
 #include <list>
@@ -119,7 +118,7 @@ namespace RTreeLib
 		/// <summary>
 		/// Initialize implementation dependent properties of the RTree.
 		/// </summary>
-		RTree() : treeHeight(1), rootNodeId(0), msize(0), highestUsedNodeId(0), idcounter(INT_MIN), maxNodeEntries(0), minNodeEntries(0)
+		RTree() : maxNodeEntries(0), minNodeEntries(0), treeHeight(1), rootNodeId(0), msize(0), highestUsedNodeId(0), idcounter(INT_MIN)
 		{
 			init();
 		}
