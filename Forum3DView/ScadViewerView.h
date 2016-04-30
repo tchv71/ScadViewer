@@ -17,7 +17,8 @@
 
 #include "View3DBox.h"
 
-class CScadViewerDoc;
+//class CScadViewerDoc;
+#include "ScadViewerDoc.h"
 #include "Forum3DView.h"
 
 class FORUM3DVIEW_EXPORT CScadViewerView : public C3DBoxView

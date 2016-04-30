@@ -13,6 +13,7 @@
 #include "Renderer.h"
 #include "model.h"
 #include <gl\GL.h>// Added by ClassView
+#include "../RTree/RTree.h"
 
 const Graphics::TColor WIREFRAME_COLOR = clSilver;
 const Graphics::TColor BOUNDS_FRAME_COLOR = clDkGray;
@@ -41,7 +42,7 @@ public:
 	m_pViewPos(ViewPos),
 	m_pOptions(Options),
 	m_pDrawOptions(DrawOptions),
-	m_pRenderer(pRenderer), m_crCurColor(0)
+	m_pRenderer(pRenderer), m_pTree(nullptr), m_crCurColor(0), BAR_STAGE(0), BORDER_STAGE(0), FILL_STAGE(0)
 	//m_FontSize(FontSize)
 	{
 	};
@@ -61,31 +62,36 @@ protected:
 	const SViewOptions	*m_pOptions;
 	const CDrawOptions	*m_pDrawOptions;
 	IFemRenderer *m_pRenderer;
+	RTreeLib::RTree<CSortedViewElement*>* m_pTree;
 	//int m_FontSize;
 private:
 	//S3dPoint GetFontExtents(LPCTSTR pszText);
 	bool			BreakTriangle(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-						std::vector <CSortedViewElement> &vecSorted, int k, CSortedViewElement &ElTest,
-						std::vector <CSortedViewElement> &vecSortByX, 
-						CSortedViewElement &ElCurr) const;
+	    			              std::vector <CSortedViewElement> &vecSorted, int k, CSortedViewElement &ElTest,
+	    			              CSortedViewElement & ElCurr) const;
 
 	bool			BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-						std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement &ElTest, std::vector<CSortedViewElement>& vecSortByX,
-						CSortedViewElement &ElCurr) const;
+	    			          std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement &ElTest,
+	    			          CSortedViewElement & ElCurr) const;
 	void DrawAxeMarks(const S3dPoint &p1, const S3dPoint &p2, double len, double rad,  LPCTSTR pszName, double MVM[], double PJM[], int VP[]);
 	void DrawAxeMark(double wx, double wy, double wz, double nx, double ny, double MarkLen, double radius, LPCTSTR pszrName);
 	void DrawAxeZMark(const S3dPoint &p, LPCTSTR pszName, double MVM[], double PJM[], int VP[]);
-	void			DrawNodes(bool bBounds);
-	void			DrawBounds(void);
-	void			DrawAxes(void);
-	void			ProjectVertex(SViewVertex &pt, SViewVertex &v) const;
-	void			SortElements(CViewElement * &Elements, int &NumElements);
+	void DrawNodes(bool bBounds);
+	void DrawBounds(void);
+	void DrawAxes(void);
+	void ProjectVertex(SViewVertex &pt, SViewVertex &v) const;
+	void EraseElement(CSortedViewElement& El) const;
+	void InsertElement(CSortedViewElement* pEl) const;
+	void SwapElements(CSortedViewElement& P, CSortedViewElement& Q) const;
+	static bool OrderIsRight(CSortedViewElement& P, CSortedViewElement& Q, const CViewVertexArray & Vertexs, const CViewVertexArray & ProjectedVertexs, CVectorType ptEye, bool bPersp);
+	bool SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & ProjectedVertexs, std::vector<CSortedViewElement> & vecSorted);
+	void SortElements(CViewElement * &Elements, int &NumElements);
 
 
-	void			SetSmoothing(void) const;
-	void			CorrectNormal(CVectorType &rNorm, SViewVertex *p) const;
-	void			DrawLineStrips(void) const;
-	void			DrawLines(const CViewElement & El, const SViewVertex * p) const;
+	void SetSmoothing(void) const;
+	void CorrectNormal(CVectorType &rNorm, SViewVertex *p) const;
+	void DrawLineStrips(void) const;
+	void DrawLines(const CViewElement & El, const SViewVertex * p) const;
 	inline	void			SetGlColor(TColor c);
 	void			SetGlColorAlpha(TColor c);
 	static inline void			DrawPolygon(const SViewVertex * p, NODE_NUM_TYPE NumPoints);
