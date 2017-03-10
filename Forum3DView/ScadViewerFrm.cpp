@@ -16,7 +16,9 @@
 #include "..\Forum3DView\resource.h"
 #include "OptionsMaterial.h"
 #include "OptionsRtf.h"
-#include "mp4view.h"
+//#include "mp4view.h"
+
+#define CMp4View CScadViewerView
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

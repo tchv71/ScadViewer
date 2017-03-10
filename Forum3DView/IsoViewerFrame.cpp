@@ -142,7 +142,7 @@ int CIsoViewerFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void CIsoViewerFrame::OnTimer(UINT nIDEvent) 
+void CIsoViewerFrame::OnTimer(UINT_PTR nIDEvent) 
 {
 	AfxGetApp()->OnIdle(-1);
 	

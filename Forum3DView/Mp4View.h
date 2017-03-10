@@ -62,8 +62,8 @@ public:
 #endif
 
 protected:
-	IDSMP4*				m_pDSMP4;
-	I3DView*			m_p3DView;
+	//IDSMP4*				m_pDSMP4;
+	//I3DView*			m_p3DView;
 	bool	m_bShowMp4;
 
 // Generated message map functions

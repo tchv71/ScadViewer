@@ -46,7 +46,7 @@ CScadViewerApp::CScadViewerApp()
 /////////////////////////////////////////////////////////////////////////////
 // The one and only CScadViewerApp object
 
-//CScadViewerApp theApp;
+CScadViewerApp theApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CScadViewerApp initialization
@@ -83,7 +83,7 @@ BOOL CScadViewerApp::InitInstance()
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-
+	LoadLanguage(1049);
 	// Dispatch commands specified on the command line
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;

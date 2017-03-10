@@ -20,7 +20,7 @@
 #include "IsoViewGeometry.h"
 #include "ScadViewerView.h"
 #include "IsoViewerFrame.h"
-#include "../../Scad11/include/3DIso.hpp"
+#include "3DIso.hpp"
 #pragma pack(pop, abc)
 
 #ifdef _DEBUG

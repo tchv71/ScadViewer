@@ -26,7 +26,7 @@
 #include <intsafe.h>
 #include <stack>
 #include <list>
-#include <debugapi.h>
+//#include <debugapi.h>
 #include <unordered_map>
 
 namespace RTreeLib

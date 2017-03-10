@@ -1,4 +1,5 @@
-﻿#include "Node.h"
+﻿#include "stdafx.h"
+#include "Node.h"
 
 namespace RTreeLib
 {

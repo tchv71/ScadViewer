@@ -89,9 +89,9 @@ CSize CCameraDialogBar::CalcFixedLayout(BOOL bStretch, BOOL bHorz)
 
 
 
-int CCameraDialogBar::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
+INT_PTR CCameraDialogBar::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 {
-	int nRes = CWnd::OnToolHitTest(point, pTI);
+	INT_PTR nRes = CWnd::OnToolHitTest(point, pTI);
 	if (nRes!= 0 && pTI)
 		pTI->uFlags &= ~(TTF_NOTBUTTON|TTF_CENTERTIP);
 	return nRes;

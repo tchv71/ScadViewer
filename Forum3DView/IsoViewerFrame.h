@@ -64,7 +64,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CIsoViewerFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDestroy();
 	afx_msg void OnUpdateExportToDxf(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSliderDefScale(CCmdUI* pCmdUI);

@@ -166,9 +166,10 @@ void CScalePane::OnGridClick(NMHDR *pNotifyStruct, LRESULT* /*pResult*/)
 	}
 }
 
-LONG CScalePane::OnSelEndOK(UINT lParam, LONG /*wParam*/)
+LRESULT CScalePane::OnSelEndOK(WPARAM wParam, LPARAM
+                               /*wParam*/lParam)
 {
-	COLORREF Color = COLORREF(lParam);
+	COLORREF Color = COLORREF(wParam);
 	m_pDMI->col[m_nRow-1] =  Color;
 	m_grid.SetItemBkColour(m_nRow, 1, Color);
 	GetParent()->SendMessage(WM_COMMAND, ID_PARAMS_CHANGED, 0);

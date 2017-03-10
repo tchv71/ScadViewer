@@ -43,7 +43,7 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
-	afx_msg LONG OnSelEndOK(UINT lParam, LONG wParam);
+	afx_msg LRESULT OnSelEndOK(WPARAM wParam, LPARAM lParam);
 
 	void DoDataExchange(CDataExchange* pDX) override;
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);

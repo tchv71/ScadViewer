@@ -49,7 +49,7 @@ typedef CString CSCADString;
 //#include <Toolkit\ot_progress.h>
 
 #if defined(_DEBUG)
-#import "..\..\buildingblocks\Bin\Debug\DSMP4.dll" no_namespace raw_interfaces_only
+//#import "..\..\buildingblocks\Bin\Debug\DSMP4.dll" no_namespace raw_interfaces_only
 #else
 #import "..\..\buildingblocks\Bin\Release\DSMP4.dll" no_namespace raw_interfaces_only
 #endif

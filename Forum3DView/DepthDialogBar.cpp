@@ -51,7 +51,7 @@ CSize CDepthDialogBar::CalcFixedLayout(BOOL bStretch, BOOL bHorz)
 }
 
 
-int CDepthDialogBar::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
+INT_PTR CDepthDialogBar::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 {
 	int nRes = CWnd::OnToolHitTest(point, pTI);
 	if (nRes!= 0 && pTI)

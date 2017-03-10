@@ -284,6 +284,7 @@ void CResultsDlg::ReloadFileList()
 
 void CResultsDlg::OnCreateZip() 
 {
+#if 0 //ndef _WIN64
 	// ReSharper disable once CppEntityAssignedButNoRead
 	BOOL		bReturn;
 	CString strZipFileName(m_strResultsMask);
@@ -335,4 +336,5 @@ void CResultsDlg::OnCreateZip()
 	::DestroyWindow(hdlgCancel);
 
 	ReloadFileList();	
+#endif
 }

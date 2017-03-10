@@ -43,7 +43,7 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CDepthDialogBar)
 	CSize CalcFixedLayout(BOOL bStretch, BOOL bHorz) override;
-	int OnToolHitTest(CPoint point, TOOLINFO* pTI) const override;
+	INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const override;
 	//}}AFX_VIRTUAL
 
 // Implementation

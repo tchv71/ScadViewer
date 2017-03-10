@@ -37,7 +37,7 @@ typedef CString CSCADString;
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #if defined(_DEBUG)
-#import "..\..\..\buildingblocks\Bin\Debug\DSMP4.dll" no_namespace raw_interfaces_only
+//#import "..\..\..\buildingblocks\Bin\Debug\DSMP4.dll" no_namespace raw_interfaces_only
 #else
 #import "..\..\..\buildingblocks\Bin\Release\DSMP4.dll" no_namespace raw_interfaces_only
 #endif
