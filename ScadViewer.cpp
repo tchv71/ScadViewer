@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ScadViewer.h"
 
-#include "Forum3DView\IsoViewerFrame.h"
+#include "Forum3DView\MainScadViewerFrame.h"
 #include "Forum3DView\ScadViewerDoc.h"
 #include "Forum3DView\ScadViewerView.h"
 
@@ -76,7 +76,7 @@ BOOL CScadViewerApp::InitInstance()
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
 		RUNTIME_CLASS(CScadViewerDoc),
-		RUNTIME_CLASS(CIsoViewerFrame),       // main SDI frame window
+		RUNTIME_CLASS(CMainScadViewerFrame),       // main SDI frame window
 		RUNTIME_CLASS(CScadViewerView));
 	AddDocTemplate(pDocTemplate);
 
