@@ -23,9 +23,9 @@ public:
 	CSvGluTesselator(CViewVertexArray &rVertexArray, CViewElementArray &rElementArray, TOrgElemType CurrElemOrgType) :
 	  ISvTesselator(rVertexArray,rElementArray, CurrElemOrgType), m_Type(0), m_nVertexsReceived(0), m_elemID(0), m_nFirstFanIndex(0)
 	{}
-	SC3DRetCode			AddPolygon(FLOAT_TYPE fThickness, SCUINT32 elemID, SCUINT32 nContour, const SCUINT32 * nPtCount, const SCUINT32 * pPtIDs ) override;
+	SC3DRetCode			AddPolygon(FLOAT_TYPE fThickness, SCUINT32 elemID, SCUINT32 nContour, const SCUINT32* nPtCount, const SCUINT32* pPtIDs) override;
 protected:
-	SC3DRetCode			AddSimplePolygon( SCUINT32 elemID,  SCUINT32 nContour, const SCUINT32 * nPtCount, const SCUINT32 * pPtIDs );
+	SC3DRetCode			AddSimplePolygon(SCUINT32 elemID, SCUINT32 nContour, const SCUINT32* nPtCount, const SCUINT32* pPtIDs);
 	SC3DRetCode			AddThickPolygon(FLOAT_TYPE fThickness, SCUINT32 elemID,  SCUINT32 nContour, const SCUINT32 * nPtCount, const SCUINT32 * pPtIDs );
 	
 	void CallbackBegin(GLenum type); 
@@ -36,7 +36,7 @@ private:
 	GLenum m_Type;
 	UINT m_nVertexsReceived;
 	SCUINT32 m_elemID;
-	UINT m_nFirstFanIndex;
+	size_t m_nFirstFanIndex;
 };
 
 

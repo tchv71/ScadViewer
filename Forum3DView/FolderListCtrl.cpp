@@ -394,7 +394,7 @@ BOOL CFolderListCtrl::SetCurFolder( const CSCADString& sFolderPath, bool bForce)
 	{
 		sPath = m_sFolderPath + _T("\\") + *itExt;
 
-		long hFindHandle = _tfindfirst( sPath, &fd );
+		intptr_t hFindHandle = _tfindfirst( sPath, &fd );
 
 		if( hFindHandle == -1 )
 			continue;
@@ -460,7 +460,7 @@ BOOL CFolderListCtrl::SetRedrawItemPos( int nPos, bool bInit/* = false*/ )
 				pDFI = new FPTDrawFileInfo;
 				pDFI->m_pProcInfo = pFuncInfo;
 				pDFI->m_hwndReciever = m_hWnd;
-				pDFI->m_nItemID = int(pData);
+				pDFI->m_nItemID = intptr_t(pData);
 				pDFI->m_sFilePath = pData->m_sFilePath;
 				pDFI->m_nBmpCX = m_Properties.m_nItemCX;
 				pDFI->m_nBmpCY = m_Properties.m_nItemCY;
@@ -480,7 +480,7 @@ BOOL CFolderListCtrl::SetRedrawItemPos( int nPos, bool bInit/* = false*/ )
 				pDFI = new FPTDrawFileInfo;
 				pDFI->m_pProcInfo = pFuncInfo;
 				pDFI->m_hwndReciever = m_hWnd;
-				pDFI->m_nItemID = int(pData);
+				pDFI->m_nItemID = intptr_t(pData);
 				pDFI->m_sFilePath = pData->m_sFilePath;
 				pDFI->m_nBmpCX = m_Properties.m_nItemCX;
 				pDFI->m_nBmpCY = m_Properties.m_nItemCY;
@@ -834,7 +834,7 @@ void CFolderListCtrl::AddFileItem(const _tfinddata_t &fd, int nLargeIconInd, int
 	pData->m_nSmallIconInd = nSmallIconInd;
 
 	nItemPos = InsertItem( m_nItemCount, fd.name, FLC_IMAGE_EMPTY );
-	SetItemData( nItemPos, DWORD(pData) );
+	SetItemData( nItemPos, DWORD_PTR(pData) );
 	SetItemText( nItemPos, 1, SizeToStr( pData->m_nSize ) );
 	SetItemText( nItemPos, 2, TimeToStr( pData->m_tModified ) );
 	SetValidItemImage( nItemPos );
@@ -868,7 +868,7 @@ void CFolderListCtrl::RefreshFileList()
 	{
 		sPath = m_sFolderPath + _T("\\") + *itExt;
 
-		long hFindHandle = _tfindfirst( sPath, &fd );
+		intptr_t hFindHandle = _tfindfirst( sPath, &fd );
 
 		if( hFindHandle == -1 )
 			continue;

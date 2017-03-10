@@ -207,7 +207,7 @@ HTREEITEM CSCADFolderTreeCtrl::InsertFolder( ITEMIDLIST * pidl, IShellFolder * p
 	{
 		CFTCItemData * pItemData = new CFTCItemData( pParentData, piFolder, pidl, sPath );
 
-		SetItemData( hResTI, DWORD(pItemData) );
+		SetItemData( hResTI, DWORD_PTR(pItemData) );
 		ULONG attr;
 		attr = SFGAO_HASSUBFOLDER;
 		if (pParentData)
@@ -552,7 +552,7 @@ BOOL CSCADFolderTreeCtrl::GetIconsIndexes( ITEMIDLIST * pidl, int& nIcon, int& n
 
 	memset( &shFI, 0, sizeof( shFI ) );
 
-	DWORD dwRes = SHGetFileInfo( LPCTSTR(pidl), 0, &shFI, sizeof( shFI ), SHGFI_PIDL | SHGFI_SYSICONINDEX | SHGFI_SMALLICON );
+	DWORD_PTR dwRes = SHGetFileInfo( LPCTSTR(pidl), 0, &shFI, sizeof( shFI ), SHGFI_PIDL | SHGFI_SYSICONINDEX | SHGFI_SMALLICON );
 
 	if( dwRes > 0 )
 	{
@@ -612,7 +612,7 @@ BOOL CSCADFolderTreeCtrl::GetIconsIndexes( const TCHAR * sPath, int& nIcon, int&
 
 	memset( &shFI, 0, sizeof( shFI ) );
 
-	DWORD dwRes = SHGetFileInfo( sPath, 0, &shFI, sizeof( shFI ), SHGFI_SYSICONINDEX | SHGFI_SMALLICON );
+	DWORD_PTR dwRes = SHGetFileInfo( sPath, 0, &shFI, sizeof( shFI ), SHGFI_SYSICONINDEX | SHGFI_SMALLICON );
 	
 	if( dwRes > 0 )
 	{
@@ -838,7 +838,7 @@ FTCFolderCmpRes CSCADFolderTreeCtrl::CmpPath( const TCHAR * sParent, const TCHAR
 	if( !sParent || !sPath || !*sParent || !*sPath )
 		return fcrNotEqual;
 
-	unsigned nParentLen = _tcslen( sParent );
+	size_t nParentLen = _tcslen( sParent );
 
 	if( _tcslen( sPath ) < nParentLen )
 		return fcrNotEqual;

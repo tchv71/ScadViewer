@@ -66,7 +66,7 @@ enum FPTFileDrawType
 	Return Value:
 	Remarks:
 */
-typedef BOOL __stdcall DHRFileDrawProc( const char *, int, HDC, const RECT * );
+typedef BOOL __stdcall DHRFileDrawProc( const char *, size_t, HDC, const RECT * );
 /*
 	Name:
 	Description:
@@ -93,7 +93,7 @@ typedef BOOL __stdcall HRNDFFileDrawProc( HDC, const RECT *, const char *, LPCTS
 	Return Value:
 	Remarks:
 */
-typedef	int __stdcall FPDLoadDataProc( const TCHAR * sPath, char*& data, int& data_size );
+typedef	int __stdcall FPDLoadDataProc( const TCHAR * sPath, char*& data, size_t& data_size );
 
 /*
 	Name:
@@ -102,7 +102,7 @@ typedef	int __stdcall FPDLoadDataProc( const TCHAR * sPath, char*& data, int& da
 	Return Value:
 	Remarks:
 */
-FORUM3DVIEW_EXPORT int __stdcall FPDLoadData( const TCHAR * sPath, char*& data, int& data_size );
+FORUM3DVIEW_EXPORT int __stdcall FPDLoadData( const TCHAR * sPath, char*& data, size_t& data_size );
 /*
 	Name:
 	Description:
@@ -110,7 +110,7 @@ FORUM3DVIEW_EXPORT int __stdcall FPDLoadData( const TCHAR * sPath, char*& data, 
 	Return Value:
 	Remarks:
 */
-FORUM3DVIEW_EXPORT int __stdcall FPDGetName( const TCHAR * sPath, char*& data, int& data_size );
+FORUM3DVIEW_EXPORT int __stdcall FPDGetName(const TCHAR * sPath, char*& data, size_t& data_size);
 
 /*
 	Name:
@@ -146,7 +146,7 @@ struct	FPTDrawFileInfo
 {
 	const FPTExtFuncInfo *	m_pProcInfo;
 	HWND					m_hwndReciever;
-	int						m_nItemID;
+	intptr_t						m_nItemID;
 	CSCADString				m_sFilePath;
 	int						m_nBmpCX;
 	int						m_nBmpCY;
@@ -173,7 +173,7 @@ struct	FORUM3DVIEW_EXPORT FPTFileBmp
 	}
 
 	int					m_nRetCode;
-	int					m_nItemID;
+	intptr_t			m_nItemID;
 	CSCADString			m_sFilePath;
 	int					m_nBmpCX;
 	int					m_nBmpCY;
@@ -292,7 +292,7 @@ protected:
 	int			m_nStartPos;
 	FPDFIDeque	m_DFIDeque[2];
 
-	ULONG		m_hDrawProc;
+	uintptr_t		m_hDrawProc;
 	HANDLE		m_hDrawCancelEvent;
 	HANDLE		m_hEvents[FPETSize];
 	CRITICAL_SECTION m_cs;

@@ -48,7 +48,7 @@ void CIsoViewGeometry::SetDeformState(SOglIsoParam *pParam)
 	Get3DBox(nullptr, &box);
 	FLOAT_TYPE fSchemaSize = C3DVector<FLOAT_TYPE>(box.x_max-box.x_min, box.y_max-box.y_min, box.z_max - box.z_min).Length();
 	FLOAT_TYPE fMaxDisp = 0;
-	UINT nVertexs = VertexArray.size();
+	size_t nVertexs = VertexArray.size();
 	m_vecDisp.resize(0);
     for (UINT i=0; i<nVertexs; i++)
 	{
@@ -97,7 +97,7 @@ bool CIsoViewGeometry::LoadIso(bool bShowProfile, bool bOptimize)
 	SetDeformState(&m_Params);
 	//LoadFactors();
 	// Set bContourOnly flag for all plates
-	UINT nElements = ElementArray.size();
+	size_t nElements = ElementArray.size();
     for (i=0; i<nElements; i++)
 	{
 		CViewElement& el = ElementArray[i];
@@ -122,11 +122,11 @@ bool CIsoViewGeometry::LoadIso(bool bShowProfile, bool bOptimize)
 
 struct SVertexVal
 {
-	int nVertex;
+	NODE_NUM_TYPE nVertex;
 	double dblVal;
 };
 
-static double GetDispByOff(RESULT* pResData, int Nuz, int npr, LRESULT off/*, int& Error*/)
+static double GetDispByOff(RESULT* pResData, NODE_NUM_TYPE Nuz, int npr, LRESULT off/*, int& Error*/)
 {
 	double* val;
 #ifdef SCAD21
@@ -136,7 +136,7 @@ static double GetDispByOff(RESULT* pResData, int Nuz, int npr, LRESULT off/*, in
 
 	case 16:
 		// SUM
-		val = ApiGetDisplace(Prj, npr+1, 1, Nuz+1);
+		val = ApiGetDisplace(Prj, npr+1, 1, UINT(Nuz+1));
 		if (val == nullptr)
 			return 0;
 		return sqrt(pow(val[0], 2) + pow(val[1], 2) + 	pow(val[2], 2));
@@ -147,7 +147,7 @@ static double GetDispByOff(RESULT* pResData, int Nuz, int npr, LRESULT off/*, in
 */
 
 	default:
-		val =ApiGetDisplace(Prj, npr+1, 1, Nuz+1);
+		val =ApiGetDisplace(Prj, npr+1, 1, UINT(Nuz+1));
 		return val ? val[off] : 0;
 	}
 #else
@@ -341,7 +341,7 @@ void CIsoViewGeometry::IsoElement(SOglIsoParam *pParam, int nElement)
 void CIsoViewGeometry::IsoBreakTriangle(const DefMapInfo *DMI, SVertexVal valVertexs[], bool bDrawIsoLines)
 {
 	SVertexVal temp;
-	std::vector<int> vec;
+	std::vector<NODE_NUM_TYPE> vec;
 	COLORREF clIsoLine = clBlack;
 	// Sort triangle points by value
 	{
@@ -374,8 +374,8 @@ void CIsoViewGeometry::IsoBreakTriangle(const DefMapInfo *DMI, SVertexVal valVer
 		COLORREF c = DMI->IsDrw[i] ? DMI->col[i] : clWhite;
 		if (dmiVal<valVertexs[1].dblVal)
 		{
-			int n1 = IsoBreakLine(valVertexs[0], valVertexs[1],  dmiVal);
-			int n2 = IsoBreakLine(valVertexs[0], valVertexs[2],  dmiVal);
+			size_t n1 = IsoBreakLine(valVertexs[0], valVertexs[1],  dmiVal);
+			size_t n2 = IsoBreakLine(valVertexs[0], valVertexs[2],  dmiVal);
 			if (bDrawIsoLines && DMI->IsDrw[i])
 				AddLine(n1, n2, clIsoLine);
 			if (vec.size()==1)
@@ -395,8 +395,8 @@ void CIsoViewGeometry::IsoBreakTriangle(const DefMapInfo *DMI, SVertexVal valVer
 		}
 		else if (dmiVal<valVertexs[2].dblVal)
 		{
-			int n1 = IsoBreakLine(valVertexs[1], valVertexs[2], dmiVal);
-			int n2 = IsoBreakLine(valVertexs[0], valVertexs[2], dmiVal);
+			size_t n1 = IsoBreakLine(valVertexs[1], valVertexs[2], dmiVal);
+			size_t n2 = IsoBreakLine(valVertexs[0], valVertexs[2], dmiVal);
 			if (bDrawIsoLines && DMI->IsDrw[i])
 				AddLine(n1, n2, clIsoLine);
 			if (lastVal < valVertexs[1].dblVal)
@@ -467,7 +467,7 @@ void CIsoViewGeometry::IsoBreakTriangle(const DefMapInfo *DMI, SVertexVal valVer
 
 // Break the line between p1 and p2 by val
 // Return the newly created vertex index
-int CIsoViewGeometry::IsoBreakLine(const SVertexVal &p1, const SVertexVal &p2, double val)
+size_t CIsoViewGeometry::IsoBreakLine(const SVertexVal& p1, const SVertexVal& p2, double val)
 {
 	S3dPoint pt1 = S3dPoint(VertexArray[p1.nVertex]);
 	S3dPoint pt2 = S3dPoint(VertexArray[p2.nVertex]);
@@ -486,7 +486,7 @@ int CIsoViewGeometry::IsoBreakLine(const SVertexVal &p1, const SVertexVal &p2, d
 	return AddPoint(pt, ptDisp);
 }
 
-int CIsoViewGeometry::AddPoint(const S3dPoint &pt, const S3dPoint &ptDisp)
+size_t CIsoViewGeometry::AddPoint(const S3dPoint& pt, const S3dPoint& ptDisp)
 {
 	SViewVertex v;
 	v.x = pt.x;
@@ -500,7 +500,7 @@ int CIsoViewGeometry::AddPoint(const S3dPoint &pt, const S3dPoint &ptDisp)
 	return VertexArray.size() -1;
 }
 
-void CIsoViewGeometry::AddLine(int n1, int n2, COLORREF c)
+void CIsoViewGeometry::AddLine(size_t n1, size_t n2, COLORREF c)
 {
 	CViewElement el;
 	el.DrawFlag = el.FragmentFlag = true;
@@ -520,7 +520,7 @@ void CIsoViewGeometry::AddLine(int n1, int n2, COLORREF c)
 }
 
 
-void CIsoViewGeometry::AddTriangle(int n1, int n2, int n3,  COLORREF c)
+void CIsoViewGeometry::AddTriangle(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2, NODE_NUM_TYPE n3, COLORREF c)
 {
 	CViewElement el;
 	el.DrawFlag = m_curElement.DrawFlag;
@@ -539,7 +539,7 @@ void CIsoViewGeometry::AddTriangle(int n1, int n2, int n3,  COLORREF c)
 	ElementArray.push_back(el);
 }
 
-void CIsoViewGeometry::AddQuad(int n1, int n2, int n3, int n4, COLORREF c)
+void CIsoViewGeometry::AddQuad(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2, NODE_NUM_TYPE n3, NODE_NUM_TYPE n4, COLORREF c)
 {
 	CViewElement el;
 	el.DrawFlag = m_curElement.DrawFlag;
@@ -599,7 +599,7 @@ void CIsoViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
 void CIsoViewGeometry::SetDefScale(double dblDefScale)
 {
 	m_dblDefScale = dblDefScale;
-	UINT nVertexs = VertexArray.size();
+	size_t nVertexs = VertexArray.size();
 	ASSERT(VertexArray.size()==m_OriginalVertexs.size());
 	if (VertexArray.size()!=m_OriginalVertexs.size())
 		return;
@@ -607,7 +607,7 @@ void CIsoViewGeometry::SetDefScale(double dblDefScale)
 	{
 		SViewVertex& vO= m_OriginalVertexs[i];
 		SViewVertex& v= VertexArray[i];
-		int nDispIndex = v.nMainVertex == -1 ? i : v.nMainVertex;
+		NODE_NUM_TYPE nDispIndex = v.nMainVertex == -1 ? i : v.nMainVertex;
 		v.x = vO.x + FLOAT_TYPE(m_vecDisp[nDispIndex].x*dblDefScale*m_dblDefScaleMult);
 		v.y = vO.y + FLOAT_TYPE(m_vecDisp[nDispIndex].y*dblDefScale*m_dblDefScaleMult);
 		v.z = vO.z + FLOAT_TYPE(m_vecDisp[nDispIndex].z*dblDefScale*m_dblDefScaleMult);
@@ -810,7 +810,7 @@ void CIsoViewGeometry::LoadFactors()
  					continue;
 				for (int j=0; j<el.NumVertexs(); j+= 2)
 				{
-					int nVertex = el.Points[j];
+					NODE_NUM_TYPE nVertex = el.Points[j];
 					nVertex = VertexArray[nVertex].nMainVertex;
 					if (nVertex== -1)
 						continue;
@@ -838,7 +838,7 @@ void CIsoViewGeometry::LoadFactors()
 			double val = 0;
 			for (; j<el.NumVertexs() ; j++)
 			{
-				int nVertex = el.Points[j];
+				NODE_NUM_TYPE nVertex = el.Points[j];
 				if (!GetFactorForElVertex(i,j, val, nullptr))
 					continue;
 				if (UINT(nVertex)<m_Factors.size() && m_Factors[nVertex].fFactor == val)
@@ -947,7 +947,7 @@ void CIsoViewGeometry::SetDefMapInfo(DefMapInfo *pDMI, const SOglIsoParam *pPara
 	//	return;
 	m_Params = *pParams;
 	LoadFactors();
-	UINT nVertexs =	m_Factors.size();
+	size_t nVertexs =	m_Factors.size();
 	double dMaxFactor = 0;
 	double dMinFactor = 0;
 	unsigned int i;

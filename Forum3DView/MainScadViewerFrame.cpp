@@ -407,7 +407,7 @@ void CMainScadViewerFrame::OnUpdateFileCalcresDelete(CCmdUI* pCmdUI)
 {
 	CString strMask = GetSelWorkFileMask();
 	struct _tfinddata_t fd;
-	long hFindHandle = _tfindfirst( strMask, &fd );
+	intptr_t hFindHandle = _tfindfirst( strMask, &fd );
 	pCmdUI->Enable(hFindHandle!=-1);
 	_findclose(hFindHandle);
 	
@@ -432,7 +432,7 @@ void CMainScadViewerFrame::OnFileCalcresDelete()
 {
 	CString strMask = GetSelWorkFileMask();
 	struct _tfinddata_t fd;
-	long hFindHandle = _tfindfirst( strMask, &fd );
+	intptr_t hFindHandle = _tfindfirst( strMask, &fd );
 	if (hFindHandle==-1)
 		return;
 	do
@@ -458,7 +458,7 @@ void CMainScadViewerFrame::OnUpdateViewResults(CCmdUI* pCmdUI)
 {
 	CString strMask = GetSelWorkFileMask();
 	struct _tfinddata_t fd;
-	long hFindHandle = _tfindfirst( strMask, &fd );
+	intptr_t hFindHandle = _tfindfirst( strMask, &fd );
 	pCmdUI->Enable(hFindHandle!=-1);
 	_findclose(hFindHandle);
 	CScadViewerDoc *pDoc = m_p3DView->GetDocument();

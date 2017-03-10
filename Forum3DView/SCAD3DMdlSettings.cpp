@@ -353,7 +353,7 @@ const FPTExtFuncInfo * CSCAD3DMdlSettings::GetExtFuncInfo( const TCHAR * sExt ) 
 	return nullptr;
 }
 
-SCUINT32 CSCAD3DMdlSettings::GetEFISize() const
+size_t CSCAD3DMdlSettings::GetEFISize() const
 {
 	return m_ExtFuncMap.size();
 }

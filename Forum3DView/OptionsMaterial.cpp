@@ -86,7 +86,7 @@ void COptionsMaterial::DoDataExchange(CDataExchange* pDX)
 		m_ViewOptions.bDrawOptimize = m_btnCheckDrawOptimize.GetCheck() != 0;
 		m_ViewOptions.bShowUsedNodes = m_btnShowUsedNodes.GetCheck() != 0;
 		if( m_Languages.GetCurSel() >= 0 )
-			m_nLangID = m_Languages.GetItemData( m_Languages.GetCurSel() );
+			m_nLangID = int(m_Languages.GetItemData( m_Languages.GetCurSel() ));
 
 	}
 	DDX_Control(pDX, IDC_CHECK_OGL10, m_btnCheckOGL10);

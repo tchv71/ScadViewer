@@ -125,7 +125,7 @@ void CForumViewGeometry::ReadOprPolygon(SCHEMA *m_Project, NUM_ELEM_TYPE Nel, bo
 	CElemInfApi e;
 	ApiElemGetInf(m_Project, Nel, &e);
 	SCUINT32 QntNode = e.QuantityNode;
-	UINT QntTds;
+	SCUINT32 QntTds;
 
 #else
 	WORD QntTds=0;
@@ -149,7 +149,7 @@ void CForumViewGeometry::ReadOprPolygon(SCHEMA *m_Project, NUM_ELEM_TYPE Nel, bo
 		SC3DRetCode nRetCode = Tesselator.AddPolygon(fThickness, Nel,  1 , &QntNode, nIndex );
 		ASSERT(nRetCode==S3DRC_OK);
 
-		delete nIndex;
+		delete[] nIndex;
 		return;
 	}
 	UINT nSumQuantHoleNodes = 0;
@@ -167,8 +167,8 @@ void CForumViewGeometry::ReadOprPolygon(SCHEMA *m_Project, NUM_ELEM_TYPE Nel, bo
 	SC3DRetCode nRetCode = Tesselator.AddPolygon(fThickness, Nel,  QntTds+1 , nHoles, nIndex );
 	ASSERT(nRetCode==S3DRC_OK);
 
-	delete nIndex;
-	delete nHoles;
+	delete[] nIndex;
+	delete[] nHoles;
 
 #endif
 #if defined(SCAD11)

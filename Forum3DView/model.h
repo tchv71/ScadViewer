@@ -66,7 +66,7 @@ struct SElement
     NUM_ELEM_TYPE  NumElem;                  // Номер элемента
 	TColor			Color;			// Цвет примитива отрисовки
 	TColor			OriginalColor;
-	int				Points[4];		// Номера вершин примитива
+	size_t				Points[4];		// Номера вершин примитива
 
     // ************ Methods ***************
 

@@ -51,7 +51,7 @@ public:
 	void LoadFactors();
 	void OnParamsChanged(void);
 	void SetDefScale(double dblDefScale);
-	void AddLine(int n1, int n2, COLORREF c);
+	void AddLine(size_t n1, size_t n2, COLORREF c);
 	// Public methods
 	void SetParams(SOglIsoParam *pParam);
 	bool LoadIso(bool bShowProfile, bool bOptimize);
@@ -79,11 +79,11 @@ protected:
 	COLORREF GetColorrefForFactor(double val) const;
 	bool GetFactorForElVertex(int nNumElement, int nNumVertex,double &val, int* pnResultPoints);
 	void SetDeformState(SOglIsoParam *pParam);
-	int AddPoint(const S3dPoint &pt, const S3dPoint &ptDisp);
-	int IsoBreakLine(const SVertexVal &p1, const SVertexVal &p2, double val);
+	size_t AddPoint(const S3dPoint& pt, const S3dPoint& ptDisp);
+	size_t IsoBreakLine(const SVertexVal& p1, const SVertexVal& p2, double val);
 	void SetupElementColors(const struct SViewOptions* pOptions, EDrawMode Mode) override;
-	void AddQuad(int n1, int n2, int n3, int n4, COLORREF c);
-	void AddTriangle(int n1, int n2, int n3, COLORREF c);
+	void AddQuad(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2, NODE_NUM_TYPE n3, NODE_NUM_TYPE n4, COLORREF c);
+	void AddTriangle(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2, NODE_NUM_TYPE n3, COLORREF c);
 	void IsoBreakTriangle(const DefMapInfo *DMI, SVertexVal valVertexs[], bool bDrawIsoLines);
 	void IsoElement(SOglIsoParam *pParam,  int nElement);
 	CViewElement m_curElement;
@@ -92,7 +92,7 @@ protected:
 	CViewVertexArray m_OriginalVertexs;
 	CViewFactorArray m_Factors;
 	int m_nOff;
-	int m_nRealElements;
+	ptrdiff_t m_nRealElements;
 	double m_dblDefScaleMult;
 	CIsoViewerFrame* m_pFrm;
 };

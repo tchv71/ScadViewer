@@ -75,7 +75,7 @@ public:
 
 
 	virtual	const FPTExtFuncInfo *	GetExtFuncInfo	( const TCHAR * sExt ) const;
-	virtual	SCUINT32				GetEFISize		() const;
+	virtual size_t GetEFISize() const;
 	virtual	const FPTExtFuncInfo *	GetEFIAt		( SCUINT32 nPos ) const;
 
 	virtual	CSCADString	GetWorkDir		() const { return m_csSCADWorkDir;}

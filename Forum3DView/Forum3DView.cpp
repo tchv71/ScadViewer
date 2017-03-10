@@ -295,7 +295,7 @@ extern "C" BOOL __stdcall SCForumMdl3DDraw( HDC hDC, const RECT * r, LPCTSTR sFi
 	hPenOld = HPEN(SelectObject(hDC, hPen));
 
 	int cx = (Region.left + Region.right) / 2, cy = (Region.top + Region.bottom) / 2;
-	int NumElements = fvg.ElementArray.size();
+	size_t NumElements = fvg.ElementArray.size();
 	for(int i = 0; i < NumElements /*&& !Terminated*/; i++)
 	{
 		//int Percent = (k) * 100.0 / nFiles + (i + 1) * 100.0 / (2 * nFiles * NumElements);

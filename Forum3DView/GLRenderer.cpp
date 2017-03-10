@@ -2099,7 +2099,7 @@ CSize CGLRenderer::GetFontExtent(ESvFont fontNo, LPCTSTR pszText, TEXTMETRIC* pt
 {
 	HGDIOBJ old = ::SelectObject(m_hMemDC, m_fonts[fontNo]); // Selects The Font We Created
 	CSize sz;
-	::GetTextExtentPoint(m_hMemDC, pszText, _tcslen(pszText), &sz);
+	::GetTextExtentPoint(m_hMemDC, pszText, int(_tcslen(pszText)), &sz);
 	if (ptm)
 		GetTextMetrics(m_hMemDC, ptm);
 	::SelectObject(m_hMemDC, old);

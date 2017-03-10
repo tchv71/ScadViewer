@@ -79,7 +79,7 @@ void COptionsGeneral::DoDataExchange(CDataExchange* pDX)
 */
 
 		if( m_Languages.GetCurSel() >= 0 )
-			m_nLangID = m_Languages.GetItemData( m_Languages.GetCurSel() );
+			m_nLangID = int(m_Languages.GetItemData( m_Languages.GetCurSel()));
 	}
 }
 
@@ -100,7 +100,7 @@ BOOL COptionsGeneral::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	UpdateThumbnail();
-	SCUINT32 nDFI = CSCAD3DMdlSettings::Get3DS() ? CSCAD3DMdlSettings::Get3DS()->GetEFISize() : 0;
+	size_t nDFI = CSCAD3DMdlSettings::Get3DS() ? CSCAD3DMdlSettings::Get3DS()->GetEFISize() : 0;
 	int nItemPos;
 	const FPTExtFuncInfo * pEFI;
 	UINT i;
@@ -111,7 +111,7 @@ BOOL COptionsGeneral::OnInitDialog()
 	{
 		pEFI = CSCAD3DMdlSettings::Get3DS()->GetEFIAt( i );
 		nItemPos = m_FileTypeList.AddString( pEFI->m_sDescript );
-		m_FileTypeList.SetItemData( nItemPos, DWORD(pEFI) );
+		m_FileTypeList.SetItemData( nItemPos, DWORD_PTR(pEFI) );
 		if( std::find( m_ViewProperty.m_vsExt.begin(), m_ViewProperty.m_vsExt.end(), pEFI->m_sExt ) != m_ViewProperty.m_vsExt.end() )
 			m_FileTypeList.SetSel( nItemPos, TRUE );
 	}

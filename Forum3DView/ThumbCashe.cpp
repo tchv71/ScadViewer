@@ -55,7 +55,7 @@ bool CThumbCashe::Get(LPCTSTR pszFileName, const SThumbParam &rParam, HDC dc) co
 		db.get(nullptr, &key, &data, 0);
 		
 		char* pdata = static_cast<char *>(data.get_data());
-		UINT32 nSize = data.get_size();
+		size_t nSize = data.get_size();
 		if (!pdata)
 			return false;
 		std::string strAddDataThumb;
@@ -191,7 +191,7 @@ void CThumbCashe::GetAddData(LPCTSTR pszFileName, const SThumbParam &rParam, std
 	sPath.Append(_T("\\"));
 	sPath.Append(pszFileName);
 
-	long hFindHandle = _tfindfirst( sPath, &fd );
+	intptr_t hFindHandle = _tfindfirst( sPath, &fd );
 
 	if( hFindHandle == -1 )
 		return;

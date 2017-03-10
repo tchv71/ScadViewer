@@ -67,11 +67,11 @@ protected:
 private:
 	//S3dPoint GetFontExtents(LPCTSTR pszText);
 	bool			BreakTriangle(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-	    			              std::vector <CSortedViewElement> &vecSorted, int k, CSortedViewElement &ElTest,
+	    			              std::vector <CSortedViewElement> &vecSorted, size_t k, CSortedViewElement &ElTest,
 	    			              CSortedViewElement & ElCurr) const;
 
 	bool			BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-	    			          std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement &ElTest,
+	    			          std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement &ElTest,
 	    			          CSortedViewElement & ElCurr) const;
 	void DrawAxeMarks(const S3dPoint &p1, const S3dPoint &p2, double len, double rad,  LPCTSTR pszName, double MVM[], double PJM[], int VP[]);
 	void DrawAxeMark(double wx, double wy, double wz, double nx, double ny, double MarkLen, double radius, LPCTSTR pszrName);
@@ -85,7 +85,7 @@ private:
 	void SwapElements(CSortedViewElement& P, CSortedViewElement& Q) const;
 	static bool OrderIsRight(CSortedViewElement& P, CSortedViewElement& Q, const CViewVertexArray & Vertexs, const CViewVertexArray & ProjectedVertexs, CVectorType ptEye, bool bPersp);
 	bool SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & ProjectedVertexs, std::vector<CSortedViewElement> & vecSorted);
-	void SortElements(CViewElement * &Elements, int &NumElements);
+	void SortElements(CViewElement * &Elements, size_t& NumElements);
 
 
 	void SetSmoothing(void) const;
@@ -95,7 +95,7 @@ private:
 	inline	void			SetGlColor(TColor c);
 	void			SetGlColorAlpha(TColor c);
 	static inline void			DrawPolygon(const SViewVertex * p, NODE_NUM_TYPE NumPoints);
-	static void			SetVertex(SViewVertex *Vertexs, int n);
+	static void			SetVertex(SViewVertex* Vertexs, NODE_NUM_TYPE n);
 	static __inline void			glVertex3fs(S3dPoint &p, S3dPoint &s)
 	{
 		p.x -= s.x;

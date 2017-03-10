@@ -49,7 +49,7 @@ protected:
 	void SetToolBarNames() override;
 	void OnParamsChangedFactor();
 	virtual ~CIsoViewerFrame();
-	UINT	m_nTimer;
+	UINT_PTR	m_nTimer;
 	CMFCToolBar    m_wndToolBar;
 	CDepthDialogBar		m_wndDefScaleDialogBar;
 	CResultsDialogBar m_wndResParams;

@@ -13,7 +13,7 @@
 #include <vector>
 #include "Renderer.h"
 #include <set>
-typedef int NODE_NUM_TYPE;
+typedef ptrdiff_t NODE_NUM_TYPE;
 typedef unsigned SCUINT32;
 
 typedef int SC3DRetCode;
@@ -50,7 +50,7 @@ typedef int SC3DRetCode;
 
 struct SLineStripRec
 {
-	int Vertex;
+	NODE_NUM_TYPE Vertex;
 
 	//  FLOAT_TYPE x,y,z;
 };
@@ -63,7 +63,7 @@ struct SViewCasheNode
 {
 	NODE_NUM_TYPE	SecondNode;
 	bool			Drawed;
-	DWORD       Next;
+	DWORD_PTR       Next;
 #ifdef CASHE_VECTORS
 	CVectorType		v;
 #endif
@@ -78,7 +78,7 @@ struct SViewVertex : public S3dPoint
 public:
 	bool	FragmentFlag;
 	byte	Flag;
-	int		nMainVertex; // Номер вершины, из которой эта вершина была порожена при применении профиля стержней
+	NODE_NUM_TYPE		nMainVertex; // Номер вершины, из которой эта вершина была порожена при применении профиля стержней
 						 //  -1, если такой нет
 };
 
@@ -96,8 +96,8 @@ struct SViewFactorVertex : public SViewVertex
 public:
 	double	fFactor;
 	COLORREF	clr;
-	int		nElement;		// element number for this vertex (-1 for common vertex)
-	int		nVertex;
+	NODE_NUM_TYPE		nElement;		// element number for this vertex (-1 for common vertex)
+	NODE_NUM_TYPE		nVertex;
 	byte	nVertexIndex;	// Vertex number (relative to the element)
 };
 
@@ -136,7 +136,7 @@ public:
 	{
 		return OrgType == EL_BAR || OrgType == EL_COLUMN || OrgType == EL_BEAM || OrgType == EL_ISO;
 	}
-	int				m_nExtraPoints; // смещение в массиве  CViewGeometry::m_vecExtraPoints
+	size_t		m_nExtraPoints; // смещение в массиве  CViewGeometry::m_vecExtraPoints
 									// там:
 									// {Общее количество узлов; Доп. точка1;...; Доп. точка k}
 									//  k - количество доп. точек
@@ -354,7 +354,7 @@ protected:
 
 	SLineStripRec* Strips(int n) override
 	{ return UINT(n)<LineStrips.size() ? &LineStrips[n] : nullptr; };
-	void				SetVertex(int N);
+	void				SetVertex(NODE_NUM_TYPE N);
 	void				SetBarsDrawed(void);
 	void				Destroy(void);
 	void __fastcall		AddCacheElement(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2);
@@ -422,13 +422,13 @@ public:
 public: // Fields
 	SModelInfo m_ModelInfo;
 	CViewGeometry		*m_pFlatGeometry; // Geometry without profiles and thickness
-	UINT					NumRealVertexs; // Количество "настоящих" вершин
+	size_t					NumRealVertexs; // Количество "настоящих" вершин
 	CViewElementArray	ElementArray;
 	CViewVertexArray	VertexArray;
 	SAxes m_Axes;
 	S3DBox m_FragmentBox;
 protected:
-	std::vector<int> m_vecExtraPoints;	// {Общее количество узлов; Доп. точка1;...; Доп. точка k}
+	std::vector<NODE_NUM_TYPE> m_vecExtraPoints;	// {Общее количество узлов; Доп. точка1;...; Доп. точка k}
 									//  k - количество доп. точек
 
 	void RecreateCashe(void) const;
@@ -436,7 +436,7 @@ protected:
 	class SSortElement : public SElement
 	{
 public:
-		int N;
+		NODE_NUM_TYPE N;
 	};
 	void __fastcall		DeleteEqualNodes();
 	void __fastcall		DeleteEqualElements();
@@ -453,9 +453,9 @@ public:
 
 
 // Определение различий между ScadViewer и PipeViewer
-int NUM(int x);
+NODE_NUM_TYPE NUM(NODE_NUM_TYPE x);
 #define N_S(x)	NUM_RECODE[x]
-extern const int	NUM_RECODE[];
+extern const NODE_NUM_TYPE	NUM_RECODE[];
 
 
 

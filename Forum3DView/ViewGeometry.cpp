@@ -38,12 +38,12 @@
 #define MAXPATH  _MAX_PATH
 #endif
 //---------------------------------------------------------------------------
-inline int NUM(int x)
+inline NODE_NUM_TYPE NUM(NODE_NUM_TYPE x)
 {
 	return x - 1;
 }
 
-const int		NUM_RECODE[] = { 0, 1, 3, 2 };
+const NODE_NUM_TYPE		NUM_RECODE[] = { 0, 1, 3, 2 };
 
 
 //#pragma package(smart_init)
@@ -57,14 +57,14 @@ void CNodeCashe::Construct(void)
 
 	vecCashe.resize(m_pGeom->VertexArray.size());
 
-	UINT i;
+	size_t i;
 	for(i = 0; i < m_pGeom->VertexArray.size(); i++)
 	{
 		vecCashe[i].SecondNode = -1;
 		vecCashe[i].Next = 0;
 	}
 
-	UINT nElements = m_pGeom->ElementArray.size();
+	size_t nElements = m_pGeom->ElementArray.size();
 	for(i = 0; i < nElements; i++)
 	{
 		CViewElement	El = m_pGeom->ElementArray[i];
@@ -124,7 +124,7 @@ void CNodeCashe::AddCacheElement(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 void CNodeCashe::AddCacheElement1(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 {
 	SViewCasheNode	*pnc = &vecCashe[n1];
-	int pncIndex = n1;
+	NODE_NUM_TYPE pncIndex = n1;
 	if(pnc->SecondNode != -1)
 	{
 		while(pnc->Next != 0)
@@ -218,7 +218,7 @@ bool CNodeCashe::WasDrawed1(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 
 //====================Создание границ элементов =============================
 
-void CNodeCashe::SetVertex(int N)
+void CNodeCashe::SetVertex(NODE_NUM_TYPE N)
 {
 /*
 	if(Strip >= StripEnd)
@@ -262,7 +262,7 @@ void  CNodeCashe::SetupLineStrips()
 				//glBegin(GL_LINE_STRIP);
 				SetVertex(i);
 
-				int			N = pnc->SecondNode;
+				NODE_NUM_TYPE			N = pnc->SecondNode;
 #ifdef CASHE_VECTORS
 				CVectorType	&v = pnc->v;
 #endif
@@ -390,7 +390,7 @@ typedef int (*CmpVertFunc) (const void *, const void *);
 
 void __fastcall CViewGeometry::DeleteEqualNodes()
 {
-	int			nVertexs = VertexArray.size(), nElements = ElementArray.size();
+	size_t	nVertexs = VertexArray.size(), nElements = ElementArray.size();
 	SSortVertex *VertexIndexes = new SSortVertex[VertexArray.size()];
 	for(int i = 0; i < nVertexs; i++)
 	{
@@ -1021,8 +1021,8 @@ void __fastcall CViewGeometry::SetupNormals(void)
 	for(int i = 0; i < nElements; i++)
 		ElementArray[i].SetNormal(VertexArray.GetVector());
 */
-	int nElements = ElementArray.size();;
-    int nMaxRealElementNumber = 0;
+	size_t nElements = ElementArray.size();;
+	size_t nMaxRealElementNumber = 0;
     int i;
     for (i=0; i<nElements; i++)
         if (ElementArray[i].NumElem > nMaxRealElementNumber)
@@ -1096,11 +1096,11 @@ CViewElement::CViewElement(TColor color): m_nExtraPoints(-1)
 void __fastcall CViewGeometry::DeleteEqualElements()
 {
 	//CViewElementArray ElementsCopy(ElementArray);
-	UINT			nElements = ElementArray.size();
+	size_t			nElements = ElementArray.size();
 	SSortElement	*ElemIndexes = new SSortElement[nElements];
 	SSortElement	*Ei = ElemIndexes;
 	CViewElement	*El = ElementArray.GetVector();
-	UINT i=0;
+	size_t i=0;
 	for(i = 0; i < nElements; i++)
 	{
 		int nPoints = int(El->Type) + 2;
@@ -1260,8 +1260,8 @@ void CViewGeometry::DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsed
 	m_bShowUsedNodes = bShowUsedNodes;
 	if (DrawOptions)
 	{
-		int nElements = ElementArray.size();
-		for(int i = 0; i < nElements; i++)
+		size_t nElements = ElementArray.size();
+		for(size_t i = 0; i < nElements; i++)
 		{
 			CViewElement	*El = &ElementArray[i];
 			TOrgElemType	OrgType = El->OrgType;
@@ -1349,8 +1349,8 @@ void CViewGeometry::Get3DBox(const CRotator *Rot, S3DBox *Box, CViewVertexArray	
 		Rot->Rotate(p.x, p.y, p.z);
 	Box->x_min = Box->y_min = Box->z_min = 1e30f;
 	Box->x_max = Box->y_max = Box->z_max = -1e30f;
-	int nVertexs = va.size();
-	for(int i = 0; i < nVertexs ; i++)
+	size_t nVertexs = va.size();
+	for(size_t i = 0; i < nVertexs ; i++)
 	{
 		p = va[i];
 		if(!p.FragmentFlag || (p.Flag & VF_DELETED) != 0)
@@ -1383,7 +1383,7 @@ void CViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
 	if (m_pFlatGeometry != nullptr)
 	{
 		m_pFlatGeometry->PerformCut(rCutter, r);
-		UINT i;
+		size_t i;
 		for (i=0; i<NumRealVertexs; i++)
 			VertexArray[i].FragmentFlag = m_pFlatGeometry->VertexArray[i].FragmentFlag;
 		for (i=NumRealVertexs; i<VertexArray.size(); i++)
@@ -1405,7 +1405,7 @@ void CViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
 		return;
 
 	}
-	UINT nElements = ElementArray.size();
+	size_t nElements = ElementArray.size();
 	switch (r->Type)
 	{
 		case INV_CUT:
@@ -1428,7 +1428,7 @@ void CViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
 				ElementArray[i].FragmentFlag = !bAllIn;
 			}
 
-			UINT nVertexs = VertexArray.size();
+			size_t nVertexs = VertexArray.size();
 			for(i = 0; i < nVertexs; i++)
 			{
 				SViewVertex v = VertexArray[i];
@@ -1457,8 +1457,8 @@ void CViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
 		break;
 	case CUT:
 		{
-			UINT nVertexs = VertexArray.size();
-			UINT i;
+			size_t nVertexs = VertexArray.size();
+			size_t i;
 			for(i = 0; i < nVertexs; i++)
 			{
 				SViewVertex v = VertexArray[i];
@@ -1625,12 +1625,12 @@ void CViewGeometry::ClearCut()
 {
 	if (m_pFlatGeometry)
 		m_pFlatGeometry->ClearCut();
-	int	nVertexs = VertexArray.size();
-	int i;
+	size_t	nVertexs = VertexArray.size();
+	size_t i;
 	for(i = 0; i < nVertexs; i++)
 		VertexArray[i].FragmentFlag = true;
 
-	int nElements = ElementArray.size();
+	size_t nElements = ElementArray.size();
 	for(i = 0; i < nElements; i++)
 	{
 		ElementArray[i].FragmentFlag = true;

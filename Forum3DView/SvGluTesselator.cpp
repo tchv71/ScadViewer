@@ -21,7 +21,7 @@ static char THIS_FILE[]=__FILE__;
 
 typedef void (_stdcall * GluTessCallbackType)(void);
 
-SC3DRetCode CSvGluTesselator::AddSimplePolygon( SCUINT32 elemID,  SCUINT32 nContour, const SCUINT32 * nPtCount, const SCUINT32 * pPtIDs )
+SC3DRetCode CSvGluTesselator::AddSimplePolygon(SCUINT32 elemID, SCUINT32 nContour, const SCUINT32* nPtCount, const SCUINT32* pPtIDs)
 {
 	SCUINT32 nPt = 0, i, j;
 
@@ -92,7 +92,7 @@ void CSvGluTesselator::CallbackVertex(void * vertex_data)
 	pt.y = FLOAT_TYPE(*pData++);
 	pt.z = FLOAT_TYPE(*pData++);
 	VertexArray.push_back(pt);
-	UINT nptInd= VertexArray.size()-1;
+	int nptInd= int(VertexArray.size()-1);
 	m_nVertexsReceived++;
 
 	switch (m_Type)
@@ -107,14 +107,14 @@ void CSvGluTesselator::CallbackVertex(void * vertex_data)
 		break;
 	case GL_TRIANGLE_FAN:
 		if (m_nVertexsReceived>2)
-			AddSimpleTriangle(m_elemID, m_nFirstFanIndex, nptInd-1, nptInd);
+			AddSimpleTriangle(m_elemID, unsigned(m_nFirstFanIndex), nptInd-1, nptInd);
 		break;
 	}
 }
 
 
 
-SC3DRetCode CSvGluTesselator::AddPolygon( FLOAT_TYPE fThickness, SCUINT32 elemID,/* SCUINT16 nFlags,*/ SCUINT32 nContour, const SCUINT32 * nPtCount, const SCUINT32 * pPtIDs )
+SC3DRetCode CSvGluTesselator::AddPolygon(FLOAT_TYPE fThickness, SCUINT32 elemID,/* SCUINT16 nFlags,*/ SCUINT32 nContour, const SCUINT32* nPtCount, const SCUINT32* pPtIDs)
 {
 	if (fabsf(fThickness)<1e-5f)
 		return AddSimplePolygon(elemID,  nContour,  nPtCount,  pPtIDs);
@@ -152,7 +152,7 @@ SC3DRetCode CSvGluTesselator::AddThickPolygon(FLOAT_TYPE fThickness, SCUINT32 el
 		pt.y+= vecNorm.v[1] * fThickness/2;
 		pt.z+= vecNorm.v[2] * fThickness/2;
 		VertexArray.push_back(pt);
-		ptIndUp[i] = VertexArray.size()-1;
+		ptIndUp[i] = unsigned(VertexArray.size()-1);
 	}
 	for (i=0; i<nPt;i++)
 	{
@@ -161,7 +161,7 @@ SC3DRetCode CSvGluTesselator::AddThickPolygon(FLOAT_TYPE fThickness, SCUINT32 el
 		pt.y-= vecNorm.v[1] * fThickness/2;
 		pt.z-= vecNorm.v[2] * fThickness/2;
 		VertexArray.push_back(pt);
-		ptIndDown[i] = VertexArray.size()-1;
+		ptIndDown[i] = unsigned(VertexArray.size()-1);
 	}
 	AddSimplePolygon( elemID,  nContour, nPtCount, ptIndUp );
 	AddSimplePolygon( elemID, nContour, nPtCount, ptIndDown );

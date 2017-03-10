@@ -25,7 +25,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-FORUM3DVIEW_EXPORT int __stdcall FPDLoadData( const TCHAR * sPath, char*& data, int& data_size )
+FORUM3DVIEW_EXPORT int __stdcall FPDLoadData( const TCHAR * sPath, char*& data, size_t& data_size )
 {
 	if( !sPath )
 		return FDE_READ_ERR;
@@ -46,13 +46,13 @@ FORUM3DVIEW_EXPORT int __stdcall FPDLoadData( const TCHAR * sPath, char*& data, 
 		return FDE_READ_ERR;
 	}
 	data = new char[data_size];
-	data_size = _read( hFile, data, data_size );
+	data_size = _read( hFile, data, unsigned(data_size) );
 	_close( hFile );
 
 	return FDE_OK;
 }
 
-FORUM3DVIEW_EXPORT int __stdcall FPDGetName( const TCHAR * sPath, char*& data, int& data_size )
+FORUM3DVIEW_EXPORT int __stdcall FPDGetName(const TCHAR * sPath, char*& data, size_t& data_size)
 {
 	if( !sPath )
 		return FDE_READ_ERR;
@@ -265,7 +265,7 @@ void CFileProc::OnDrawFile( FPTDrawFileInfo * pDFI )
 		return;
 	}
 
-	int nFileSize = 0;
+	size_t nFileSize = 0;
 	char * pFileData = nullptr;
 
 	pfbRes->m_nRetCode = (*pDFI->m_pProcInfo->m_pfnLoadProc)( pDFI->m_sFilePath, pFileData, nFileSize );
@@ -347,6 +347,6 @@ void CFileProc::OnDrawFile( FPTDrawFileInfo * pDFI )
 
 void CFileProc::SendBmp(FPTDrawFileInfo *pDFI, FPTFileBmp *pfbRes)
 {
-	if (!::SendMessage( pDFI->m_hwndReciever, FPTM_SEND_FILE_BMP, 0, DWORD(pfbRes) ))
+	if (!::SendMessage( pDFI->m_hwndReciever, FPTM_SEND_FILE_BMP, 0, DWORD_PTR(pfbRes) ))
 		delete pfbRes;
 }

@@ -79,7 +79,7 @@ inline void CGLDraw::DrawPolygon(const SViewVertex * p, NODE_NUM_TYPE NumPoints)
 	glEnd();
 }
 
-inline void CGLDraw::SetVertex(SViewVertex *Vertexs, int n)
+inline void CGLDraw::SetVertex(SViewVertex *Vertexs, NODE_NUM_TYPE n)
 {
 	S3dPoint	*p = Vertexs + n;
 	_glVertex3(p->x, p->y, p->z);
@@ -317,8 +317,8 @@ void CGLDraw::Draw(void)
 	m_crCurColor = TColor(0);
 
 	CViewElement	*Elements = m_pGeometry->ElementArray.GetVector();
-	UINT nOriginalVertexCount = m_pGeometry->VertexArray.size();
-	int				NumElements = m_pGeometry->ElementArray.size();
+	size_t nOriginalVertexCount = m_pGeometry->VertexArray.size();
+	size_t				NumElements = m_pGeometry->ElementArray.size();
 	SViewVertex		*Vertexs = m_pGeometry->VertexArray.GetVector();
 
 	S3dPoint		Z_Shift( 0, 0, -2 / m_pViewPos->ScrScale);
@@ -630,7 +630,7 @@ void CGLDraw::DrawTextList(int nFontNo, LPCTSTR pszName) const
 	glPushAttrib(GL_LIST_BIT);							// Pushes The Display List Bits
 	glListBase(m_pRenderer->m_fontBases[nFontNo]);									// Sets The Base Character to 0
 #ifdef UNICODE
-	glCallLists(_tcslen(pszName), GL_UNSIGNED_SHORT, pszName);	// Draws The Display List Text
+	glCallLists(GLsizei(_tcslen(pszName)), GL_UNSIGNED_SHORT, pszName);	// Draws The Display List Text
 #else
 	glCallLists(_tcslen(pszName), GL_UNSIGNED_BYTE, pszName);	// Draws The Display List Text
 #endif
@@ -866,7 +866,7 @@ public:
 		return true;
 	}
 
-	static FLOAT_TYPE GetDistanceToLine(const SViewVertex &pt, int nPoint1, int nPoint2, const CViewVertexArray &Vertexs)
+	static FLOAT_TYPE GetDistanceToLine(const SViewVertex &pt, NODE_NUM_TYPE nPoint1, NODE_NUM_TYPE nPoint2, const CViewVertexArray &Vertexs)
 	{
 		S3dPoint pt1 = S3dPoint(Vertexs[nPoint1]);
 		S3dPoint pt2 = S3dPoint(Vertexs[nPoint2]);
@@ -912,7 +912,7 @@ public:
 		return El.PointIsInside(pt,Vertexs);
 	}
 	// Проверка, пересекаются ли ПРОЕКЦИИ отрезков [p1,p2] и [p2,p3]
-	static bool IsRibsIntersecting(int p1,int p2,int p3,int p4, const CViewVertexArray &Vertexs)
+	static bool IsRibsIntersecting(NODE_NUM_TYPE p1, NODE_NUM_TYPE p2, NODE_NUM_TYPE p3, NODE_NUM_TYPE p4, const CViewVertexArray &Vertexs)
 	{
 		S3dPoint pt1 = S3dPoint(Vertexs[p1]);
 		S3dPoint pt2 = S3dPoint(Vertexs[p2]);
@@ -948,7 +948,7 @@ public:
 		return (d-Norm.DotProduct(p0))/ d1;
 	}
 	bool BreakByPlaneOf(CSortedViewElement &Q, CGLDraw &glDraw, CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-	                    std::vector <CSortedViewElement> &vecSorted, int k)
+	                    std::vector <CSortedViewElement> &vecSorted, size_t k)
 	{
 		if (Type == EL_QUAD)
 			return glDraw.BreakQuad(Vertexs, ProjectedVertexs, vecSorted, k, Q,  *this);
@@ -1100,7 +1100,7 @@ bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & Pr
 		for (auto it = list.begin(); it != list.end() && bCheckNextElement; ++it)
 		{
 			CSortedViewElement &Q = **it;
-			int dist = &Q -&P;
+			ptrdiff_t dist = &Q -&P;
 			if (dist<=0)
 				continue;
 
@@ -1190,7 +1190,7 @@ bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & Pr
 	return bElementsWereReordered;
 }
 
-void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
+void CGLDraw::SortElements(CViewElement * &Elements, size_t& NumElements)
 {
 	CViewVertexArray Vertexs(m_pGeometry->VertexArray);
 
@@ -1263,7 +1263,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, int &NumElements)
 }
 
 bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& ProjectedVertexs,
-                            std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement& Q, CSortedViewElement& P) const
+                            std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement& Q, CSortedViewElement& P) const
 {
 	// Split P by plane of Q
 	// Mark and insert pieces of P
@@ -1289,7 +1289,7 @@ bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& Project
 					 SViewVertex &p_1_ = m_pGeometry->VertexArray[P.Points[(j+1)%P.NumVertexs()]];
 					 SViewVertex pn2 = m_pGeometry->VertexArray[P.Points[j]];
 					 pn2.x = p_0_.x + t1*(p_1_.x-p_0_.x); pn2.y = p_0_.y+t1*(p_1_.y-p_0_.y); pn2.z = p_0_.z+t1*(p_1_.z-p_0_.z);
-					 UINT nNewPoints = Vertexs.size();
+					 size_t nNewPoints = Vertexs.size();
 					 Vertexs.push_back(pn1);
 					 Vertexs.push_back(pn2);
 					 m_pGeometry->VertexArray.push_back(pn1);
@@ -1343,8 +1343,8 @@ bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& Project
 }
 
 bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-		std::vector<CSortedViewElement>& vecSorted, int k, CSortedViewElement &Q, 
-		CSortedViewElement &P) const
+                        std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement &Q,
+                        CSortedViewElement &P) const
 {
 	// Split P by plane of Q
 	// Mark and insert pieces of P
@@ -1370,7 +1370,7 @@ bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVe
                      SViewVertex &p_1_ = m_pGeometry->VertexArray[P.Points[(j+1)%P.NumVertexs()]];
                      SViewVertex pn2 = m_pGeometry->VertexArray[P.Points[j]];
                      pn2.x = p_0_.x + t1*(p_1_.x-p_0_.x); pn2.y = p_0_.y+t1*(p_1_.y-p_0_.y); pn2.z = p_0_.z+t1*(p_1_.z-p_0_.z);
-                     UINT nNewPoints = Vertexs.size();
+                     size_t nNewPoints = Vertexs.size();
                      Vertexs.push_back(pn1);
                      Vertexs.push_back(pn2);
                      m_pGeometry->VertexArray.push_back(pn1);

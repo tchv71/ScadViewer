@@ -252,7 +252,7 @@ void CResultsDlg::ReloadFileList()
 	PathRemoveFileSpec(strWorkPath.GetBuffer(_MAX_PATH));
 	strWorkPath.ReleaseBuffer();
 	strWorkPath+="\\";
-	long hFindHandle = _tfindfirst( m_strResultsMask, &fd );
+	intptr_t hFindHandle = _tfindfirst( m_strResultsMask, &fd );
 
 	if (hFindHandle!=-1)
 	{

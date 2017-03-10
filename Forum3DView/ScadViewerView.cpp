@@ -951,7 +951,7 @@ void CScadViewerView::OnExportToDxf()
 	dlgFile.m_ofn.lpstrFile = strFileName.GetBuffer(_MAX_PATH);
 
 	
-	int nResult = dlgFile.DoModal();
+	INT_PTR nResult = dlgFile.DoModal();
 	strFileName.ReleaseBuffer();
 	if (nResult==IDOK)
 		pGeometry->ExportToDxf(strFileName);
@@ -987,7 +987,7 @@ void CScadViewerView::OnExportToBmp()
 
 	
 	dlgFile.m_nBmpWidth = ClientWidth; dlgFile.m_nBmpHeight = ClientHeight;
-	int nResult = dlgFile.DoModal();
+	INT_PTR nResult = dlgFile.DoModal();
 	strFileName.ReleaseBuffer();
 	if (nResult!=IDOK)
 		return;
