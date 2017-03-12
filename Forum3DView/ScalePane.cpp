@@ -9,8 +9,8 @@
 #include "IsoViewGeometry.h"
 #ifdef SCAD11
 #include "RESULT.HPP"
-#include "scad.h"
-#include "Grand.h"
+//#include "scad.h"
+//#include "Grand.h"
 #endif
 #include "ColourPopup.h"
 #include "HSV2RGB.h"

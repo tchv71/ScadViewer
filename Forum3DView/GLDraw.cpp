@@ -376,7 +376,7 @@ void CGLDraw::Draw(void)
 		ENABLE_LIGHTING(m_pDrawOptions->bLighting);
 		if (nCurrentStage == BAR_STAGE)
 			SetGlColor(m_pOptions->BarColor);
-		for (int i = 0; i < NumElements; i++)
+		for (size_t i = 0; i < NumElements; i++)
 		{
 			CViewElement &El = Elements[i];
 			if (

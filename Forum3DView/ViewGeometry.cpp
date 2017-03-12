@@ -392,7 +392,7 @@ void __fastcall CViewGeometry::DeleteEqualNodes()
 {
 	size_t	nVertexs = VertexArray.size(), nElements = ElementArray.size();
 	SSortVertex *VertexIndexes = new SSortVertex[VertexArray.size()];
-	for(int i = 0; i < nVertexs; i++)
+	for(size_t i = 0; i < nVertexs; i++)
 	{
 		VertexIndexes[i].x = VertexArray[i].x;
 		VertexIndexes[i].y = VertexArray[i].y;
@@ -422,7 +422,7 @@ void __fastcall CViewGeometry::DeleteEqualNodes()
 		v2++;
 	}
 
-	for(int i = 0; i < nElements; i++)
+	for(size_t i = 0; i < nElements; i++)
 	{
 		CViewElement	*El = ElementArray.GetVector()+i;
 		for(int j = 0; j < int(El->Type) + 2; j++)
@@ -1023,9 +1023,9 @@ void __fastcall CViewGeometry::SetupNormals(void)
 */
 	size_t nElements = ElementArray.size();;
 	size_t nMaxRealElementNumber = 0;
-    int i;
+	size_t i;
     for (i=0; i<nElements; i++)
-        if (ElementArray[i].NumElem > nMaxRealElementNumber)
+        if (size_t(ElementArray[i].NumElem) > nMaxRealElementNumber)
             nMaxRealElementNumber = ElementArray[i].NumElem;
 
     int *anFirstElements = new int[nMaxRealElementNumber];

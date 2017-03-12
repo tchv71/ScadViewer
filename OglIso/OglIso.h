@@ -20,7 +20,7 @@ typedef	APIHandle_tag      * ScadAPI;
 
 #pragma pack(push,1)
 
-#ifdef SCAD21 
+#if defined(SCAD21) || defined(SCAD11) 
 struct DefMapInfo
 {
 	short Scale_count;

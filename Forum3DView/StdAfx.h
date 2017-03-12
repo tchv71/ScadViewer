@@ -33,13 +33,14 @@
 //#include <toolkit\ot_treectrl.h>			// Objective Toolkit Tree control & Tree view
 //#include <Toolkit\ot_progress.h>
 typedef CString CSCADString;
+#define strncpy strncpy_s
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #if defined(_DEBUG)
 //#import "..\..\..\buildingblocks\Bin\Debug\DSMP4.dll" no_namespace raw_interfaces_only
 #else
-#import "..\..\..\buildingblocks\Bin\Release\DSMP4.dll" no_namespace raw_interfaces_only
+//#import "..\..\..\buildingblocks\Bin\Release\DSMP4.dll" no_namespace raw_interfaces_only
 #endif
 
 #endif // !defined(AFX_STDAFX_H__4DE64BEC_8A96_443A_97BE_E3544EF5B62A__INCLUDED_)

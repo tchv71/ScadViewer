@@ -47,11 +47,12 @@ typedef CString CSCADString;
 //#include <toolkit\ot_toolbar.h>				// Objective Toolkit Customizable Toolbar/Menubar
 //#include <toolkit\ot_treectrl.h>			// Objective Toolkit Tree control & Tree view
 //#include <Toolkit\ot_progress.h>
+#define strncpy strncpy_s
 
 #if defined(_DEBUG)
 //#import "..\..\buildingblocks\Bin\Debug\DSMP4.dll" no_namespace raw_interfaces_only
 #else
-#import "..\..\buildingblocks\Bin\Release\DSMP4.dll" no_namespace raw_interfaces_only
+//#import "..\..\buildingblocks\Bin\Release\DSMP4.dll" no_namespace raw_interfaces_only
 #endif
 
 //{{AFX_INSERT_LOCATION}}

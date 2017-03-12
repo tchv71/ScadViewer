@@ -275,7 +275,7 @@ void CFileProc::OnDrawFile( FPTDrawFileInfo * pDFI )
 		SendBmp( pDFI, pfbRes );
 		return;
 	}
-	if( nFileSize < pDFI->m_pProcInfo->m_nOffset )
+	if( nFileSize < size_t(pDFI->m_pProcInfo->m_nOffset) )
 	{
 		delete pFileData;
 		pfbRes->m_nRetCode = FDE_ERROR;

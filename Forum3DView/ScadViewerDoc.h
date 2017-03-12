@@ -21,8 +21,8 @@
 #else
 #include "schema.hpp"
 #include "Result.hpp"
-#include "scad.h"
-#include "Grand.h"
+//#include "scad.h"
+//#include "Grand.h"
 #endif
 #include "..\ogliso\OglIso.h"
 

@@ -316,24 +316,7 @@ CGridDefaultCell::CGridDefaultCell()
 
 
 	NONCLIENTMETRICS ncm;
-#if defined(_MSC_VER) && (_MSC_VER < 1300)
-    ncm.cbSize = sizeof(NONCLIENTMETRICS); // NONCLIENTMETRICS has an extra element after VC6
-#else
-	// Check the operating system's version
-	OSVERSIONINFOEX osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	if (!GetVersionEx(reinterpret_cast<OSVERSIONINFO *>(&osvi)))
-	{
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		GetVersionEx(reinterpret_cast<OSVERSIONINFO *>(&osvi));
-	}
-
-	if (osvi.dwMajorVersion > 5)
-		ncm.cbSize = sizeof(NONCLIENTMETRICS);
-	else
-		ncm.cbSize = sizeof(NONCLIENTMETRICS); //- sizeof(ncm.iPaddedBorderWidth);
-#endif
+	ncm.cbSize = sizeof(NONCLIENTMETRICS);
 	VERIFY(SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0));
 
 	CGridDefaultCell::SetFont(&(ncm.lfMessageFont));
