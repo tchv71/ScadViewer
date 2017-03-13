@@ -338,6 +338,7 @@ void CGLDraw::Draw(void)
 		SortElements(Elements, NumElements);
 #ifdef NEW_DEPTH_SORT
 		m_pGeometry->GetNodeCashe()->Recreate();
+		m_pGeometry->GetNodeCashe()->Clear();
 		Vertexs = m_pGeometry->VertexArray.GetVector();
 
 #ifdef COLOR_PLATES
@@ -1252,7 +1253,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, size_t& NumElements)
 	SortElementsOnce(Vertexs, ProjectedVertexs, vecSorted);
 #endif
 	m_pTree = nullptr;
-	NumElements = int(vecSorted.size());
+	NumElements = vecSorted.size();
 	Elements = new CViewElement[NumElements];
 	for (size_t i=0;i< vecSorted.size();i++)
 	{
