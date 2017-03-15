@@ -296,9 +296,9 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 //-Refactored---------------------------------------------------------------------
 void CGLDraw::Draw(void)
 {
+	if (m_pGeometry == nullptr)
+		return;
 	EDrawMode	Mode = m_pDrawOptions->Mode;
-	
-
 	m_pGeometry->SetupElementColors(m_pOptions, Mode);
 	c=0xff00;
 	//   glDisable(GL_DITHER);
@@ -308,8 +308,6 @@ void CGLDraw::Draw(void)
 	DISABLE_LIGHTING();
 	glDisable(GL_BLEND);
 	glDisable(GL_LINE_SMOOTH);
-	if(m_pGeometry == nullptr)
-		return;
 	m_pGeometry->GetNodeCashe()->Clear();
 
 	int			nStages = 2; // Количество проходов для отрисовки модели
