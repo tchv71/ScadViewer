@@ -253,7 +253,7 @@ void CMouseManipulatorWnd::OnMouseMove(UINT nFlags, CPoint point)
 		if(Down && (nFlags & (MK_LBUTTON | MK_MBUTTON) != 0))
 #endif
 		{
-			if ((nFlags & MK_MBUTTON) && State != ST_PAN)
+			if ((nFlags & MK_MBUTTON) && State != ST_PAN && State != ST_ROTATE)
 				;
 			else
 			switch(State)
@@ -413,7 +413,7 @@ void CMouseManipulatorWnd::OnMButtonDown(UINT nFlags, CPoint point)
 	m_vpSave = m_ViewPos;
 
 	oState = State;
-	State = ST_PAN;
+	State = nFlags & MK_SHIFT ? ST_ROTATE : ST_PAN;
 	OnSetCursor(this, 0, 0);
 	SetCapture();
 
