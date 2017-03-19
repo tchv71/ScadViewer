@@ -847,7 +847,7 @@ void CFolderListCtrl::AddFileItem(const _tfinddata_t &fd, int nLargeIconInd, int
 
 void CFolderListCtrl::RefreshFileList()
 {
-	CFLCItemData **arrListCache = new CFLCItemData*[m_nItemCount];
+	std::vector<CFLCItemData *>arrListCache(m_nItemCount);
 	int i;
 	for (i=0;i<m_nItemCount;i++)
 	{
@@ -908,7 +908,6 @@ void CFolderListCtrl::RefreshFileList()
 		} while( _tfindnext( hFindHandle, &fd ) != -1 );
 		_findclose( hFindHandle );
 	}
-	delete[] arrListCache;
 	m_nImageBalance = 0;
 	for (i=0;i<m_nItemCount;i++)
 	{
