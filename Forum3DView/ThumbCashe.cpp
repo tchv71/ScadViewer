@@ -1,17 +1,26 @@
 // ThumbCashe.cpp: implementation of the CThumbCashe class.
 //
 //////////////////////////////////////////////////////////////////////
-#define __oledb_h__
-#include "stdafx.h"
+//#define __oledb_h__
+//#define __ATLTIME_H__
+//#define __ATLCOMTIME_H__
+//#define __AFXOCC_H__
+//#include "stdafx.h"
 #include "ThumbCashe.h"
 #undef DB_UNKNOWN
+//#define DBTYPE _DBTYPE
 #include <db_cxx.h>
+//#include <afxwin.h>
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 #include <io.h>
+#include <tchar.h>
+#include <vector>
+
 
 
 #define DB_NAME "scthumb.db"
@@ -24,7 +33,7 @@ CThumbCashe::CThumbCashe(LPCTSTR pszDirName) :
 
 {
 	m_strDbName+=_T("\\");
-	m_strDbName+=DB_NAME;
+	m_strDbName+=_T(DB_NAME);
 }
 
 CThumbCashe::~CThumbCashe()
@@ -76,16 +85,16 @@ bool CThumbCashe::Get(LPCTSTR pszFileName, const SThumbParam &rParam, HDC dc) co
 		nSize-=sizeof(m_bmi);
 		void *m_pBitmapBits = nullptr;
 		HBITMAP m_hDib = ::CreateDIBSection(dc, &m_bmi, DIB_RGB_COLORS, &m_pBitmapBits, nullptr, DWORD(0));
-		CDC dcBmp; 
-		dcBmp.CreateCompatibleDC( CDC::FromHandle(dc));
+		HDC dcBmp; 
+		dcBmp =  ::CreateCompatibleDC(dc);
 		::SetBitmapBits(m_hDib, nSize, pdata);
 		//::SetDIBits(dcBmp, m_hDib, 0, rParam.nHeight, pdata, &m_bmi, data.get_size()-sizeof(m_bmi));
 
-		CBitmap * pbmpOld = static_cast<CBitmap*>(dcBmp.SelectObject( CBitmap::FromHandle(m_hDib)));
+		HGDIOBJ pbmpOld = SelectObject(dcBmp, m_hDib);
 		::BitBlt(dc, 0,0, rParam.nWidth, rParam.nHeight, dcBmp, 0, 0, SRCCOPY);
-		dcBmp.SelectObject(pbmpOld);
+		SelectObject(dcBmp, pbmpOld);
 		::DeleteObject(m_hDib);
-		dcBmp.DeleteDC();
+		::DeleteObject(dcBmp);
 		db.close(0);
 		return true;
 
@@ -137,11 +146,11 @@ void CThumbCashe::Put(LPCTSTR pszFileName, const SThumbParam &rParam, HDC dc) co
 		m_bmi.bmiHeader.biSizeImage		= ((((rParam.nWidth * 24) + 31) & ~31) >> 3) * rParam.nHeight;
 		void *m_pBitmapBits = nullptr;
 		HBITMAP m_hDib = ::CreateDIBSection(dc, &m_bmi, DIB_RGB_COLORS, &m_pBitmapBits, nullptr, DWORD(0));
-		CDC dcBmp; 
-		dcBmp.CreateCompatibleDC( CDC::FromHandle(dc));
+		HDC dcBmp; 
+		dcBmp = CreateCompatibleDC( dc);
 
-		CBitmap * pbmpOld = static_cast<CBitmap*>(dcBmp.SelectObject( CBitmap::FromHandle(m_hDib)));
-		dcBmp.BitBlt(0,0, rParam.nWidth, rParam.nHeight, CDC::FromHandle(dc), 0, 0, SRCCOPY);
+		HGDIOBJ pbmpOld = SelectObject(dcBmp, m_hDib);
+		BitBlt(dcBmp,0,0, rParam.nWidth, rParam.nHeight, dc, 0, 0, SRCCOPY);
 		strData.append(reinterpret_cast<char*>(&m_bmi), sizeof(m_bmi));
 		std::vector<char> vecBits;
 		vecBits.resize(m_bmi.bmiHeader.biSizeImage);
@@ -150,9 +159,9 @@ void CThumbCashe::Put(LPCTSTR pszFileName, const SThumbParam &rParam, HDC dc) co
 		strData.append(&vecBits[0], vecBits.size());
 		Dbt data(reinterpret_cast<void *>(const_cast<char *>(strData.c_str())), strData.size());
 		db.put(nullptr, &key, &data, 0);
-		dcBmp.SelectObject(pbmpOld);
+		SelectObject(dcBmp, pbmpOld);
 		::DeleteObject(m_hDib);
-		dcBmp.DeleteDC();
+		::DeleteObject(dcBmp);
 		db.close(0);
 	}
 	catch(DbException /*&e*/)
@@ -187,11 +196,11 @@ void CThumbCashe::GetAddData(LPCTSTR pszFileName, const SThumbParam &rParam, std
 	struct _tfinddata_t fd;
 	ZeroMemory(&fd, sizeof(fd));
 
-	CString sPath(m_strDir);
-	sPath.Append(_T("\\"));
-	sPath.Append(pszFileName);
+	std::wstring sPath(m_strDir);
+	sPath +=_T("\\");
+	sPath +=pszFileName;
 
-	intptr_t hFindHandle = _tfindfirst( sPath, &fd );
+	intptr_t hFindHandle = _tfindfirst( sPath.c_str(), &fd );
 
 	if( hFindHandle == -1 )
 		return;
@@ -218,7 +227,7 @@ LPCSTR CThumbCashe::DbName() const
 #ifdef UNICODE
 	static char buf[MAX_PATH];
 	
-	WideCharToMultiByte(CP_ACP, 0, m_strDbName, -1, buf, sizeof(buf), nullptr, nullptr);
+	WideCharToMultiByte(CP_ACP, 0, m_strDbName.c_str(), -1, buf, sizeof(buf), nullptr, nullptr);
 	return buf;
 #else
 	return m_strDbName;

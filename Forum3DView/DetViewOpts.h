@@ -10,6 +10,8 @@
 
 #include "SettingManager.h"
 #include "ViewLib.h"
+#include "DefProjType.h"
+
 
 enum EDrawMode { M_LINES, M_FILL, M_FILL_AND_LINES, M_FILL_AND_LINES_TRANSP };
 
@@ -97,21 +99,6 @@ public:
 };
 
 typedef std::vector<CString> SCStringVector;
-enum SCDefProjType
-{
-	DPT_Top,
-	DPT_Bottom,
-	DPT_Front,
-	DPT_Back,
-	DPT_Left,
-	DPT_Right,
-	DPT_SouthEast,
-	DPT_SouthWest,
-	DPT_NorthWest,
-	DPT_NortpEast,
-	DPT_Dimetry,
-	DPT_Size
-};
 
 struct	CFLCProperties
 {
