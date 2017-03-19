@@ -35,8 +35,8 @@ SC3DRetCode CSvGluTesselator::AddSimplePolygon(SCUINT32 elemID, SCUINT32 nContou
 	gluTessCallback(tess, GLU_TESS_BEGIN_DATA, reinterpret_cast<GluTessCallbackType>(beginData));
 	gluTessCallback(tess, GLU_TESS_VERTEX_DATA, reinterpret_cast<GluTessCallbackType>(vertexData));
 	
-	GLdouble *arrCoords = new GLdouble[nPt*3];
-	GLdouble *ptCoords = arrCoords;
+	std::vector<GLdouble> arrCoords(nPt*3);
+	GLdouble *ptCoords = &arrCoords[0];
 	for (i=0;i<nPt;i++)
 	{
 		SViewVertex &pt = VertexArray[pPtIDs[i]];
@@ -44,7 +44,7 @@ SC3DRetCode CSvGluTesselator::AddSimplePolygon(SCUINT32 elemID, SCUINT32 nContou
 		*ptCoords++ = pt.y;
 		*ptCoords++ = pt.z;
 	}
-	ptCoords = arrCoords;
+	ptCoords = &arrCoords[0];
 	gluTessBeginPolygon(tess, this);
 	for (i=0; i<nContour; i++)
 	{
@@ -58,7 +58,6 @@ SC3DRetCode CSvGluTesselator::AddSimplePolygon(SCUINT32 elemID, SCUINT32 nContou
 	}
 	gluTessEndPolygon(tess);
 
-	delete [] arrCoords;
 	gluDeleteTess(tess);
 	return S3DRC_OK;
 }
@@ -143,8 +142,8 @@ SC3DRetCode CSvGluTesselator::AddThickPolygon(FLOAT_TYPE fThickness, SCUINT32 el
 		vecNorm.v[2] += (pt1.x-pt2.x)*(pt1.y+pt2.y);
 	}
 	vecNorm.Normalize();
-	SCUINT32 * ptIndUp = new SCUINT32[nPt];
-	SCUINT32 * ptIndDown = new SCUINT32[nPt];
+	std::vector<SCUINT32> ptIndUp(nPt);
+	std::vector<SCUINT32> ptIndDown(nPt);
 	for (i=0; i<nPt;i++)
 	{
 		SViewVertex pt = VertexArray[pPtIDs[i]];
@@ -163,8 +162,8 @@ SC3DRetCode CSvGluTesselator::AddThickPolygon(FLOAT_TYPE fThickness, SCUINT32 el
 		VertexArray.push_back(pt);
 		ptIndDown[i] = unsigned(VertexArray.size()-1);
 	}
-	AddSimplePolygon( elemID,  nContour, nPtCount, ptIndUp );
-	AddSimplePolygon( elemID, nContour, nPtCount, ptIndDown );
+	AddSimplePolygon( elemID,  nContour, nPtCount, &ptIndUp[0] );
+	AddSimplePolygon( elemID, nContour, nPtCount, &ptIndDown[0] );
 
 	{
 		SCUINT32 nStart, nCurPt;
@@ -186,8 +185,5 @@ SC3DRetCode CSvGluTesselator::AddThickPolygon(FLOAT_TYPE fThickness, SCUINT32 el
 		}	
 	}
 	
-	delete[] ptIndDown;
-	delete[] ptIndUp;
-
 	return S3DRC_OK;
 }

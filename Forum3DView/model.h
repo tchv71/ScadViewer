@@ -63,10 +63,10 @@ struct SElement
 {
 	TElemType		Type;			// Тип примитива отрисовки
 	TOrgElemType	OrgType;		// Оригинальный тип элемента
-    NUM_ELEM_TYPE  NumElem;                  // Номер элемента
+    NUM_ELEM_TYPE	NumElem;        // Номер элемента
 	TColor			Color;			// Цвет примитива отрисовки
 	TColor			OriginalColor;
-	size_t				Points[4];		// Номера вершин примитива
+	size_t			Points[4];		// Номера вершин примитива
 
     // ************ Methods ***************
 

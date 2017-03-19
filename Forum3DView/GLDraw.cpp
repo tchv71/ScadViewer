@@ -167,7 +167,7 @@ static bool Lighting = false;
 
 static void DISABLE_LIGHTING()
 {
-	if(Lighting) 
+	//if(Lighting) 
 	{ 
 		glDisable(GL_LIGHTING); 
 		Lighting = false; 
@@ -176,9 +176,12 @@ static void DISABLE_LIGHTING()
 
 static void ENABLE_LIGHTING(bool bLighting)
 {
-	if(!Lighting && bLighting)
+	//if(!Lighting && bLighting)
 	{ 
-		glEnable(GL_LIGHTING); 
+		if (bLighting)
+			glEnable(GL_LIGHTING);
+		else
+			glDisable(GL_LIGHTING);
 		Lighting = true; 
 	}
 }
@@ -271,9 +274,9 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 
 			SetGlColor(m_pOptions->EdgeColor);
 #ifndef NEW_DEPTH_SORT
-					if (El.bContoured)
+			if (El.bContoured)
 #endif
-			DrawLines(El, p);
+				DrawLines(El, p);
 		}
 		else
 		{
@@ -293,20 +296,18 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 //-Refactored---------------------------------------------------------------------
 void CGLDraw::Draw(void)
 {
+	if (m_pGeometry == nullptr)
+		return;
 	EDrawMode	Mode = m_pDrawOptions->Mode;
-	
-
 	m_pGeometry->SetupElementColors(m_pOptions, Mode);
 	c=0xff00;
 	//   glDisable(GL_DITHER);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLineWidth(GLfloat(m_pOptions->LineWidth));
 	glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
-	glDisable(GL_LIGHTING);
+	DISABLE_LIGHTING();
 	glDisable(GL_BLEND);
 	glDisable(GL_LINE_SMOOTH);
-	if(m_pGeometry == nullptr)
-		return;
 	m_pGeometry->GetNodeCashe()->Clear();
 
 	int			nStages = 2; // Количество проходов для отрисовки модели
@@ -338,6 +339,7 @@ void CGLDraw::Draw(void)
 		SortElements(Elements, NumElements);
 #ifdef NEW_DEPTH_SORT
 		m_pGeometry->GetNodeCashe()->Recreate();
+		m_pGeometry->GetNodeCashe()->Clear();
 		Vertexs = m_pGeometry->VertexArray.GetVector();
 
 #ifdef COLOR_PLATES
@@ -798,8 +800,8 @@ class CSortedViewElement : public CViewElement
 {
 public:
 	CSortedViewElement(const CViewElement &el)
-		: CViewElement(el), xMax(0), xMin(0), yMax(0), yMin(0), zMax(0), zMin(0), m_pOriginal(nullptr)
-	{
+		: CViewElement(el), xMax(0), xMin(0), yMax(0), yMin(0), zMax(0), zMin(0)
+		{
 		//FragmentFlag = true;
 	}
 
@@ -968,7 +970,6 @@ public:
 	FLOAT_TYPE zMax;
 	FLOAT_TYPE zMin;
 
-	CSortedViewElement *m_pOriginal;
 };
 
 static int ElCompare(const void *a, const void *b)
@@ -1232,7 +1233,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, size_t& NumElements)
 		m_pViewPos->Rot->Rotate(pNorm[0], pNorm[1], pNorm[2]);
 		El.SetExtents(ProjectedVertexs);
 		vecSorted.push_back(El);
-		vecSorted[vecSorted.size() - 1].m_pOriginal = &vecSorted[vecSorted.size() - 1];
+		//vecSorted[vecSorted.size() - 1].m_pOriginal = &vecSorted[vecSorted.size() - 1];
 		k++;
 	}
 
@@ -1252,7 +1253,7 @@ void CGLDraw::SortElements(CViewElement * &Elements, size_t& NumElements)
 	SortElementsOnce(Vertexs, ProjectedVertexs, vecSorted);
 #endif
 	m_pTree = nullptr;
-	NumElements = int(vecSorted.size());
+	NumElements = vecSorted.size();
 	Elements = new CViewElement[NumElements];
 	for (size_t i=0;i< vecSorted.size();i++)
 	{

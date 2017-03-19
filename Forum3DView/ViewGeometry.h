@@ -253,6 +253,31 @@ class SCHEMA;
 struct SSortVertex : public S3dPoint
 {
 	int N;
+	const FLOAT_TYPE cmpPrec = 0.001f;
+	bool operator <(const SSortVertex& other) const
+	{
+		if (x < other.x - cmpPrec)
+			return true;
+		if (x > other.x + cmpPrec)
+			return false;
+		if (y < other.y - cmpPrec)
+			return true;
+		if (y > other.y + cmpPrec)
+			return false;
+		if (z < other.z - cmpPrec)
+			return true;
+		if (z > other.z + cmpPrec)
+			return false;
+		return  N < other.N;
+	}
+	SSortVertex& operator =(const SSortVertex& other)
+	{
+		x = other.x;
+		y = other.y;
+		z = other.z;
+		N = other.N;
+		return *this;
+	}
 };
 
 struct SModelInfo

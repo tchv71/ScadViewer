@@ -485,7 +485,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;Version.lib;Forum3DView\Debug21\Forum3DView21.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(TargetPath)</OutputFile>
+      <OutputFile>C:\Scad Soft\Scad Office\32\$(TargetFileName)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug11/ScfExplorer.pdb</ProgramDatabaseFile>

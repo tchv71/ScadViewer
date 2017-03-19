@@ -33,6 +33,7 @@
 #include "Timer.h"
 
 #include "GLDraw.h"
+#include <algorithm>
 
 #ifndef MAXPATH
 #define MAXPATH  _MAX_PATH
@@ -390,8 +391,10 @@ typedef int (*CmpVertFunc) (const void *, const void *);
 
 void __fastcall CViewGeometry::DeleteEqualNodes()
 {
-	size_t	nVertexs = VertexArray.size(), nElements = ElementArray.size();
-	SSortVertex *VertexIndexes = new SSortVertex[VertexArray.size()];
+	size_t nVertexs = VertexArray.size();
+	size_t nElements = ElementArray.size();
+	std::vector<SSortVertex> VertexIndexes;
+	VertexIndexes.resize(nVertexs);
 	for(size_t i = 0; i < nVertexs; i++)
 	{
 		VertexIndexes[i].x = VertexArray[i].x;
@@ -400,26 +403,25 @@ void __fastcall CViewGeometry::DeleteEqualNodes()
 		VertexIndexes[i].N = i;
 	}
 
-	if(m_bDeleteInnerPlates)
-		Mqsort(VertexIndexes, nVertexs, sizeof(SSortVertex), CmpVertFunc(CompareVert));
-	else
-		qsort(VertexIndexes, nVertexs, sizeof(SSortVertex), CmpVertFunc(CompareVert));
-
-	int			*NodeSubst = new int[nVertexs];
-	SSortVertex *v1, *v2;
+	std::sort(VertexIndexes.begin(), VertexIndexes.end());
+	//qsort(&VertexIndexes[0], nVertexs, sizeof(SSortVertex), CmpVertFunc(CompareVert));
+	
+	std::vector<NODE_NUM_TYPE> NodeSubst(nVertexs);
+	std::vector<SSortVertex>::iterator v1, v2;
 
 	//int i;
-	for(v1 = VertexIndexes, v2 = v1 + 1; v1 < VertexIndexes + nVertexs;)
+	for(v1 = VertexIndexes.begin(), v2 = v1 + 1; v1 < VertexIndexes.end();)
 	{
-		while(v2 < VertexIndexes + nVertexs && CompareVert1(v1, v2) == 0)
+		while (v2 < VertexIndexes.end() && CompareVert1(&*v1, &*v2) == 0)
 		{
 			NodeSubst[v2->N] = v1->N;
-			v2++;
+			++v2;
 		}
 
 		NodeSubst[v1->N] = v1->N;
 		v1 = v2;
-		v2++;
+		if (v2 < VertexIndexes.end())
+			++v2;
 	}
 
 	for(size_t i = 0; i < nElements; i++)
@@ -428,9 +430,6 @@ void __fastcall CViewGeometry::DeleteEqualNodes()
 		for(int j = 0; j < int(El->Type) + 2; j++)
 			El->Points[j] = NodeSubst[El->Points[j]];
 	}
-
-	delete[] NodeSubst;
-	delete[] VertexIndexes;
 }
 
 /*virtual*/ TOrgElemType CViewGeometry::GetElemOrgType(WORD wTypeElem)
@@ -1097,8 +1096,8 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 {
 	//CViewElementArray ElementsCopy(ElementArray);
 	size_t			nElements = ElementArray.size();
-	SSortElement	*ElemIndexes = new SSortElement[nElements];
-	SSortElement	*Ei = ElemIndexes;
+	std::vector<SSortElement>	ElemIndexes(nElements);
+	SSortElement	*Ei = &ElemIndexes[0];
 	CViewElement	*El = ElementArray.GetVector();
 	size_t i=0;
 	for(i = 0; i < nElements; i++)
@@ -1115,26 +1114,26 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 		Ei++;
 	}
 
-	qsort(ElemIndexes, nElements, sizeof(SSortElement), CompareElem);
+	qsort(&ElemIndexes[0], nElements, sizeof(SSortElement), CompareElem);
 
-	SSortElement	*v1, *v2;
+	std::vector<SSortElement>::iterator	v1, v2;
 	std::vector<bool> bvecKeepElements(ElementArray.size(), false);
-	for(v1 = ElemIndexes, v2 = v1 + 1; v1 < ElemIndexes + nElements;)
+	for(v1 = ElemIndexes.begin(), v2 = v1 + 1; v1 < ElemIndexes.end();)
 	{
 		bool	bInner = false;
 		while
 		(
-			v2 < ElemIndexes + nElements &&
-			CompareElem(v1, v2) == 0 &&
+			v2 < ElemIndexes.end() &&
+			CompareElem(&*v1, &*v2) == 0 &&
 			v1->OrgType == v2->OrgType &&
 			(v1->Type == EL_PLATE || m_pFlatGeometry == nullptr)
 		)
 		{
 			bInner = true;
-			v2++;
+			++v2;
 		}
 		if (!m_pFlatGeometry)
-			for (SSortElement *v=v1; v<v2 && bInner; v++)
+			for (std::vector<SSortElement>::iterator v=v1; v<v2 && bInner; ++v)
 			{
 				if (ElementArray[v->N].IsContour())
 					continue;
@@ -1143,7 +1142,7 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 			}
 
 		else
-			for (SSortElement *v=v1; v<v2 && bInner; v++)
+			for (std::vector<SSortElement>::iterator v=v1; v<v2 && bInner; ++v)
 			{
 				if (m_DuplicatedElements.count(v->NumElem)!=0)
 					bvecKeepElements[v->N] = true;
@@ -1156,13 +1155,14 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 		}
 
 		v1 = v2;
-		v2++;
+		if (v2 < ElemIndexes.end())
+			++v2;
+
 	}
 
 	//ementArray.resize(i);
 	for (i=0; i<ElementArray.size(); i++)
 		ElementArray[i].DrawFlag = bvecKeepElements[i];
-	delete[] ElemIndexes;
 }
 
 #if 1

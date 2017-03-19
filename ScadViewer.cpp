@@ -152,6 +152,7 @@ void CScadViewerApp::OnAppAbout()
 
 BOOL CScadViewerApp::ExitInstance(void)
 {
+	CMFCVisualManager::DestroyInstance();
 	m_Settings.StopFileProc();
 	return CWinAppEx::ExitInstance();
 }

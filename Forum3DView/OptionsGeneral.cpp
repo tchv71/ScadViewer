@@ -296,12 +296,11 @@ void COptionsGeneral::OnOK()
 	m_ViewProperty.m_nItemCY = m_nThumbnailHeight;
 	m_ViewProperty.m_DefProj = SCDefProjType(m_DefProjList.GetCurSel());
 	int nSelected = m_FileTypeList.GetSelCount();
-	int *parrSelected = new int[nSelected];
-	m_FileTypeList.GetSelItems(nSelected, parrSelected);
+	std::vector<int> parrSelected(nSelected);
+	m_FileTypeList.GetSelItems(nSelected, &parrSelected[0]);
 	m_ViewProperty.m_vsExt.clear();
 	for (int i=0; i<nSelected; i++)
 		m_ViewProperty.m_vsExt.push_back( CSCAD3DMdlSettings::Get3DS()->GetEFIAt(parrSelected[i])->m_sExt);
-	delete [] parrSelected;
 	m_rViewerOptions.m_ViewProp = m_ViewProperty;
 	m_rViewerOptions.nLangID = m_nLangID;
 
