@@ -298,6 +298,7 @@ void CGLDraw::Draw(void)
 {
 	if (m_pGeometry == nullptr)
 		return;
+	//glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
 	EDrawMode	Mode = m_pDrawOptions->Mode;
 	m_pGeometry->SetupElementColors(m_pOptions, Mode);
 	c=0xff00;
@@ -370,6 +371,7 @@ void CGLDraw::Draw(void)
 	};
 
 	//glInterleavedArrays(GL_V3F,sizeof(SViewVertex),&(m_pGeometry->VertexArray->Vertexs->x));
+	bool bDrawArrays = true;
 	for(int nCurrentStage = 0; nCurrentStage < nStages; nCurrentStage++)
 	{
 		if (PreDrawStage(Mode, Z_Shift, bSmoothTransp, nCurrentStage)) continue;
@@ -378,6 +380,27 @@ void CGLDraw::Draw(void)
 		ENABLE_LIGHTING(m_pDrawOptions->bLighting);
 		if (nCurrentStage == BAR_STAGE)
 			SetGlColor(m_pOptions->BarColor);
+		if (bDrawArrays && nCurrentStage == FILL_STAGE)
+		{
+			if (m_pGeometry->ElementArray.size() == 0)
+				continue;
+			glEnableClientState(GL_VERTEX_ARRAY_POINTER);
+			glNormal3f(0, 0, 1);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glColor3f(0.5f, 0.5f, 0.5f);
+			glVertexPointer(3, GL_FLOAT, (BYTE*)&m_pGeometry->VertexArray[1]- (BYTE*)&m_pGeometry->VertexArray[0], &(m_pGeometry->VertexArray.GetVector()->x));
+			//glEnableClientState(GL_COLOR_ARRAY);
+			//glColorPointer(3, GL_UNSIGNED_BYTE, 4, &m_pGeometry->ElementArray.m_colors[0]);
+			//glEnableClientState(GL_NORMAL_ARRAY);
+			//glNormalPointer(GL_FLOAT, sizeof(CVectorType), &m_pGeometry->ElementArray.m_normals[0]);
+			if (m_pGeometry->ElementArray.m_triangles.size()>0)
+				glDrawElements(GL_TRIANGLES, m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, &(m_pGeometry->ElementArray.m_triangles[0]));
+			if (m_pGeometry->ElementArray.m_quads.size()>0)
+				glDrawElements(GL_QUADS, m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, &(m_pGeometry->ElementArray.m_quads[0]));
+			GLenum err = glGetError();
+			glDisableClientState(GL_VERTEX_ARRAY_POINTER);
+			int i = 0;
+		}
 		for (size_t i = 0; i < NumElements; i++)
 		{
 			CViewElement &El = Elements[i];
@@ -398,7 +421,7 @@ void CGLDraw::Draw(void)
 				break;
 			case EL_QUAD:
 			case EL_TRIANGLE:
-				if (nCurrentStage == BAR_STAGE)
+				if (nCurrentStage == BAR_STAGE || (nCurrentStage == FILL_STAGE && bDrawArrays))
 					continue;
 				if (nCurrentStage == BORDER_STAGE && m_pOptions->bDrawOptimize && (Mode == M_FILL_AND_LINES || Mode == M_FILL_AND_LINES_TRANSP))
 					continue;

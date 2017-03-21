@@ -225,6 +225,12 @@ public:
 	{
 		return m_SelElOrgType;
 	}
+
+	void BuildArrays();
+	std::vector<UINT32> m_triangles;
+	std::vector<UINT32> m_quads;
+	std::vector<UINT32> m_colors;
+	std::vector<CVectorType> m_normals;
 protected:
 	NUM_ELEM_TYPE m_nNumElSelected;
 	TOrgElemType m_SelElOrgType;
@@ -430,7 +436,9 @@ public:
 
 	virtual void Get3DBox(const CRotator *Rot, S3DBox *Box, CViewVertexArray	*pVertexArray = nullptr);
 	void GetMax3DBox(const CRotator *Rot, S3DBox *Box);
-	void SetupAndOptimize(bool bReduceGeometry);
+	virtual void Retriangulate();
+	virtual void BuildArrays();
+	virtual void SetupAndOptimize(bool bReduceGeometry);
 
 	bool	m_bDeleteInnerPlates;
 	bool	m_bForThumbs;
