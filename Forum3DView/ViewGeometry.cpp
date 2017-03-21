@@ -1092,6 +1092,63 @@ CViewElement::CViewElement(TColor color): m_nExtraPoints(-1)
 	bContourOnly = false;
 }
 
+void CViewElementArray::BuildArrays()
+{
+	UINT32 nMaxIndex = 0;
+	for (size_t i = 0; i<size(); i++)
+	{
+		CViewElement &el = at(i);
+		if (!el.DrawFlag || !el.FragmentFlag || el.IsBarLike())
+			continue;
+		if (el.NumVertexs() == 3)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				UINT32 nPoint = el.Points[j];
+				if (nPoint > nMaxIndex)
+					nMaxIndex = nPoint;
+			}
+		}
+		else if (el.NumVertexs() == 4)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				UINT32 nPoint = el.Points[j];
+				if (nPoint > nMaxIndex)
+					nMaxIndex = nPoint;
+			}
+		}
+	}
+	m_colors.resize(nMaxIndex + 1);
+	m_normals.resize(nMaxIndex + 1);
+	for (size_t i=0; i<size(); i++)
+	{
+		CViewElement &el = at(i);
+		if (!el.DrawFlag || !el.FragmentFlag || el.IsBarLike())
+			continue;
+		if (el.NumVertexs()==3)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				UINT32 nPoint = el.Points[j];
+				m_triangles.push_back(nPoint);
+				m_colors[nPoint] = el.Color;
+				m_normals[nPoint] = el.Norm;
+			}
+		} else if (el.NumVertexs() == 4)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				UINT32 nPoint = el.Points[j];
+				m_quads.push_back(el.Points[j]);
+				m_colors[nPoint] = el.Color;
+				m_normals[nPoint] = el.Norm;
+			}
+		}
+	}
+
+}
+
 void __fastcall CViewGeometry::DeleteEqualElements()
 {
 	//CViewElementArray ElementsCopy(ElementArray);
@@ -1203,8 +1260,10 @@ void CViewGeometry::SetupAndOptimize(bool bReduceGeometry)
 	SetupNormals();
     _TRACE(_T("\tSetupNormals() = %s\n"), Timer1.StopStr());//	AfxMessageBox(S);
 	DeleteNondrawableElements();
+	BuildArrays();
 	if (bReduceGeometry)
 	{
+		Retriangulate();
 		Timer1.Start();
 		GetNodeCashe()->Construct();
 		_TRACE(_T("\tConstructNodeCashe() = %s\n"), Timer1.StopStr());
@@ -1217,7 +1276,6 @@ void CViewGeometry::SetupAndOptimize(bool bReduceGeometry)
 		_TRACE(_T("\tSetupLineStrips() = %s\n"), Timer1.StopStr());//	AfxMessageBox(S);
 	}
     _TRACE(_T("OtherGeometrySetup = %s\n"), Timer.StopStr());//	AfxMessageBox(S);
-
 }
 
 CViewGeometry::~CViewGeometry(void)
@@ -1376,6 +1434,14 @@ void CViewGeometry::GetMax3DBox(const CRotator *Rot, S3DBox *Box)
 	return;
 }
 
+void CViewGeometry::Retriangulate()
+{
+}
+
+void CViewGeometry::BuildArrays()
+{
+	ElementArray.BuildArrays();
+}
 
 
 void CViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
