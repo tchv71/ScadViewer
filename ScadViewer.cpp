@@ -154,6 +154,7 @@ BOOL CScadViewerApp::ExitInstance(void)
 {
 	CMFCVisualManager::DestroyInstance();
 	m_Settings.StopFileProc();
+	CKeyboardManager::CleanUp();
 	return CWinAppEx::ExitInstance();
 }
 
