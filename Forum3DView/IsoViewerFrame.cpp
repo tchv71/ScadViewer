@@ -198,6 +198,7 @@ void CIsoViewerFrame::UpdateDeformScale(void) const
 		if (pGeom)
 		{
 			pGeom->SetDefScale(pSlider->GetPos());
+			pGeom->BuildArrays();
 			m_p3DView->Invalidate();
 		}
 #endif
@@ -458,6 +459,7 @@ void CIsoViewerFrame::OnParamsChanged()
 	pGeom->LoadIso(m_p3DView->GetDocument()->m_bShowProfiles, m_p3DView->m_ViewOptions.bDrawOptimize);
 	m_p3DView->RedoCut();
 	UpdateDeformScale();
+	pGeom->BuildArrays();
 	m_p3DView->Invalidate();
 }
 

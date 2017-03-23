@@ -162,7 +162,7 @@ void CNodeCashe::Clear(void)
 	if (!vecCashe.size())
 		return;
 	SViewCasheNode	*pnc;
-	for(UINT i = 0; i < m_pGeom->VertexArray.size(); i++)
+	for(UINT i = 0; i < vecCashe.size(); i++)
 	{
 		pnc = &vecCashe[i];
 		if(pnc->SecondNode == -1)
@@ -1106,7 +1106,7 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 	for (size_t i=0; i<nElements; i++)
 	{
 		CViewElement &el = pElements[i];
-		if (!el.DrawFlag || !el.FragmentFlag)
+		if (!el.DrawFlag || !el.FragmentFlag || el.bContourOnly)
 			continue;
 		for (int j = 0; j < el.NumVertexs(); j++)
 		{

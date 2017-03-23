@@ -981,7 +981,7 @@ void CIsoViewGeometry::DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowU
 {
 	CViewGeometry::DrawOptionsChanged(DrawOptions, bShowUsedNodes);
 	ASSERT(VertexArray.size()==m_OriginalVertexs.size());
-    for (UINT i=0; i<VertexArray.size(); i++)
+    for (UINT i=0; i<m_OriginalVertexs.size(); i++)
 	{
 		SViewVertex& vO= m_OriginalVertexs[i];
 		SViewVertex& v= VertexArray[i];
