@@ -1095,7 +1095,7 @@ CViewElement::CViewElement(TColor color): m_nExtraPoints(-1)
 	bContourOnly = false;
 }
 
-void CViewElementArray::BuildArrays(CViewVertexArray& VertexArray)
+void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement * pElements, size_t nElements)
 {
 	m_triangles.resize(0);
 	m_quads.resize(0);
@@ -1103,9 +1103,9 @@ void CViewElementArray::BuildArrays(CViewVertexArray& VertexArray)
 	m_colors.resize(nMaxIndex);
 	m_normals.resize(nMaxIndex);
 	std::map<UINT32, bool> mapVertexUsed;
-	for (size_t i=0; i<size(); i++)
+	for (size_t i=0; i<nElements; i++)
 	{
-		CViewElement &el = at(i);
+		CViewElement &el = pElements[i];
 		if (!el.DrawFlag || !el.FragmentFlag || el.IsBarLike())
 			continue;
 		for (int j = 0; j < el.NumVertexs(); j++)
@@ -1114,7 +1114,7 @@ void CViewElementArray::BuildArrays(CViewVertexArray& VertexArray)
 			if (!mapVertexUsed[nPoint])
 			{
 				mapVertexUsed[nPoint] = true;
-				m_colors[nPoint] = el.Color;
+				m_colors[nPoint] = el.Color | (128 << 24);
 				m_normals[nPoint] = el.Norm;
 			}
 			else
@@ -1122,7 +1122,7 @@ void CViewElementArray::BuildArrays(CViewVertexArray& VertexArray)
 				VertexArray.push_back(VertexArray[nPoint]);
 				nPoint = VertexArray.size() - 1;
 				el.Points[j] = nPoint;
-				m_colors.push_back(el.Color);
+				m_colors.push_back(el.Color | (128 << 24));
 				m_normals.push_back(el.Norm);
 
 			}
@@ -1427,7 +1427,7 @@ void CViewGeometry::Retriangulate()
 
 void CViewGeometry::BuildArrays()
 {
-	ElementArray.BuildArrays(VertexArray);
+	ElementArray.BuildArrays(VertexArray, ElementArray.GetVector(), ElementArray.size());
 }
 
 
@@ -1452,9 +1452,9 @@ void CViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
 			CViewElement &El = ElementArray[i];
 			El.FragmentFlag = bvecShowRealElements[El.NumElem];
 		}
-		CorrectVertexVisibility();
 		if (ElementArray.GetSelectedElement()==r->NumEl)
 			ElementArray.UnselectElements();
+		CorrectVertexVisibility();
 		return;
 
 	}
@@ -1887,3 +1887,4 @@ void CViewGeometry::OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOpti
 
 INodeCashe* CViewGeometry::GetNodeCashe()
 { return m_pNodeCashe ? m_pNodeCashe : (m_pNodeCashe=new CNodeCashe(this, m_bOptimize)); }
+

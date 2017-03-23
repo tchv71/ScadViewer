@@ -205,7 +205,6 @@ public:
 	void UnselectElements()
 	{
 		m_nNumElSelected = 0;
-		BuildArrays(m_VertexArray);
 	}
 	void SelectElement(NUM_ELEM_TYPE NumElem)
 	{
@@ -229,7 +228,7 @@ public:
 	{
 		return m_SelElOrgType;
 	}
-	void BuildArrays(CViewVertexArray & VertexArray);
+	void BuildArrays(CViewVertexArray & VertexArray, CViewElement* pElements, size_t nElements);
 	std::vector<UINT32> m_triangles;
 	std::vector<UINT32> m_quads;
 	std::vector<UINT32> m_colors;

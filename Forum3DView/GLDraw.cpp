@@ -380,12 +380,14 @@ void CGLDraw::Draw(void)
 		ENABLE_LIGHTING(m_pDrawOptions->bLighting);
 		if (nCurrentStage == BAR_STAGE)
 			SetGlColor(m_pOptions->BarColor);
-		if (bDrawArrays && nCurrentStage == FILL_STAGE)
+		if (bDrawArrays && nCurrentStage == FILL_STAGE &&  Mode != M_FILL_AND_LINES_TRANSP)
 		{
 			if (m_pGeometry->ElementArray.size() == 0)
 				continue;
 			
-			ASSERT(m_pGeometry->VertexArray.size() == m_pGeometry->ElementArray.m_normals.size());
+			if (m_pGeometry->VertexArray.size() != m_pGeometry->ElementArray.m_normals.size())
+				m_pGeometry->BuildArrays();
+
 			for (size_t i = 0; i < m_pGeometry->ElementArray.m_normals.size(); i++)
 			{
 				CorrectNormal(m_pGeometry->ElementArray.m_normals[i], Vertexs+i);
@@ -398,7 +400,7 @@ void CGLDraw::Draw(void)
 			glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), Vertexs);
 
 			glEnableClientState(GL_COLOR_ARRAY);
-			glColorPointer(3, GL_UNSIGNED_BYTE, 4, &m_pGeometry->ElementArray.m_colors[0]);
+			glColorPointer(Mode== M_FILL_AND_LINES_TRANSP ? 4 : 3, GL_UNSIGNED_BYTE, 4, &m_pGeometry->ElementArray.m_colors[0]);
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glNormalPointer(GL_FLOAT, sizeof(CVectorType), &m_pGeometry->ElementArray.m_normals[0]);
 			if (m_pGeometry->ElementArray.m_triangles.size()>0)
@@ -430,7 +432,7 @@ void CGLDraw::Draw(void)
 				break;
 			case EL_QUAD:
 			case EL_TRIANGLE:
-				if (nCurrentStage == BAR_STAGE || (nCurrentStage == FILL_STAGE && bDrawArrays))
+				if (nCurrentStage == BAR_STAGE || (nCurrentStage == FILL_STAGE && bDrawArrays && Mode != M_FILL_AND_LINES_TRANSP))
 					continue;
 				if (nCurrentStage == BORDER_STAGE && m_pOptions->bDrawOptimize && (Mode == M_FILL_AND_LINES || Mode == M_FILL_AND_LINES_TRANSP))
 					continue;
