@@ -665,7 +665,9 @@ void CGLDraw::DrawTextList(int nFontNo, LPCTSTR pszName) const
 	glPushAttrib(GL_LIST_BIT);							// Pushes The Display List Bits
 	glListBase(m_pRenderer->m_fontBases[nFontNo]);									// Sets The Base Character to 0
 #ifdef UNICODE
-	glCallLists(GLsizei(_tcslen(pszName)), GL_UNSIGNED_SHORT, pszName);	// Draws The Display List Text
+	char pszNameA[MAX_PATH];
+	WideCharToMultiByte(CP_ACP, 0, pszName, -1, pszNameA, sizeof(pszNameA), nullptr, nullptr);
+	glCallLists(GLsizei(_tcslen(pszName)), GL_UNSIGNED_BYTE, pszNameA);	// Draws The Display List Text
 #else
 	glCallLists(_tcslen(pszName), GL_UNSIGNED_BYTE, pszName);	// Draws The Display List Text
 #endif

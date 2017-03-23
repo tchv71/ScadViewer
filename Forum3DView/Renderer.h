@@ -144,9 +144,12 @@ public:
 		Mode = M_FILL_AND_LINES;
 		fDepth = 1.0f;
 		dblDefScale = 1;
+		ZeroMemory(arrLogFonts, sizeof(arrLogFonts));
 		arrLogFonts[1].lfHeight *=7;
 		arrLogFonts[1].lfHeight /=10;
 		arrLogFonts[0].lfWeight = FW_BOLD;
+		arrLogFonts[0].lfCharSet = arrLogFonts[1].lfCharSet = RUSSIAN_CHARSET;
+
 
 		bLighting = true;
 	}

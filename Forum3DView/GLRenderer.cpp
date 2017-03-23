@@ -2082,7 +2082,7 @@ void CGLRenderer::BuildFont(ESvFont fontNo, const LOGFONT* pLogFont)
 						WGL_FONT_POLYGONS,				// Use Polygons, Not Lines
 						m_gmf);							// Address Of Buffer To Recieve Data
 #else
-	wglUseFontBitmaps(m_hMemDC, 0, FONT_LIST_SIZE, m_fontBases[fontNo]);
+	wglUseFontBitmapsA(m_hMemDC, 0, FONT_LIST_SIZE, m_fontBases[fontNo]);
 #endif
 	::SelectObject(m_hMemDC, old);
 }
