@@ -412,6 +412,7 @@ void CMouseManipulatorWnd::OnMButtonDown(UINT nFlags, CPoint point)
 	MovePt = point;
 	m_vpSave = m_ViewPos;
 
+	m_ViewPos.Rot->GetRot(z_rot1, x_rot1);
 	oState = State;
 	State = nFlags & MK_SHIFT ? ST_ROTATE : ST_PAN;
 	OnSetCursor(this, 0, 0);

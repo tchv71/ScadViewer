@@ -370,8 +370,7 @@ void CGLDraw::Draw(void)
 		FILL_STAGE = 2;
 	};
 
-	//glInterleavedArrays(GL_V3F,sizeof(SViewVertex),&(m_pGeometry->VertexArray->Vertexs->x));
-	bool bDrawArrays = true;
+	bool bDrawArrays = m_pDrawOptions->bLighting; // true
 	for(int nCurrentStage = 0; nCurrentStage < nStages; nCurrentStage++)
 	{
 		if (PreDrawStage(Mode, Z_Shift, bSmoothTransp, nCurrentStage)) continue;
