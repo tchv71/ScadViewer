@@ -180,10 +180,13 @@ private:
 
 //typedef TArray<SViewVertex> CViewVertexArray;
 //typedef TArray<CViewElement> CViewElementArray;
+class CViewVertexArray;
+
 class CViewElementArray : public std::vector <CViewElement>
 {
+	CViewVertexArray &m_VertexArray;
 public:
-	CViewElementArray(): m_SelElOrgType()
+	CViewElementArray(CViewVertexArray& rVertexArray): m_VertexArray(rVertexArray), m_SelElOrgType()
 	{
 		m_nNumElSelected = 0;
 	}
@@ -202,6 +205,7 @@ public:
 	void UnselectElements()
 	{
 		m_nNumElSelected = 0;
+		BuildArrays(m_VertexArray);
 	}
 	void SelectElement(NUM_ELEM_TYPE NumElem)
 	{
@@ -225,8 +229,7 @@ public:
 	{
 		return m_SelElOrgType;
 	}
-
-	void BuildArrays();
+	void BuildArrays(CViewVertexArray & VertexArray);
 	std::vector<UINT32> m_triangles;
 	std::vector<UINT32> m_quads;
 	std::vector<UINT32> m_colors;
@@ -408,8 +411,8 @@ public:
 		NumRealVertexs(0),
 		m_bShowUsedNodes(false),
 		m_bForumGeometry(false),
-		m_pNodeCashe(nullptr)
-
+		m_pNodeCashe(nullptr),
+		ElementArray(VertexArray)
 	{
 	}
 	virtual ~CViewGeometry(void);

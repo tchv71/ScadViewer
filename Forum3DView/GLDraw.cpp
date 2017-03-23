@@ -384,22 +384,31 @@ void CGLDraw::Draw(void)
 		{
 			if (m_pGeometry->ElementArray.size() == 0)
 				continue;
-			glEnableClientState(GL_VERTEX_ARRAY_POINTER);
+			
+			ASSERT(m_pGeometry->VertexArray.size() == m_pGeometry->ElementArray.m_normals.size());
+			for (size_t i = 0; i < m_pGeometry->ElementArray.m_normals.size(); i++)
+			{
+				CorrectNormal(m_pGeometry->ElementArray.m_normals[i], Vertexs+i);
+			}
+
+			glEnableClientState(GL_VERTEX_ARRAY);
 			glNormal3f(0, 0, 1);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glColor3f(0.5f, 0.5f, 0.5f);
-			glVertexPointer(3, GL_FLOAT, (BYTE*)&m_pGeometry->VertexArray[1]- (BYTE*)&m_pGeometry->VertexArray[0], &(m_pGeometry->VertexArray.GetVector()->x));
-			//glEnableClientState(GL_COLOR_ARRAY);
-			//glColorPointer(3, GL_UNSIGNED_BYTE, 4, &m_pGeometry->ElementArray.m_colors[0]);
-			//glEnableClientState(GL_NORMAL_ARRAY);
-			//glNormalPointer(GL_FLOAT, sizeof(CVectorType), &m_pGeometry->ElementArray.m_normals[0]);
+			glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), Vertexs);
+
+			glEnableClientState(GL_COLOR_ARRAY);
+			glColorPointer(3, GL_UNSIGNED_BYTE, 4, &m_pGeometry->ElementArray.m_colors[0]);
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glNormalPointer(GL_FLOAT, sizeof(CVectorType), &m_pGeometry->ElementArray.m_normals[0]);
 			if (m_pGeometry->ElementArray.m_triangles.size()>0)
 				glDrawElements(GL_TRIANGLES, m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, &(m_pGeometry->ElementArray.m_triangles[0]));
 			if (m_pGeometry->ElementArray.m_quads.size()>0)
 				glDrawElements(GL_QUADS, m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, &(m_pGeometry->ElementArray.m_quads[0]));
 			GLenum err = glGetError();
-			glDisableClientState(GL_VERTEX_ARRAY_POINTER);
+			glDisableClientState(GL_VERTEX_ARRAY);
 			int i = 0;
+			continue;
 		}
 		for (size_t i = 0; i < NumElements; i++)
 		{

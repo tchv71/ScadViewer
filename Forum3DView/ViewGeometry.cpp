@@ -14,6 +14,7 @@
 #define Mqsort	qsort
 #include <math.h>
 #include <stdio.h>
+#include <map>
 
 #undef GetObject
 #define GetObject GetObjectA
@@ -1005,12 +1006,14 @@ void __fastcall CViewElement::SetNormal(SViewVertex *Vertexs)
 	    CVectorType	p1v(p[1].x - p[0].x, p[1].y - p[0].y, p[1].z - p[0].z );
 	    CVectorType p2v(p[2].x - p[1].x, p[2].y - p[1].y, p[2].z - p[1].z );
 	    Norm.SetCrossProduct(p1v, p2v);
-        return;
+		Norm.Normalize();
+		return;
     }
 
 	CVectorType	p1v(p[1].x - p[0].x, p[1].y - p[0].y, p[1].z - p[0].z);
 	CVectorType p2v(p[2].x - p[1].x, p[2].y - p[1].y, p[2].z - p[1].z);
 	Norm.SetCrossProduct(p1v, p2v);
+	Norm.Normalize();
 }
 
 void __fastcall CViewGeometry::SetupNormals(void)
@@ -1092,58 +1095,42 @@ CViewElement::CViewElement(TColor color): m_nExtraPoints(-1)
 	bContourOnly = false;
 }
 
-void CViewElementArray::BuildArrays()
+void CViewElementArray::BuildArrays(CViewVertexArray& VertexArray)
 {
-	UINT32 nMaxIndex = 0;
-	for (size_t i = 0; i<size(); i++)
-	{
-		CViewElement &el = at(i);
-		if (!el.DrawFlag || !el.FragmentFlag || el.IsBarLike())
-			continue;
-		if (el.NumVertexs() == 3)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				UINT32 nPoint = el.Points[j];
-				if (nPoint > nMaxIndex)
-					nMaxIndex = nPoint;
-			}
-		}
-		else if (el.NumVertexs() == 4)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				UINT32 nPoint = el.Points[j];
-				if (nPoint > nMaxIndex)
-					nMaxIndex = nPoint;
-			}
-		}
-	}
-	m_colors.resize(nMaxIndex + 1);
-	m_normals.resize(nMaxIndex + 1);
+	m_triangles.resize(0);
+	m_quads.resize(0);
+	UINT32 nMaxIndex = VertexArray.size();
+	m_colors.resize(nMaxIndex);
+	m_normals.resize(nMaxIndex);
+	std::map<UINT32, bool> mapVertexUsed;
 	for (size_t i=0; i<size(); i++)
 	{
 		CViewElement &el = at(i);
 		if (!el.DrawFlag || !el.FragmentFlag || el.IsBarLike())
 			continue;
-		if (el.NumVertexs()==3)
+		for (int j = 0; j < el.NumVertexs(); j++)
 		{
-			for (int j = 0; j < 3; j++)
+			UINT32 nPoint = el.Points[j];
+			if (!mapVertexUsed[nPoint])
 			{
-				UINT32 nPoint = el.Points[j];
+				mapVertexUsed[nPoint] = true;
+				m_colors[nPoint] = el.Color;
+				m_normals[nPoint] = el.Norm;
+			}
+			else
+			{
+				VertexArray.push_back(VertexArray[nPoint]);
+				nPoint = VertexArray.size() - 1;
+				el.Points[j] = nPoint;
+				m_colors.push_back(el.Color);
+				m_normals.push_back(el.Norm);
+
+			}
+
+			if (el.NumVertexs() == 3)
 				m_triangles.push_back(nPoint);
-				m_colors[nPoint] = el.Color;
-				m_normals[nPoint] = el.Norm;
-			}
-		} else if (el.NumVertexs() == 4)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				UINT32 nPoint = el.Points[j];
-				m_quads.push_back(el.Points[j]);
-				m_colors[nPoint] = el.Color;
-				m_normals[nPoint] = el.Norm;
-			}
+			else if (el.NumVertexs()==4)
+				m_quads.push_back(nPoint);
 		}
 	}
 
@@ -1440,7 +1427,7 @@ void CViewGeometry::Retriangulate()
 
 void CViewGeometry::BuildArrays()
 {
-	ElementArray.BuildArrays();
+	ElementArray.BuildArrays(VertexArray);
 }
 
 
@@ -1761,7 +1748,7 @@ void CViewGeometry::CorrectVertexVisibility()
 			VertexArray[ElementArray[i].Points[j]].FragmentFlag = true;
 		}
 	}
-
+	BuildArrays();
 }
 
 void CViewGeometry::DeleteNondrawableElements()

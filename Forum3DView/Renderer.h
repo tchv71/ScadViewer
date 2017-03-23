@@ -10,7 +10,7 @@
 #endif // _MSC_VER > 1000
 
 #ifdef UNICODE
-#define FONT_LIST_SIZE 4096
+#define FONT_LIST_SIZE 256
 #else
 #define FONT_LIST_SIZE 256
 #endif

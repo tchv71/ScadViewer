@@ -459,7 +459,11 @@ bool C3DBoxView::Select(CPoint pt)
 	if (!pGeometry)
 		return FALSE;
 	pt.y = ClientHeight - pt.y;
-	return m_pRenderer->Select(pGeometry,pt, m_DrawOptions.fDepth);
+	bool bRes = m_pRenderer->Select(pGeometry,pt, m_DrawOptions.fDepth);
+	pGeometry->SetupElementColors(&m_ViewOptions, m_DrawOptions.Mode);
+	pGeometry->BuildArrays();
+	Invalidate();
+	return bRes;
 }
 
 void C3DBoxView::OnEndPrintPreview(CDC* pDC, CPrintInfo* pInfo, POINT point, CPreviewView* pView) 
