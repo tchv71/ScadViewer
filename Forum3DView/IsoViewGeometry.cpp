@@ -27,7 +27,8 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CIsoViewGeometry::CIsoViewGeometry(CIsoViewerFrame* pFrm) :
+CIsoViewGeometry::CIsoViewGeometry(CIsoViewerFrame* pFrm, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) :
+	CViewGeometry(pViewOptions,pDrawOptions),
 	clIntervalOff(clWhite+1), m_dblDefScale(0),
 	m_nOff(0),
 	m_nRealElements(-1),

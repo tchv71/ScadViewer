@@ -26,9 +26,8 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CForumViewGeometry::CForumViewGeometry()
+CForumViewGeometry::CForumViewGeometry(const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) : CViewGeometry(pViewOptions,pDrawOptions)
 {
-
 }
 
 CForumViewGeometry::~CForumViewGeometry()

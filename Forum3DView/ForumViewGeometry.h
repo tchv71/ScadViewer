@@ -14,7 +14,7 @@
 class CForumViewGeometry : public CViewGeometry  
 {
 public:
-	CForumViewGeometry();
+	CForumViewGeometry(const SViewOptions* pViewOptions, const CDrawOptions *pDrawOptions);
 	virtual ~CForumViewGeometry();
 protected:
 	/****** Forum objects support ********/

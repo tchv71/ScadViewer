@@ -277,7 +277,7 @@ extern "C" BOOL __stdcall SCForumMdl3DDraw( HDC hDC, const RECT * r, LPCTSTR sFi
 	{
 		return FALSE;
 	}
-	CForumViewGeometry fvg;
+	CForumViewGeometry fvg(nullptr,nullptr);
 	fvg.m_bForThumbs = true;
 	fvg.m_bDeleteInnerPlates = false;
 	if(!fvg.LoadFromFile(sFileName, 0, 0, false))
@@ -394,7 +394,7 @@ void FORUM3DVIEW_EXPORT OglIso3D(SOglIsoParam *pParam)
 #endif
 	p3DFrame->ActivateFrame();
 	//AfxGetApp()->m_pMainWnd = NULL;
-	CIsoViewGeometry *pIsoGeometry = new CIsoViewGeometry(p3DFrame);
+	CIsoViewGeometry *pIsoGeometry = new CIsoViewGeometry(p3DFrame,nullptr,nullptr);
 	pIsoGeometry->SetParams(pParam);
 	pIsoGeometry->LoadIso(pDoc->m_bShowProfiles, static_cast<CScadViewerView*>(p3DFrame->GetActiveView())->m_ViewOptions.bDrawOptimize);
 	pDoc->m_pViewGeometry = pIsoGeometry;

@@ -134,7 +134,7 @@ void CScadViewerDoc::Load(void)
 	CScadViewerView *pView = static_cast<CScadViewerView *>(GetNextView(pos));
 	ASSERT_KINDOF(CScadViewerView, pView);
 	Clear();
-	m_pViewGeometry = new CForumViewGeometry();
+	m_pViewGeometry = new CForumViewGeometry(&pView->m_ViewOptions,&pView->m_DrawOptions);
 	m_pViewGeometry->m_bDeleteInnerPlates = pView->m_ViewOptions.bRemoveDupPlanes;
 	bool bOptimize = pView->m_ViewOptions.bDrawOptimize | pView->m_ViewOptions.bRemoveDupPlanes;
 
@@ -223,7 +223,7 @@ void CScadViewerDoc::LoadIso()
 	ASSERT_KINDOF(CScadViewerView, pView);
 	Clear();
 	m_IsoParams.pTypeInfo = new TypeInformationOnSchema;
-	m_pViewGeometry = pGeom = new CIsoViewGeometry(static_cast<CIsoViewerFrame*>(pView->GetParentFrame()));
+	m_pViewGeometry = pGeom = new CIsoViewGeometry(static_cast<CIsoViewerFrame*>(pView->GetParentFrame()),&pView->m_ViewOptions,&pView->m_DrawOptions);
 	m_pViewGeometry->m_bDeleteInnerPlates = pView->m_ViewOptions.bRemoveDupPlanes;
 	bool bOptimize = pView->m_ViewOptions.bDrawOptimize | pView->m_ViewOptions.bRemoveDupPlanes;
 

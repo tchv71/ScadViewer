@@ -400,9 +400,13 @@ protected:
 
 class CViewGeometry : public IModelDraw, public IGeomCut
 {
+	const struct SViewOptions* m_pOptions;
+	const CDrawOptions* m_pDrawOptions;
 // Methods
 public:
-	CViewGeometry() :
+	CViewGeometry(const struct SViewOptions* pOptions, const CDrawOptions* pDrawOptions) :
+		m_pOptions(pOptions),
+		m_pDrawOptions(pDrawOptions),
 		m_bDeleteInnerPlates(false),
 		m_bForThumbs(false),
 		m_bOptimize(false),

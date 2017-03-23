@@ -380,7 +380,7 @@ void CGLDraw::Draw(void)
 		ENABLE_LIGHTING(m_pDrawOptions->bLighting);
 		if (nCurrentStage == BAR_STAGE)
 			SetGlColor(m_pOptions->BarColor);
-		if (bDrawArrays && nCurrentStage == FILL_STAGE &&  Mode != M_FILL_AND_LINES_TRANSP)
+		if (bDrawArrays && (nCurrentStage == FILL_STAGE) &&  Mode != M_FILL_AND_LINES_TRANSP)
 		{
 			if (m_pGeometry->ElementArray.size() == 0)
 				continue;

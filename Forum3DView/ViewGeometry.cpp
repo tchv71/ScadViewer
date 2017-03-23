@@ -583,8 +583,8 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 #endif
 	if (TypeProfile != 0 || TypePlate != 0)
 	{
-		delete []m_pFlatGeometry;
-		m_pFlatGeometry = new CForumViewGeometry;
+		delete m_pFlatGeometry;
+		m_pFlatGeometry = new CForumViewGeometry(m_pOptions,m_pDrawOptions);
 		m_pFlatGeometry->m_bDeleteInnerPlates = m_bDeleteInnerPlates;
 		if (!m_pFlatGeometry->LoadFromSchema(Schem, 0, 0, true))
 			return false;
@@ -1106,7 +1106,7 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 	for (size_t i=0; i<nElements; i++)
 	{
 		CViewElement &el = pElements[i];
-		if (!el.DrawFlag || !el.FragmentFlag || el.IsBarLike())
+		if (!el.DrawFlag || !el.FragmentFlag)
 			continue;
 		for (int j = 0; j < el.NumVertexs(); j++)
 		{
@@ -1427,6 +1427,8 @@ void CViewGeometry::Retriangulate()
 
 void CViewGeometry::BuildArrays()
 {
+	if (m_pOptions&&m_pDrawOptions)
+		SetupElementColors(m_pOptions, m_pDrawOptions->Mode);
 	ElementArray.BuildArrays(VertexArray, ElementArray.GetVector(), ElementArray.size());
 }
 

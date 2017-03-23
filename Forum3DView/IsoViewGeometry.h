@@ -43,7 +43,7 @@ class CIsoViewerFrame;
 class CIsoViewGeometry : public CViewGeometry  
 {
 public:
-	CIsoViewGeometry(CIsoViewerFrame* pFrm);
+	CIsoViewGeometry(CIsoViewerFrame* pFrm, const SViewOptions* pViewOptions, const CDrawOptions *pDrawOptions);
 	virtual ~CIsoViewGeometry();
 	const COLORREF clIntervalOff;
 public:
