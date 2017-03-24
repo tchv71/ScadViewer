@@ -1247,7 +1247,6 @@ void CViewGeometry::SetupAndOptimize(bool bReduceGeometry)
 	SetupNormals();
     _TRACE(_T("\tSetupNormals() = %s\n"), Timer1.StopStr());//	AfxMessageBox(S);
 	DeleteNondrawableElements();
-	BuildArrays();
 	if (bReduceGeometry)
 	{
 		Retriangulate();
@@ -1346,7 +1345,6 @@ void CViewGeometry::DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsed
 					(El->OrgType == EL_SOLID)
 				);
 		}
-		RecreateCashe();
 	}
 
 	CorrectVertexVisibility();
@@ -1430,8 +1428,31 @@ void CViewGeometry::BuildArrays()
 	if (m_pOptions&&m_pDrawOptions)
 		SetupElementColors(m_pOptions, m_pDrawOptions->Mode);
 	ElementArray.BuildArrays(VertexArray, ElementArray.GetVector(), ElementArray.size());
+	if (m_bOptimize)
+		BuildLineStrips();
 }
 
+void CViewGeometry::BuildLineStrips()
+{
+	SLineStripRec	*Strip = GetNodeCashe()->Strips(0);
+	if (Strip == nullptr)
+		return;
+	std::vector<UINT32> &linestrips = ElementArray.m_linestrips;
+	linestrips.resize(0);
+	while (Strip->Vertex != -1)
+	{
+		linestrips.push_back(0);
+		UINT32 &rSize = linestrips[linestrips.size() - 1];
+		UINT32 nCount = 0;
+		for (; Strip->Vertex != -1; Strip++)
+		{
+			linestrips.push_back(Strip->Vertex);
+			nCount++;
+		}
+		rSize = nCount;
+		Strip++;
+	}
+}
 
 void CViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
 {
@@ -1750,6 +1771,7 @@ void CViewGeometry::CorrectVertexVisibility()
 			VertexArray[ElementArray[i].Points[j]].FragmentFlag = true;
 		}
 	}
+	m_pNodeCashe->Recreate();
 	BuildArrays();
 }
 

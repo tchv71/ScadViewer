@@ -63,7 +63,7 @@ void  CCutter::DoCut
 	}
 
 	PerformCut(r_new);
-	(*FGeomAddr)->GetNodeCashe()->Recreate();
+	//(*FGeomAddr)->GetNodeCashe()->Recreate();
 }
 
 void  CCutter::PerformCut(SCutRecord *r)

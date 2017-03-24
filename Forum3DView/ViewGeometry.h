@@ -184,6 +184,7 @@ class CViewVertexArray;
 
 class CViewElementArray : public std::vector <CViewElement>
 {
+	friend class CViewGeometry;
 	CViewVertexArray &m_VertexArray;
 public:
 	CViewElementArray(CViewVertexArray& rVertexArray): m_VertexArray(rVertexArray), m_SelElOrgType()
@@ -228,12 +229,13 @@ public:
 	{
 		return m_SelElOrgType;
 	}
-	void BuildArrays(CViewVertexArray & VertexArray, CViewElement* pElements, size_t nElements);
 	std::vector<UINT32> m_triangles;
 	std::vector<UINT32> m_quads;
 	std::vector<UINT32> m_colors;
 	std::vector<CVectorType> m_normals;
+	std::vector<UINT32> m_linestrips;
 protected:
+	void BuildArrays(CViewVertexArray & VertexArray, CViewElement* pElements, size_t nElements);
 	NUM_ELEM_TYPE m_nNumElSelected;
 	TOrgElemType m_SelElOrgType;
 };
@@ -444,6 +446,7 @@ public:
 	void GetMax3DBox(const CRotator *Rot, S3DBox *Box);
 	virtual void Retriangulate();
 	virtual void BuildArrays();
+	void BuildLineStrips();
 	virtual void SetupAndOptimize(bool bReduceGeometry);
 
 	bool	m_bDeleteInnerPlates;
@@ -474,7 +477,7 @@ protected:
 protected:
 	class SSortElement : public SElement
 	{
-public:
+	public:
 		NODE_NUM_TYPE N;
 	};
 	void __fastcall		DeleteEqualNodes();

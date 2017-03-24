@@ -300,7 +300,7 @@ void CGLDraw::Draw(void)
 		return;
 	//glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
 	EDrawMode	Mode = m_pDrawOptions->Mode;
-	m_pGeometry->SetupElementColors(m_pOptions, Mode);
+	//m_pGeometry->SetupElementColors(m_pOptions, Mode);
 	c=0xff00;
 	//   glDisable(GL_DITHER);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -342,6 +342,7 @@ void CGLDraw::Draw(void)
 		m_pGeometry->GetNodeCashe()->Recreate();
 		m_pGeometry->GetNodeCashe()->Clear();
 		Vertexs = m_pGeometry->VertexArray.GetVector();
+		m_pGeometry->BuildLineStrips();
 
 #ifdef COLOR_PLATES
 		for (int i=0; i<NumElements; i++)
@@ -393,20 +394,21 @@ void CGLDraw::Draw(void)
 			}
 
 			glEnableClientState(GL_VERTEX_ARRAY);
-			glNormal3f(0, 0, 1);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glColor3f(0.5f, 0.5f, 0.5f);
 			glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), Vertexs);
 
 			glEnableClientState(GL_COLOR_ARRAY);
 			glColorPointer(Mode== M_FILL_AND_LINES_TRANSP ? 4 : 3, GL_UNSIGNED_BYTE, 4, &m_pGeometry->ElementArray.m_colors[0]);
+
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glNormalPointer(GL_FLOAT, sizeof(CVectorType), &m_pGeometry->ElementArray.m_normals[0]);
+
 			if (m_pGeometry->ElementArray.m_triangles.size()>0)
 				glDrawElements(GL_TRIANGLES, m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, &(m_pGeometry->ElementArray.m_triangles[0]));
 			if (m_pGeometry->ElementArray.m_quads.size()>0)
 				glDrawElements(GL_QUADS, m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, &(m_pGeometry->ElementArray.m_quads[0]));
 			GLenum err = glGetError();
+			glDisableClientState(GL_NORMAL_ARRAY);
+			glDisableClientState(GL_COLOR_ARRAY);
 			glDisableClientState(GL_VERTEX_ARRAY);
 			int i = 0;
 			continue;
@@ -1553,6 +1555,18 @@ inline void CGLDraw::CorrectNormal(CVectorType &rNorm, SViewVertex *p) const
 //#define SORT_FURTHEST
 void CGLDraw::DrawLineStrips(void) const
 {
+	glDisable(GL_LIGHTING);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
+	std::vector<UINT32>& linestrips = m_pGeometry->ElementArray.m_linestrips;
+	for (size_t i = 0; i < linestrips.size();)
+	{
+		UINT32 nSize = linestrips[i++];
+		glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &linestrips[i]);
+		i += nSize;
+	}
+	glDisableClientState(GL_VERTEX_ARRAY);
+	return;
 #ifdef COLOR_STRIPS
 
 	unsigned	c = 0;//clBlack;
