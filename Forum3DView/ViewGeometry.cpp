@@ -1442,14 +1442,14 @@ void CViewGeometry::BuildLineStrips()
 	while (Strip->Vertex != -1)
 	{
 		linestrips.push_back(0);
-		UINT32 &rSize = linestrips[linestrips.size() - 1];
+		size_t nSize = linestrips.size() - 1;
 		UINT32 nCount = 0;
 		for (; Strip->Vertex != -1; Strip++)
 		{
 			linestrips.push_back(Strip->Vertex);
 			nCount++;
 		}
-		rSize = nCount;
+		linestrips[nSize] = nCount;
 		Strip++;
 	}
 }
@@ -1771,7 +1771,8 @@ void CViewGeometry::CorrectVertexVisibility()
 			VertexArray[ElementArray[i].Points[j]].FragmentFlag = true;
 		}
 	}
-	m_pNodeCashe->Recreate();
+	if (m_pNodeCashe)
+		m_pNodeCashe->Recreate();
 	BuildArrays();
 }
 
