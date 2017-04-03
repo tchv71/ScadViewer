@@ -528,7 +528,7 @@ bool CViewGeometry::LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePl
 	SCHEMA*	Schem = ppSchem ? *ppSchem : nullptr ;
 	if (Schem==nullptr)
 		Schem = new SCHEMA;
-	ZeroMemory(Schem, sizeof(SCHEMA));
+	//ZeroMemory(Schem, sizeof(SCHEMA));
 	if (ppSchem)
 		_tcscpy_s(Path, _T("C:\\swork"));
 #ifdef SCAD11
@@ -566,7 +566,10 @@ bool CViewGeometry::LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePl
 		return true;
 	bool bResult = LoadFromSchema(Schem, TypeProfile, TypePlate, bOptimize);
 	if (!ppSchem)
+	{
+		Schem->Destroy();
 		delete Schem;
+	}
 	return bResult;
 #endif
 }

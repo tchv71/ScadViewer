@@ -27,6 +27,7 @@ struct SParallelView
 	FLOAT_TYPE	Zorg;
 	FLOAT_TYPE	ScrScale;
 	void	GeometryZoomAll(CRect *clr, int Border, S3DBox *Box);
+	SParallelView() : Xorg(0), Yorg(0), Zorg(0), ScrScale(1) {}
 };
 
 struct SPerspectiveView : public SParallelView
@@ -38,6 +39,7 @@ struct SPerspectiveView : public SParallelView
 
 	FLOAT_TYPE		ViewSizeX;
 	FLOAT_TYPE		ViewSizeY;
+	SPerspectiveView() : Rot(nullptr), bPerspective(false), TargetDist(0), FocusLength(0), ViewSizeX(0), ViewSizeY(0) {}
 };
 typedef UINT	TColor;
 

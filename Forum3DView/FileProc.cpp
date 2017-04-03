@@ -323,7 +323,7 @@ void CFileProc::OnDrawFile( FPTDrawFileInfo * pDFI )
 	{
 		pfbRes->m_nRetCode = FDE_ERROR;
 	}
-	delete pFileData;
+	delete[] pFileData;
 	pFileData = nullptr;
 	SelectObject( hdcBmp, hbmpOld );
 	DeleteDC( hdcBmp );
