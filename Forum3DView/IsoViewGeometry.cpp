@@ -49,7 +49,7 @@ void CIsoViewGeometry::SetDeformState(SOglIsoParam *pParam)
 	Get3DBox(nullptr, &box);
 	FLOAT_TYPE fSchemaSize = C3DVector<FLOAT_TYPE>(box.x_max-box.x_min, box.y_max-box.y_min, box.z_max - box.z_min).Length();
 	FLOAT_TYPE fMaxDisp = 0;
-	size_t nVertexs = VertexArray.size();
+	size_t nVertexs = m_OriginalVertexs.size();
 	m_vecDisp.resize(0);
     for (UINT i=0; i<nVertexs; i++)
 	{
@@ -600,19 +600,30 @@ void CIsoViewGeometry::PerformCut(CCutter& rCutter, SCutRecord *r)
 void CIsoViewGeometry::SetDefScale(double dblDefScale)
 {
 	m_dblDefScale = dblDefScale;
-	size_t nVertexs = VertexArray.size();
-	ASSERT(VertexArray.size()==m_OriginalVertexs.size());
-	if (VertexArray.size()!=m_OriginalVertexs.size())
+	size_t nVertexs = m_OriginalVertexs.size();
+	ASSERT(VertexArray.size()>=m_OriginalVertexs.size());
+	if (VertexArray.size()!=m_OriginalVertexs.size()+ElementArray.m_mapVertexs.size())
 		return;
-    for (UINT i=0; i<nVertexs; i++)
+	for (UINT i = 0; i < nVertexs; i++)
 	{
-		SViewVertex& vO= m_OriginalVertexs[i];
-		SViewVertex& v= VertexArray[i];
+		SViewVertex& vO = m_OriginalVertexs[i];
+		SViewVertex& v = VertexArray[i];
 		NODE_NUM_TYPE nDispIndex = v.nMainVertex == -1 ? i : v.nMainVertex;
 		v.x = vO.x + FLOAT_TYPE(m_vecDisp[nDispIndex].x*dblDefScale*m_dblDefScaleMult);
 		v.y = vO.y + FLOAT_TYPE(m_vecDisp[nDispIndex].y*dblDefScale*m_dblDefScaleMult);
 		v.z = vO.z + FLOAT_TYPE(m_vecDisp[nDispIndex].z*dblDefScale*m_dblDefScaleMult);
 	}
+	for (auto it = ElementArray.m_mapVertexs.begin(); it != ElementArray.m_mapVertexs.end(); ++it)
+	{
+		UINT i = it->first;
+		SViewVertex& vO = m_OriginalVertexs[i];
+		SViewVertex &v1 = VertexArray[it->second];
+		NODE_NUM_TYPE nDispIndex = v1.nMainVertex == -1 ? i : v1.nMainVertex;
+		v1.x = vO.x + FLOAT_TYPE(m_vecDisp[nDispIndex].x*dblDefScale*m_dblDefScaleMult);
+		v1.y = vO.y + FLOAT_TYPE(m_vecDisp[nDispIndex].y*dblDefScale*m_dblDefScaleMult);
+		v1.z = vO.z + FLOAT_TYPE(m_vecDisp[nDispIndex].z*dblDefScale*m_dblDefScaleMult);
+	}
+
 	LoadFactors();
 }
 
@@ -980,7 +991,7 @@ void CIsoViewGeometry::SetDefMapInfo(DefMapInfo *pDMI, const SOglIsoParam *pPara
 void CIsoViewGeometry::DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes)
 {
 	CViewGeometry::DrawOptionsChanged(DrawOptions, bShowUsedNodes);
-	ASSERT(VertexArray.size()==m_OriginalVertexs.size());
+	ASSERT(VertexArray.size()>=m_OriginalVertexs.size());
     for (UINT i=0; i<m_OriginalVertexs.size(); i++)
 	{
 		SViewVertex& vO= m_OriginalVertexs[i];

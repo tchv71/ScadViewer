@@ -13,6 +13,7 @@
 #include <vector>
 #include "Renderer.h"
 #include <set>
+#include <map>
 typedef ptrdiff_t NODE_NUM_TYPE;
 typedef unsigned SCUINT32;
 
@@ -234,6 +235,7 @@ public:
 	std::vector<UINT32> m_colors;
 	std::vector<CVectorType> m_normals;
 	std::vector<UINT32> m_linestrips;
+	std::vector<std::pair<UINT32, UINT32>> m_mapVertexs;
 protected:
 	void BuildArrays(CViewVertexArray & VertexArray, CViewElement* pElements, size_t nElements);
 	NUM_ELEM_TYPE m_nNumElSelected;

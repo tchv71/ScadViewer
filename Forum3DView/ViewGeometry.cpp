@@ -196,7 +196,7 @@ bool CNodeCashe::WasDrawed(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 
 bool CNodeCashe::WasDrawed1(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 {
-	if (!vecCashe.size())
+	if (!vecCashe.size() || n1>=vecCashe.size() || n2>=vecCashe.size())
 		return false;
 	SViewCasheNode	*pnc = &vecCashe[n1];
 	if(pnc->SecondNode != -1)
@@ -1097,8 +1097,11 @@ CViewElement::CViewElement(TColor color): m_nExtraPoints(-1)
 
 void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement * pElements, size_t nElements)
 {
+	if (m_mapVertexs.size() > 0)
+		return;
 	m_triangles.resize(0);
 	m_quads.resize(0);
+	m_mapVertexs.clear();
 	UINT32 nMaxIndex = VertexArray.size();
 	m_colors.resize(nMaxIndex);
 	m_normals.resize(nMaxIndex);
@@ -1120,6 +1123,7 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 			else
 			{
 				VertexArray.push_back(VertexArray[nPoint]);
+				m_mapVertexs.push_back(std::make_pair(nPoint, VertexArray.size() - 1));
 				nPoint = VertexArray.size() - 1;
 				el.Points[j] = nPoint;
 				m_colors.push_back(el.Color | (128 << 24));
