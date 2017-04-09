@@ -51,7 +51,7 @@ const NODE_NUM_TYPE		NUM_RECODE[] = { 0, 1, 3, 2 };
 //#pragma package(smart_init)
 // =================== Работа с кэшем ребер ==========================
 
-//#define CASHE_SORT // Если определена - упорядочивать узлы в ребре
+#define CASHE_SORT // Если определена - упорядочивать узлы в ребре
 void CNodeCashe::Construct(void)
 {
 	if (vecCashe.size()!=0)
@@ -182,11 +182,8 @@ bool CNodeCashe::WasDrawed(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 #ifdef CASHE_SORT
 	if(n1 > n2)
 	{
-		NODE_NUM_TYPE	tmp = n1;
-		n1 = n2;
-		n2 = tmp;
+		std::swap(n1,n2);
 	}
-
 	return WasDrawed1(n1, n2);
 #else
 	WasDrawed1(n1, n2);

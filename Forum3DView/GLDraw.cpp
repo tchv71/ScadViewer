@@ -1570,12 +1570,22 @@ void CGLDraw::DrawLineStrips(void) const
 {
 	glDisable(GL_LIGHTING);
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
+	CGLRenderer *pRenderer = static_cast<CGLRenderer*>(m_pRenderer);
+	if (pRenderer->IsVBOSupported())
+	{
+		glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBOVertices);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOLinestrips);
+	}
+	else
+	{
+		glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
+	}
 	std::vector<UINT32>& linestrips = m_pGeometry->ElementArray.m_linestrips;
 	for (size_t i = 0; i < linestrips.size();)
 	{
 		UINT32 nSize = linestrips[i++];
-		glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &linestrips[i]);
+		glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, (void*)(i*sizeof(UINT)));
 		i += nSize;
 	}
 	glDisableClientState(GL_VERTEX_ARRAY);
@@ -1627,22 +1637,9 @@ inline void CGLDraw::DrawLines(const CViewElement & El, const SViewVertex * p) c
 	return;
 #endif
 	NODE_NUM_TYPE	NumPoints = El.NumVertexs();
-	glBegin(GL_LINES);
-
-	NODE_NUM_TYPE	pn1 = El.Points[0];
+	glBegin(GL_LINE_LOOP);
 	for(int i = 0; i < NumPoints; i++)
-	{
-		int				j = (i + 1) % NumPoints;
-		NODE_NUM_TYPE	pn2 = El.Points[j];
-		if(!m_pGeometry->GetNodeCashe()->WasDrawed(pn1, pn2))
-		{
-			_glVertex3(p[i].x, p[i].y, p[i].z);
-			_glVertex3(p[j].x, p[j].y, p[j].z);
-		}
-
-		pn1 = pn2;
-	}
-
+		_glVertex3(p[i].x, p[i].y, p[i].z);
 	glEnd();
 }
 

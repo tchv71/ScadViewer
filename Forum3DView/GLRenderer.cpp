@@ -1897,6 +1897,9 @@ HRESULT CGLRenderer::Render(CViewGeometry* pGeometry, const SViewOptions * pView
 		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, m_nVBOQuads);
 		glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, pGeometry->ElementArray.m_quads.size() * sizeof(int), pGeometry->ElementArray.m_quads.data(), GL_STATIC_DRAW);
 		pGeometry->ElementArray.m_bRebuildArrays = false;
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, m_nVBOLinestrips);
+		glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, pGeometry->ElementArray.m_linestrips.size() * sizeof(int), pGeometry->ElementArray.m_linestrips.data(), GL_STATIC_DRAW);
+		pGeometry->ElementArray.m_bRebuildArrays = false;
 	}
 	if (IsVBOSupported())
 	{
@@ -1911,7 +1914,7 @@ HRESULT CGLRenderer::Render(CViewGeometry* pGeometry, const SViewOptions * pView
 
 	DrawCoordSys();
 
-	glFlush();
+	//glFlush();
 	//SwapBuffers();
 	return S_OK;
 }
@@ -2096,13 +2099,13 @@ void CGLRenderer::BuildFont(ESvFont fontNo, const LOGFONT* pLogFont)
 void CGLRenderer::BuildVBOs()
 {
 	// Generate all buffers
-	glGenBuffersARB(5, &m_nVBOVertices);							// Get A Valid Name
+	glGenBuffersARB(6, &m_nVBOVertices);							// Get A Valid Name
 }
 
 void CGLRenderer::DeleteVBOs()
 {
 	// Delete all buffers
-	glDeleteBuffersARB(5, &m_nVBOVertices);							// Get A Valid Name
+	glDeleteBuffersARB(6, &m_nVBOVertices);							// Get A Valid Name
 }
 
 

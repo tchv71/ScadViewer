@@ -60,7 +60,7 @@ public:
 	// Element VBOs
 	unsigned int	m_nVBOTriangles;							// Triangles VBO Name
 	unsigned int	m_nVBOQuads;								// Quads   VBO Name
-
+	unsigned int	m_nVBOLinestrips;
 protected:
 	void	SetGLView(const SPerspectiveView &crViewPos) const;
 	void	SetGLProjection
