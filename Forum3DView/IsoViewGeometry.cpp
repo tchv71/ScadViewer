@@ -341,29 +341,16 @@ void CIsoViewGeometry::IsoElement(SOglIsoParam *pParam, int nElement)
 
 void CIsoViewGeometry::IsoBreakTriangle(const DefMapInfo *DMI, SVertexVal valVertexs[], bool bDrawIsoLines)
 {
-	SVertexVal temp;
 	std::vector<NODE_NUM_TYPE> vec;
 	COLORREF clIsoLine = clBlack;
 	// Sort triangle points by value
 	{
 		if (valVertexs[0].dblVal > valVertexs[1].dblVal)
-		{
-			temp = valVertexs[0];
-			valVertexs[0] = valVertexs[1];
-			valVertexs[1] = temp;
-		}
+			std::swap(valVertexs[0], valVertexs[1]);
 		if (valVertexs[1].dblVal > valVertexs[2].dblVal)
-		{
-			temp = valVertexs[1];
-			valVertexs[1] = valVertexs[2];
-			valVertexs[2] = temp;
-		}
+			std::swap(valVertexs[1],valVertexs[2]);
 		if (valVertexs[0].dblVal > valVertexs[1].dblVal)
-		{
-			temp = valVertexs[0];
-			valVertexs[0] = valVertexs[1];
-			valVertexs[1] = temp;
-		}
+			std::swap(valVertexs[0],valVertexs[1]);
 	}
 	vec.push_back(valVertexs[0].nVertex);
 	double lastVal = valVertexs[0].dblVal;

@@ -23,7 +23,7 @@ public:
 	virtual~CGLRenderer(void);
 public:
 	void ReleaseAllFonts();
-	void BuildAllFonts(const SLogFont arrLogFonts[],float fScale =1.0f);
+	void BuildAllFonts(const SLogFont arrLogFonts[], float fScale = 1.0f);
 	CSize GetFontExtent(ESvFont fontNo, LPCTSTR  pszText, TEXTMETRIC* ptm) override;
 	bool Select(CViewGeometry *pGeometry, CPoint pt, FLOAT_TYPE fDepth) const;
 	static CString GetRenderString();
@@ -33,13 +33,13 @@ public:
 	HRESULT Render(CViewGeometry *pGeometry, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) override;
 	void	SetViewportSize(int x, int y)
 	{
-//		szOld.cx = GLWidth;
-//		szOld.cy = GLHeight;
+		//		szOld.cx = GLWidth;
+		//		szOld.cy = GLHeight;
 		GLWidth = x;
 		GLHeight = y;
 	};
 	void	SwapBuffers(void) const;
-	void BuildFont(ESvFont fontNo,  const LOGFONT *pLogFont);
+	void BuildFont(ESvFont fontNo, const LOGFONT *pLogFont);
 
 protected:
 	void	DrawCoordSys(void) const;
@@ -49,39 +49,35 @@ protected:
 	int		GLHeight;
 	void	SetGLView(const SPerspectiveView &crViewPos) const;
 	void	SetGLProjection
-			(
-				const S3DBox	&rViewBox,
-				FLOAT_TYPE			Depth,
-				CPoint*			pptSelect = nullptr
-			) const;
+	(
+		const S3DBox	&rViewBox,
+		FLOAT_TYPE			Depth,
+		CPoint*			pptSelect = nullptr
+	) const;
 	static void	SetGLLighting(bool bPerspective);
 	static void	CreateRGBPalette(HDC hDC, PIXELFORMATDESCRIPTOR &pfd);
 	static int		ChoosePixelFormatEx
-			(
-				HDC hdc,
-				int *pnColorBits,
-				int *pnDepthBits,
-				int *pnWantDoubleBuffer,
-				int *pnWantAcceleration
-			);
+	(
+		HDC hdc,
+		int *pnColorBits,
+		int *pnDepthBits,
+		int *pnWantDoubleBuffer,
+		int *pnWantAcceleration
+	);
 	bool	bSetupPixelFormat(DWORD dwFlags, bool Soft);
 	static bool	SetDCPixelFormat(HDC hDC, DWORD dwFlags);
 
 	void			DrawAxe(char Name) const;
 
 	HWND	m_hWnd;
-	
+
 	const SPerspectiveView &m_ViewPos;
-	
+
 	HFONT	m_fonts[SVF_SIZE];										// Windows Font ID
 	SLogFont m_arrLogFonts[SVF_SIZE];
 	// Printing
-//	UINT		m_OldFontBase;
-//	HDC			m_hOldDC;
 	HDC			m_hDC;
-//	HGLRC		m_hOldRC;
 	HGLRC		m_hRC;
-	CString		m_strFileName;
 
 protected:
 	void ReleaseFont(ESvFont fontNo);

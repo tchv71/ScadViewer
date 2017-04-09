@@ -64,6 +64,7 @@ protected:
 	CRect		m_rcDIB;
 	CSize		m_szPage;
 	const CViewGeometry* m_pGeometry;
+	CString		m_strFileName;
 
 };
 
