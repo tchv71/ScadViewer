@@ -11,6 +11,8 @@
 #include "stdafx.h"
 #include <gl\gl.h>
 #include <gl\glu.h>
+//#define GL_GLEXT_PROTOTYPES
+#include "glext.h"
 #include "GLRenderer.h"
 #include "GLDraw.h"
 #include <locale.h>
@@ -22,7 +24,8 @@
 //////////////////////////////////////////////////////////////////////
 
 CGLRenderer::CGLRenderer(SPerspectiveView& rViewPos) : GLWidth(0), GLHeight(0), m_hWnd(nullptr),
-                                                       m_ViewPos(rViewPos), m_hDC(nullptr), m_hRC(nullptr)
+    m_ViewPos(rViewPos), m_hDC(nullptr), m_hRC(nullptr),
+	m_bVBOSupported(false), m_nVBOColors(0), m_nVBONormals(0), m_nVBOVertices(0), m_nVBOQuads(0), m_nVBOTriangles(0)
 {
 	memset(m_fontBases, 0, sizeof(m_fontBases));
 	memset(m_fonts, 0, sizeof(m_fonts));
@@ -1690,6 +1693,8 @@ void CGLRenderer::SetGLView(const SPerspectiveView& crViewPos) const
 
 HRESULT CGLRenderer::ReleaseWindow(void)
 {
+	if (IsVBOSupported())
+		DeleteVBOs();
 	wglMakeCurrent(nullptr, nullptr);
 	if (m_hDC)
 		::ReleaseDC(m_hWnd, /*m_hWnd*/ m_hDC);
@@ -1697,6 +1702,12 @@ HRESULT CGLRenderer::ReleaseWindow(void)
 		wglDeleteContext(m_hRC);
 	return S_OK;
 }
+
+
+PFNGLGENBUFFERSARBPROC glGenBuffersARB = NULL;					// VBO Name Generation Procedure
+PFNGLBINDBUFFERARBPROC glBindBufferARB = NULL;					// VBO Bind Procedure
+PFNGLBUFFERDATAARBPROC glBufferDataARB = NULL;					// VBO Data Loading Procedure
+PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = NULL;			// VBO Deletion Procedure
 
 HRESULT CGLRenderer::BindWindow(HWND hBindWnd, bool bSoftOGL, const SLogFont arrLogFonts[])
 {
@@ -1727,6 +1738,17 @@ HRESULT CGLRenderer::BindWindow(HWND hBindWnd, bool bSoftOGL, const SLogFont arr
 		return E_FAIL;
 	}
 	BuildAllFonts(arrLogFonts);
+	m_bVBOSupported = IsExtensionSupported("GL_ARB_vertex_buffer_object");
+	if (m_bVBOSupported)
+	{
+		// Get Pointers To The GL Functions
+		glGenBuffersARB = (PFNGLGENBUFFERSARBPROC)wglGetProcAddress("glGenBuffersARB");
+		glBindBufferARB = (PFNGLBINDBUFFERARBPROC)wglGetProcAddress("glBindBufferARB");
+		glBufferDataARB = (PFNGLBUFFERDATAARBPROC)wglGetProcAddress("glBufferDataARB");
+		glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)wglGetProcAddress("glDeleteBuffersARB");
+
+		BuildVBOs();
+	}
 	return S_OK;
 }
 
@@ -1853,6 +1875,38 @@ HRESULT CGLRenderer::Render(CViewGeometry* pGeometry, const SViewOptions * pView
 	ViewPos.Zorg += m_ViewPos.TargetDist;
 	ViewPos.Rot->Rotate_1(ViewPos.Xorg, ViewPos.Yorg, ViewPos.Zorg);
 
+	if (IsVBOSupported() && pGeometry->ElementArray.m_bRebuildArrays)
+	{
+		glBindBufferARB(GL_ARRAY_BUFFER, m_nVBOVertices);			// Bind The Vertex Buffer
+		std::vector<float> vecVertexs(pGeometry->VertexArray.size() * 3);
+		for (size_t i = 0; i < pGeometry->VertexArray.size(); ++i)
+		{
+			vecVertexs[i * 3] = pGeometry->VertexArray[i].x;
+			vecVertexs[i * 3+1] = pGeometry->VertexArray[i].y;
+			vecVertexs[i * 3+2] = pGeometry->VertexArray[i].z;
+		}
+		glBufferDataARB(GL_ARRAY_BUFFER, vecVertexs.size() * sizeof(float), vecVertexs.data(), GL_STATIC_DRAW);
+
+		glBindBufferARB(GL_ARRAY_BUFFER, m_nVBOColors);
+		glBufferDataARB(GL_ARRAY_BUFFER, pGeometry->ElementArray.m_colors.size() * 4, pGeometry->ElementArray.m_colors.data(), GL_STATIC_DRAW);
+
+	
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, m_nVBOTriangles);
+		glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, pGeometry->ElementArray.m_triangles.size()*sizeof(int), pGeometry->ElementArray.m_triangles.data(), GL_STATIC_DRAW);
+
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, m_nVBOQuads);
+		glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, pGeometry->ElementArray.m_quads.size() * sizeof(int), pGeometry->ElementArray.m_quads.data(), GL_STATIC_DRAW);
+		pGeometry->ElementArray.m_bRebuildArrays = false;
+	}
+	if (IsVBOSupported())
+	{
+		for (size_t i = 0; i < pGeometry->ElementArray.m_normals.size(); i++)
+		{
+			CGLDraw::CorrectNormal(pGeometry->ElementArray.m_normals[i], &(pGeometry->VertexArray[i]), &ViewPos);
+		}
+		glBindBufferARB(GL_ARRAY_BUFFER, m_nVBONormals);
+		glBufferDataARB(GL_ARRAY_BUFFER, 3 * pGeometry->ElementArray.m_normals.size() * sizeof(float), pGeometry->ElementArray.m_normals.data(), GL_STREAM_DRAW_ARB);
+	}
 	pGeometry->OnDrawScene(this, pViewOptions, pDrawOptions, ViewPos);
 
 	DrawCoordSys();
@@ -2037,6 +2091,49 @@ void CGLRenderer::BuildFont(ESvFont fontNo, const LOGFONT* pLogFont)
 	wglUseFontBitmapsA(m_hDC, 0, FONT_LIST_SIZE, m_fontBases[fontNo]);
 #endif
 	::SelectObject(m_hDC, old);
+}
+
+void CGLRenderer::BuildVBOs()
+{
+	// Generate all buffers
+	glGenBuffersARB(5, &m_nVBOVertices);							// Get A Valid Name
+}
+
+void CGLRenderer::DeleteVBOs()
+{
+	// Delete all buffers
+	glDeleteBuffersARB(5, &m_nVBOVertices);							// Get A Valid Name
+}
+
+
+bool CGLRenderer::IsExtensionSupported(char * szTargetExtension)
+{
+	const unsigned char *pszExtensions = NULL;
+	const unsigned char *pszStart;
+	unsigned char *pszWhere, *pszTerminator;
+
+	// Extension names should not have spaces
+	pszWhere = (unsigned char *)strchr(szTargetExtension, ' ');
+	if (pszWhere || *szTargetExtension == '\0')
+		return false;
+
+	// Get Extensions String
+	pszExtensions = glGetString(GL_EXTENSIONS);
+
+	// Search The Extensions String For An Exact Copy
+	pszStart = pszExtensions;
+	for (;;)
+	{
+		pszWhere = (unsigned char *)strstr((const char *)pszStart, szTargetExtension);
+		if (!pszWhere)
+			break;
+		pszTerminator = pszWhere + strlen(szTargetExtension);
+		if (pszWhere == pszStart || *(pszWhere - 1) == ' ')
+			if (*pszTerminator == ' ' || *pszTerminator == '\0')
+				return true;
+		pszStart = pszTerminator;
+	}
+	return false;
 }
 
 void CGLRenderer::ReleaseFont(ESvFont fontNo)

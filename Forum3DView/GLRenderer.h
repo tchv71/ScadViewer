@@ -40,13 +40,28 @@ public:
 	};
 	void	SwapBuffers(void) const;
 	void BuildFont(ESvFont fontNo, const LOGFONT *pLogFont);
-
+	void BuildVBOs();
+	void DeleteVBOs();
+	bool IsExtensionSupported(char* szTargetExtension);
+	bool IsVBOSupported() { return m_bVBOSupported; }
 protected:
 	void	DrawCoordSys(void) const;
-	//CSize	szOld;
-	//FLOAT_TYPE	OldScrScale;
 	int		GLWidth;
 	int		GLHeight;
+
+	// Vertex buffer variables
+	// ARB_vertex_buffer_object supported?
+	bool    m_bVBOSupported;
+public:
+	// Vertex Buffer Object Names
+	unsigned int	m_nVBOVertices;								// Vertex VBO Name
+	unsigned int	m_nVBOColors;								// Color VBO Name
+	unsigned int	m_nVBONormals;								// Normal VBO Name
+	// Element VBOs
+	unsigned int	m_nVBOTriangles;							// Triangles VBO Name
+	unsigned int	m_nVBOQuads;								// Quads   VBO Name
+
+protected:
 	void	SetGLView(const SPerspectiveView &crViewPos) const;
 	void	SetGLProjection
 	(

@@ -1131,7 +1131,6 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 				el.Points[j] = nPoint;
 				m_colors.push_back(el.Color | (128 << 24));
 				m_normals.push_back(el.Norm);
-
 			}
 
 			if (el.NumVertexs() == 3)
@@ -1140,7 +1139,7 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 				m_quads.push_back(nPoint);
 		}
 	}
-
+	m_bRebuildArrays = true;
 }
 
 void __fastcall CViewGeometry::DeleteEqualElements()

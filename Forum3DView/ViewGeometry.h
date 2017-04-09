@@ -188,7 +188,7 @@ class CViewElementArray : public std::vector <CViewElement>
 	friend class CViewGeometry;
 	CViewVertexArray &m_VertexArray;
 public:
-	CViewElementArray(CViewVertexArray& rVertexArray): m_VertexArray(rVertexArray), m_SelElOrgType()
+	CViewElementArray(CViewVertexArray& rVertexArray): m_VertexArray(rVertexArray), m_SelElOrgType(), m_bRebuildArrays(false)
 	{
 		m_nNumElSelected = 0;
 	}
@@ -236,6 +236,7 @@ public:
 	std::vector<CVectorType> m_normals;
 	std::vector<UINT32> m_linestrips;
 	std::vector<std::pair<UINT32, UINT32>> m_mapVertexs;
+	bool m_bRebuildArrays;
 protected:
 	void BuildArrays(CViewVertexArray & VertexArray, CViewElement* pElements, size_t nElements);
 	NUM_ELEM_TYPE m_nNumElSelected;
