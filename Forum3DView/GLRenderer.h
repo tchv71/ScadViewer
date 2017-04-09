@@ -30,7 +30,7 @@ public:
 	// IFemRenderer support
 	HRESULT	BindWindow(HWND hBindWnd, bool bSoftOGL, const SLogFont  arrLogFonts[]) override;
 	HRESULT	ReleaseWindow(void) override;
-	HRESULT Render(CViewGeometry *pGeometry, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions) override;
+	HRESULT Render(CViewGeometry *pGeometry, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) override;
 	void	SetViewportSize(int x, int y)
 	{
 //		szOld.cx = GLWidth;

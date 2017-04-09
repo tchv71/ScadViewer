@@ -204,7 +204,7 @@ public:
 
 	virtual HRESULT BindWindow(HWND hBindWnd, bool bUseSoftware, const SLogFont arrLogFonts[]) = 0;
 	virtual HRESULT ReleaseWindow(void) = 0;
-	virtual HRESULT Render(CViewGeometry *pGeometry, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions) = 0;
+	virtual HRESULT Render(CViewGeometry *pGeometry, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) = 0;
 	virtual CSize GetFontExtent(ESvFont fontNo, LPCTSTR  pszText, TEXTMETRIC* ptm)=0;
 public:
 	UINT	m_fontBases[SVF_SIZE];

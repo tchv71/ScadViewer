@@ -340,11 +340,11 @@ public:
 	}
 
 private:
-	virtual void		Render(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions) =0;
-	virtual void		OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions,SPerspectiveView&	ViewPos) =0;
+	virtual void		Render(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) =0;
+	virtual void		OnDrawScene(IFemRenderer *pRenderer, const SViewOptions *pViewOptions, const CDrawOptions *pDrawOptions,const SPerspectiveView&	ViewPos) =0;
 	virtual INodeCashe* GetNodeCashe() = 0;
 	virtual void		PerformCut(CCutter& rCutter, SCutRecord *r) = 0;
-	virtual void		DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes)=0;
+	virtual void		DrawOptionsChanged(const CDrawOptions * DrawOptions, bool bShowUsedNodes)=0;
 	virtual bool		IsIso() const =0;
 };
 
@@ -426,11 +426,11 @@ public:
 
 	void SetElColor(CViewElement& el, const struct SViewOptions* pOptions, EDrawMode Mode) const;
 	// IModelDraw implementation
-	void Render(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions) override;
-	void OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions, SPerspectiveView& riewPos) override;
+	void Render(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) override;
+	void OnDrawScene(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions, const SPerspectiveView & rViewPos) override;
 	INodeCashe* GetNodeCashe() override;
 	virtual void SetupElementColors(const struct SViewOptions* pOptions, EDrawMode Mode) ;
-	virtual void  DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes) override;
+	virtual void  DrawOptionsChanged(const CDrawOptions * DrawOptions, bool bShowUsedNodes) override;
 	virtual bool  IsIso() const override { return false; }
 	virtual CString Format(double val) const  {return CString();};
 
@@ -444,7 +444,7 @@ public:
 	void ExportToDxf(LPCTSTR szFileName);
 	void __fastcall		SetupNormals(void);
 
-	virtual void Get3DBox(const CRotator *Rot, S3DBox *Box, CViewVertexArray	*pVertexArray = nullptr);
+	virtual void Get3DBox(const CRotator *Rot, S3DBox *Box, const CViewVertexArray * pVertexArray=nullptr);
 	void GetMax3DBox(const CRotator *Rot, S3DBox *Box);
 	virtual void Retriangulate();
 	virtual void BuildArrays();

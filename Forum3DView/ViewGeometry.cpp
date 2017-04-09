@@ -1288,7 +1288,7 @@ void CViewGeometry::RecreateCashe(void) const
 }
 
 // Учет фильтров отрисовки элементов по ориентации
-bool ElementToBeDrawn(const CVectorType &Norm, CDrawOptions *DrOpt)
+bool ElementToBeDrawn(const CVectorType &Norm, const CDrawOptions * DrOpt)
 {
 	if(fabs(Norm.v[2]) < Eps)
 		return DrOpt->bElVertical;
@@ -1298,7 +1298,7 @@ bool ElementToBeDrawn(const CVectorType &Norm, CDrawOptions *DrOpt)
 		return DrOpt->bElOther;
 }
 
-bool BarToBeDrawn(CViewElement &El, CDrawOptions *DrOpt)
+bool BarToBeDrawn(CViewElement &El, const CDrawOptions * DrOpt)
 {
 	if(fabs(El.OrgNorm.v[2]) < Eps)
 		return DrOpt->bBarHorizontal;
@@ -1306,7 +1306,7 @@ bool BarToBeDrawn(CViewElement &El, CDrawOptions *DrOpt)
 		return DrOpt->bBarVertical;
 	return DrOpt->bBarOther;
 }
-void CViewGeometry::DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes)
+void CViewGeometry::DrawOptionsChanged(const CDrawOptions * DrawOptions, bool bShowUsedNodes)
 {
 	m_bShowUsedNodes = bShowUsedNodes;
 	if (DrawOptions)
@@ -1379,12 +1379,12 @@ inline void UpdateBox(const CRotator* Rot, S3DBox *Box, const S3dPoint& p1)
 		Box->z_min = p.z;
 }
 
-void CViewGeometry::Get3DBox(const CRotator *Rot, S3DBox *Box, CViewVertexArray	*pVertexArray)
+void CViewGeometry::Get3DBox(const CRotator *Rot, S3DBox *Box, const CViewVertexArray * pVertexArray)
 {
 
 	// Определяем ограничивающий параллелепипед
 	// при текущем угле поворота
-	CViewVertexArray &va = pVertexArray ? *pVertexArray : VertexArray;
+	const CViewVertexArray &va = pVertexArray ? *pVertexArray : VertexArray;
 	SViewVertex			p;
 	if(va.size() != 0)
 	{
@@ -1906,17 +1906,19 @@ COORD_LINE_OLD *pCoordLine = (COORD_LINE_OLD *)Schem->ReadDocument(21);
 #endif
 }
 
-void CViewGeometry::Render(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions)
+void CViewGeometry::Render(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions)
 {
 	pRenderer->Render(this, pViewOptions, pDrawOptions);
 }
 
-void CViewGeometry::OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions, SPerspectiveView&	rViewPos)
+void CViewGeometry::OnDrawScene(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions, const SPerspectiveView & rViewPos)
 {
 	CGLDraw	GlDraw(this, &rViewPos, pViewOptions, pDrawOptions, pRenderer /*, 15*pViewOptions->LineWidth*/);
 	GlDraw.Draw();
 }
 
 INodeCashe* CViewGeometry::GetNodeCashe()
-{ return m_pNodeCashe ? m_pNodeCashe : (m_pNodeCashe=new CNodeCashe(this, m_bOptimize)); }
+{
+	return m_pNodeCashe ? m_pNodeCashe : (m_pNodeCashe=new CNodeCashe(this, m_bOptimize));
+}
 

@@ -1831,7 +1831,7 @@ void CGLRenderer::DrawAxe(char Name) const
 	glPopMatrix();
 }
 
-HRESULT CGLRenderer::Render(CViewGeometry* pGeometry, SViewOptions* pViewOptions, CDrawOptions* pDrawOptions)
+HRESULT CGLRenderer::Render(CViewGeometry* pGeometry, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions)
 {
 	S3DBox ViewBox;
 	wglMakeCurrent(m_hDC, m_hRC);
