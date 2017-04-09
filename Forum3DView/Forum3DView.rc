@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Russian resources
+// Русский resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 LANGUAGE LANG_RUSSIAN, SUBLANG_NEUTRAL
@@ -55,12 +55,12 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Russian resources
+#endif    // Русский resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Neutral (Default) resources
+// Нейтральный (по умолчанию) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUD)
 LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
@@ -72,12 +72,13 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
 //
 
 IDB_THUMB_SIZE_SYNC     BITMAP                  "res\\ThumbProp.bmp"
-#endif    // Neutral (Default) resources
+
+#endif    // Нейтральный (по умолчанию) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Russian (Russia) resources
+// Русский (Россия) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
@@ -112,12 +113,12 @@ BEGIN
     CONTROL         "Slider1",IDC_SLIDER_DEFORM_SCALE,"msctls_trackbar32",TBS_AUTOTICKS | TBS_VERT | WS_TABSTOP,2,1,10,78
 END
 
-IDD_RES_PARAMS DIALOGEX 0, 0, 85, 12
+IDD_RES_PARAMS DIALOGEX 0, 0, 128, 12
 STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_BORDER
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     COMBOBOX        IDC_COMBO_FACTOR,2,0,33,94,CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_COMBO_LOAD,37,0,48,95,CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_LOAD,36,0,91,95,CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
@@ -165,7 +166,7 @@ BEGIN
     IDD_RES_PARAMS, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 78
+        RIGHTMARGIN, 127
         TOPMARGIN, 7
         BOTTOMMARGIN, 5
     END
@@ -187,11 +188,17 @@ END
 //
 
 IDB_UPARROW             BITMAP                  "res\\uparrow.bmp"
+
 IDB_DNARROW             BITMAP                  "res\\dnarrow.bmp"
+
 IDB_HOT                 BITMAP                  "res\\hot.bmp"
+
 IDB_COLD                BITMAP                  "res\\cold.bmp"
+
 IDB_GRAY                BITMAP                  "res\\gray.bmp"
+
 IDB_UNIFORM             BITMAP                  "res\\uniform.bmp"
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -240,6 +247,18 @@ END
 // remains consistent on all systems.
 IDI_HOT                 ICON                    "res\\hot.ico"
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_RES_PARAMS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
@@ -251,12 +270,12 @@ BEGIN
     ID_IND_FILE_INFO        " "
 END
 
-#endif    // Russian (Russia) resources
+#endif    // Русский (Россия) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (United States) resources
+// Английский (США) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -268,9 +287,13 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 IDR_MAIN_TOOLBAR        BITMAP                  "res\\Toolbar.bmp"
+
 IDR_CUT_TOOLBAR         BITMAP                  "res\\CutToolbar.bmp"
+
 IDR_FILTERS_TOOLBAR     BITMAP                  "res\\main_too.bmp"
+
 IDR_RESULTS_TOOLBAR     BITMAP                  "res\\results_.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -280,8 +303,11 @@ IDR_RESULTS_TOOLBAR     BITMAP                  "res\\results_.bmp"
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\ScadViewer.ico"
+
 IDR_SCADVITYPE          ICON                    "res\\ScadViewerDoc.ico"
+
 IDI_FORUM_VIEWER        ICON                    "res\\ForumView.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -310,14 +336,23 @@ END
 //
 
 IDC_CURSOR_ZOOM_IN_OUT  CURSOR                  "res\\ZoomInOut.cur"
+
 IDC_CURSOR_ZOOM         CURSOR                  "res\\Zoom.cur"
+
 IDC_CURSOR_WALK         CURSOR                  "res\\WALK.CUR"
+
 IDC_CURSOR_ROTATE       CURSOR                  "res\\Rotate.cur"
+
 IDC_CURSOR_PAN          CURSOR                  "res\\Pan.cur"
+
 IDC_CURSOR_LOOKAROUND   CURSOR                  "res\\LookAround.CUR"
+
 IDC_CURSOR_INV_CUT      CURSOR                  "res\\InvCut.cur"
+
 IDC_CURSOR_CUT          CURSOR                  "res\\Cut.cur"
+
 IDC_CURSOR_SELECT       CURSOR                  "res\\Select.cur"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -411,7 +446,7 @@ BEGIN
     BUTTON      ID_DROPARROW
 END
 
-#endif    // English (United States) resources
+#endif    // Английский (США) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

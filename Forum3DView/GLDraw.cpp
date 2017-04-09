@@ -16,6 +16,7 @@ GLDraw.cpp - Вывод модели с использованием OpenGL
 #include <math.h>
 #include <gl\gl.h>
 #include <gl\glu.h>
+#include "glext.h"
 #include <algorithm>
 
 #include "GLDraw.h"

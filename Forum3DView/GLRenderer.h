@@ -78,9 +78,9 @@ protected:
 	// Printing
 //	UINT		m_OldFontBase;
 //	HDC			m_hOldDC;
-	HDC			m_hMemDC;
+	HDC			m_hDC;
 //	HGLRC		m_hOldRC;
-	HGLRC		m_hMemRC;
+	HGLRC		m_hRC;
 	CString		m_strFileName;
 
 protected:

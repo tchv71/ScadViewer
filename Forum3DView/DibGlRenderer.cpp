@@ -68,40 +68,40 @@ bool CDibGlRenderer::BindDib(HWND hWnd, CSize szDIB, int nBorder)
 	::ReleaseDC(hWnd, hDC);
 
 	// 3. Create memory DC, and associate it with the DIB.
-	m_hMemDC = ::CreateCompatibleDC(nullptr);
-	if (!m_hMemDC)
+	m_hDC = ::CreateCompatibleDC(nullptr);
+	if (!m_hDC)
 	{
 		DeleteObject(m_hDib);
 		m_hDib = nullptr;
 		return false;
 	}
-	SelectObject(m_hMemDC, m_hDib);
+	SelectObject(m_hDC, m_hDib);
 
 	// 4. Setup memory DC's pixel format.
-	if (!SetDCPixelFormat(m_hMemDC, PFD_DRAW_TO_BITMAP | PFD_SUPPORT_OPENGL | PFD_STEREO_DONTCARE))
+	if (!SetDCPixelFormat(m_hDC, PFD_DRAW_TO_BITMAP | PFD_SUPPORT_OPENGL | PFD_STEREO_DONTCARE))
 	{
 		DeleteObject(m_hDib);
 		m_hDib = nullptr;
-		DeleteDC(m_hMemDC);
-		m_hMemDC = nullptr;
+		DeleteDC(m_hDC);
+		m_hDC = nullptr;
 		return false;
 	}
 
 	// 5. Create memory RC
-	m_hMemRC = ::wglCreateContext(m_hMemDC);
-	if (!m_hMemRC)
+	m_hRC = ::wglCreateContext(m_hDC);
+	if (!m_hRC)
 
 	{
 		DeleteObject(m_hDib);
 		m_hDib = nullptr;
-		DeleteDC(m_hMemDC);
-		m_hMemDC = nullptr;
+		DeleteDC(m_hDC);
+		m_hDC = nullptr;
 		return false;
 	}
 
 	// 6. Store old DC and RC
 		// 7. Make the memory RC current
-	::wglMakeCurrent(m_hMemDC, m_hMemRC);
+	::wglMakeCurrent(m_hDC, m_hRC);
 	glClearDepth(1.0);
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
@@ -125,12 +125,12 @@ void CDibGlRenderer::ReleaseDib()
 	ReleaseAllFonts();
 	// 1. Release memory RC, and restore the old DC and RC.
 	::wglMakeCurrent(nullptr, nullptr);	
-	::wglDeleteContext(m_hMemRC);
+	::wglDeleteContext(m_hRC);
 	//m_hMemRC = m_hOldRC;
 	// 4. Release memory.
 	::DeleteObject(m_hDib);
 	m_hDib = nullptr;
-	::DeleteDC(m_hMemDC);	
+	::DeleteDC(m_hDC);	
 }
 
 void CDibGlRenderer::DrawFrame(CDC *pDC, CRect &rcDib, CString strFileName) const
