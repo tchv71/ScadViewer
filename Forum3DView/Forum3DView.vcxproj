@@ -313,7 +313,7 @@
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;Schema.lib;Profile11.lib;ClassHelp.lib;Result.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -365,7 +365,7 @@
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;Schema.lib;Profile11.lib;ClassHelp.lib;Result.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -415,7 +415,7 @@
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;SCADAPIX.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib;..\Scad21\lib\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad21\lib\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -467,7 +467,7 @@
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;SCADAPIX.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib;..\Scad21\lib\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad21\lib\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -519,7 +519,7 @@
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Release/Forum3DView.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -563,7 +563,7 @@
       <ProgramDatabaseFile>.\Release/Forum3DView.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Release/Forum3DView.lib</ImportLibrary>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -607,7 +607,7 @@
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Debug/Forum3DView.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -651,7 +651,7 @@
       <ProgramDatabaseFile>.\Debug/Forum3DView.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Debug/Forum3DView.lib</ImportLibrary>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -695,7 +695,7 @@
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;Schema.lib;Profile11.lib;ClassHelp.lib;Result.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Forum3DView___Win32_Release11D/Forum3DView11.pdb</ProgramDatabaseFile>
@@ -746,7 +746,7 @@
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;Schema.lib;Profile11.lib;ClassHelp.lib;Result.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Forum3DView___Win32_Release11D/Forum3DView11.pdb</ProgramDatabaseFile>
@@ -790,7 +790,7 @@
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;Schema.lib;Profile11.lib;ClassHelp.lib;Result.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug11/Forum3DView11.pdb</ProgramDatabaseFile>
@@ -839,7 +839,7 @@
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;Schema.lib;Profile11.lib;ClassHelp.lib;Result.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug11/Forum3DView11.pdb</ProgramDatabaseFile>
@@ -961,6 +961,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <AdditionalIncludeDirectories>..\Berkeley DB 4.4.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -969,6 +970,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <AdditionalIncludeDirectories>..\Berkeley DB 4.4.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -3196,9 +3198,9 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug21|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug21|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">EnableFastChecks</BasicRuntimeChecks>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">EnableFastChecks</BasicRuntimeChecks>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug21|Win32'">EnableFastChecks</BasicRuntimeChecks>
@@ -3212,7 +3214,7 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">EnableFastChecks</BasicRuntimeChecks>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release11D|Win32'">MaxSpeed</Optimization>
@@ -3220,7 +3222,7 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release11D|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release11D|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release11D|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release11D|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release11D|x64'">_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release11D|Win32'">true</BrowseInformation>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release11D|x64'">true</BrowseInformation>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release11|Win32'">MaxSpeed</Optimization>
@@ -3232,15 +3234,15 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release21|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release11|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release11|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release11|x64'">_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release21|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MaxSpeed</Optimization>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release11D|Win32'">NotUsing</PrecompiledHeader>
@@ -3255,6 +3257,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release11|x64'">NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Template|x64'">_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="View3DBox.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">Disabled</Optimization>
