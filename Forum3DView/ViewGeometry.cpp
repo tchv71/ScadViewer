@@ -637,28 +637,25 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 	//pEB = Video->ElemBody;
 	for(UINT i = 0; i < nElem; i++/*, pEB++*/)
 	{
-		CElemInfApi e;
+		CElemInfApiExt e;
 		ApiElemGetInf(Schem, i+1, &e);
 		if (e.IsDeletet)
 			continue;
-		LPCSTR strName = ApiGetRigidName(Schem, e.TypeRigid);
-		double fElThickness = 0;
-		if (e.TypeRigid > 0)
-		{
-			char Text[1024];
-			UINT nQnt = 0;
-			const UINT* ListElem;
-			ApiGetRigid(Schem, e.TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
-			double f1 = 0, f2 = 0, f3 = 0;
-			CStringA strText(Text);
-			strText.Replace(".", ",");
-			sscanf_s((LPCSTR)strText, "%lg %lg %lg", &f1, &f2, &f3);
-			fElThickness = f3;
-			int i = 0;
-		}
+		if (TypePlate)
+			e.UpdateThickness(Schem);
 		if (m_bForumGeometry)
 		{
 			//void *p = *((void **)Schem);
+			S3dPoint	p[3];
+			for (int i = 0; i < 3; i++)
+				p[i] = S3dPoint(VertexArray[NUM(e.Node[i])]);
+
+			CVectorType	p1v(p[1].x - p[0].x, p[1].y - p[0].y, p[1].z - p[0].z);
+			CVectorType p2v(p[2].x - p[1].x, p[2].y - p[1].y, p[2].z - p[1].z);
+			CVectorType Norm;
+			Norm.SetCrossProduct(p1v, p2v);
+			Norm.Normalize();
+
 			UINT nHoles = ApiElemGetQuantityHole(Schem, i+1);
 			UINT nSumQuantHoleNodes = 0;
 			for (UINT j=0; j<nHoles; j++)
@@ -667,28 +664,10 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 				const UINT *pNodes;
 				ApiElemGetHole(Schem, i+1, j+1, &nQuantNodes, &pNodes);
 				nSumQuantHoleNodes+=nQuantNodes;
-				for (UINT k=0; k<nQuantNodes; k++)
-				{
-					CViewElement el(RGB(192, 192, 192));
-					el.OrgType = GetElemOrgType(e.TypeElem);
-					el.Type = EL_LINE;
-					el.NumElem = i+1;
-					el.Points[0] = NUM(pNodes[k]);
-					el.Points[1] = NUM(pNodes[(k+1)%nQuantNodes]);
-					ElementArray.push_back(el);
-				}
+				AddOprContours(nQuantNodes, e, i, TypePlate, pNodes, Norm);
 			}
 			int nQantExt = e.QuantityNode - nSumQuantHoleNodes;
-			for (int j=0; j<nQantExt; j++)
-			{
-				CViewElement el(RGB(192, 192, 192));
-				el.OrgType = GetElemOrgType(e.TypeElem);
-				el.Type = EL_LINE;
-				el.NumElem = i+1;
-				el.Points[0] = NUM(e.Node[j]);
-				el.Points[1] = NUM(e.Node[(j+1)%nQantExt]);
-				ElementArray.push_back(el);
-			}
+			AddOprContours(nQantExt, e, i, TypePlate, e.Node, Norm);
 		}
 		else
 		{
@@ -815,7 +794,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 					VertexArray[pE->Points[3]].nMainVertex = NUM(e.Node[1]);
 				}
 			}
-			if (TypePlate && fElThickness > 1e-5 && pE->Type != EL_LINE)
+			if (TypePlate && e.m_fThickness > 1e-5 && pE->Type != EL_LINE)
 			{
 				size_t nNewVertexsIdx = VertexArray.size();
 				pE->SetNormal(VertexArray.GetVector());
@@ -823,7 +802,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 					for (int j = 0;j < pE->NumVertexs();j++)
 					{
 						S3dPoint pt = VertexArray[pE->Points[j]];
-						float fShift = fElThickness / 2 * (i == 0 ? -1 : 1);
+						float fShift = e.m_fThickness / 2 * (i == 0 ? -1 : 1);
 						pt.x += pE->Norm.v[0] * fShift;
 						pt.y += pE->Norm.v[1] * fShift;
 						pt.z += pE->Norm.v[2] * fShift;
@@ -1015,6 +994,47 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 	PostProcessSchema(Schem, TypeProfile != 0, TypePlate !=0);
 	SetupAndOptimize(bOptimize);
 	return true;
+}
+
+void CViewGeometry::AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm)
+{
+	for (UINT k = 0; k<nQuantNodes; k++)
+	{
+		CViewElement el(RGB(192, 192, 192));
+		el.OrgType = GetElemOrgType(e.TypeElem);
+		el.Type = EL_LINE;
+		el.NumElem = i + 1;
+		if (TypePlate && e.m_fThickness > 1e-5)
+		{
+			size_t nVertexIdx = VertexArray.size();
+			const S3dPoint pt1 = VertexArray[NUM(pNodes[k])];
+			const S3dPoint pt1in = pt1 + Norm*(e.m_fThickness / 2);
+			const S3dPoint pt1out = pt1 + Norm*(-e.m_fThickness / 2);
+			VertexArray.push_back(pt1in);
+			VertexArray.push_back(pt1out);
+			const S3dPoint pt2 = VertexArray[NUM(pNodes[(k + 1) % nQuantNodes])];
+			const S3dPoint pt2in = pt2 + Norm*(e.m_fThickness / 2);
+			const S3dPoint pt2out = pt2 + Norm*(-e.m_fThickness / 2);
+			VertexArray.push_back(pt2in);
+			VertexArray.push_back(pt2out);
+			el.Points[0] = nVertexIdx;
+			el.Points[1] = nVertexIdx + 1;
+			ElementArray.push_back(el);
+			el.Points[0] = nVertexIdx;
+			el.Points[1] = nVertexIdx + 2;
+			ElementArray.push_back(el);
+			el.Points[0] = nVertexIdx + 1;
+			el.Points[1] = nVertexIdx + 3;
+			ElementArray.push_back(el);
+
+		}
+		else
+		{
+			el.Points[0] = NUM(pNodes[k]);
+			el.Points[1] = NUM(pNodes[(k + 1) % nQuantNodes]);
+			ElementArray.push_back(el);
+		}
+	}
 }
 
 

@@ -55,7 +55,6 @@ CForumViewGeometry::~CForumViewGeometry()
 }
 
 
-
 void CForumViewGeometry::PostProcessSchema(SCHEMA *Schem, bool bExpandProfiles, bool bExpandPlates)
 {
 	int nElements =0;
@@ -71,6 +70,8 @@ void CForumViewGeometry::PostProcessSchema(SCHEMA *Schem, bool bExpandProfiles, 
 		nElements++;
 		CElemInfApi e;
 		ApiElemGetInf(Schem, j+1, &e);
+		if (e.IsDeletet)
+			continue;
 		int nFeElType = e.TypeElem;
 		switch(nFeElType)
 		{
@@ -121,8 +122,10 @@ void CForumViewGeometry::ReadOprPolygon(SCHEMA *m_Project, NUM_ELEM_TYPE Nel, bo
 	std::vector<SCUINT32> nHoles;
 	//double Thickness = 0;
 #ifdef SCAD21
-	CElemInfApi e;
+	CElemInfApiExt e;
 	ApiElemGetInf(m_Project, Nel, &e);
+	if (bUseThickness)
+		e.UpdateThickness(m_Project);
 	SCUINT32 QntNode = e.QuantityNode;
 	SCUINT32 QntTds;
 
@@ -138,14 +141,13 @@ void CForumViewGeometry::ReadOprPolygon(SCHEMA *m_Project, NUM_ELEM_TYPE Nel, bo
 	QntTds = ApiElemGetQuantityHole(m_Project, Nel);
 	CSvGluTesselator Tesselator(VertexArray, ElementArray, m_CurrElemOrgType);
 	//CSvGpcTesselator Tesselator(VertexArray, ElementArray, m_CurrElemOrgType);
-	FLOAT_TYPE fThickness = 0;
 	nIndex.resize(e.QuantityNode);
 	for(UINT i = 0; i < e.QuantityNode; i++)
 		nIndex[i] = e.Node[i] - 1;
 	if (QntTds == 0)
 	{
 
-		SC3DRetCode nRetCode = Tesselator.AddPolygon(fThickness, Nel,  1 , &QntNode, &nIndex[0] );
+		SC3DRetCode nRetCode = Tesselator.AddPolygon(e.m_fThickness, Nel,  1 , &QntNode, &nIndex[0] );
 		ASSERT(nRetCode==S3DRC_OK);
 		return;
 	}
@@ -161,7 +163,7 @@ void CForumViewGeometry::ReadOprPolygon(SCHEMA *m_Project, NUM_ELEM_TYPE Nel, bo
 	}
 	int nQantExt = e.QuantityNode - nSumQuantHoleNodes;
 	nHoles[0] = nQantExt;
-	SC3DRetCode nRetCode = Tesselator.AddPolygon(fThickness, Nel,  QntTds+1 , &nHoles[0], &nIndex[0] );
+	SC3DRetCode nRetCode = Tesselator.AddPolygon(e.m_fThickness, Nel,  QntTds+1 , &nHoles[0], &nIndex[0] );
 	ASSERT(nRetCode==S3DRC_OK);
 
 #elif defined(SCAD11)

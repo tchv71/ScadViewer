@@ -36,6 +36,10 @@ public:
 		v[1]= pt.y;
 		v[2]= pt.z;
 	}
+	S3dPoint operator+(const S3dPoint& p) const
+	{
+		return S3dPoint(p.x + v[0], p.y + v[1], p.z + v[2]);
+	}
 	C3DVector operator -(const C3DVector<T> &rv2)
 	{
 		return C3DVector<T>(v[0]-rv2.v[0],v[1]-rv2.v[1], v[2]-rv2.v[2]);
@@ -101,4 +105,8 @@ public:
 	T v[3];
 };
 
+inline S3dPoint operator+(const S3dPoint& pt, const C3DVector<FLOAT_TYPE>& vec)
+{
+	return S3dPoint(pt.x + vec.v[0], pt.y + vec.v[1], pt.z + vec.v[2]);
+}
 #endif // !defined(AFX_3DVECTOR_H__150AF9C5_003B_459E_880C_62D81D752423__INCLUDED_)
