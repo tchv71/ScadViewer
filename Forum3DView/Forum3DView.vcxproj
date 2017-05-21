@@ -464,14 +464,14 @@
       <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;SCADAPIX.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;SCADAPIX.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad21\lib\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>.\Release21/Forum3DView21.lib</ImportLibrary>
+      <ImportLibrary>.\Release21_64/Forum3DView21.lib</ImportLibrary>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <Midl>
@@ -509,6 +509,8 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -881,10 +883,11 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;SCADAPIX.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>C:\Scad Soft\Scad Office\32\$(TargetFileName)</OutputFile>
+      <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad21\lib\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>

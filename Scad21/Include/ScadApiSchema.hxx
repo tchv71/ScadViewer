@@ -3,6 +3,10 @@
 
 #pragma pack(push,1)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 APICode     SCAD_WINAPI  ApiSetLanguage ( ScadAPI lpAPI, int Lang );
 APICode     SCAD_WINAPI  ApiClear( ScadAPI lpAPI );
 APICode     SCAD_WINAPI  ApiSetUnits( ScadAPI lpAPI, const UnitsAPI *Un );
@@ -121,6 +125,7 @@ APICode     SCAD_WINAPI  ApiGetRodJoint( ScadAPI lpAPI, UINT NumElem, WORD *Join
 
 UINT        SCAD_WINAPI  ApiGetQuantityRigid( ScadAPI lpAPI );
 UINT        SCAD_WINAPI  ApiSetRigid( ScadAPI lpAPI, LPCSTR Text );
+APICode     SCAD_WINAPI  ApiGetRigid( ScadAPI lpAPI, UINT NumRgd,  LPSTR Text, UINT MaxLenText, UINT * Qnt, const UINT ** ListElem );
 UINT        SCAD_WINAPI  ApiChangeRigid( ScadAPI lpAPI, UINT Num, LPCSTR Text );
 
 LPCSTR      SCAD_WINAPI  ApiGetRigidName( ScadAPI lpAPI, UINT Num );
@@ -165,8 +170,8 @@ APICode     SCAD_WINAPI  ApiSetRsuStr( ScadAPI lpAPI, UINT NumStr, APIRsuNew * R
 APICode     SCAD_WINAPI  ApiGetRsuStr( ScadAPI lpAPI, UINT NumStr, APIRsuNew * Rsu );
 
 UINT        SCAD_WINAPI  ApiGetQuantityUnificationRsu( ScadAPI lpAPI );
-UINT        SCAD_WINAPI  ApiSetUnificationRsu( ScadAPI lpAPI, WORD Mask, UINT QntElem, const UINT * ListElem );
-APICode     SCAD_WINAPI  ApiGetUnificationRsu( ScadAPI lpAPI, UINT NumStr, WORD *Mask, UINT *QntElem, const UINT ** ListElem );
+UINT        SCAD_WINAPI  ApiSetUnificationRsu( ScadAPI lpAPI, BYTE Type, WORD Mask, UINT QntElem, const UINT * ListElem );
+APICode     SCAD_WINAPI  ApiGetUnificationRsu( ScadAPI lpAPI, UINT NumStr, BYTE *Type, WORD *Mask, UINT *QntElem, const UINT ** ListElem );
 
 UINT        SCAD_WINAPI  ApiGetQuantityArmElemRod( ScadAPI lpAPI );
 APICode     SCAD_WINAPI  ApiGetArmElemRod( ScadAPI lpAPI, UINT NumStr, const ApiArmRod ** ArmRod );
@@ -176,7 +181,29 @@ APICode     SCAD_WINAPI  ApiArmRodReplace( ScadAPI lpAPI, UINT Num, LPCSTR Text,
 UINT        SCAD_WINAPI  ApiGetQuantityArmElemPlate( ScadAPI lpAPI );
 APICode     SCAD_WINAPI  ApiGetArmElemPlate( ScadAPI lpAPI, UINT NumStr, const ApiArmPlate ** ArmPlate );
 UINT        SCAD_WINAPI  ApiArmPlateAppend( ScadAPI lpAPI, LPCSTR Text, const ApiArmElemPlate * Data, UINT Qnt, const UINT * Lst );
-APICode     SCAD_WINAPI  ApiArmPlateReplace( ScadAPI lpAPI, UINT Num, LPCSTR Text, const ApiArmPlate * Data, UINT Qnt, const UINT * Lst );
+APICode     SCAD_WINAPI  ApiArmPlateReplace( ScadAPI lpAPI, UINT Num, LPCSTR Text, const ApiArmElemPlate * Data, UINT Qnt, const UINT * Lst );
+
+UINT        SCAD_WINAPI  ApiGetQuantityConcrete( ScadAPI lpAPI );
+APICode     SCAD_WINAPI  ApiGetConcrete( ScadAPI lpAPI, UINT Num, const ApiConcreteElem ** Concrete, UINT *Qnt, const UINT **ListElem );
+UINT        SCAD_WINAPI  ApiSetConcrete( ScadAPI lpAPI, LPCSTR Text, const ApiConcreteElem * Concrete, UINT Qnt, const UINT * Lst );
+APICode     SCAD_WINAPI  ApiChangeConcrete( ScadAPI lpAPI, UINT Num, LPCSTR Text, const ApiConcreteElem * Concrete, UINT Qnt, const UINT * Lst );
+APICode     SCAD_WINAPI  ApiSetNameConcrete( ScadAPI lpAPI, UINT Num, LPCSTR Name );
+LPCSTR      SCAD_WINAPI  ApiGetNameConcrete( ScadAPI lpAPI, UINT Num );
+APICode     SCAD_WINAPI  ApiDeleteConcrete( ScadAPI lpAPI, UINT Num );
+APICode     SCAD_WINAPI  ApiClearConcrete( ScadAPI lpAPI );
+
+UINT        SCAD_WINAPI  ApiGetQuantitySteel( ScadAPI lpAPI );
+APICode     SCAD_WINAPI  ApiGetSteel( ScadAPI lpAPI, UINT Num, const ApiSteelElem ** Steel, UINT *Qnt, const UINT **ListElem );
+UINT        SCAD_WINAPI  ApiSetSteel( ScadAPI lpAPI, const ApiSteelElem * Steel, UINT QntElem, const UINT * ListElem );
+APICode     SCAD_WINAPI  ApiChangeSteel( ScadAPI lpAPI, UINT Num, const ApiSteelElem * Steel, UINT Qnt, const UINT * Lst );
+APICode     SCAD_WINAPI  ApiSetNameSteel( ScadAPI lpAPI, UINT Num, LPCSTR Name );
+LPCSTR      SCAD_WINAPI  ApiGetNameSteel( ScadAPI lpAPI, UINT Num );
+APICode     SCAD_WINAPI  ApiDeleteSteel( ScadAPI lpAPI, UINT Num );
+APICode     SCAD_WINAPI  ApiClearSteel( ScadAPI lpAPI );
+
+#ifdef __cplusplus
+};
+#endif
 
 #pragma pack(pop)
 

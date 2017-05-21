@@ -3,6 +3,10 @@
 
 #pragma pack(push,1)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 APICode    SCAD_WINAPI  ApiInitResult( ScadAPI lpAPI, const UnitsAPI *Un, LPCSTR NameWorkCatalog );
 
 BYTE       SCAD_WINAPI  ApiTypeProcess ( ScadAPI lpAPI );
@@ -36,6 +40,10 @@ lpDouble   SCAD_WINAPI  ApiGetCombReakFragment( ScadAPI lpAPI, UINT NumComb, UIN
 APICode    SCAD_WINAPI  ApiGetEffors( ScadAPI lpAPI, UINT NumElem, ApiElemEffors ** Effors, BYTE TypeRead );
 APICode    SCAD_WINAPI  ApiGetRsu( ScadAPI lpAPI, UINT NumElem, ApiElemRsu * rsu );
 APICode    SCAD_WINAPI  ApiGetRsd( ScadAPI lpAPI, UINT NumElem, ApiElemRsu * rsu );
+
+#ifdef __cplusplus
+};
+#endif
 
 #pragma pack(pop)
 

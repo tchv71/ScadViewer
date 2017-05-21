@@ -642,6 +642,20 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 		if (e.IsDeletet)
 			continue;
 		LPCSTR strName = ApiGetRigidName(Schem, e.TypeRigid);
+		double fElThickness = 0;
+		if (e.TypeRigid > 0)
+		{
+			char Text[1024];
+			UINT nQnt = 0;
+			const UINT* ListElem;
+			ApiGetRigid(Schem, e.TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
+			double f1 = 0, f2 = 0, f3 = 0;
+			CStringA strText(Text);
+			strText.Replace(".", ",");
+			sscanf_s((LPCSTR)strText, "%lg %lg %lg", &f1, &f2, &f3);
+			fElThickness = f3;
+			int i = 0;
+		}
 		if (m_bForumGeometry)
 		{
 			//void *p = *((void **)Schem);
@@ -735,13 +749,13 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 				continue;
 			}
 			CViewElement el(RGB(192, 192, 192));
-			ElementArray.push_back(el);
-			CViewElement *pE = &ElementArray[ElementArray.size()-1];
+			el.OrgType = GetElemOrgType(e.TypeElem);
+			el.NumElem = i + 1;//e.NumElem;
 
-			pE->OrgType = GetElemOrgType(e.TypeElem);
-	//		if (pE->OrgType>EL_SOLID && pEB->Type!=2)
-	//			continue;
-			pE->NumElem = i+1;//e.NumElem;
+			ElementArray.push_back(el);
+			const size_t nEl = ElementArray.size() - 1;
+			CViewElement *pE = &ElementArray[nEl];
+
 
 
 			switch (e.TypeElem)
@@ -786,7 +800,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 			}
 			if(pE->Type != EL_QUAD)
 			{
-				for(int j = 0; j < pE->NumVertexs(); j++)
+				for (int j = 0; j < pE->NumVertexs(); j++)
 					pE->Points[j] = NUM(e.Node[j]);
 			}
 			else
@@ -800,6 +814,42 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 					VertexArray[pE->Points[2]].nMainVertex = NUM(e.Node[1]);
 					VertexArray[pE->Points[3]].nMainVertex = NUM(e.Node[1]);
 				}
+			}
+			if (TypePlate && fElThickness > 1e-5 && pE->Type != EL_LINE)
+			{
+				size_t nNewVertexsIdx = VertexArray.size();
+				pE->SetNormal(VertexArray.GetVector());
+				for (int i = 0;i < 2;i++)
+					for (int j = 0;j < pE->NumVertexs();j++)
+					{
+						S3dPoint pt = VertexArray[pE->Points[j]];
+						float fShift = fElThickness / 2 * (i == 0 ? -1 : 1);
+						pt.x += pE->Norm.v[0] * fShift;
+						pt.y += pE->Norm.v[1] * fShift;
+						pt.z += pE->Norm.v[2] * fShift;
+						VertexArray.push_back(SViewVertex(pt));
+					}
+				for (int j = 0;j < pE->NumVertexs();j++)
+					pE->Points[j] = nNewVertexsIdx + j;
+				for (int j = 0;j < pE->NumVertexs();j++)
+				{
+					el.Points[0] = nNewVertexsIdx+j;
+					el.Points[1] = nNewVertexsIdx +(j + 1) % pE->NumVertexs();
+					el.Points[2] = nNewVertexsIdx +(j+1) % pE->NumVertexs() + pE->NumVertexs();
+					el.Points[3] = nNewVertexsIdx +j+ pE->NumVertexs();
+					el.SetNormal(VertexArray.GetVector());
+					el.OrgNorm = pE->Norm;
+					el.Type = EL_QUAD;
+					ElementArray.push_back(el);
+					pE = &ElementArray[nEl];
+				}
+				for (int j = 0;j < pE->NumVertexs();j++)
+					el.Points[j] = nNewVertexsIdx + pE->NumVertexs() + j;
+				el.Norm = pE->Norm*(-1.0f);
+				el.OrgNorm = pE->OrgNorm;
+				el.Type = pE->Type;
+				ElementArray.push_back(el);
+				pE = &ElementArray[nEl];
 			}
 			int j = e.QuantityNode - pE->NumVertexs(); //Schem->pFormat[pEB->NumElem - 1].QuantityNode - pE->NumVertexs();
 			if (j>0)
