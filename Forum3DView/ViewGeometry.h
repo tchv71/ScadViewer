@@ -442,7 +442,9 @@ public:
 	virtual void ClearCut(void) override;
 
 	bool LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize = true);
+#ifdef SCAD21
 	void AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm);
+#endif
 	bool LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePlate,  bool bOptimize = true, SCHEMA ** ppSchem = nullptr);
 
 	void ExportToDxf(LPCTSTR szFileName);
@@ -507,7 +509,6 @@ extern const NODE_NUM_TYPE	NUM_RECODE[];
 
 #ifdef SCAD21
 #include "SCADAPIX.hxx"
-#endif
 
 struct CElemInfApiExt : public CElemInfApi
 {
@@ -529,6 +530,7 @@ struct CElemInfApiExt : public CElemInfApi
 		}
 	}
 };
+#endif
 
 
 //---------------------------------------------------------------------------

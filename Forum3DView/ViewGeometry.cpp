@@ -641,8 +641,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 		ApiElemGetInf(Schem, i+1, &e);
 		if (e.IsDeletet)
 			continue;
-		if (TypePlate)
-			e.UpdateThickness(Schem);
+		e.UpdateThickness(Schem);
 		if (m_bForumGeometry)
 		{
 			//void *p = *((void **)Schem);
@@ -946,13 +945,16 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 				VertexArray[pE->Points[3]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[1]);
 			}
 		}
-		int j = Schem->pFormat[pEB->NumElem - 1].QuantityNode - pE->NumVertexs();
+		FORMAT& frm = Schem->pFormat[pEB->NumElem - 1];
+		RIGID_STR * pRigid = Schem->_Rigid.Get(frm.TypeRigid);
+		RIGID_LIST_OLD *pRigidOld = Schem->_Rigid.GetRigid(frm.TypeRigid);
+		int j = frm.QuantityNode - pE->NumVertexs();
 		if (j>0)
 		{
 			pE->m_nExtraPoints = m_vecExtraPoints.size();
-			m_vecExtraPoints.push_back(Schem->pFormat[pEB->NumElem - 1].QuantityNode);
+			m_vecExtraPoints.push_back(frm.QuantityNode);
 			for (int k= pE->NumVertexs();j>0;j--,k++)
-				m_vecExtraPoints.push_back(NUM(Schem->pFormat[pEB->NumElem - 1].pNode[k]));
+				m_vecExtraPoints.push_back(NUM(frm.pNode[k]));
 		}
 		else
 		{
@@ -996,6 +998,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 	return true;
 }
 
+#ifdef SCAD21
 void CViewGeometry::AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm)
 {
 	for (UINT k = 0; k<nQuantNodes; k++)
@@ -1036,6 +1039,7 @@ void CViewGeometry::AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, c
 		}
 	}
 }
+#endif
 
 
 void __fastcall CViewElement::SetNormal(SViewVertex *Vertexs)
