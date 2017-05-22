@@ -1562,7 +1562,7 @@ void CGLDraw::DrawLineStrips(void) const
 	for (size_t i = 0; i < linestrips.size();)
 	{
 		UINT32 nSize = linestrips[i++];
-		glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &linestrips[i]);
+		glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &(linestrips[i]));
 		i += nSize;
 	}
 	glDisableClientState(GL_VERTEX_ARRAY);

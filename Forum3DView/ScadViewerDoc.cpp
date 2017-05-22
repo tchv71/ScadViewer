@@ -232,7 +232,6 @@ void CScadViewerDoc::LoadIso()
 	ApiCreate(&pSchem);
 	m_pIsoSchem = pSchem;
 #else
-	SCHEMA m_Schem;
 	SCHEMA *pSchem = &m_Schem;
 #endif
 	if (!m_strFileName.IsEmpty())

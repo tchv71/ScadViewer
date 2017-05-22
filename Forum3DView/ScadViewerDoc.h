@@ -79,7 +79,7 @@ public:
 	SCHEMA *m_pSchem;
 	SCHEMA *m_pIsoSchem;
 #ifndef SCAD21
-	//SCHEMA m_Schem;
+	SCHEMA m_Schem;
 #endif
 	void LoadSchema(SCHEMA *Schem);
 	void Load(void);

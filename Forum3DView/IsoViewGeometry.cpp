@@ -758,7 +758,7 @@ bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, dou
 			return false;
 		double *coord = nullptr;
 		m_Params.Res->GetEfforsElem(m_Params.NPr, el.NumElem, i+8, nPoints, &NusElem, &coord, &res);
-		if (!res)
+		if (!res || nPoints == 0)
 			return false;
 		if (pnResultPoints)
 			*pnResultPoints = nPoints;
