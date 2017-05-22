@@ -2,7 +2,6 @@
 #define MODEL_FLAG_H
 
 #include "SvTypes.h"
-
 //enum TColor {clMin=-0x7fffffff-1, clMax=0x7fffffff};
 typedef UINT	TColor;
 

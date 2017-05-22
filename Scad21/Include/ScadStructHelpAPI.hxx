@@ -3,6 +3,10 @@
 
 #pragma pack(push,1)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef double * lpDouble;
 
 struct UnitsAPI  {
@@ -449,6 +453,129 @@ struct ApiArmPlate {
 	UINT *            List;
 	ApiArmElemPlate   ArmPlate;
 };
+
+struct  ApiConcreteElem
+{
+//  группа
+	BYTE   Modul;           // номер модуля
+//		      103 - оболочки, 104 - балки-стенки, 105 - пластины, 
+//	          107 - изгибаемые стержни, 108 - сжато-изогнутые(растятнутые) стержни
+	BYTE   Type;            // статически определимые(1) или неопределимые(0)
+	BYTE   CrackResisting;  // данные по трещиноустойчивости 0 - нет, 1 - есть
+	BYTE   MinArmatur;      // данные по минимальной арматуре. 0 - нет, 1 - есть
+	BYTE   YesExpert;       // данные по экспертизе 0 - нет, 1 - есть
+	BYTE   YesLengthOfFactor;  //  расчетная длина, 0 - Length, 1 - Factor
+	BYTE   NbCalc;
+	BYTE   OldCode;         // нормы проектирования (not used)
+
+	double Range[4];        // расстояние до центра тяжести арматуры
+	double EffectiveLength[2];  //  расчетная длина
+	double FactorEffectiveLength[2];  //  коэффициент расчетной длины
+	double Displacement[2]; //  случайный эксцентриситет
+	double SeismFactor[2];  //  коэффициенты учета сейсмического воздействия
+
+	double m_GammaN;        // коэф. надежности по ответственности (первое предельное состояние) // MP Сделать 1.0 по умолчанию
+	double m_GammaN2;       // коэф. надежности по ответственности (второе предельное состояние) // MP Сделать 1.0 по умолчанию
+
+//  бетон
+	BYTE   TypeBeton;       //  вид бетона, порядковый номер диалога
+	BYTE   ConditionsHardening; // условия твердения, порядковый номер диалога
+	BYTE   Filler;          // заполнитель, порядковый номер диалога
+	BYTE   Stiffener;       // ребро стержневого консруктивного элемента
+	char   ClassBeton[16];  // класс бетона
+	char   SortBeton[16];   // марка бетона по средней плотности
+	double FactorHardening; // коэффициент условий твердения
+	double FactorForce;     // коэффициент учета нагрузок длительного действия
+	double FactorTotal;     // результирующий коэффициент
+	double ResD2[2];
+
+//     арматура
+	char   ClassArm[2][16]; // класс продольной и поперечной арматуры
+	double FactorWork[2];   // коэффициентs условий работы продольной и поперечной арматуры
+	double MaxDiam;         // макс. диаметр углового стержня
+	double MaxProcent;      // макс.процент армирования
+	double MaxKolUg;		// максимальное к-во стержней в углу
+	double ResD3[1];
+
+//     трещиностойкость
+	BYTE   Category;        // категория трещиностойкости
+	BYTE   ConditionsOperation;  // условия эксплуатации, порядковый номер диалога
+	BYTE   RegimeBeton;     // режим влажности бетона, порядковый номер диалога
+	BYTE   Dampness;        // влажность воздуха, порядковый номер диалога
+	BYTE   YesSeicmRSU;     // учитывать РСУ с сейсмикой // учитывать сейсмику для второго предельного состояния (сейсмический СНиП п.2-17, СП п.5-17)
+	BYTE   Stress;          // напряженное состояние: одноосное - 0,  косой изгиб - 1
+	BYTE   IsUserArm;       // заданное армирование (для подбора, только плиты)
+	BYTE   Res3;
+	double DiamRod[2];      // диаметры стержней
+	double WidthCrack[2];   // ширина раскрытия трещин
+	double Interval;        // расстояние до крайноего ряда
+	BYTE   bFibModel;       // (not used)
+	BYTE   IsContrElem;     // признак кончтруктивного элемента
+	BYTE   IsMinArmPercent; // учитывать процент минимального армирования при подюборе(
+	BYTE   CmMode;	        // режим подготовки данных
+	BYTE   ArbatVersion;    // для текущей версии 3
+	BYTE   Tr2003;          // ограничение трещин
+	BYTE   SlaveGroup;      // дополнительная группа
+	BYTE   Res4[1];
+
+	double Gb_Damadge;      // учет характера разрушения
+	double Gb_VertPos;      // учет вертикального положения при бетонировании
+	double Gb_Freezing;     // учет замораживания/оттаивания и отриательных температур
+
+
+	BYTE   DisplacementCheck[10]; 
+	float  DisplacementLimit_L[10];
+	BYTE   reserved2[6];
+	float  DisplacementLimit_Abs[10];
+
+	double m_GammaN_A;      // коэф. надежности по ответственности (аварийное состояние)// MP Сделать 1.0 по умолчанию
+	double ResD4[17];
+};
+
+struct ApiSteelElem
+{
+	const static UINT MAX_STRING_STEEL_NAME = 80;
+
+	char   SteelMark[MAX_STRING_STEEL_NAME];  	// марка стали
+	BYTE   What_is;         // 0 - конструктивный элемент 1 - группа элементов
+	WORD  ContructionType;  // тип конструкции: 0 - элемент общего вида, 1 - стойка, 2 - балка,
+	    // 3 - элемент пояса фермы, 4 - элемент решетки фермы, 5 - опорный раскос фермы, 6 - опорная стойка фермы
+	WORD   IndexSchema;     // номер схемы вариации от 0 (not used)
+	BYTE   bSnip;           // TRUE - коэффициенты расчетной длины взять по СНиП
+	BOOL   bRatio;		    // TRUE - использовать коэффициенты расчетной длины
+	BOOL   bNoPlastic;      // сечение работает только упруго
+
+	double Ry;              // расчетное сопротивление Ry, если не задано марка стали (давления)
+	double m_GammaN;        // коэф. надежности по ответственности (первое предельное состояние)// MP Сделать 1.0 по умолчанию
+	double Koef_usl_rab;    // коэф. условий работы
+	double Res1;
+
+	double Koef_RasLen_XoZ; // коэф. расч.длины в плоскости XoZ
+	double Koef_RasLen_YoZ; // коэф. расч.длины в плоскости YoZ
+	double Lim_gibkA;       // предельная гибкость для сжатия
+	double Lim_gibkB;       // предельная гибкость для растяжения
+	double StepOutPlane;	// раскрепрение из плоскости (линейные размеры)
+
+	double Lim_gibkA_Angle; // предельная гибкость (angle) для сжатия
+	double Lim_gibkB_Angle; // предельная гибкость (angle)для растяжения
+
+	double CalcLength_X0Z;	// расчетные длины (bRatio = SCFALSE) (линейные размеры)
+	double CalcLength_Y0Z;  // расчетные длины  (bRatio = SCFALSE) (линейные размеры)
+
+	double m_GammaN2;       // коэф. надежности по ответственности (второе предельное состояние)- пока для стали не нужно // MP Сделать 1.0 по умолчанию
+	double m_GammaN_A;      // коэф. надежности по ответственности (аварийное состояние)// MP Сделать 1.0 по умолчанию
+	BYTE   DisplacementCheck[10];   // признак использования ограничения по перемещениям
+	float  DisplacementLimit_L[10]; // ограничение по перемещениям относительно длины элемента
+	BYTE   reserved2[6];
+	double Res[2];
+	BYTE   SlaveGroup;      // дополнительная группа
+	BYTE   ResB[8];
+	float  DisplacementLimit_Abs[10]; // абсолютное ограничение по перемещениям (линейные размеры)
+};
+
+#ifdef __cplusplus
+};
+#endif
 
 #pragma pack(pop)
 

@@ -23,65 +23,76 @@ public:
 	virtual~CGLRenderer(void);
 public:
 	void ReleaseAllFonts();
-	void BuildAllFonts(const SLogFont arrLogFonts[],float fScale =1.0f);
+	void BuildAllFonts(const SLogFont arrLogFonts[], float fScale = 1.0f);
 	CSize GetFontExtent(ESvFont fontNo, LPCTSTR  pszText, TEXTMETRIC* ptm) override;
 	bool Select(CViewGeometry *pGeometry, CPoint pt, FLOAT_TYPE fDepth) const;
 	static CString GetRenderString();
 	// IFemRenderer support
 	HRESULT	BindWindow(HWND hBindWnd, bool bSoftOGL, const SLogFont  arrLogFonts[]) override;
 	HRESULT	ReleaseWindow(void) override;
-	HRESULT Render(CViewGeometry *pGeometry, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions) override;
+	HRESULT Render(CViewGeometry *pGeometry, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) override;
 	void	SetViewportSize(int x, int y)
 	{
-//		szOld.cx = GLWidth;
-//		szOld.cy = GLHeight;
+		//		szOld.cx = GLWidth;
+		//		szOld.cy = GLHeight;
 		GLWidth = x;
 		GLHeight = y;
 	};
 	void	SwapBuffers(void) const;
-	void BuildFont(ESvFont fontNo,  const LOGFONT *pLogFont);
-
+	void BuildFont(ESvFont fontNo, const LOGFONT *pLogFont);
+	void BuildVBOs();
+	void DeleteVBOs();
+	bool IsExtensionSupported(char* szTargetExtension);
+	bool IsVBOSupported() { return m_bVBOSupported; }
 protected:
 	void	DrawCoordSys(void) const;
-	//CSize	szOld;
-	//FLOAT_TYPE	OldScrScale;
 	int		GLWidth;
 	int		GLHeight;
+
+	// Vertex buffer variables
+	// ARB_vertex_buffer_object supported?
+	bool    m_bVBOSupported;
+public:
+	// Vertex Buffer Object Names
+	unsigned int	m_nVBOVertices;								// Vertex VBO Name
+	unsigned int	m_nVBOColors;								// Color VBO Name
+	unsigned int	m_nVBONormals;								// Normal VBO Name
+	// Element VBOs
+	unsigned int	m_nVBOTriangles;							// Triangles VBO Name
+	unsigned int	m_nVBOQuads;								// Quads   VBO Name
+	unsigned int	m_nVBOLinestrips;
+protected:
 	void	SetGLView(const SPerspectiveView &crViewPos) const;
 	void	SetGLProjection
-			(
-				const S3DBox	&rViewBox,
-				FLOAT_TYPE			Depth,
-				CPoint*			pptSelect = nullptr
-			) const;
+	(
+		const S3DBox	&rViewBox,
+		FLOAT_TYPE			Depth,
+		CPoint*			pptSelect = nullptr
+	) const;
 	static void	SetGLLighting(bool bPerspective);
 	static void	CreateRGBPalette(HDC hDC, PIXELFORMATDESCRIPTOR &pfd);
 	static int		ChoosePixelFormatEx
-			(
-				HDC hdc,
-				int *pnColorBits,
-				int *pnDepthBits,
-				int *pnWantDoubleBuffer,
-				int *pnWantAcceleration
-			);
+	(
+		HDC hdc,
+		int *pnColorBits,
+		int *pnDepthBits,
+		int *pnWantDoubleBuffer,
+		int *pnWantAcceleration
+	);
 	bool	bSetupPixelFormat(DWORD dwFlags, bool Soft);
 	static bool	SetDCPixelFormat(HDC hDC, DWORD dwFlags);
 
 	void			DrawAxe(char Name) const;
 
 	HWND	m_hWnd;
-	
+
 	const SPerspectiveView &m_ViewPos;
-	
+
 	HFONT	m_fonts[SVF_SIZE];										// Windows Font ID
 	SLogFont m_arrLogFonts[SVF_SIZE];
 	// Printing
-//	UINT		m_OldFontBase;
-//	HDC			m_hOldDC;
-	HDC			m_hMemDC;
-//	HGLRC		m_hOldRC;
-	HGLRC		m_hMemRC;
-	CString		m_strFileName;
+	HDC			m_hDC;
+	HGLRC		m_hRC;
 
 protected:
 	void ReleaseFont(ESvFont fontNo);

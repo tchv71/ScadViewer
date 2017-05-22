@@ -55,11 +55,11 @@ public:
 	// Public methods
 	void SetParams(SOglIsoParam *pParam);
 	bool LoadIso(bool bShowProfile, bool bOptimize);
-	void Get3DBox(const CRotator *Rot, S3DBox *Box, CViewVertexArray	*pVertexArray = nullptr) override;
+	void Get3DBox(const CRotator *Rot, S3DBox *Box, const CViewVertexArray * pVertexArray=nullptr) override;
 
 	//IModelDraw implementation
-	void OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions, SPerspectiveView& riewPos) override;
-	void  DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes) override;
+	void OnDrawScene(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions, const SPerspectiveView & rViewPos) override;
+	void  DrawOptionsChanged(const CDrawOptions * DrawOptions, bool bShowUsedNodes) override;
 
 	bool  IsIso() const override
 	{ return true; }

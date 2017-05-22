@@ -55,6 +55,7 @@ public:
 	void DrawBar(const CViewElement & El, const SViewVertex* Vertexs, S3dPoint Z_Shift);
 	void DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode Mode, bool bSmoothTransp, int nCurrentStage);
 	virtual void	Draw(void);
+	static void CorrectNormal(CVectorType &rNorm, const SViewVertex * p, const SPerspectiveView* m_pViewPos);
 protected:
 	void UpdateMaxAxesetSize(const TAxeSet &axeSet, int& size) const;
 	CViewGeometry	*m_pGeometry;
@@ -89,7 +90,6 @@ private:
 
 
 	void SetSmoothing(void) const;
-	void CorrectNormal(CVectorType &rNorm, SViewVertex *p) const;
 	void DrawLineStrips(void) const;
 	void DrawLines(const CViewElement & El, const SViewVertex * p) const;
 	inline	void			SetGlColor(TColor c);

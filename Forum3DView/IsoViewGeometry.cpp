@@ -341,29 +341,16 @@ void CIsoViewGeometry::IsoElement(SOglIsoParam *pParam, int nElement)
 
 void CIsoViewGeometry::IsoBreakTriangle(const DefMapInfo *DMI, SVertexVal valVertexs[], bool bDrawIsoLines)
 {
-	SVertexVal temp;
 	std::vector<NODE_NUM_TYPE> vec;
 	COLORREF clIsoLine = clBlack;
 	// Sort triangle points by value
 	{
 		if (valVertexs[0].dblVal > valVertexs[1].dblVal)
-		{
-			temp = valVertexs[0];
-			valVertexs[0] = valVertexs[1];
-			valVertexs[1] = temp;
-		}
+			std::swap(valVertexs[0], valVertexs[1]);
 		if (valVertexs[1].dblVal > valVertexs[2].dblVal)
-		{
-			temp = valVertexs[1];
-			valVertexs[1] = valVertexs[2];
-			valVertexs[2] = temp;
-		}
+			std::swap(valVertexs[1],valVertexs[2]);
 		if (valVertexs[0].dblVal > valVertexs[1].dblVal)
-		{
-			temp = valVertexs[0];
-			valVertexs[0] = valVertexs[1];
-			valVertexs[1] = temp;
-		}
+			std::swap(valVertexs[0],valVertexs[1]);
 	}
 	vec.push_back(valVertexs[0].nVertex);
 	double lastVal = valVertexs[0].dblVal;
@@ -899,7 +886,7 @@ void CIsoViewGeometry::LoadFactors()
 //DEL {
 //DEL 	pRenderer->Render(this, pViewOptions, pDrawOptions);
 //DEL }
-void CIsoViewGeometry::OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions, SPerspectiveView&	rViewPos)
+void CIsoViewGeometry::OnDrawScene(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions, const SPerspectiveView & rViewPos)
 {
 	CDrawOptions dr = *pDrawOptions;
 	if (m_Params.bDrawEggs)
@@ -988,7 +975,7 @@ void CIsoViewGeometry::SetDefMapInfo(DefMapInfo *pDMI, const SOglIsoParam *pPara
 	}
 }
 
-void CIsoViewGeometry::DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes)
+void CIsoViewGeometry::DrawOptionsChanged(const CDrawOptions * DrawOptions, bool bShowUsedNodes)
 {
 	CViewGeometry::DrawOptionsChanged(DrawOptions, bShowUsedNodes);
 	ASSERT(VertexArray.size()>=m_OriginalVertexs.size());
@@ -1011,7 +998,7 @@ CString  CIsoViewGeometry::Format(double val) const
 	return str;
 }
 
-void  CIsoViewGeometry::Get3DBox(const CRotator *Rot, S3DBox *Box, CViewVertexArray	*pVertexArray)
+void  CIsoViewGeometry::Get3DBox(const CRotator *Rot, S3DBox *Box, const CViewVertexArray * pVertexArray)
 {
 	CViewGeometry::Get3DBox(Rot, Box, &m_OriginalVertexs);
 }

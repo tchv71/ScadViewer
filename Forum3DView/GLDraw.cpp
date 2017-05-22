@@ -16,11 +16,13 @@ GLDraw.cpp - Вывод модели с использованием OpenGL
 #include <math.h>
 #include <gl\gl.h>
 #include <gl\glu.h>
+#include "glext.h"
 #include <algorithm>
 
 #include "GLDraw.h"
 #include "../RTree/RTree.h"
 #include <complex>
+#include "GLRenderer.h"
 #define Eps 1e-3
 
 //#define NO_DRAW
@@ -253,7 +255,7 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 	case M_FILL:
 		ENABLE_LIGHTING(m_pDrawOptions->bLighting);
 		SetGlColor(El.Color);
-		CorrectNormal(Norm, p);
+		CorrectNormal(Norm, p, m_pViewPos);
 		_glNormal3v(Norm.GetVector());
 		if (!El.bContourOnly)
 			DrawPolygon(p, NumPoints);
@@ -261,7 +263,7 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 	case M_FILL_AND_LINES:
 	case M_FILL_AND_LINES_TRANSP:
 		ENABLE_LIGHTING(m_pDrawOptions->bLighting);
-		CorrectNormal(Norm, p);
+		CorrectNormal(Norm, p, m_pViewPos);
 		_glNormal3v(Norm.GetVector());
 		if (nCurrentStage == BORDER_STAGE || bSmoothTransp)
 		{
@@ -293,11 +295,15 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 	return;
 }
 
+
+extern PFNGLBINDBUFFERARBPROC glBindBufferARB;					// VBO Bind Procedure
+
 //-Refactored---------------------------------------------------------------------
 void CGLDraw::Draw(void)
 {
 	if (m_pGeometry == nullptr)
 		return;
+	CGLRenderer*pRenderer = (CGLRenderer*)m_pRenderer;
 	//glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
 	EDrawMode	Mode = m_pDrawOptions->Mode;
 	//m_pGeometry->SetupElementColors(m_pOptions, Mode);
@@ -388,25 +394,37 @@ void CGLDraw::Draw(void)
 			if (m_pGeometry->VertexArray.size() != m_pGeometry->ElementArray.m_normals.size())
 				m_pGeometry->BuildArrays();
 
-			for (size_t i = 0; i < m_pGeometry->ElementArray.m_normals.size(); i++)
-			{
-				CorrectNormal(m_pGeometry->ElementArray.m_normals[i], Vertexs+i);
-			}
 
 			glEnableClientState(GL_VERTEX_ARRAY);
-			glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), Vertexs);
-
 			glEnableClientState(GL_COLOR_ARRAY);
-			glColorPointer(Mode== M_FILL_AND_LINES_TRANSP ? 4 : 3, GL_UNSIGNED_BYTE, 4, &m_pGeometry->ElementArray.m_colors[0]);
-
 			glEnableClientState(GL_NORMAL_ARRAY);
-			glNormalPointer(GL_FLOAT, sizeof(CVectorType), &m_pGeometry->ElementArray.m_normals[0]);
+			if (pRenderer->IsVBOSupported())
+			{
+				glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBOVertices);
+				glVertexPointer(3, GL_FLOAT, 0, 0);
+				glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBOColors);
+				glColorPointer(Mode == M_FILL_AND_LINES_TRANSP ? 4 : 3, GL_UNSIGNED_BYTE, 4, 0);
+				glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBONormals);
+				glNormalPointer(GL_FLOAT, 0, 0);
+				
+				glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOTriangles);
+				if (m_pGeometry->ElementArray.m_triangles.size() > 0)
+					glDrawElements(GL_TRIANGLES, m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, 0);
+				glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOQuads);
+				if (m_pGeometry->ElementArray.m_quads.size() > 0)
+					glDrawElements(GL_QUADS, m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, 0);
+			}
+			else
+			{
+				glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), Vertexs);
+				glColorPointer(Mode == M_FILL_AND_LINES_TRANSP ? 4 : 3, GL_UNSIGNED_BYTE, 4, m_pGeometry->ElementArray.m_colors.data());
+				glNormalPointer(GL_FLOAT, sizeof(CVectorType), m_pGeometry->ElementArray.m_normals.data());
 
-			if (m_pGeometry->ElementArray.m_triangles.size()>0)
-				glDrawElements(GL_TRIANGLES, m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, &(m_pGeometry->ElementArray.m_triangles[0]));
-			if (m_pGeometry->ElementArray.m_quads.size()>0)
-				glDrawElements(GL_QUADS, m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, &(m_pGeometry->ElementArray.m_quads[0]));
-			GLenum err = glGetError();
+				if (m_pGeometry->ElementArray.m_triangles.size() > 0)
+					glDrawElements(GL_TRIANGLES, m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_triangles.data());
+				if (m_pGeometry->ElementArray.m_quads.size() > 0)
+					glDrawElements(GL_QUADS, m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_quads.data());
+			}
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_COLOR_ARRAY);
 			glDisableClientState(GL_VERTEX_ARRAY);
@@ -1526,16 +1544,11 @@ void CGLDraw::SetSmoothing(void) const
 }
 
 // Скорректировать направление нормали, чтобы смотрела всегда на нас
-inline void CGLDraw::CorrectNormal(CVectorType &rNorm, SViewVertex *p) const
+void CGLDraw::CorrectNormal(CVectorType &rNorm, const SViewVertex * p, const SPerspectiveView* m_pViewPos)
 {
 	if(m_pViewPos->bPerspective)
 	{
-		CVectorType V
-					(
-						m_pViewPos->Xorg - p[0].x,
-						m_pViewPos->Yorg - p[0].y,
-						m_pViewPos->Zorg - p[0].z
-					);
+		CVectorType V(m_pViewPos->Xorg - p[0].x, m_pViewPos->Yorg - p[0].y, m_pViewPos->Zorg - p[0].z);
 		if(V.DotProduct(rNorm) < 0)
 			rNorm.Invert();
 	}
@@ -1557,12 +1570,22 @@ void CGLDraw::DrawLineStrips(void) const
 {
 	glDisable(GL_LIGHTING);
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
+	CGLRenderer *pRenderer = static_cast<CGLRenderer*>(m_pRenderer);
+	if (pRenderer->IsVBOSupported())
+	{
+		glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBOVertices);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOLinestrips);
+	}
+	else
+	{
+		glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
+	}
 	std::vector<UINT32>& linestrips = m_pGeometry->ElementArray.m_linestrips;
 	for (size_t i = 0; i < linestrips.size();)
 	{
 		UINT32 nSize = linestrips[i++];
-		glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &(linestrips[i]));
+		glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &linestrips[i]);
 		i += nSize;
 	}
 	glDisableClientState(GL_VERTEX_ARRAY);
@@ -1614,22 +1637,9 @@ inline void CGLDraw::DrawLines(const CViewElement & El, const SViewVertex * p) c
 	return;
 #endif
 	NODE_NUM_TYPE	NumPoints = El.NumVertexs();
-	glBegin(GL_LINES);
-
-	NODE_NUM_TYPE	pn1 = El.Points[0];
+	glBegin(GL_LINE_LOOP);
 	for(int i = 0; i < NumPoints; i++)
-	{
-		int				j = (i + 1) % NumPoints;
-		NODE_NUM_TYPE	pn2 = El.Points[j];
-		if(!m_pGeometry->GetNodeCashe()->WasDrawed(pn1, pn2))
-		{
-			_glVertex3(p[i].x, p[i].y, p[i].z);
-			_glVertex3(p[j].x, p[j].y, p[j].z);
-		}
-
-		pn1 = pn2;
-	}
-
+		_glVertex3(p[i].x, p[i].y, p[i].z);
 	glEnd();
 }
 

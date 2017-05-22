@@ -11,6 +11,8 @@
 #include "stdafx.h"
 #include <gl\gl.h>
 #include <gl\glu.h>
+//#define GL_GLEXT_PROTOTYPES
+#include "glext.h"
 #include "GLRenderer.h"
 #include "GLDraw.h"
 #include <locale.h>
@@ -22,7 +24,8 @@
 //////////////////////////////////////////////////////////////////////
 
 CGLRenderer::CGLRenderer(SPerspectiveView& rViewPos) : GLWidth(0), GLHeight(0), m_hWnd(nullptr),
-                                                       m_ViewPos(rViewPos), m_hMemDC(nullptr), m_hMemRC(nullptr)
+    m_ViewPos(rViewPos), m_hDC(nullptr), m_hRC(nullptr),
+	m_bVBOSupported(false), m_nVBOColors(0), m_nVBONormals(0), m_nVBOVertices(0), m_nVBOQuads(0), m_nVBOTriangles(0)
 {
 	memset(m_fontBases, 0, sizeof(m_fontBases));
 	memset(m_fonts, 0, sizeof(m_fonts));
@@ -1399,14 +1402,7 @@ void CGLRenderer::CreateRGBPalette(HDC DC, PIXELFORMATDESCRIPTOR& pfd)
 	}
 }
 
-int CGLRenderer::ChoosePixelFormatEx
-(
-	HDC hdc,
-	int* pnColorBits,
-	int* pnDepthBits,
-	int* pnWantDoubleBuffer,
-	int* pnWantAcceleration
-)
+int CGLRenderer::ChoosePixelFormatEx(HDC hdc,int* pnColorBits,int* pnDepthBits,int* pnWantDoubleBuffer,int* pnWantAcceleration)
 {
 	int nWishBytesPerPixel = pnColorBits ? *pnColorBits : -1;
 	int nWishDepth = pnDepthBits ? *pnDepthBits : 16;
@@ -1438,23 +1434,10 @@ int CGLRenderer::ChoosePixelFormatEx
 		int bpp = pfd.cColorBits;
 		int nDepthBits = pfd.cDepthBits;
 		bool pal = (pfd.iPixelType == PFD_TYPE_COLORINDEX) != 0;
-		bool mcd =
-			(
-				(pfd.dwFlags & PFD_GENERIC_FORMAT) != 0 &&
-				(pfd.dwFlags & PFD_GENERIC_ACCELERATED) != 0
-			);
-		bool soft =
-			(
-				(pfd.dwFlags & PFD_GENERIC_FORMAT) != 0 &&
-				!(pfd.dwFlags & PFD_GENERIC_ACCELERATED) != 0
-			);
-		bool icd =
-			(
-				!(pfd.dwFlags & PFD_GENERIC_FORMAT) != 0 &&
-				!(pfd.dwFlags & PFD_GENERIC_ACCELERATED) != 0
-			);
-		bool bSupportOpenGL =
-			(pfd.dwFlags & PFD_SUPPORT_OPENGL) != 0;
+		bool mcd = ( (pfd.dwFlags & PFD_GENERIC_FORMAT) != 0 && (pfd.dwFlags & PFD_GENERIC_ACCELERATED) != 0);
+		bool soft =( (pfd.dwFlags & PFD_GENERIC_FORMAT) != 0 &&!(pfd.dwFlags & PFD_GENERIC_ACCELERATED) != 0);
+		bool icd = (!(pfd.dwFlags & PFD_GENERIC_FORMAT) != 0 &&!(pfd.dwFlags & PFD_GENERIC_ACCELERATED) != 0);
+		bool bSupportOpenGL = (pfd.dwFlags & PFD_SUPPORT_OPENGL) != 0;
 		bool bDrawToWindow = (pfd.dwFlags & PFD_DRAW_TO_WINDOW) != 0;
 		bool bDrawToBitmap = (pfd.dwFlags & PFD_DRAW_TO_BITMAP) != 0;
 		bool bDoubleBuffer = (pfd.dwFlags & PFD_DOUBLEBUFFER) != 0;
@@ -1465,19 +1448,9 @@ int CGLRenderer::ChoosePixelFormatEx
 			q |= 0x8000;
 		if (nWishDepth == -1 || (nWishDepth > 0 && nDepthBits > 0))
 			q |= 0x4000;
-		if
-		(
-			nWishDoubleBuffer == -1 ||
-			(nWishDoubleBuffer == 0 && !bDoubleBuffer) ||
-			(nWishDoubleBuffer == 1 && bDoubleBuffer)
-		)
+		if (nWishDoubleBuffer == -1|| (nWishDoubleBuffer == 0 && !bDoubleBuffer) ||	(nWishDoubleBuffer == 1 && bDoubleBuffer))
 			q |= 0x2000;
-		if
-		(
-			nWishAcceleration == -1 ||
-			(nWishAcceleration == 0 && soft) ||
-			(nWishAcceleration == 1 && (mcd || icd))
-		)
+		if (nWishAcceleration == -1 || (nWishAcceleration == 0 && soft) || (nWishAcceleration == 1 && (mcd || icd)))
 			q |= 0x1000;
 		if (mcd || icd)
 			q |= 0x0040;
@@ -1525,7 +1498,7 @@ int CGLRenderer::ChoosePixelFormatEx
 
 bool CGLRenderer::bSetupPixelFormat(DWORD dwFlags, bool Soft)
 {
-	byte s_bpp = byte(GetDeviceCaps(m_hMemDC, BITSPIXEL));
+	byte s_bpp = byte(GetDeviceCaps(m_hDC, BITSPIXEL));
 	int pixelformat;
 	PIXELFORMATDESCRIPTOR pfd =
 		{
@@ -1556,11 +1529,7 @@ bool CGLRenderer::bSetupPixelFormat(DWORD dwFlags, bool Soft)
 			0,
 			0
 		};
-	pfd.cColorBits = GetDeviceCaps(m_hMemDC, PLANES) * GetDeviceCaps
-		(
-			m_hMemDC,
-			BITSPIXEL
-		);
+	pfd.cColorBits = GetDeviceCaps(m_hDC, PLANES) * GetDeviceCaps(m_hDC,BITSPIXEL);
 
 	//   pfd.cAccumBits=pfd.cColorBits;
 #if 0
@@ -1570,7 +1539,7 @@ bool CGLRenderer::bSetupPixelFormat(DWORD dwFlags, bool Soft)
 	int depth = -1; // don't care. (or a positive integer)
 	int dbl = 1; // we want dbl-buffer. (or -1 for 'don't care', 0 for 'none')
 	int acc = Soft ? 0 : -1; // we want acceleration. (or -1 or 0)
-	pixelformat = ChoosePixelFormatEx(m_hMemDC, &bpp, &depth, &dbl, &acc);
+	pixelformat = ChoosePixelFormatEx(m_hDC, &bpp, &depth, &dbl, &acc);
 #endif
 	if (pixelformat == 0)
 	{
@@ -1578,15 +1547,15 @@ bool CGLRenderer::bSetupPixelFormat(DWORD dwFlags, bool Soft)
 		return FALSE;
 	}
 
-	DescribePixelFormat(m_hMemDC, pixelformat, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
-	if (SetPixelFormat(m_hMemDC, pixelformat, &pfd) == FALSE)
+	DescribePixelFormat(m_hDC, pixelformat, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+	if (SetPixelFormat(m_hDC, pixelformat, &pfd) == FALSE)
 	{
 		::MessageBox(nullptr, _T("SetPixelFormat failed"), _T("Error"), MB_OK);
 		return FALSE;
 	}
 
 	if (pfd.dwFlags & PFD_NEED_PALETTE)
-		CreateRGBPalette(m_hMemDC, pfd);
+		CreateRGBPalette(m_hDC, pfd);
 
 	return TRUE;
 }
@@ -1724,43 +1693,37 @@ void CGLRenderer::SetGLView(const SPerspectiveView& crViewPos) const
 
 HRESULT CGLRenderer::ReleaseWindow(void)
 {
+	if (IsVBOSupported())
+		DeleteVBOs();
 	wglMakeCurrent(nullptr, nullptr);
-	if (m_hMemDC)
-		::ReleaseDC(m_hWnd, /*m_hWnd*/ m_hMemDC);
-	if (m_hMemRC)
-		wglDeleteContext(m_hMemRC);
+	if (m_hDC)
+		::ReleaseDC(m_hWnd, /*m_hWnd*/ m_hDC);
+	if (m_hRC)
+		wglDeleteContext(m_hRC);
 	return S_OK;
 }
+
+
+PFNGLGENBUFFERSARBPROC glGenBuffersARB = NULL;					// VBO Name Generation Procedure
+PFNGLBINDBUFFERARBPROC glBindBufferARB = NULL;					// VBO Bind Procedure
+PFNGLBUFFERDATAARBPROC glBufferDataARB = NULL;					// VBO Data Loading Procedure
+PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = NULL;			// VBO Deletion Procedure
 
 HRESULT CGLRenderer::BindWindow(HWND hBindWnd, bool bSoftOGL, const SLogFont arrLogFonts[])
 {
 	m_hWnd = hBindWnd;
-	m_hMemDC = ::GetDC(m_hWnd);
-	if
-	(
-		!bSetupPixelFormat
-		(
-			PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
-			                  bSoftOGL
-		)
-	)
+	m_hDC = ::GetDC(m_hWnd);
+	if (!bSetupPixelFormat(PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER, bSoftOGL))
 		return E_FAIL;
-	m_hMemRC = wglCreateContext(m_hMemDC);
-	if (m_hMemRC == nullptr)
+	m_hRC = wglCreateContext(m_hDC);
+	if (m_hRC == nullptr)
 	{
 		if (!bSoftOGL)
 		{
-			if
-			(
-				!bSetupPixelFormat
-				(
-					PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
-					                  false
-				)
-			)
+			if (!bSetupPixelFormat(PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER, false))
 				return E_FAIL;
-			m_hMemRC = wglCreateContext(m_hMemDC);
-			if (m_hMemRC == nullptr)
+			m_hRC = wglCreateContext(m_hDC);
+			if (m_hRC == nullptr)
 			{
 				::MessageBox(nullptr,_T("3D Graphics is not initialized"),_T(""),MB_OK);
 				return E_FAIL;
@@ -1769,18 +1732,29 @@ HRESULT CGLRenderer::BindWindow(HWND hBindWnd, bool bSoftOGL, const SLogFont arr
 
 		return E_FAIL;
 	}
-	if (wglMakeCurrent(m_hMemDC, m_hMemRC) == false)
+	if (wglMakeCurrent(m_hDC, m_hRC) == false)
 	{
 		::MessageBox(nullptr,_T("Could not MakeCurrent"),_T(""),MB_OK);
 		return E_FAIL;
 	}
 	BuildAllFonts(arrLogFonts);
+	m_bVBOSupported = IsExtensionSupported("GL_ARB_vertex_buffer_object");
+	if (m_bVBOSupported)
+	{
+		// Get Pointers To The GL Functions
+		glGenBuffersARB = (PFNGLGENBUFFERSARBPROC)wglGetProcAddress("glGenBuffersARB");
+		glBindBufferARB = (PFNGLBINDBUFFERARBPROC)wglGetProcAddress("glBindBufferARB");
+		glBufferDataARB = (PFNGLBUFFERDATAARBPROC)wglGetProcAddress("glBufferDataARB");
+		glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)wglGetProcAddress("glDeleteBuffersARB");
+
+		BuildVBOs();
+	}
 	return S_OK;
 }
 
 void CGLRenderer::SwapBuffers(void) const
 {
-	::SwapBuffers(m_hMemDC);
+	::SwapBuffers(m_hDC);
 	/*
 		if(::WindowFromDC(m_hMemDC) == nullptr)
 		{
@@ -1867,10 +1841,10 @@ void CGLRenderer::DrawAxe(char Name) const
 
 	glTranslatef(0, 0, 20);
 	glDisable(GL_LIGHTING);
-	SelectObject(m_hMemDC, GetStockObject(SYSTEM_FONT));
+	SelectObject(m_hDC, GetStockObject(SYSTEM_FONT));
 
 	// create the bitmap display lists
-	wglUseFontBitmaps(m_hMemDC, Name, 1, 1000);
+	wglUseFontBitmaps(m_hDC, Name, 1, 1000);
 
 	glRasterPos2i(0, 0);
 	glCallList(1000);
@@ -1879,10 +1853,10 @@ void CGLRenderer::DrawAxe(char Name) const
 	glPopMatrix();
 }
 
-HRESULT CGLRenderer::Render(CViewGeometry* pGeometry, SViewOptions* pViewOptions, CDrawOptions* pDrawOptions)
+HRESULT CGLRenderer::Render(CViewGeometry* pGeometry, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions)
 {
 	S3DBox ViewBox;
-	wglMakeCurrent(m_hMemDC, m_hMemRC);
+	wglMakeCurrent(m_hDC, m_hRC);
 	if (m_fontBases[0] == 0)
 	{
 		BuildAllFonts(nullptr);
@@ -1901,11 +1875,46 @@ HRESULT CGLRenderer::Render(CViewGeometry* pGeometry, SViewOptions* pViewOptions
 	ViewPos.Zorg += m_ViewPos.TargetDist;
 	ViewPos.Rot->Rotate_1(ViewPos.Xorg, ViewPos.Yorg, ViewPos.Zorg);
 
+	if (IsVBOSupported() && pGeometry->ElementArray.m_bRebuildArrays)
+	{
+		glBindBufferARB(GL_ARRAY_BUFFER, m_nVBOVertices);			// Bind The Vertex Buffer
+		std::vector<float> vecVertexs(pGeometry->VertexArray.size() * 3);
+		for (size_t i = 0; i < pGeometry->VertexArray.size(); ++i)
+		{
+			vecVertexs[i * 3] = pGeometry->VertexArray[i].x;
+			vecVertexs[i * 3+1] = pGeometry->VertexArray[i].y;
+			vecVertexs[i * 3+2] = pGeometry->VertexArray[i].z;
+		}
+		glBufferDataARB(GL_ARRAY_BUFFER, vecVertexs.size() * sizeof(float), vecVertexs.data(), GL_STATIC_DRAW);
+
+		glBindBufferARB(GL_ARRAY_BUFFER, m_nVBOColors);
+		glBufferDataARB(GL_ARRAY_BUFFER, pGeometry->ElementArray.m_colors.size() * 4, pGeometry->ElementArray.m_colors.data(), GL_STATIC_DRAW);
+
+	
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, m_nVBOTriangles);
+		glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, pGeometry->ElementArray.m_triangles.size()*sizeof(int), pGeometry->ElementArray.m_triangles.data(), GL_STATIC_DRAW);
+
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, m_nVBOQuads);
+		glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, pGeometry->ElementArray.m_quads.size() * sizeof(int), pGeometry->ElementArray.m_quads.data(), GL_STATIC_DRAW);
+		pGeometry->ElementArray.m_bRebuildArrays = false;
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, m_nVBOLinestrips);
+		glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, pGeometry->ElementArray.m_linestrips.size() * sizeof(int), pGeometry->ElementArray.m_linestrips.data(), GL_STATIC_DRAW);
+		pGeometry->ElementArray.m_bRebuildArrays = false;
+	}
+	if (IsVBOSupported())
+	{
+		for (size_t i = 0; i < pGeometry->ElementArray.m_normals.size(); i++)
+		{
+			CGLDraw::CorrectNormal(pGeometry->ElementArray.m_normals[i], &(pGeometry->VertexArray[i]), &ViewPos);
+		}
+		glBindBufferARB(GL_ARRAY_BUFFER, m_nVBONormals);
+		glBufferDataARB(GL_ARRAY_BUFFER, 3 * pGeometry->ElementArray.m_normals.size() * sizeof(float), pGeometry->ElementArray.m_normals.data(), GL_STREAM_DRAW_ARB);
+	}
 	pGeometry->OnDrawScene(this, pViewOptions, pDrawOptions, ViewPos);
 
 	DrawCoordSys();
 
-	glFlush();
+	//glFlush();
 	//SwapBuffers();
 	return S_OK;
 }
@@ -2070,7 +2079,7 @@ void CGLRenderer::BuildFont(ESvFont fontNo, const LOGFONT* pLogFont)
 							FF_DONTCARE|DEFAULT_PITCH,		// Family And Pitch
 							"Arial");				// Font Name
 	*/
-	HGDIOBJ old = ::SelectObject(m_hMemDC, m_fonts[fontNo]); // Selects The Font We Created
+	HGDIOBJ old = ::SelectObject(m_hDC, m_fonts[fontNo]); // Selects The Font We Created
 #ifndef USE_FONT_BITMAPS
 
 	wglUseFontOutlines(	m_hMemDC,							// Select The Current DC
@@ -2082,9 +2091,52 @@ void CGLRenderer::BuildFont(ESvFont fontNo, const LOGFONT* pLogFont)
 						WGL_FONT_POLYGONS,				// Use Polygons, Not Lines
 						m_gmf);							// Address Of Buffer To Recieve Data
 #else
-	wglUseFontBitmapsA(m_hMemDC, 0, FONT_LIST_SIZE, m_fontBases[fontNo]);
+	wglUseFontBitmapsA(m_hDC, 0, FONT_LIST_SIZE, m_fontBases[fontNo]);
 #endif
-	::SelectObject(m_hMemDC, old);
+	::SelectObject(m_hDC, old);
+}
+
+void CGLRenderer::BuildVBOs()
+{
+	// Generate all buffers
+	glGenBuffersARB(6, &m_nVBOVertices);							// Get A Valid Name
+}
+
+void CGLRenderer::DeleteVBOs()
+{
+	// Delete all buffers
+	glDeleteBuffersARB(6, &m_nVBOVertices);							// Get A Valid Name
+}
+
+
+bool CGLRenderer::IsExtensionSupported(char * szTargetExtension)
+{
+	const unsigned char *pszExtensions = NULL;
+	const unsigned char *pszStart;
+	unsigned char *pszWhere, *pszTerminator;
+
+	// Extension names should not have spaces
+	pszWhere = (unsigned char *)strchr(szTargetExtension, ' ');
+	if (pszWhere || *szTargetExtension == '\0')
+		return false;
+
+	// Get Extensions String
+	pszExtensions = glGetString(GL_EXTENSIONS);
+
+	// Search The Extensions String For An Exact Copy
+	pszStart = pszExtensions;
+	for (;;)
+	{
+		pszWhere = (unsigned char *)strstr((const char *)pszStart, szTargetExtension);
+		if (!pszWhere)
+			break;
+		pszTerminator = pszWhere + strlen(szTargetExtension);
+		if (pszWhere == pszStart || *(pszWhere - 1) == ' ')
+			if (*pszTerminator == ' ' || *pszTerminator == '\0')
+				return true;
+		pszStart = pszTerminator;
+	}
+	return false;
 }
 
 void CGLRenderer::ReleaseFont(ESvFont fontNo)
@@ -2097,12 +2149,12 @@ void CGLRenderer::ReleaseFont(ESvFont fontNo)
 
 CSize CGLRenderer::GetFontExtent(ESvFont fontNo, LPCTSTR pszText, TEXTMETRIC* ptm)
 {
-	HGDIOBJ old = ::SelectObject(m_hMemDC, m_fonts[fontNo]); // Selects The Font We Created
+	HGDIOBJ old = ::SelectObject(m_hDC, m_fonts[fontNo]); // Selects The Font We Created
 	CSize sz;
-	::GetTextExtentPoint(m_hMemDC, pszText, int(_tcslen(pszText)), &sz);
+	::GetTextExtentPoint(m_hDC, pszText, int(_tcslen(pszText)), &sz);
 	if (ptm)
-		GetTextMetrics(m_hMemDC, ptm);
-	::SelectObject(m_hMemDC, old);
+		GetTextMetrics(m_hDC, ptm);
+	::SelectObject(m_hDC, old);
 	return sz;
 }
 

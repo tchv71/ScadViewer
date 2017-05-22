@@ -681,7 +681,8 @@ BOOL CFolderListCtrl::SetSortType( int nCol, BOOL bAsc )
 	if( nCol < flcName || nCol >= flcSize )
 		return FALSE;
 
-	HD_ITEM curItem;
+	HDITEM curItem;
+	curItem.mask = 0;
 	CHeaderCtrl* pHdrCtrl= GetHeaderCtrl();
 
 	if( nCol != m_nCurColumn )

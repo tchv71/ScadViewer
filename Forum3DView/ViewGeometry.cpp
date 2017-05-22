@@ -51,7 +51,7 @@ const NODE_NUM_TYPE		NUM_RECODE[] = { 0, 1, 3, 2 };
 //#pragma package(smart_init)
 // =================== Работа с кэшем ребер ==========================
 
-//#define CASHE_SORT // Если определена - упорядочивать узлы в ребре
+#define CASHE_SORT // Если определена - упорядочивать узлы в ребре
 void CNodeCashe::Construct(void)
 {
 	if (vecCashe.size()!=0)
@@ -182,11 +182,8 @@ bool CNodeCashe::WasDrawed(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 #ifdef CASHE_SORT
 	if(n1 > n2)
 	{
-		NODE_NUM_TYPE	tmp = n1;
-		n1 = n2;
-		n2 = tmp;
+		std::swap(n1,n2);
 	}
-
 	return WasDrawed1(n1, n2);
 #else
 	WasDrawed1(n1, n2);
@@ -196,7 +193,7 @@ bool CNodeCashe::WasDrawed(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 
 bool CNodeCashe::WasDrawed1(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 {
-	if (!vecCashe.size() || n1>=vecCashe.size() || n2>=vecCashe.size())
+	if (!vecCashe.size() || n1>=ptrdiff_t(vecCashe.size()) || n2>=ptrdiff_t(vecCashe.size()))
 		return false;
 	SViewCasheNode	*pnc = &vecCashe[n1];
 	if(pnc->SecondNode != -1)
@@ -640,14 +637,24 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 	//pEB = Video->ElemBody;
 	for(UINT i = 0; i < nElem; i++/*, pEB++*/)
 	{
-		CElemInfApi e;
+		CElemInfApiExt e;
 		ApiElemGetInf(Schem, i+1, &e);
 		if (e.IsDeletet)
 			continue;
-		LPCSTR strName = ApiGetRigidName(Schem, e.TypeRigid);
+		e.UpdateThickness(Schem);
 		if (m_bForumGeometry)
 		{
 			//void *p = *((void **)Schem);
+			S3dPoint	p[3];
+			for (int i = 0; i < 3; i++)
+				p[i] = S3dPoint(VertexArray[NUM(e.Node[i])]);
+
+			CVectorType	p1v(p[1].x - p[0].x, p[1].y - p[0].y, p[1].z - p[0].z);
+			CVectorType p2v(p[2].x - p[1].x, p[2].y - p[1].y, p[2].z - p[1].z);
+			CVectorType Norm;
+			Norm.SetCrossProduct(p1v, p2v);
+			Norm.Normalize();
+
 			UINT nHoles = ApiElemGetQuantityHole(Schem, i+1);
 			UINT nSumQuantHoleNodes = 0;
 			for (UINT j=0; j<nHoles; j++)
@@ -656,28 +663,10 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 				const UINT *pNodes;
 				ApiElemGetHole(Schem, i+1, j+1, &nQuantNodes, &pNodes);
 				nSumQuantHoleNodes+=nQuantNodes;
-				for (UINT k=0; k<nQuantNodes; k++)
-				{
-					CViewElement el(RGB(192, 192, 192));
-					el.OrgType = GetElemOrgType(e.TypeElem);
-					el.Type = EL_LINE;
-					el.NumElem = i+1;
-					el.Points[0] = NUM(pNodes[k]);
-					el.Points[1] = NUM(pNodes[(k+1)%nQuantNodes]);
-					ElementArray.push_back(el);
-				}
+				AddOprContours(nQuantNodes, e, i, TypePlate, pNodes, Norm);
 			}
 			int nQantExt = e.QuantityNode - nSumQuantHoleNodes;
-			for (int j=0; j<nQantExt; j++)
-			{
-				CViewElement el(RGB(192, 192, 192));
-				el.OrgType = GetElemOrgType(e.TypeElem);
-				el.Type = EL_LINE;
-				el.NumElem = i+1;
-				el.Points[0] = NUM(e.Node[j]);
-				el.Points[1] = NUM(e.Node[(j+1)%nQantExt]);
-				ElementArray.push_back(el);
-			}
+			AddOprContours(nQantExt, e, i, TypePlate, e.Node, Norm);
 		}
 		else
 		{
@@ -738,13 +727,13 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 				continue;
 			}
 			CViewElement el(RGB(192, 192, 192));
-			ElementArray.push_back(el);
-			CViewElement *pE = &ElementArray[ElementArray.size()-1];
+			el.OrgType = GetElemOrgType(e.TypeElem);
+			el.NumElem = i + 1;//e.NumElem;
 
-			pE->OrgType = GetElemOrgType(e.TypeElem);
-	//		if (pE->OrgType>EL_SOLID && pEB->Type!=2)
-	//			continue;
-			pE->NumElem = i+1;//e.NumElem;
+			ElementArray.push_back(el);
+			const size_t nEl = ElementArray.size() - 1;
+			CViewElement *pE = &ElementArray[nEl];
+
 
 
 			switch (e.TypeElem)
@@ -789,7 +778,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 			}
 			if(pE->Type != EL_QUAD)
 			{
-				for(int j = 0; j < pE->NumVertexs(); j++)
+				for (int j = 0; j < pE->NumVertexs(); j++)
 					pE->Points[j] = NUM(e.Node[j]);
 			}
 			else
@@ -803,6 +792,42 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 					VertexArray[pE->Points[2]].nMainVertex = NUM(e.Node[1]);
 					VertexArray[pE->Points[3]].nMainVertex = NUM(e.Node[1]);
 				}
+			}
+			if (TypePlate && e.m_fThickness > 1e-5 && pE->Type != EL_LINE)
+			{
+				size_t nNewVertexsIdx = VertexArray.size();
+				pE->SetNormal(VertexArray.GetVector());
+				for (int i = 0;i < 2;i++)
+					for (int j = 0;j < pE->NumVertexs();j++)
+					{
+						S3dPoint pt = VertexArray[pE->Points[j]];
+						float fShift = e.m_fThickness / 2 * (i == 0 ? -1 : 1);
+						pt.x += pE->Norm.v[0] * fShift;
+						pt.y += pE->Norm.v[1] * fShift;
+						pt.z += pE->Norm.v[2] * fShift;
+						VertexArray.push_back(SViewVertex(pt));
+					}
+				for (int j = 0;j < pE->NumVertexs();j++)
+					pE->Points[j] = nNewVertexsIdx + j;
+				for (int j = 0;j < pE->NumVertexs();j++)
+				{
+					el.Points[0] = nNewVertexsIdx+j;
+					el.Points[1] = nNewVertexsIdx +(j + 1) % pE->NumVertexs();
+					el.Points[2] = nNewVertexsIdx +(j+1) % pE->NumVertexs() + pE->NumVertexs();
+					el.Points[3] = nNewVertexsIdx +j+ pE->NumVertexs();
+					el.SetNormal(VertexArray.GetVector());
+					el.OrgNorm = pE->Norm;
+					el.Type = EL_QUAD;
+					ElementArray.push_back(el);
+					pE = &ElementArray[nEl];
+				}
+				for (int j = 0;j < pE->NumVertexs();j++)
+					el.Points[j] = nNewVertexsIdx + pE->NumVertexs() + j;
+				el.Norm = pE->Norm*(-1.0f);
+				el.OrgNorm = pE->OrgNorm;
+				el.Type = pE->Type;
+				ElementArray.push_back(el);
+				pE = &ElementArray[nEl];
 			}
 			int j = e.QuantityNode - pE->NumVertexs(); //Schem->pFormat[pEB->NumElem - 1].QuantityNode - pE->NumVertexs();
 			if (j>0)
@@ -881,6 +906,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 	ElementArray.reserve(Video->QuantityElemBody);
 	ElementArray.resize(Video->QuantityElemBody);
 	m_vecExtraPoints.resize(0);
+	ElementArray.m_mapVertexs.clear();
 	pEB = Video->ElemBody;
 	for(i = 0; i < Video->QuantityElemBody; i++, pEB++)
 	{
@@ -919,13 +945,16 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 				VertexArray[pE->Points[3]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[1]);
 			}
 		}
-		int j = Schem->pFormat[pEB->NumElem - 1].QuantityNode - pE->NumVertexs();
+		FORMAT& frm = Schem->pFormat[pEB->NumElem - 1];
+		RIGID_STR * pRigid = Schem->_Rigid.Get(frm.TypeRigid);
+		RIGID_LIST_OLD *pRigidOld = Schem->_Rigid.GetRigid(frm.TypeRigid);
+		int j = frm.QuantityNode - pE->NumVertexs();
 		if (j>0)
 		{
 			pE->m_nExtraPoints = m_vecExtraPoints.size();
-			m_vecExtraPoints.push_back(Schem->pFormat[pEB->NumElem - 1].QuantityNode);
+			m_vecExtraPoints.push_back(frm.QuantityNode);
 			for (int k= pE->NumVertexs();j>0;j--,k++)
-				m_vecExtraPoints.push_back(NUM(Schem->pFormat[pEB->NumElem - 1].pNode[k]));
+				m_vecExtraPoints.push_back(NUM(frm.pNode[k]));
 		}
 		else
 		{
@@ -968,6 +997,49 @@ bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePla
 	SetupAndOptimize(bOptimize);
 	return true;
 }
+
+#ifdef SCAD21
+void CViewGeometry::AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm)
+{
+	for (UINT k = 0; k<nQuantNodes; k++)
+	{
+		CViewElement el(RGB(192, 192, 192));
+		el.OrgType = GetElemOrgType(e.TypeElem);
+		el.Type = EL_LINE;
+		el.NumElem = i + 1;
+		if (TypePlate && e.m_fThickness > 1e-5)
+		{
+			size_t nVertexIdx = VertexArray.size();
+			const S3dPoint pt1 = VertexArray[NUM(pNodes[k])];
+			const S3dPoint pt1in = pt1 + Norm*(e.m_fThickness / 2);
+			const S3dPoint pt1out = pt1 + Norm*(-e.m_fThickness / 2);
+			VertexArray.push_back(pt1in);
+			VertexArray.push_back(pt1out);
+			const S3dPoint pt2 = VertexArray[NUM(pNodes[(k + 1) % nQuantNodes])];
+			const S3dPoint pt2in = pt2 + Norm*(e.m_fThickness / 2);
+			const S3dPoint pt2out = pt2 + Norm*(-e.m_fThickness / 2);
+			VertexArray.push_back(pt2in);
+			VertexArray.push_back(pt2out);
+			el.Points[0] = nVertexIdx;
+			el.Points[1] = nVertexIdx + 1;
+			ElementArray.push_back(el);
+			el.Points[0] = nVertexIdx;
+			el.Points[1] = nVertexIdx + 2;
+			ElementArray.push_back(el);
+			el.Points[0] = nVertexIdx + 1;
+			el.Points[1] = nVertexIdx + 3;
+			ElementArray.push_back(el);
+
+		}
+		else
+		{
+			el.Points[0] = NUM(pNodes[k]);
+			el.Points[1] = NUM(pNodes[(k + 1) % nQuantNodes]);
+			ElementArray.push_back(el);
+		}
+	}
+}
+#endif
 
 
 void __fastcall CViewElement::SetNormal(SViewVertex *Vertexs)
@@ -1100,11 +1172,9 @@ CViewElement::CViewElement(TColor color): m_nExtraPoints(-1)
 
 void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement * pElements, size_t nElements)
 {
-	if (m_mapVertexs.size() > 0)
-		return;
 	m_triangles.resize(0);
 	m_quads.resize(0);
-	m_mapVertexs.clear();
+	bool bMapExist = m_mapVertexs.size() > 0;
 	UINT32 nMaxIndex = VertexArray.size();
 	m_colors.resize(nMaxIndex);
 	m_normals.resize(nMaxIndex);
@@ -1126,12 +1196,12 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 			else
 			{
 				VertexArray.push_back(VertexArray[nPoint]);
-				m_mapVertexs.push_back(std::make_pair(nPoint, VertexArray.size() - 1));
+				if (!bMapExist)
+					m_mapVertexs.push_back(std::make_pair(nPoint, VertexArray.size() - 1));
 				nPoint = VertexArray.size() - 1;
 				el.Points[j] = nPoint;
 				m_colors.push_back(el.Color | (128 << 24));
 				m_normals.push_back(el.Norm);
-
 			}
 
 			if (el.NumVertexs() == 3)
@@ -1140,7 +1210,7 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 				m_quads.push_back(nPoint);
 		}
 	}
-
+	m_bRebuildArrays = true;
 }
 
 void __fastcall CViewGeometry::DeleteEqualElements()
@@ -1288,7 +1358,7 @@ void CViewGeometry::RecreateCashe(void) const
 }
 
 // Учет фильтров отрисовки элементов по ориентации
-bool ElementToBeDrawn(const CVectorType &Norm, CDrawOptions *DrOpt)
+bool ElementToBeDrawn(const CVectorType &Norm, const CDrawOptions * DrOpt)
 {
 	if(fabs(Norm.v[2]) < Eps)
 		return DrOpt->bElVertical;
@@ -1298,7 +1368,7 @@ bool ElementToBeDrawn(const CVectorType &Norm, CDrawOptions *DrOpt)
 		return DrOpt->bElOther;
 }
 
-bool BarToBeDrawn(CViewElement &El, CDrawOptions *DrOpt)
+bool BarToBeDrawn(CViewElement &El, const CDrawOptions * DrOpt)
 {
 	if(fabs(El.OrgNorm.v[2]) < Eps)
 		return DrOpt->bBarHorizontal;
@@ -1306,7 +1376,7 @@ bool BarToBeDrawn(CViewElement &El, CDrawOptions *DrOpt)
 		return DrOpt->bBarVertical;
 	return DrOpt->bBarOther;
 }
-void CViewGeometry::DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes)
+void CViewGeometry::DrawOptionsChanged(const CDrawOptions * DrawOptions, bool bShowUsedNodes)
 {
 	m_bShowUsedNodes = bShowUsedNodes;
 	if (DrawOptions)
@@ -1379,12 +1449,12 @@ inline void UpdateBox(const CRotator* Rot, S3DBox *Box, const S3dPoint& p1)
 		Box->z_min = p.z;
 }
 
-void CViewGeometry::Get3DBox(const CRotator *Rot, S3DBox *Box, CViewVertexArray	*pVertexArray)
+void CViewGeometry::Get3DBox(const CRotator *Rot, S3DBox *Box, const CViewVertexArray * pVertexArray)
 {
 
 	// Определяем ограничивающий параллелепипед
 	// при текущем угле поворота
-	CViewVertexArray &va = pVertexArray ? *pVertexArray : VertexArray;
+	const CViewVertexArray &va = pVertexArray ? *pVertexArray : VertexArray;
 	SViewVertex			p;
 	if(va.size() != 0)
 	{
@@ -1906,17 +1976,19 @@ COORD_LINE_OLD *pCoordLine = (COORD_LINE_OLD *)Schem->ReadDocument(21);
 #endif
 }
 
-void CViewGeometry::Render(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions)
+void CViewGeometry::Render(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions)
 {
 	pRenderer->Render(this, pViewOptions, pDrawOptions);
 }
 
-void CViewGeometry::OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions, SPerspectiveView&	rViewPos)
+void CViewGeometry::OnDrawScene(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions, const SPerspectiveView & rViewPos)
 {
 	CGLDraw	GlDraw(this, &rViewPos, pViewOptions, pDrawOptions, pRenderer /*, 15*pViewOptions->LineWidth*/);
 	GlDraw.Draw();
 }
 
 INodeCashe* CViewGeometry::GetNodeCashe()
-{ return m_pNodeCashe ? m_pNodeCashe : (m_pNodeCashe=new CNodeCashe(this, m_bOptimize)); }
+{
+	return m_pNodeCashe ? m_pNodeCashe : (m_pNodeCashe=new CNodeCashe(this, m_bOptimize));
+}
 

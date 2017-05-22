@@ -188,7 +188,7 @@ class CViewElementArray : public std::vector <CViewElement>
 	friend class CViewGeometry;
 	CViewVertexArray &m_VertexArray;
 public:
-	CViewElementArray(CViewVertexArray& rVertexArray): m_VertexArray(rVertexArray), m_SelElOrgType()
+	CViewElementArray(CViewVertexArray& rVertexArray): m_VertexArray(rVertexArray), m_SelElOrgType(), m_bRebuildArrays(false)
 	{
 		m_nNumElSelected = 0;
 	}
@@ -236,6 +236,7 @@ public:
 	std::vector<CVectorType> m_normals;
 	std::vector<UINT32> m_linestrips;
 	std::vector<std::pair<UINT32, UINT32>> m_mapVertexs;
+	bool m_bRebuildArrays;
 protected:
 	void BuildArrays(CViewVertexArray & VertexArray, CViewElement* pElements, size_t nElements);
 	NUM_ELEM_TYPE m_nNumElSelected;
@@ -340,11 +341,11 @@ public:
 	}
 
 private:
-	virtual void		Render(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions) =0;
-	virtual void		OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions,SPerspectiveView&	ViewPos) =0;
+	virtual void		Render(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) =0;
+	virtual void		OnDrawScene(IFemRenderer *pRenderer, const SViewOptions *pViewOptions, const CDrawOptions *pDrawOptions,const SPerspectiveView&	ViewPos) =0;
 	virtual INodeCashe* GetNodeCashe() = 0;
 	virtual void		PerformCut(CCutter& rCutter, SCutRecord *r) = 0;
-	virtual void		DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes)=0;
+	virtual void		DrawOptionsChanged(const CDrawOptions * DrawOptions, bool bShowUsedNodes)=0;
 	virtual bool		IsIso() const =0;
 };
 
@@ -402,6 +403,8 @@ protected:
 	CViewGeometry*	m_pGeom;
 };
 
+struct CElemInfApiExt;
+
 class CViewGeometry : public IModelDraw, public IGeomCut
 {
 	const struct SViewOptions* m_pOptions;
@@ -426,11 +429,11 @@ public:
 
 	void SetElColor(CViewElement& el, const struct SViewOptions* pOptions, EDrawMode Mode) const;
 	// IModelDraw implementation
-	void Render(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions) override;
-	void OnDrawScene(IFemRenderer *pRenderer, SViewOptions *pViewOptions, CDrawOptions *pDrawOptions, SPerspectiveView& riewPos) override;
+	void Render(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions) override;
+	void OnDrawScene(IFemRenderer *pRenderer, const SViewOptions * pViewOptions, const CDrawOptions * pDrawOptions, const SPerspectiveView & rViewPos) override;
 	INodeCashe* GetNodeCashe() override;
 	virtual void SetupElementColors(const struct SViewOptions* pOptions, EDrawMode Mode) ;
-	virtual void  DrawOptionsChanged(CDrawOptions *DrawOptions, bool bShowUsedNodes) override;
+	virtual void  DrawOptionsChanged(const CDrawOptions * DrawOptions, bool bShowUsedNodes) override;
 	virtual bool  IsIso() const override { return false; }
 	virtual CString Format(double val) const  {return CString();};
 
@@ -439,12 +442,15 @@ public:
 	virtual void ClearCut(void) override;
 
 	bool LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize = true);
+#ifdef SCAD21
+	void AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm);
+#endif
 	bool LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePlate,  bool bOptimize = true, SCHEMA ** ppSchem = nullptr);
 
 	void ExportToDxf(LPCTSTR szFileName);
 	void __fastcall		SetupNormals(void);
 
-	virtual void Get3DBox(const CRotator *Rot, S3DBox *Box, CViewVertexArray	*pVertexArray = nullptr);
+	virtual void Get3DBox(const CRotator *Rot, S3DBox *Box, const CViewVertexArray * pVertexArray=nullptr);
 	void GetMax3DBox(const CRotator *Rot, S3DBox *Box);
 	virtual void Retriangulate();
 	virtual void BuildArrays();
@@ -501,6 +507,30 @@ NODE_NUM_TYPE NUM(NODE_NUM_TYPE x);
 #define N_S(x)	NUM_RECODE[x]
 extern const NODE_NUM_TYPE	NUM_RECODE[];
 
+#ifdef SCAD21
+#include "SCADAPIX.hxx"
+
+struct CElemInfApiExt : public CElemInfApi
+{
+	FLOAT_TYPE m_fThickness;
+	CElemInfApiExt() : m_fThickness(0) {}
+	void UpdateThickness(ScadAPI lpApi)
+	{
+		if (TypeRigid > 0)
+		{
+			char Text[1024];
+			UINT nQnt = 0;
+			const UINT* ListElem;
+			ApiGetRigid(lpApi, TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
+			double f1 = 0, f2 = 0, f3 = 0;
+			CStringA strText(Text);
+			strText.Replace(".", ",");
+			sscanf_s((LPCSTR)strText, "%lg %lg %lg", &f1, &f2, &f3);
+			m_fThickness = (FLOAT_TYPE)f3;
+		}
+	}
+};
+#endif
 
 
 //---------------------------------------------------------------------------
