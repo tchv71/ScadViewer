@@ -441,8 +441,11 @@ public:
 	virtual void PerformCut(CCutter& rCutter, SCutRecord *r) override;
 	virtual void ClearCut(void) override;
 
+
 	bool LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize = true);
 #ifdef SCAD21
+	void ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const UINT & i, BYTE TypePlate);
+	bool ProcessSpecialTypes(CElemInfApiExt &e);
 	void AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm);
 #endif
 	bool LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePlate,  bool bOptimize = true, SCHEMA ** ppSchem = nullptr);
@@ -513,25 +516,16 @@ extern const NODE_NUM_TYPE	NUM_RECODE[];
 struct CElemInfApiExt : public CElemInfApi
 {
 	FLOAT_TYPE m_fThickness;
-	CElemInfApiExt() : m_fThickness(0) {}
-	void UpdateThickness(ScadAPI lpApi)
-	{
-		if (TypeRigid > 0)
-		{
-			char Text[1024];
-			UINT nQnt = 0;
-			const UINT* ListElem;
-			ApiGetRigid(lpApi, TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
-			double f1 = 0, f2 = 0, f3 = 0;
-			CStringA strText(Text);
-			strText.Replace(".", ",");
-			sscanf_s((LPCSTR)strText, "%lg %lg %lg", &f1, &f2, &f3);
-			m_fThickness = (FLOAT_TYPE)f3;
-		}
-	}
+	ScadAPI m_lpApi;
+	CElemInfApiExt(ScadAPI lpApi) : m_fThickness(0), m_lpApi(lpApi) {}
+	void UpdateThickness();
+	TElemType GetType() const;
+	bool getContour(std::vector<S3dPoint>& contour, bool& bClosed);
+
 };
 #endif
 
 
 //---------------------------------------------------------------------------
 #endif
+

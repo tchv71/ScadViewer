@@ -189,9 +189,6 @@
     <ClInclude Include="ColorButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ColourPopup.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Cutter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -370,6 +367,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DefProjType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColourPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

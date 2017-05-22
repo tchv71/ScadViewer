@@ -571,434 +571,144 @@ bool CViewGeometry::LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePl
 #endif
 }
 
-bool CViewGeometry::LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize)
+#ifdef SCAD21
+TElemType CElemInfApiExt::GetType() const
 {
-	
-	m_bOptimize = bOptimize;
-	m_DuplicatedElements.clear();
-#ifdef SCAD21
-	m_bForumGeometry = ApiGetTypeSchema(Schem) == 2;
-#else
-	m_bForumGeometry = ::PathMatchSpecA(Schem->FileName, "*.opr") == TRUE;
-#endif
-	if (TypeProfile != 0 || TypePlate != 0)
+	switch (TypeElem)
 	{
-		delete m_pFlatGeometry;
-		m_pFlatGeometry = new CForumViewGeometry(m_pOptions,m_pDrawOptions);
-		m_pFlatGeometry->m_bDeleteInnerPlates = m_bDeleteInnerPlates;
-		if (!m_pFlatGeometry->LoadFromSchema(Schem, 0, 0, true))
-			return false;
-		m_DuplicatedElements = m_pFlatGeometry->m_DuplicatedElements;
-	}
-#ifdef SCAD21
-	UINT nNodes = ApiGetQuantityNode(Schem);
-	VertexArray.reserve(nNodes);
-	VertexArray.resize(0/*Schem->QuantityNode + Schem->Video.QuantityNodeBody*/);
-	
-	UINT nVertexs = 0;
-	for(UINT i = 0; i < nNodes; i++)
-	{
-		SViewVertex v;
-		LPCNodeApi pNode = ApiGetNode(Schem, i+1);
-		v.x = FLOAT_TYPE(pNode->x);
-		v.y = FLOAT_TYPE(pNode->y);
-		v.z = FLOAT_TYPE(pNode->z);
-		v.FragmentFlag = true;
-		v.Flag = 0;
-		if (!(pNode->Flag & VF_DELETED)/* && !Schem->GetNodeBitFlag(i+1,8)*/)
-			nVertexs++;
-		else
-		{
-			v.FragmentFlag=false;
-			v.Flag |= VF_DELETED;
-		}
-		v.nMainVertex = -1;
-		VertexArray.push_back(v);
-	}
-	m_ModelInfo.m_nNodeCount = nVertexs;
-	NumRealVertexs = VertexArray.size();
-	//pCK = Schem->Video.Coord;
-	//for(i = 0; i < Schem->Video.QuantityNodeBody; i++)
-	//{
-	//	SViewVertex v;
-	//	v.x = FLOAT_TYPE(pCK[i].x);
-	//	v.y = FLOAT_TYPE(pCK[i].y);
-	//	v.z = FLOAT_TYPE(pCK[i].z);
-	//	v.FragmentFlag = true;
-	//	v.Flag = 0;
-	//	v.nMainVertex = -1;
-	//	VertexArray.push_back(v);
-	//}
-	
-	UINT nElem = ApiGetElemQuantity(Schem);
-	ElementArray.reserve(nElem);
-	ElementArray.resize(0);
-	m_vecExtraPoints.resize(0);
-	//pEB = Video->ElemBody;
-	for(UINT i = 0; i < nElem; i++/*, pEB++*/)
-	{
-		CElemInfApiExt e;
-		ApiElemGetInf(Schem, i+1, &e);
-		if (e.IsDeletet)
-			continue;
-		e.UpdateThickness(Schem);
-		if (m_bForumGeometry)
-		{
-			//void *p = *((void **)Schem);
-			S3dPoint	p[3];
-			for (int i = 0; i < 3; i++)
-				p[i] = S3dPoint(VertexArray[NUM(e.Node[i])]);
-
-			CVectorType	p1v(p[1].x - p[0].x, p[1].y - p[0].y, p[1].z - p[0].z);
-			CVectorType p2v(p[2].x - p[1].x, p[2].y - p[1].y, p[2].z - p[1].z);
-			CVectorType Norm;
-			Norm.SetCrossProduct(p1v, p2v);
-			Norm.Normalize();
-
-			UINT nHoles = ApiElemGetQuantityHole(Schem, i+1);
-			UINT nSumQuantHoleNodes = 0;
-			for (UINT j=0; j<nHoles; j++)
-			{
-				UINT nQuantNodes=0;
-				const UINT *pNodes;
-				ApiElemGetHole(Schem, i+1, j+1, &nQuantNodes, &pNodes);
-				nSumQuantHoleNodes+=nQuantNodes;
-				AddOprContours(nQuantNodes, e, i, TypePlate, pNodes, Norm);
-			}
-			int nQantExt = e.QuantityNode - nSumQuantHoleNodes;
-			AddOprContours(nQantExt, e, i, TypePlate, e.Node, Norm);
-		}
-		else
-		{
-			if (e.TypeElem == 36)
-			{
-				static const int arrCoord[]={0,2,3,1, 0,4,5,1, 1,3,7,5, 3,2,6,7, 2,6,4,0, 7,6,4,5};
-				const int *pArr=arrCoord;
-				for (UINT i1=0; i1<6; i1++)
-				{
-					CViewElement el(RGB(192,192,192));
-					el.OrgType = GetElemOrgType(e.TypeElem);
-					el.NumElem = i1+1;
-					el.Type = EL_QUAD;
-					for (UINT j=0; j<4; j++)
-						el.Points[j] = NUM(e.Node[*pArr++]);
-					ElementArray.push_back(el);
-				}
-				continue;
-			} else if (e.TypeElem == 32)
-			{
-				static const int arrCoord[]={0,2,1, 0,1,3, 1,2,3, 2,0,3};
-				const int *pArr=arrCoord;
-				for (UINT i1=0; i1<4; i1++)
-				{
-					CViewElement el(RGB(192,192,192));
-					el.OrgType = GetElemOrgType(e.TypeElem);
-					el.NumElem = i1+1;
-					el.Type = EL_TRIANGLE;
-					for (UINT j=0; j<3; j++)
-						el.Points[j] = NUM(e.Node[*pArr++]);
-					ElementArray.push_back(el);
-				}
-				continue;
-			} else if (e.TypeElem == 34)
-			{	
-				static const int arrCoord[]={0,2,1, 3,4,5, 0,3,4,1, 1,2,5,4, 0,3,5,2};
-				const int *pArr=arrCoord;
-				for (UINT i1=0; i1<2; i1++)
-				{
-					CViewElement el(RGB(192,192,192));
-					el.OrgType = GetElemOrgType(e.TypeElem);
-					el.NumElem = i1+1;
-					el.Type = EL_TRIANGLE;
-					for (UINT j=0; j<3; j++)
-						el.Points[j] = NUM(e.Node[*pArr++]);
-					ElementArray.push_back(el);
-				}
-				for (UINT i1=0; i1<3; i1++)
-				{
-					CViewElement el(RGB(192,192,192));
-					el.OrgType = GetElemOrgType(e.TypeElem);
-					el.NumElem = i1+1;
-					el.Type = EL_QUAD;
-					for (UINT j=0; j<4; j++)
-						el.Points[j] = NUM(e.Node[*pArr++]);
-					ElementArray.push_back(el);
-				}
-				continue;
-			}
-			CViewElement el(RGB(192, 192, 192));
-			el.OrgType = GetElemOrgType(e.TypeElem);
-			el.NumElem = i + 1;//e.NumElem;
-
-			ElementArray.push_back(el);
-			const size_t nEl = ElementArray.size() - 1;
-			CViewElement *pE = &ElementArray[nEl];
-
-
-
-			switch (e.TypeElem)
-			{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 10:
-				pE->Type = EL_LINE;
-				break;
+	case 1:
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+	case 6:
+	case 7:
+	case 10:
+		return EL_LINE;
 		//  Тип эл-та  Кол-во узлов
-			case 12: // 3
-			case 14: // 3
-			case 15: // 3..6
-			case 22: // 3
-			case 24: // 3
-			case 25: // 3..6
-			case 42: // 3
-			case 45: // 3..6
-				pE->Type = EL_TRIANGLE;
-				break;
-			case 11: // 4
-			case 13: // 4
-			case 19: // 4
-			case 20: // 4..8
-			case 21: // 4
-			case 23: // 4
-			case 27: // 4..8
-			case 30: // 4..8
-			case 41: // 4
-			case 44: // 4
-			case 50: // 4..8
-				pE->Type = EL_QUAD;
-				break;
-			default:
-				DebugBreak();
-				break;
-			}
-			if(pE->Type != EL_QUAD)
-			{
-				for (int j = 0; j < pE->NumVertexs(); j++)
-					pE->Points[j] = NUM(e.Node[j]);
-			}
-			else
-			{
-				for(int j = 0; j < 4; j++)
-					pE->Points[j] = NUM(e.Node[N_S(j)]);
-				if (pE->OrgType == EL_BAR)
-				{
-					VertexArray[pE->Points[0]].nMainVertex = NUM(e.Node[0]);
-					VertexArray[pE->Points[1]].nMainVertex = NUM(e.Node[0]);
-					VertexArray[pE->Points[2]].nMainVertex = NUM(e.Node[1]);
-					VertexArray[pE->Points[3]].nMainVertex = NUM(e.Node[1]);
-				}
-			}
-			if (TypePlate && e.m_fThickness > 1e-5 && pE->Type != EL_LINE)
-			{
-				size_t nNewVertexsIdx = VertexArray.size();
-				pE->SetNormal(VertexArray.GetVector());
-				for (int i = 0;i < 2;i++)
-					for (int j = 0;j < pE->NumVertexs();j++)
-					{
-						S3dPoint pt = VertexArray[pE->Points[j]];
-						float fShift = e.m_fThickness / 2 * (i == 0 ? -1 : 1);
-						pt.x += pE->Norm.v[0] * fShift;
-						pt.y += pE->Norm.v[1] * fShift;
-						pt.z += pE->Norm.v[2] * fShift;
-						VertexArray.push_back(SViewVertex(pt));
-					}
-				for (int j = 0;j < pE->NumVertexs();j++)
-					pE->Points[j] = nNewVertexsIdx + j;
-				for (int j = 0;j < pE->NumVertexs();j++)
-				{
-					el.Points[0] = nNewVertexsIdx+j;
-					el.Points[1] = nNewVertexsIdx +(j + 1) % pE->NumVertexs();
-					el.Points[2] = nNewVertexsIdx +(j+1) % pE->NumVertexs() + pE->NumVertexs();
-					el.Points[3] = nNewVertexsIdx +j+ pE->NumVertexs();
-					el.SetNormal(VertexArray.GetVector());
-					el.OrgNorm = pE->Norm;
-					el.Type = EL_QUAD;
-					ElementArray.push_back(el);
-					pE = &ElementArray[nEl];
-				}
-				for (int j = 0;j < pE->NumVertexs();j++)
-					el.Points[j] = nNewVertexsIdx + pE->NumVertexs() + j;
-				el.Norm = pE->Norm*(-1.0f);
-				el.OrgNorm = pE->OrgNorm;
-				el.Type = pE->Type;
-				ElementArray.push_back(el);
-				pE = &ElementArray[nEl];
-			}
-			int j = e.QuantityNode - pE->NumVertexs(); //Schem->pFormat[pEB->NumElem - 1].QuantityNode - pE->NumVertexs();
-			if (j>0)
-			{
-				pE->m_nExtraPoints = m_vecExtraPoints.size();
-				m_vecExtraPoints.push_back(e.QuantityNode);
-				for (int k= pE->NumVertexs();j>0;j--,k++)
-					m_vecExtraPoints.push_back(NUM(e.Node[k]));
-			}
-			else
-			{
-				pE->m_nExtraPoints = -1;
-			}
-		}
+	case 12: // 3
+	case 14: // 3
+	case 15: // 3..6
+	case 22: // 3
+	case 24: // 3
+	case 25: // 3..6
+	case 42: // 3
+	case 45: // 3..6
+		return EL_TRIANGLE;
+	case 11: // 4
+	case 13: // 4
+	case 19: // 4
+	case 20: // 4..8
+	case 21: // 4
+	case 23: // 4
+	case 27: // 4..8
+	case 30: // 4..8
+	case 41: // 4
+	case 44: // 4
+	case 50: // 4..8
+		return EL_QUAD;
+	default:
+		DebugBreak();
+		return EL_LINE;
 	}
-	m_ModelInfo.m_nElementCount = nElem;
-	//m_nContouredElements = ElementArray.size();
-	//VertexFlag = new byte[Schem->QuantityNode];
-
-
-	// Заполнение флагов связей в узлах
-	for(UINT i = 0; i < nNodes; i++)
-	{
-		UINT nFlag = ApiGetBound(Schem, i+1);
-		if(nFlag ==0)
-			continue;
-		VertexArray[i].Flag |= byte(nFlag);
-	}
-
-#else
-	int		i;
-	CK			*pCK;
-	LOOK_BODY	*Video;
-	ELEM_BODY	*pEB;
-	Schem->LookBody(nullptr, TypeProfile, TypePlate);
-	Video = &Schem->Video;
-
-	VertexArray.reserve(Schem->QuantityNode + Schem->Video.QuantityNodeBody);
-	VertexArray.resize(0/*Schem->QuantityNode + Schem->Video.QuantityNodeBody*/);
-	
-	pCK = Schem->GetCoord();
-	UINT nVertexs = 0;
-	for(i = 0; i < Schem->QuantityNode; i++)
-	{
-		SViewVertex v;
-		v.x = FLOAT_TYPE(pCK[i].x);
-		v.y = FLOAT_TYPE(pCK[i].y);
-		v.z = FLOAT_TYPE(pCK[i].z);
-		v.FragmentFlag = true;
-		v.Flag = 0;
-		if (!(pCK[i].Flag & VF_DELETED) && !Schem->GetNodeBitFlag(i+1,8))
-			nVertexs++;
-		else
-		{
-			v.FragmentFlag=false;
-			v.Flag |= VF_DELETED;
-		}
-		v.nMainVertex = -1;
-		VertexArray.push_back(v);
-	}
-	m_ModelInfo.m_nNodeCount = nVertexs;
-	NumRealVertexs = VertexArray.size();
-	pCK = Schem->Video.Coord;
-	for(i = 0; i < Schem->Video.QuantityNodeBody; i++)
-	{
-		SViewVertex v;
-		v.x = FLOAT_TYPE(pCK[i].x);
-		v.y = FLOAT_TYPE(pCK[i].y);
-		v.z = FLOAT_TYPE(pCK[i].z);
-		v.FragmentFlag = true;
-		v.Flag = 0;
-		v.nMainVertex = -1;
-		VertexArray.push_back(v);
-	}
-	
-	ElementArray.reserve(Video->QuantityElemBody);
-	ElementArray.resize(Video->QuantityElemBody);
-	m_vecExtraPoints.resize(0);
-	ElementArray.m_mapVertexs.clear();
-	pEB = Video->ElemBody;
-	for(i = 0; i < Video->QuantityElemBody; i++, pEB++)
-	{
-		CViewElement *pE = &ElementArray[i];
-		pE->Color = RGB(192, 192, 192);
-		pE->FragmentFlag = pE->DrawFlag = true;
-		pE->bContoured = true;
-		pE->bContourOnly = false;
-
-		pE->OrgType = GetElemOrgType(Schem->pFormat[pEB->NumElem - 1].TypeElem);
-//		if (pE->OrgType>EL_SOLID && pEB->Type!=2)
-//			continue;
-		pE->NumElem = pEB->NumElem;
-
-		if(pEB->Type == 2)
-			pE->Type = EL_LINE;
-		if(pEB->Type == 3 || pEB->Type == 5)
-			pE->Type = EL_TRIANGLE;
-		if(pEB->Type == 4 || pEB->Type == 6)
-			pE->Type = EL_QUAD;
-
-		if(pE->Type != EL_QUAD)
-		{
-			for(int j = 0; j < 4; j++)
-				pE->Points[j] = NUM(pEB->Node[j]);
-		}
-		else
-		{
-			for(int j = 0; j < 4; j++)
-				pE->Points[j] = NUM(pEB->Node[N_S(j)]);
-			if (pE->OrgType == EL_BAR)
-			{
-				VertexArray[pE->Points[0]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[0]);
-				VertexArray[pE->Points[1]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[0]);
-				VertexArray[pE->Points[2]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[1]);
-				VertexArray[pE->Points[3]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[1]);
-			}
-		}
-		FORMAT& frm = Schem->pFormat[pEB->NumElem - 1];
-		RIGID_STR * pRigid = Schem->_Rigid.Get(frm.TypeRigid);
-		RIGID_LIST_OLD *pRigidOld = Schem->_Rigid.GetRigid(frm.TypeRigid);
-		int j = frm.QuantityNode - pE->NumVertexs();
-		if (j>0)
-		{
-			pE->m_nExtraPoints = m_vecExtraPoints.size();
-			m_vecExtraPoints.push_back(frm.QuantityNode);
-			for (int k= pE->NumVertexs();j>0;j--,k++)
-				m_vecExtraPoints.push_back(NUM(frm.pNode[k]));
-		}
-		else
-		{
-			pE->m_nExtraPoints = -1;
-		}
-	}
-	m_ModelInfo.m_nElementCount = Video->QuantityElemBody;
-	//m_nContouredElements = ElementArray.size();
-	//VertexFlag = new byte[Schem->QuantityNode];
-
-
-	// Заполнение флагов связей в узлах
-#ifdef SCAD11
-	int nBounds = Schem->_Bound.GetQuantity();
-#else
-	int nBounds = Schem->_Bound.GetQuantityBound();
-#endif
-	for(i = 0; i < nBounds; i++)
-	{
-#ifdef SCAD11
-		OBJECT_LIST_STR	*bl = Schem->_Bound.Get(i + 1);
-#else
-		BOUND_LIST	*bl = Schem->_Bound.GetBound(i + 1);
-#endif
-		if(bl->Type != 0)
-			continue;
-		for(int j = 0; j < bl->Quantity; j++)
-		{
-			if(bl->List[j])
-				VertexArray[bl->List[j] - 1].Flag |= bl->Mask;
-		}
-	}
-
-	Schem->DeleteLookBody();
-#endif
-	if (m_bForThumbs)
-		return true;
-	LoadAxesInfo(Schem);
-	PostProcessSchema(Schem, TypeProfile != 0, TypePlate !=0);
-	SetupAndOptimize(bOptimize);
-	return true;
 }
 
-#ifdef SCAD21
+bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
+{
+	if (TypeRigid == 0)
+		return false;
+
+	char Text[1024];
+	UINT nQnt = 0;
+	const UINT* ListElem;
+	ApiGetRigid(m_lpApi, TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
+	double f1 = 0, f2 = 0, f3 = 0;
+	CStringA strText(Text);
+	strText.Replace(".", ",");
+	sscanf_s((LPCSTR)strText, "%lg %lg %lg", &f1, &f2, &f3);
+	m_fThickness = (FLOAT_TYPE)f3;
+	return false;
+}
+
+void  CElemInfApiExt::UpdateThickness()
+{
+	if (TypeRigid > 0)
+	{
+		char Text[1024];
+		UINT nQnt = 0;
+		const UINT* ListElem;
+		ApiGetRigid(m_lpApi, TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
+		double f1 = 0, f2 = 0, f3 = 0;
+		CStringA strText(Text);
+		strText.Replace(".", ",");
+		sscanf_s((LPCSTR)strText, "%lg %lg %lg", &f1, &f2, &f3);
+		m_fThickness = (FLOAT_TYPE)f3;
+	}
+}
+
+bool CViewGeometry::ProcessSpecialTypes(CElemInfApiExt &e)
+{
+	if (e.TypeElem == 36)
+	{
+		static const int arrCoord[] = { 0,2,3,1, 0,4,5,1, 1,3,7,5, 3,2,6,7, 2,6,4,0, 7,6,4,5 };
+		const int *pArr = arrCoord;
+		for (UINT i1 = 0; i1<6; i1++)
+		{
+			CViewElement el(RGB(192, 192, 192));
+			el.OrgType = GetElemOrgType(e.TypeElem);
+			el.NumElem = i1 + 1;
+			el.Type = EL_QUAD;
+			for (UINT j = 0; j<4; j++)
+				el.Points[j] = NUM(e.Node[*pArr++]);
+			ElementArray.push_back(el);
+		}
+		return true;
+	}
+	else if (e.TypeElem == 32)
+	{
+		static const int arrCoord[] = { 0,2,1, 0,1,3, 1,2,3, 2,0,3 };
+		const int *pArr = arrCoord;
+		for (UINT i1 = 0; i1<4; i1++)
+		{
+			CViewElement el(RGB(192, 192, 192));
+			el.OrgType = GetElemOrgType(e.TypeElem);
+			el.NumElem = i1 + 1;
+			el.Type = EL_TRIANGLE;
+			for (UINT j = 0; j<3; j++)
+				el.Points[j] = NUM(e.Node[*pArr++]);
+			ElementArray.push_back(el);
+		}
+		return true;
+	}
+	else if (e.TypeElem == 34)
+	{
+		static const int arrCoord[] = { 0,2,1, 3,4,5, 0,3,4,1, 1,2,5,4, 0,3,5,2 };
+		const int *pArr = arrCoord;
+		for (UINT i1 = 0; i1<2; i1++)
+		{
+			CViewElement el(RGB(192, 192, 192));
+			el.OrgType = GetElemOrgType(e.TypeElem);
+			el.NumElem = i1 + 1;
+			el.Type = EL_TRIANGLE;
+			for (UINT j = 0; j<3; j++)
+				el.Points[j] = NUM(e.Node[*pArr++]);
+			ElementArray.push_back(el);
+		}
+		for (UINT i1 = 0; i1<3; i1++)
+		{
+			CViewElement el(RGB(192, 192, 192));
+			el.OrgType = GetElemOrgType(e.TypeElem);
+			el.NumElem = i1 + 1;
+			el.Type = EL_QUAD;
+			for (UINT j = 0; j<4; j++)
+				el.Points[j] = NUM(e.Node[*pArr++]);
+			ElementArray.push_back(el);
+		}
+		return true;
+	}
+	return false;
+}
+
 void CViewGeometry::AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm)
 {
 	for (UINT k = 0; k<nQuantNodes; k++)
@@ -1789,6 +1499,345 @@ void CViewGeometry::ClearCut()
 		ElementArray[i].FragmentFlag = true;
 	}
 	CorrectVertexVisibility();
+}
+
+#ifdef SCAD21
+void CViewGeometry::ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const UINT & i, BYTE TypePlate)
+{
+	S3dPoint	p[3];
+	for (int i = 0; i < 3; i++)
+		p[i] = S3dPoint(VertexArray[NUM(e.Node[i])]);
+
+	CVectorType	p1v(p[1].x - p[0].x, p[1].y - p[0].y, p[1].z - p[0].z);
+	CVectorType p2v(p[2].x - p[1].x, p[2].y - p[1].y, p[2].z - p[1].z);
+	CVectorType Norm;
+	Norm.SetCrossProduct(p1v, p2v);
+	Norm.Normalize();
+
+	UINT nHoles = ApiElemGetQuantityHole(Schem, i + 1);
+	UINT nSumQuantHoleNodes = 0;
+	for (UINT j = 0; j<nHoles; j++)
+	{
+		UINT nQuantNodes = 0;
+		const UINT *pNodes;
+		ApiElemGetHole(Schem, i + 1, j + 1, &nQuantNodes, &pNodes);
+		nSumQuantHoleNodes += nQuantNodes;
+		AddOprContours(nQuantNodes, e, i, TypePlate, pNodes, Norm);
+	}
+	int nQantExt = e.QuantityNode - nSumQuantHoleNodes;
+	AddOprContours(nQantExt, e, i, TypePlate, e.Node, Norm);
+}
+#endif
+
+bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize)
+{
+
+	m_bOptimize = bOptimize;
+	m_DuplicatedElements.clear();
+#ifdef SCAD21
+	m_bForumGeometry = ApiGetTypeSchema(Schem) == 2;
+#else
+	m_bForumGeometry = ::PathMatchSpecA(Schem->FileName, "*.opr") == TRUE;
+#endif
+	if (TypeProfile != 0 || TypePlate != 0)
+	{
+		delete m_pFlatGeometry;
+		m_pFlatGeometry = new CForumViewGeometry(m_pOptions, m_pDrawOptions);
+		m_pFlatGeometry->m_bDeleteInnerPlates = m_bDeleteInnerPlates;
+		if (!m_pFlatGeometry->LoadFromSchema(Schem, 0, 0, true))
+			return false;
+		m_DuplicatedElements = m_pFlatGeometry->m_DuplicatedElements;
+	}
+#ifdef SCAD21
+	UINT nNodes = ApiGetQuantityNode(Schem);
+	VertexArray.reserve(nNodes);
+	VertexArray.resize(0/*Schem->QuantityNode + Schem->Video.QuantityNodeBody*/);
+
+	UINT nVertexs = 0;
+	for (UINT i = 0; i < nNodes; i++)
+	{
+		SViewVertex v;
+		LPCNodeApi pNode = ApiGetNode(Schem, i + 1);
+		v.x = FLOAT_TYPE(pNode->x);
+		v.y = FLOAT_TYPE(pNode->y);
+		v.z = FLOAT_TYPE(pNode->z);
+		v.FragmentFlag = true;
+		v.Flag = 0;
+		if (!(pNode->Flag & VF_DELETED)/* && !Schem->GetNodeBitFlag(i+1,8)*/)
+			nVertexs++;
+		else
+		{
+			v.FragmentFlag = false;
+			v.Flag |= VF_DELETED;
+		}
+		v.nMainVertex = -1;
+		VertexArray.push_back(v);
+	}
+	m_ModelInfo.m_nNodeCount = nVertexs;
+	NumRealVertexs = VertexArray.size();
+	//pCK = Schem->Video.Coord;
+	//for(i = 0; i < Schem->Video.QuantityNodeBody; i++)
+	//{
+	//	SViewVertex v;
+	//	v.x = FLOAT_TYPE(pCK[i].x);
+	//	v.y = FLOAT_TYPE(pCK[i].y);
+	//	v.z = FLOAT_TYPE(pCK[i].z);
+	//	v.FragmentFlag = true;
+	//	v.Flag = 0;
+	//	v.nMainVertex = -1;
+	//	VertexArray.push_back(v);
+	//}
+
+	UINT nElem = ApiGetElemQuantity(Schem);
+	ElementArray.reserve(nElem);
+	ElementArray.resize(0);
+	m_vecExtraPoints.resize(0);
+	//pEB = Video->ElemBody;
+	for (UINT i = 0; i < nElem; i++/*, pEB++*/)
+	{
+		CElemInfApiExt e(Schem);
+		ApiElemGetInf(Schem, i + 1, &e);
+		if (e.IsDeletet)
+			continue;
+		e.UpdateThickness();
+		if (m_bForumGeometry)
+		{
+			//void *p = *((void **)Schem);
+			ProcessOprElement(e, Schem, i, TypePlate);
+			continue;
+		}
+		if (ProcessSpecialTypes(e))
+			continue;
+		CViewElement el(RGB(192, 192, 192));
+		el.OrgType = GetElemOrgType(e.TypeElem);
+		el.NumElem = i + 1;//e.NumElem;
+
+		ElementArray.push_back(el);
+		const size_t nEl = ElementArray.size() - 1;
+		CViewElement *pE = &ElementArray[nEl];
+		pE->Type = e.GetType();
+
+		if (pE->Type == EL_QUAD)
+		{
+			for (int j = 0; j < 4; j++)
+				pE->Points[j] = NUM(e.Node[N_S(j)]);
+			if (pE->OrgType == EL_BAR)
+			{
+				VertexArray[pE->Points[0]].nMainVertex = NUM(e.Node[0]);
+				VertexArray[pE->Points[1]].nMainVertex = NUM(e.Node[0]);
+				VertexArray[pE->Points[2]].nMainVertex = NUM(e.Node[1]);
+				VertexArray[pE->Points[3]].nMainVertex = NUM(e.Node[1]);
+			}
+		}
+		else
+		{
+			for (int j = 0; j < pE->NumVertexs(); j++)
+				pE->Points[j] = NUM(e.Node[j]);
+		}
+
+		if (TypePlate && e.m_fThickness > 1e-5 && pE->Type != EL_LINE)
+		{
+			size_t nNewVertexsIdx = VertexArray.size();
+			pE->SetNormal(VertexArray.GetVector());
+			for (int i = 0; i < 2; i++)
+				for (int j = 0; j < pE->NumVertexs(); j++)
+				{
+					S3dPoint pt = VertexArray[pE->Points[j]];
+					float fShift = e.m_fThickness / 2 * (i == 0 ? -1 : 1);
+					pt.x += pE->Norm.v[0] * fShift;
+					pt.y += pE->Norm.v[1] * fShift;
+					pt.z += pE->Norm.v[2] * fShift;
+					VertexArray.push_back(SViewVertex(pt));
+				}
+			for (int j = 0; j < pE->NumVertexs(); j++)
+				pE->Points[j] = nNewVertexsIdx + j;
+			for (int j = 0; j < pE->NumVertexs(); j++)
+			{
+				el.Points[0] = nNewVertexsIdx + j;
+				el.Points[1] = nNewVertexsIdx + (j + 1) % pE->NumVertexs();
+				el.Points[2] = nNewVertexsIdx + (j + 1) % pE->NumVertexs() + pE->NumVertexs();
+				el.Points[3] = nNewVertexsIdx + j + pE->NumVertexs();
+				el.SetNormal(VertexArray.GetVector());
+				el.OrgNorm = pE->Norm;
+				el.Type = EL_QUAD;
+				ElementArray.push_back(el);
+				pE = &ElementArray[nEl];
+			}
+			for (int j = 0; j < pE->NumVertexs(); j++)
+				el.Points[j] = nNewVertexsIdx + pE->NumVertexs() + j;
+			el.Norm = pE->Norm*(-1.0f);
+			el.OrgNorm = pE->OrgNorm;
+			el.Type = pE->Type;
+			ElementArray.push_back(el);
+			pE = &ElementArray[nEl];
+		}
+
+		int j = e.QuantityNode - pE->NumVertexs(); //Schem->pFormat[pEB->NumElem - 1].QuantityNode - pE->NumVertexs();
+		if (j>0)
+		{
+			pE->m_nExtraPoints = m_vecExtraPoints.size();
+			m_vecExtraPoints.push_back(e.QuantityNode);
+			for (int k = pE->NumVertexs(); j>0; j--, k++)
+				m_vecExtraPoints.push_back(NUM(e.Node[k]));
+		}
+		else
+		{
+			pE->m_nExtraPoints = -1;
+		}
+	}
+	m_ModelInfo.m_nElementCount = nElem;
+	//m_nContouredElements = ElementArray.size();
+	//VertexFlag = new byte[Schem->QuantityNode];
+
+
+	// Заполнение флагов связей в узлах
+	for (UINT i = 0; i < nNodes; i++)
+	{
+		UINT nFlag = ApiGetBound(Schem, i + 1);
+		if (nFlag == 0)
+			continue;
+		VertexArray[i].Flag |= byte(nFlag);
+	}
+
+#else
+	int		i;
+	CK			*pCK;
+	LOOK_BODY	*Video;
+	ELEM_BODY	*pEB;
+	Schem->LookBody(nullptr, TypeProfile, TypePlate);
+	Video = &Schem->Video;
+
+	VertexArray.reserve(Schem->QuantityNode + Schem->Video.QuantityNodeBody);
+	VertexArray.resize(0/*Schem->QuantityNode + Schem->Video.QuantityNodeBody*/);
+
+	pCK = Schem->GetCoord();
+	UINT nVertexs = 0;
+	for (i = 0; i < Schem->QuantityNode; i++)
+	{
+		SViewVertex v;
+		v.x = FLOAT_TYPE(pCK[i].x);
+		v.y = FLOAT_TYPE(pCK[i].y);
+		v.z = FLOAT_TYPE(pCK[i].z);
+		v.FragmentFlag = true;
+		v.Flag = 0;
+		if (!(pCK[i].Flag & VF_DELETED) && !Schem->GetNodeBitFlag(i + 1, 8))
+			nVertexs++;
+		else
+		{
+			v.FragmentFlag = false;
+			v.Flag |= VF_DELETED;
+		}
+		v.nMainVertex = -1;
+		VertexArray.push_back(v);
+	}
+	m_ModelInfo.m_nNodeCount = nVertexs;
+	NumRealVertexs = VertexArray.size();
+	pCK = Schem->Video.Coord;
+	for (i = 0; i < Schem->Video.QuantityNodeBody; i++)
+	{
+		SViewVertex v;
+		v.x = FLOAT_TYPE(pCK[i].x);
+		v.y = FLOAT_TYPE(pCK[i].y);
+		v.z = FLOAT_TYPE(pCK[i].z);
+		v.FragmentFlag = true;
+		v.Flag = 0;
+		v.nMainVertex = -1;
+		VertexArray.push_back(v);
+	}
+
+	ElementArray.reserve(Video->QuantityElemBody);
+	ElementArray.resize(Video->QuantityElemBody);
+	m_vecExtraPoints.resize(0);
+	ElementArray.m_mapVertexs.clear();
+	pEB = Video->ElemBody;
+	for (i = 0; i < Video->QuantityElemBody; i++, pEB++)
+	{
+		CViewElement *pE = &ElementArray[i];
+		pE->Color = RGB(192, 192, 192);
+		pE->FragmentFlag = pE->DrawFlag = true;
+		pE->bContoured = true;
+		pE->bContourOnly = false;
+
+		pE->OrgType = GetElemOrgType(Schem->pFormat[pEB->NumElem - 1].TypeElem);
+		//		if (pE->OrgType>EL_SOLID && pEB->Type!=2)
+		//			continue;
+		pE->NumElem = pEB->NumElem;
+
+		if (pEB->Type == 2)
+			pE->Type = EL_LINE;
+		if (pEB->Type == 3 || pEB->Type == 5)
+			pE->Type = EL_TRIANGLE;
+		if (pEB->Type == 4 || pEB->Type == 6)
+			pE->Type = EL_QUAD;
+
+		if (pE->Type != EL_QUAD)
+		{
+			for (int j = 0; j < 4; j++)
+				pE->Points[j] = NUM(pEB->Node[j]);
+		}
+		else
+		{
+			for (int j = 0; j < 4; j++)
+				pE->Points[j] = NUM(pEB->Node[N_S(j)]);
+			if (pE->OrgType == EL_BAR)
+			{
+				VertexArray[pE->Points[0]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[0]);
+				VertexArray[pE->Points[1]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[0]);
+				VertexArray[pE->Points[2]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[1]);
+				VertexArray[pE->Points[3]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[1]);
+			}
+		}
+		FORMAT& frm = Schem->pFormat[pEB->NumElem - 1];
+		RIGID_STR * pRigid = Schem->_Rigid.Get(frm.TypeRigid);
+		RIGID_LIST_OLD *pRigidOld = Schem->_Rigid.GetRigid(frm.TypeRigid);
+		int j = frm.QuantityNode - pE->NumVertexs();
+		if (j>0)
+		{
+			pE->m_nExtraPoints = m_vecExtraPoints.size();
+			m_vecExtraPoints.push_back(frm.QuantityNode);
+			for (int k = pE->NumVertexs(); j>0; j--, k++)
+				m_vecExtraPoints.push_back(NUM(frm.pNode[k]));
+		}
+		else
+		{
+			pE->m_nExtraPoints = -1;
+		}
+	}
+	m_ModelInfo.m_nElementCount = Video->QuantityElemBody;
+	//m_nContouredElements = ElementArray.size();
+	//VertexFlag = new byte[Schem->QuantityNode];
+
+
+	// Заполнение флагов связей в узлах
+#ifdef SCAD11
+	int nBounds = Schem->_Bound.GetQuantity();
+#else
+	int nBounds = Schem->_Bound.GetQuantityBound();
+#endif
+	for (i = 0; i < nBounds; i++)
+	{
+#ifdef SCAD11
+		OBJECT_LIST_STR	*bl = Schem->_Bound.Get(i + 1);
+#else
+		BOUND_LIST	*bl = Schem->_Bound.GetBound(i + 1);
+#endif
+		if (bl->Type != 0)
+			continue;
+		for (int j = 0; j < bl->Quantity; j++)
+		{
+			if (bl->List[j])
+				VertexArray[bl->List[j] - 1].Flag |= bl->Mask;
+		}
+	}
+
+	Schem->DeleteLookBody();
+#endif
+	if (m_bForThumbs)
+		return true;
+	LoadAxesInfo(Schem);
+	PostProcessSchema(Schem, TypeProfile != 0, TypePlate != 0);
+	SetupAndOptimize(bOptimize);
+	return true;
 }
 
 void CViewGeometry::CorrectVertexVisibility()

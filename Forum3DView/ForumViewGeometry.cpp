@@ -122,10 +122,10 @@ void CForumViewGeometry::ReadOprPolygon(SCHEMA *m_Project, NUM_ELEM_TYPE Nel, bo
 	std::vector<SCUINT32> nHoles;
 	//double Thickness = 0;
 #ifdef SCAD21
-	CElemInfApiExt e;
+	CElemInfApiExt e(m_Project);
 	ApiElemGetInf(m_Project, Nel, &e);
 	if (bUseThickness)
-		e.UpdateThickness(m_Project);
+		e.UpdateThickness();
 	SCUINT32 QntNode = e.QuantityNode;
 	SCUINT32 QntTds;
 
