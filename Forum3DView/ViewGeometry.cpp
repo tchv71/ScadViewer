@@ -1813,7 +1813,7 @@ void CViewGeometry::CorrectVertexVisibility()
 			int j;
 			for(j = 0; j < El.NumVertexs(); j++)
 			{
-				VertexArray[El.Points[j]].FragmentFlag = false;
+				Geometry->VertexArray[El.Points[j]].FragmentFlag = false;
 			}
 		}
 	for(i = 0; i < ElementArray.size(); i++)
@@ -1835,7 +1835,7 @@ void CViewGeometry::CorrectVertexVisibility()
 			int j;
 			for(j = 0; j < El.NumVertexs(); j++)
 			{
-				VertexArray[El.Points[j]].FragmentFlag = true;
+				Geometry->VertexArray[El.Points[j]].FragmentFlag = true;
 			}
 		}
 	for(i = 0; i < ElementArray.size(); i++)
