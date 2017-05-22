@@ -107,6 +107,7 @@ bool CGLDraw::PreDrawStage(EDrawMode Mode, S3dPoint Z_Shift, bool bSmoothTransp,
 						}
 						break;
 		*/
+		break;
 	case M_FILL:
 		SetSmoothing();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -1585,11 +1586,15 @@ void CGLDraw::DrawLineStrips(void) const
 	for (size_t i = 0; i < linestrips.size();)
 	{
 		UINT32 nSize = linestrips[i++];
-		glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &linestrips[i]);
+		if (pRenderer->IsVBOSupported())
+			glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, (void*)(i * sizeof(UINT)));
+		else
+			glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &(linestrips[i]));
+
 		i += nSize;
 	}
 	glDisableClientState(GL_VERTEX_ARRAY);
-	return;
+#if 0
 #ifdef COLOR_STRIPS
 
 	unsigned	c = 0;//clBlack;
@@ -1629,6 +1634,7 @@ void CGLDraw::DrawLineStrips(void) const
 #endif
 		Strip++;
 	}
+#endif
 }
 
 inline void CGLDraw::DrawLines(const CViewElement & El, const SViewVertex * p) const
