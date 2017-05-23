@@ -520,6 +520,7 @@ struct CElemInfApiExt : public CElemInfApi
 	CElemInfApiExt(ScadAPI lpApi) : m_fThickness(0), m_lpApi(lpApi) {}
 	void UpdateThickness();
 	TElemType GetType() const;
+	void MakeContour(const S3dPoint arr[], int nSize, std::vector<S3dPoint> & contour, bool & bClosed, int nZScale=1);
 	bool getContour(std::vector<S3dPoint>& contour, bool& bClosed);
 
 };

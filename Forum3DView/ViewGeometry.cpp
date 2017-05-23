@@ -614,6 +614,18 @@ TElemType CElemInfApiExt::GetType() const
 	}
 }
 
+void CElemInfApiExt::MakeContour(const S3dPoint arr[], int nSize, std::vector<S3dPoint> & contour, bool & bClosed, int nZScale)
+{
+	S3dPoint pt = arr[0];
+	contour.push_back(S3dPoint(pt.x,pt.y,nZScale*pt.z));
+	for (int i = 1; i < nSize; i++)
+	{
+		pt = pt + CVectorType(arr[i]);
+		contour.push_back(S3dPoint(pt.x, pt.y, nZScale*pt.z));
+	}
+	bClosed = true;
+}
+
 bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 {
 	if (TypeRigid == 0)
@@ -623,13 +635,13 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 	UINT nQnt = 0;
 	const UINT* ListElem;
 	ApiGetRigid(m_lpApi, TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
-	double f0 = 0;
-	double f1 = 0;
-	double f2 = 0;
-	double f3 = 0;
-	double f4 = 0;
-	double f5 = 0;
-	double f6 = 0;
+	FLOAT_TYPE f0 = 0;
+	FLOAT_TYPE f1 = 0;
+	FLOAT_TYPE f2 = 0;
+	FLOAT_TYPE f3 = 0;
+	FLOAT_TYPE f4 = 0;
+	FLOAT_TYPE f5 = 0;
+	FLOAT_TYPE f6 = 0;
 
 	CStringA strText(Text);
 	strText.Replace(".", ",");
@@ -643,10 +655,10 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 	{
 		sscanf_s(szRest, "%d %n", &nKind, &nPos);
 		szRest += nPos;
-		if (nKind!=7)
-			sscanf_s(szRest, "%lg %lg %lg %n", &f0, &f1, &f2, &nPos);
+		if (nKind!=6)
+			sscanf_s(szRest, "%g %g %g %n", &f0, &f1, &f2, &nPos);
 		else
-			sscanf_s(szRest, "%lg %lg %n", &f0, &f1, &nPos);
+			sscanf_s(szRest, "%g %g %n", &f0, &f1, &nPos);
 		szRest += nPos;
 
 		switch (nKind)
@@ -655,12 +667,12 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 		case 2:
 		case 4:
 		case 5:
-			sscanf_s(szRest, "%lg %lg %n", &f3, &f4, &nPos);
+			sscanf_s(szRest, "%g %g %n", &f3, &f4, &nPos);
 			szRest += nPos;
 			break;
 		case 3:
-		case 8:
-			sscanf_s(szRest, "%lg %lg %lg %lg %n", &f3, &f4, &f5, &f6, &nPos);
+		case 7:
+			sscanf_s(szRest, "%g %g %g %g %n", &f3, &f4, &f5, &f6, &nPos);
 			szRest += nPos;
 			break;
 		}
@@ -668,23 +680,83 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 		switch (nKind)
 		{
 		case 0:
-			{
-				S3dPoint arr[] = {
-					{ 0, FLOAT_TYPE(-f1 / 2), FLOAT_TYPE(-f2 / 2)},
-					{ 0, FLOAT_TYPE(f1 / 2), FLOAT_TYPE(-f2 / 2)},
-					{ 0, FLOAT_TYPE(f1 / 2), FLOAT_TYPE(f2 / 2) },
-					{ 0, FLOAT_TYPE(-f1 / 2), FLOAT_TYPE(f2 / 2)}
-				};
+		case 5:
+		{
+			const S3dPoint arr[] = {
+				{ 0, -f1/2, -f2/2},
+				{ 0,  f1/2, -f2/2},
+				{ 0,  f1/2,  f2/2},
+				{ 0,  -f1/2, f2/2}
+			};
 
-				for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
-					contour.push_back(arr[i]);
-				bClosed = true;
-			}
-			return true;
+			for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+				contour.push_back(arr[i]);
+			bClosed = true;
+		}
+		return true;
 		case 1:
-			break;
+		case 2:
+		{
+			FLOAT_TYPE s1 = f1*(f2 - f4);
+			FLOAT_TYPE s2 = f3*f3;
+			FLOAT_TYPE dy = (((f2 - f4) / 2)*s1 + (f2 - f4 / 2)*s2) / (s1 + s2);
+			const S3dPoint arr[] = {
+				{ 0, -f3 / 2, dy - f2},		// Начальная точка
+				{ 0, f3, 0},				// Далее - Смещения
+				{ 0, 0, f4},
+				{ 0, -(f3 - f1) / 2, 0},
+				{ 0, 0, f2 - f4},
+				{ 0, -f1, 0},
+				{ 0, 0, -(f2 - f4)},
+				{ 0, -(f3 - f1) / 2, 0 },
+			};
+			MakeContour(arr, sizeof(arr) / sizeof(arr[0]), contour, bClosed, nKind == 1 ? 1 : -1);
+			bClosed = true;
+		}
+		return true;
+		case 3:
+		{
+			FLOAT_TYPE s1 = f5*f6;
+			FLOAT_TYPE s2 = (f2-f4-f6)*f1;
+			FLOAT_TYPE s3 = f4*f3;
+			FLOAT_TYPE dy = ((f6/ 2)*s1 + (f6 + (f2- f4 -f6) / 2)*s2 + (f2-f4/2)*s3) / (s1 + s2+s3);
+			const S3dPoint arr[] = {
+				{ 0, -f3 / 2, dy - f2 },	// Начальная точка
+				{ 0, f3, 0 },				// Далее - Смещения
+				{ 0, 0, f4 },
+				{ 0, -(f3 - f1) / 2, 0 },
+				{ 0, 0, f2 - f4 - f6 },
+				{ 0, (f5 - f1) / 2, 0 },
+				{ 0, 0, f6 },
+				{ 0, -f5, 0 },
+				{ 0, 0, -f6 },
+				{ 0, -(f5 - f1) / 2, 0 },
+				{ 0, 0, -(f2 - f4 - f6) },
+				{ 0, -(f3 - f1) / 2, 0 },
+			};
+			MakeContour(arr, sizeof(arr) / sizeof(arr[0]), contour, bClosed);
+		}
+		return true;
+		case 4:
+		{
+			FLOAT_TYPE s1 = f3*f4;
+			FLOAT_TYPE s2 = (f2 - 2*f4)*f1;
+			FLOAT_TYPE s3 = f3*f4;
+			FLOAT_TYPE dx = ((f3 / 2)*s1 + (f3 -f1/2)*s2 + (f3/2)*s3) / (s1 + s2 + s3);
+			const S3dPoint arr[] = {
+				{ 0, dx-f3, -f2/2 },	// Начальная точка
+				{ 0, f3, 0 },				// Далее - Смещения
+				{ 0, 0, f4 },
+				{ 0, -(f3 - f1), 0 },
+				{ 0, 0, f2 - 2*f4},
+				{ 0,  (f3 - f1), 0 },
+				{ 0, 0, f4 },
+				{ 0, -f3, 0 }
+			};
+			MakeContour(arr, sizeof(arr) / sizeof(arr[0]), contour, bClosed);
+		}
+		return true;
 		case 6:
-		case 7:
 		{
 			for (int i = 0; i < 16; i++)
 			{
@@ -693,6 +765,30 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 				contour.push_back(pt);
 			}
 			bClosed = true;
+		}
+		return true;
+		case 7:
+		{
+			FLOAT_TYPE s1 = (f2-f4-f5-f6)*f1;
+			FLOAT_TYPE s2 = (f1 + 2 * f3)*f4;
+			FLOAT_TYPE s3 = (f1+f3)*f5;
+			FLOAT_TYPE s4 = f6*f1;
+			FLOAT_TYPE dy = ((f2 - f4 - f5 - f6)/2*s1 + (f2 - f4/2 - f5 - f6)*s2 + (f2 - f5 - f5/3*(2*(f1+2*f3)+f1)/(2*(f1+f3)))*s3+ (f2-f6/2)*s4) / (s1 + s2 + s3 + s4);
+			const S3dPoint arr[] = {
+				{ 0, -f1/2, dy-f2 },	// Начальная точка
+				{ 0, f1, 0 },				// Далее - Смещения
+				{ 0, 0, f6},
+				{ 0, f3, f5 },
+				{ 0, 0, f4 },
+				{ 0, -f3, 0},
+				{ 0, 0, f2 - f4 - f5 - f6},
+				{ 0, -f1, 0},
+				{ 0, 0, -(f2 - f4 - f5 - f6) },
+				{ 0, -f3, 0 },
+				{ 0, 0, -f4 },
+				{ 0, f3, -f5}
+			};
+			MakeContour(arr, sizeof(arr)/sizeof(arr[0]) , contour, bClosed);
 		}
 		return true;
 		}
