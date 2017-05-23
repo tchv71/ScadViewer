@@ -622,11 +622,61 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 	UINT nQnt = 0;
 	const UINT* ListElem;
 	ApiGetRigid(m_lpApi, TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
-	double f1 = 0, f2 = 0, f3 = 0;
+	double f0 = 0;
+	double f1 = 0;
+	double f2 = 0;
+	double f3 = 0;
+	double f4 = 0;
+	double f5 = 0;
+	double f6 = 0;
+
 	CStringA strText(Text);
 	strText.Replace(".", ",");
-	sscanf_s((LPCSTR)strText, "%lg %lg %lg", &f1, &f2, &f3);
-	m_fThickness = (FLOAT_TYPE)f3;
+	char c = 0;
+	int nKind;
+	int nPos = 0;
+	LPCSTR szRest = (LPCSTR)strText;
+	sscanf_s(szRest, "%c", &c, 1);
+	szRest++;
+	if (c == 'S')
+	{
+		sscanf_s(szRest, "%d %n", &nKind, &nPos);
+		szRest += nPos;
+		if (nKind!=7)
+			sscanf_s(szRest, "%lg %lg %lg %n", &f0, &f1, &f2, &nPos);
+		else
+			sscanf_s(szRest, "%lg %lg %n", &f0, &f1, &nPos);
+		szRest += nPos;
+
+		switch (nKind)
+		{
+		case 1:
+		case 2:
+		case 4:
+		case 5:
+			sscanf_s(szRest, "%lg %lg %n", &f3, &f4, &nPos);
+			szRest += nPos;
+			break;
+		case 3:
+		case 8:
+			sscanf_s(szRest, "%lg %lg %lg %lg %n", &f3, &f4, &f5, &f6, &nPos);
+			szRest += nPos;
+			break;
+		}
+
+		switch (nKind)
+		{
+		case 0:
+			contour.push_back(S3dPoint(0, FLOAT_TYPE(-f1/2), FLOAT_TYPE(-f2 / 2)));
+			contour.push_back(S3dPoint(0, FLOAT_TYPE(f1 / 2), FLOAT_TYPE(-f2 / 2)));
+			contour.push_back(S3dPoint(0, FLOAT_TYPE(f1 / 2), FLOAT_TYPE(f2 / 2)));
+			contour.push_back(S3dPoint(0, FLOAT_TYPE(-f1 / 2), FLOAT_TYPE(f2 / 2)));
+			bClosed = true;
+			return true;
+		case 1:
+			break;
+		}
+	}
 	return false;
 }
 
@@ -1612,6 +1662,54 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 		el.OrgType = GetElemOrgType(e.TypeElem);
 		el.NumElem = i + 1;//e.NumElem;
 
+		if (e.GetType() == EL_LINE && TypeProfile)
+		{
+			std::vector<S3dPoint> vecContour;
+			bool bClosed = false;
+			if (e.getContour(vecContour, bClosed))
+			{
+				double sk[16];
+				UINT nQnt = 0;
+				ApiGetSystemCoordElemOne(Schem, el.NumElem, (BYTE*)&e.TypeElem, &nQnt, sk);
+				const S3dPoint pt1 = VertexArray[NUM(e.Node[0])];
+				const S3dPoint pt2 = VertexArray[NUM(e.Node[1])];
+				const CVectorType v12 = CVectorType(pt2) - pt1;
+				const CVectorType vCan(1, 0, 0);
+				FLOAT_TYPE ang = vCan.AngleTo(v12);
+				CVectorType axis = vCan.CrossProduct(v12);
+				CVectorType vx(1, 0, 0);
+				CVectorType vy(0, 1, 0);
+				CVectorType vz(0, 0, 1);
+				vx.RotateAroundAxis(axis, ang);
+				vy.RotateAroundAxis(axis, ang);
+				vz.RotateAroundAxis(axis, ang);
+				const size_t nIdx = VertexArray.size();
+				for (size_t i = 0; i < vecContour.size(); i++)
+				{
+					const S3dPoint& pti = vecContour[i];
+					CVectorType vecShift = vx*pti.x + vy*pti.y + vz*pti.z;
+					SViewVertex vtx1(pt1 + vecShift);
+					vtx1.nMainVertex = NUM(e.Node[0]);
+					SViewVertex vtx2(pt2 + vecShift);
+					vtx2.nMainVertex = NUM(e.Node[1]);
+
+					VertexArray.push_back(vtx1);
+					VertexArray.push_back(vtx2);
+				}
+				for (size_t i = 0; i < vecContour.size()+ (bClosed ? 0:-1); i++)
+				{
+					el.Type = EL_QUAD;
+					el.Points[3] = nIdx + i * 2;
+					el.Points[2] = nIdx + i * 2+1;
+					el.Points[1] = nIdx + ((i+1)%vecContour.size()) * 2 + 1;
+					el.Points[0] = nIdx + ((i+1)%vecContour.size()) * 2;
+					el.SetNormal(VertexArray.GetVector());
+					ElementArray.push_back(el);
+				}
+				continue;
+			}
+			int n = 0;
+		}
 		ElementArray.push_back(el);
 		const size_t nEl = ElementArray.size() - 1;
 		CViewElement *pE = &ElementArray[nEl];
@@ -1621,13 +1719,6 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 		{
 			for (int j = 0; j < 4; j++)
 				pE->Points[j] = NUM(e.Node[N_S(j)]);
-			if (pE->OrgType == EL_BAR)
-			{
-				VertexArray[pE->Points[0]].nMainVertex = NUM(e.Node[0]);
-				VertexArray[pE->Points[1]].nMainVertex = NUM(e.Node[0]);
-				VertexArray[pE->Points[2]].nMainVertex = NUM(e.Node[1]);
-				VertexArray[pE->Points[3]].nMainVertex = NUM(e.Node[1]);
-			}
 		}
 		else
 		{
@@ -1650,7 +1741,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 					VertexArray.push_back(SViewVertex(pt));
 				}
 			for (int j = 0; j < pE->NumVertexs(); j++)
-				pE->Points[j] = nNewVertexsIdx + j;
+				pE->Points[pE->NumVertexs()-1-j] = nNewVertexsIdx + j;
 			for (int j = 0; j < pE->NumVertexs(); j++)
 			{
 				el.Points[0] = nNewVertexsIdx + j;
