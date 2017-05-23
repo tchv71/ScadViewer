@@ -73,7 +73,7 @@ struct SViewCasheNode
 //typedef S3dPoint TVertex;
 struct SViewVertex : public S3dPoint
 {
-	SViewVertex(): FragmentFlag(true), Flag(0), nMainVertex(0)
+	SViewVertex(): FragmentFlag(true), Flag(0), nMainVertex(-1)
 	{};
 	SViewVertex(const S3dPoint &p) : S3dPoint(p), FragmentFlag(true), Flag(0), nMainVertex(-1) {};
 public:

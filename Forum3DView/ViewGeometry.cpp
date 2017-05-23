@@ -1849,11 +1849,12 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 			for (int i = 0; i < 2; i++)
 				for (int j = 0; j < pE->NumVertexs(); j++)
 				{
-					S3dPoint pt = VertexArray[pE->Points[j]];
+					SViewVertex pt = VertexArray[pE->Points[j]];
 					float fShift = e.m_fThickness / 2 * (i == 0 ? -1 : 1);
 					pt.x += pE->Norm.v[0] * fShift;
 					pt.y += pE->Norm.v[1] * fShift;
 					pt.z += pE->Norm.v[2] * fShift;
+					pt.nMainVertex = pE->Points[j];
 					VertexArray.push_back(SViewVertex(pt));
 				}
 			for (int j = 0; j < pE->NumVertexs(); j++)
@@ -2101,7 +2102,10 @@ void CViewGeometry::CorrectVertexVisibility()
 			continue;
 		for(int j = 0; j < ElementArray[i].NumVertexs(); j++)
 		{
-			VertexArray[ElementArray[i].Points[j]].FragmentFlag = true;
+			SViewVertex& vtx = VertexArray[ElementArray[i].Points[j]];
+			vtx.FragmentFlag = true;
+			if (vtx.nMainVertex >= 0)
+				VertexArray[vtx.nMainVertex].FragmentFlag = true;
 		}
 	}
 	if (m_pNodeCashe)
