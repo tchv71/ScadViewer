@@ -12,7 +12,8 @@
 #include "ForumViewGeometry.h"
 //#include "Qsort.h"
 #define Mqsort	qsort
-#include <math.h>
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <stdio.h>
 #include <map>
 
@@ -667,14 +668,33 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 		switch (nKind)
 		{
 		case 0:
-			contour.push_back(S3dPoint(0, FLOAT_TYPE(-f1/2), FLOAT_TYPE(-f2 / 2)));
-			contour.push_back(S3dPoint(0, FLOAT_TYPE(f1 / 2), FLOAT_TYPE(-f2 / 2)));
-			contour.push_back(S3dPoint(0, FLOAT_TYPE(f1 / 2), FLOAT_TYPE(f2 / 2)));
-			contour.push_back(S3dPoint(0, FLOAT_TYPE(-f1 / 2), FLOAT_TYPE(f2 / 2)));
-			bClosed = true;
+			{
+				S3dPoint arr[] = {
+					{ 0, FLOAT_TYPE(-f1 / 2), FLOAT_TYPE(-f2 / 2)},
+					{ 0, FLOAT_TYPE(f1 / 2), FLOAT_TYPE(-f2 / 2)},
+					{ 0, FLOAT_TYPE(f1 / 2), FLOAT_TYPE(f2 / 2) },
+					{ 0, FLOAT_TYPE(-f1 / 2), FLOAT_TYPE(f2 / 2)}
+				};
+
+				for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+					contour.push_back(arr[i]);
+				bClosed = true;
+			}
 			return true;
 		case 1:
 			break;
+		case 6:
+		case 7:
+		{
+			for (int i = 0; i < 16; i++)
+			{
+				const FLOAT_TYPE  ang = (FLOAT_TYPE)(2 * 3.14159265358979323846 *i / 16);
+				const S3dPoint pt(0, f1 / 2 * cos(ang), f1/2*sin(ang));
+				contour.push_back(pt);
+			}
+			bClosed = true;
+		}
+		return true;
 		}
 	}
 	return false;
