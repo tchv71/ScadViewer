@@ -59,6 +59,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 	//	afx_msg void OnNcPaint();
+public:
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
 
 /////////////////////////////////////////////////////////////////////////////

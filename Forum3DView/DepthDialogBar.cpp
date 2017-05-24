@@ -29,6 +29,7 @@ BEGIN_MESSAGE_MAP(CDepthDialogBar, CMFCToolBar)
 	ON_WM_SIZE()
 	//}}AFX_MSG_MAP
 //	ON_WM_NCPAINT()
+ON_WM_VSCROLL()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -79,3 +80,11 @@ void CDepthDialogBar::OnSize(UINT nType, int cx, int cy)
 //{
 //	m_Impl.DrawNcArea();
 //}
+
+
+void CDepthDialogBar::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	CWnd* pWnd = GetParentFrame();
+	pWnd->SendMessage(WM_VSCROLL, MAKEWPARAM(nSBCode, nPos), (LPARAM)pScrollBar->GetSafeHwnd());
+	CMFCToolBar::OnVScroll(nSBCode, nPos, pScrollBar);
+}

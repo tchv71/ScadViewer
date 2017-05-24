@@ -40,7 +40,7 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CIsoViewerFrame)
 	protected:
-	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
+//	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
 	//}}AFX_VIRTUAL
 
 
@@ -85,6 +85,8 @@ protected:
 	afx_msg void OnUpdateViewResults(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
 
 /////////////////////////////////////////////////////////////////////////////

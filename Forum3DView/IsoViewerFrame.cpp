@@ -57,6 +57,7 @@ BEGIN_MESSAGE_MAP(CIsoViewerFrame, CScadViewerFrame)
 	ON_CBN_SELCHANGE(IDC_COMBO_LOAD, OnCbnSelchangeComboLoad)
 	ON_COMMAND(ID_PARAMS_CHANGED, OnParamsChanged)
 	//}}AFX_MSG_MAP
+	ON_WM_VSCROLL()
 END_MESSAGE_MAP()
 
 
@@ -174,19 +175,19 @@ void CIsoViewerFrame::OnUpdateSliderDefScale(CCmdUI* pCmdUI)
 	pCmdUI->Enable(TRUE);	
 }
 
-BOOL CIsoViewerFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
-{
-	if (wParam == IDC_SLIDER_DEFORM_SCALE && m_p3DView->GetDocument()->m_bViewResults)
-	{
-		LPNMHDR pNmhdr = LPNMHDR(lParam);
-		if (int(pNmhdr->code) == NM_CUSTOMDRAW)
-		{
-			UpdateDeformScale();
-		}
-	}
-	
-	return CScadViewerFrame::OnNotify(wParam, lParam, pResult);
-}
+//BOOL CIsoViewerFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+//{
+//	if (wParam == IDC_SLIDER_DEFORM_SCALE && m_p3DView->GetDocument()->m_bViewResults)
+//	{
+//		LPNMHDR pNmhdr = LPNMHDR(lParam);
+//		if (int(pNmhdr->code) == NM_CUSTOMDRAW)
+//		{
+//			UpdateDeformScale();
+//		}
+//	}
+//	
+//	return CScadViewerFrame::OnNotify(wParam, lParam, pResult);
+//}
 
 void CIsoViewerFrame::UpdateDeformScale(void) const
 {
@@ -558,3 +559,13 @@ void CIsoViewerFrame::SetToolBarNames()
 	m_wndResParams.SetWindowText(strName);
 }
 
+
+
+void CIsoViewerFrame::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	if (pScrollBar && pScrollBar->GetDlgCtrlID() == IDC_SLIDER_DEFORM_SCALE)
+	{
+		UpdateDeformScale();
+	}
+	CScadViewerFrame::OnVScroll(nSBCode, nPos, pScrollBar);
+}

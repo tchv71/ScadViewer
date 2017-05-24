@@ -58,6 +58,7 @@ BEGIN_MESSAGE_MAP(CScadViewerFrame, CFrameWndEx)
 	ON_COMMAND(ID_DEFAULT_HELP, CFrameWndEx::OnHelpFinder)
 	ON_REGISTERED_MESSAGE(AFX_WM_RESETTOOLBAR,OnToolbarReset)
 
+	ON_WM_VSCROLL()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -444,24 +445,24 @@ void CScadViewerFrame::SetToolBarNames()
 
 
 
-BOOL CScadViewerFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
-{
-	if (wParam == IDC_SLIDER_DEPTH)
-	{
-		LPNMHDR pNmhdr = LPNMHDR(lParam);
-		if (int(pNmhdr->code) == NM_CUSTOMDRAW)
-		{
-			CSliderCtrl *pSlider = reinterpret_cast<CSliderCtrl*>(m_wndDepthDialogBar.GetDlgItem(IDC_SLIDER_DEPTH));
-			if (pSlider && pSlider->GetDlgCtrlID() == IDC_SLIDER_DEPTH)
-			{
-				m_p3DView->OnDepthChange(pSlider->GetPos()/100.0f);
-			}
-
-		}
-	}
-	
-	return CFrameWndEx::OnNotify(wParam, lParam, pResult);
-}
+//BOOL CScadViewerFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+//{
+//	//if (wParam == IDC_SLIDER_DEPTH)
+//	//{
+//	//	LPNMHDR pNmhdr = LPNMHDR(lParam);
+//	//	if (int(pNmhdr->code) == NM_CUSTOMDRAW)
+//	//	{
+//	//		CSliderCtrl *pSlider = reinterpret_cast<CSliderCtrl*>(m_wndDepthDialogBar.GetDlgItem(IDC_SLIDER_DEPTH));
+//	//		if (pSlider && pSlider->GetDlgCtrlID() == IDC_SLIDER_DEPTH)
+//	//		{
+//	//			m_p3DView->OnDepthChange(pSlider->GetPos()/100.0f);
+//	//		}
+//
+//	//	}
+//	//}
+//	//
+//	return CFrameWndEx::OnNotify(wParam, lParam, pResult);
+//}
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void CScadViewerFrame::OnCameraChanged() 
@@ -598,4 +599,18 @@ LRESULT CScadViewerFrame::OnToolbarReset(WPARAM wp,LPARAM)
 	}
 
 	return 0;
+}
+
+void CScadViewerFrame::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	if (pScrollBar && pScrollBar->GetDlgCtrlID() == IDC_SLIDER_DEPTH)
+	{
+		CSliderCtrl *pSlider = reinterpret_cast<CSliderCtrl*>(m_wndDepthDialogBar.GetDlgItem(IDC_SLIDER_DEPTH));
+		if (pSlider && pSlider->GetDlgCtrlID() == IDC_SLIDER_DEPTH)
+		{
+			m_p3DView->OnDepthChange(pSlider->GetPos() / 100.0f);
+		}
+	}
+
+	CFrameWndEx::OnVScroll(nSBCode, nPos, pScrollBar);
 }

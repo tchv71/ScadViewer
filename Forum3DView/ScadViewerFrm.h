@@ -43,7 +43,7 @@ public:
 	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 	protected:
 	BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext) override;
-	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
+//	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -105,6 +105,8 @@ protected:
 	afx_msg LRESULT OnToolbarReset(WPARAM,LPARAM);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
 
 class CDropdownButton : public CMFCToolBarMenuButton
