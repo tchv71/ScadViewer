@@ -1570,7 +1570,7 @@ void CGLRenderer::SetGLLighting(bool bPerspective)
 	glLightfv(GL_LIGHT0, GL_AMBIENT, glfLightAmbient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, glfLightDiffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, glfLightSpecular);
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, FALSE);
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, TRUE);
 	glFrontFace(GL_CCW);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
