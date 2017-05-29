@@ -687,7 +687,10 @@ namespace spr
 	public:
 		unsigned char SetElem(class spr::CElemForm const &, unsigned int, unsigned int);
 	};
-	class CResultElemEffors;
+	
+	class CResultElemEffors : public ApiElemEffors {};
+
+
 	class CResult
 	{
 	public:
@@ -725,7 +728,7 @@ APICode _ApiGetEfforsXXX(unsigned NumElem, spr::CSchema* esi, ApiElemEffors ** p
 				spr::CResultElemEffors &rEff = reinterpret_cast<spr::CResultElemEffors &>(*((BYTE*)esi + 0x67f54));
 				if (pRes->GetElemEffors(rEff, NumElem, 1, (BYTE)dwArg08, 2/*1*/) != 0x00)
 				{
-					*ppEffors = reinterpret_cast<ApiElemEffors*>((BYTE*)esi + 0x67f54);
+					*ppEffors = &rEff;
 					return APICode::APICode_OK;
 				}
 				else
