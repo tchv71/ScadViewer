@@ -676,7 +676,80 @@ void CIsoViewGeometry::OnParamsChanged()
 */
 }
 
-bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, double &val,  int* pnResultPoints)
+#ifdef SCAD21
+
+namespace spr
+{
+	class CSchema;
+	class CElemForm;
+	class CElemData
+	{
+	public:
+		unsigned char SetElem(class spr::CElemForm const &, unsigned int, unsigned int);
+	};
+	class CResultElemEffors;
+	class CResult
+	{
+	public:
+		unsigned char  GetElemEffors(spr::CResultElemEffors &, unsigned int, unsigned char, unsigned char, unsigned char);
+	};
+	class CPhraseText;
+};
+
+template<>
+class std::vector<spr::CPhraseText, std::allocator<spr::CPhraseText>>
+{
+public:
+	void clear();
+};
+
+APICode _ApiGetEfforsXXX(unsigned NumElem, spr::CSchema* esi, ApiElemEffors ** ppEffors, DWORD dwArg08)
+{
+	*ppEffors = nullptr;
+	std::vector<spr::CPhraseText, std::allocator<spr::CPhraseText>> *pVec = reinterpret_cast<std::vector<spr::CPhraseText, std::allocator<spr::CPhraseText>> *>((BYTE*)esi + 0x67fb6);
+	pVec->clear();
+	*(WORD*)((BYTE*)esi + 0x67fb4) = 0;
+	//int edx_13 = SLICE((esi->dw67BFA - esi->ptr67BF6) *s 0x4EC4EC4F, word32, 32);
+	if (true) //edx_13 >> 0x05 >> 0x1F != 0x00)
+	{
+		//Eq_724 eax_67 = esi->t9CBC;
+		if (true)//esi->dw9CC0 - eax_67 >> 0x03 >= 0x01 && eax_67 != 0x00)
+		{
+			spr::CElemData *pElem = reinterpret_cast<spr::CElemData*>((BYTE*)esi + 0x67d80);
+			if (pElem->SetElem(reinterpret_cast<spr::CElemForm const &>(*((BYTE*)esi + 0x433e)), NumElem, 0x00) != 0x00)
+			{
+				//Eq_724 eax_96 = esi->t9CBC;
+				//if (esi->dw9CC0 - eax_96 >> 0x03 < 0x01 || (eax_96 == 0x00 || (((eax_96 - 0x08))[ebx].dw0000 & *(eax_96 - 0x04)) == ~0x00))
+				//	return;
+				spr::CResult *pRes = reinterpret_cast<spr::CResult*>((BYTE*)esi + 0x2f67);
+				spr::CResultElemEffors &rEff = reinterpret_cast<spr::CResultElemEffors &>(*((BYTE*)esi + 0x67f54));
+				if (pRes->GetElemEffors(rEff, NumElem, 1, (BYTE)dwArg08, 2/*1*/) != 0x00)
+				{
+					*ppEffors = reinterpret_cast<ApiElemEffors*>((BYTE*)esi + 0x67f54);
+					return APICode::APICode_OK;
+				}
+				else
+					return APICode::APICode_InternalError;
+			}
+			else
+				return APICode::APICode_IndexError;
+		}
+	}
+	return APICode::APICode_NoResult;
+}
+
+
+
+
+
+APICode ApiGetEfforsXXX(ScadAPI lpAPI, UINT NumElem, ApiElemEffors ** Effors, BYTE TypeRead)
+{
+	return _ApiGetEfforsXXX(NumElem, (spr::CSchema*)((DWORD*)lpAPI)[0], Effors, TypeRead);
+}
+#endif
+
+
+bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, double &val, int* pnResultPoints)
 {
 	switch (m_Params.nTypeData)
 	{
@@ -694,16 +767,26 @@ bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, dou
 		double *res;
 #ifdef SCAD21
 		{
-			ApiElemEffors *pEffors = nullptr;
-			UINT nNumElem = ElementArray[nNumElement].NumElem;
-			ApiGetEffors(m_Params.hAPI, nNumElem, &pEffors, 0);
-			// ReSharper disable once CppAssignedValueIsNeverUsed
-			res = pEffors->Us;
+			static double Res[9 * 10];
+			res = Res;
+			static BYTE qUs;
+			static BYTE qP;
+
+			if (nNumVertex == 0)
+			{
+				ApiElemEffors *pEffors = nullptr;
+				UINT nNumElem = ElementArray[nNumElement].NumElem;
+				ApiGetEfforsXXX(m_Params.hAPI, nNumElem, &pEffors, 1);
+				// ReSharper disable once CppAssignedValueIsNeverUsed 
+				qP = pEffors->QuantityPoint;
+				if (pEffors->QuantityPoint < 4)
+					return false;
+				memcpy(Res, pEffors->Us, pEffors->QuantityDataUs * sizeof(double));
+				qUs = pEffors->QuantityUs;
+			}
 			if (pnResultPoints)
-				*pnResultPoints = pEffors->QuantityPoint;
-			if (pEffors->QuantityPoint < 4)
-				return false;
-			
+				*pnResultPoints = qP;
+			val = res[qUs*nNumVertex + m_Params.NPr];
 		}
 		return true;
 	case Iso_Arm: break;
@@ -720,28 +803,7 @@ bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, dou
 			nNumVertex = N_S(nNumVertex);
 		BYTE nSel = BYTE(m_Params.nTypeFactor);
 		unsigned char i=0;
-		unsigned char nBit=0;
-		unsigned char mask = 1;
-		for (i=0;i<64-8 && nBit<=nSel;i++)
-		{
-			char val =	m_Params.Res->SumNus[i/8+1];
-			if (val == 0)
-			{
-				i+=8;
-
-				mask = 1;
-			}
-			if (val&mask)
-			{
-				if (nBit==nSel)
-					break;
-				nBit++;
-			}
-			mask<<=1;
-			if (mask == 0)
-				mask = 1;
-		}
-		if (nBit!=nSel)
+		if (!GetNumUs(i, nSel))
 			return false;
 		double *coord = nullptr;
 		m_Params.Res->GetEfforsElem(m_Params.NPr, el.NumElem, i+8, nPoints, &NusElem, &coord, &res);
@@ -771,6 +833,8 @@ void CIsoViewGeometry::LoadFactors()
 			off = 17;
 	}
 	m_nOff = off;
+	const static UnitsAPI Un[] = { { "m", 1 },{ "T", 1 } };
+	ApiInitResult(m_Params.hAPI, Un, "c:\\swork");
 #else
 	SCHEMA *Prj = m_Params.Res->GetSchema();
 	int off = m_Params.nTypeFactor;
@@ -920,6 +984,35 @@ COLORREF CIsoViewGeometry::GetColorrefForFactor(double val) const
 	return clIntervalOff;
 }
 
+#ifndef SCAD21
+bool CIsoViewGeometry::GetNumUs(unsigned char & i, const BYTE & nSel)
+{
+	unsigned char nBit = 0;
+	unsigned char mask = 1;
+	for (i = 0; i<64 - 8 && nBit <= nSel; i++)
+	{
+		char val = m_Params.Res->SumNus[i / 8 + 1];
+		if (val == 0)
+		{
+			i += 8;
+
+			mask = 1;
+		}
+		if (val&mask)
+		{
+			if (nBit == nSel)
+				break;
+			nBit++;
+		}
+		mask <<= 1;
+		if (mask == 0)
+			mask = 1;
+	}
+	if (nBit != nSel)
+		return false;
+	return true;
+}
+#endif
 
 COLORREF defDmiColors[]=
 {

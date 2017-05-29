@@ -77,6 +77,7 @@ protected:
 
 	void IsoFlatElement(int nElement, EIntegralFunc eFunc);
 	COLORREF GetColorrefForFactor(double val) const;
+	bool GetNumUs(unsigned char &i, const BYTE &nSel);
 	bool GetFactorForElVertex(int nNumElement, int nNumVertex,double &val, int* pnResultPoints);
 	void SetDeformState(SOglIsoParam *pParam);
 	size_t AddPoint(const S3dPoint& pt, const S3dPoint& ptDisp);

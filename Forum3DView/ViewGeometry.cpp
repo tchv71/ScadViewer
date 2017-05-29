@@ -524,8 +524,11 @@ bool CViewGeometry::LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePl
 
 #else
 	SCHEMA*	Schem = ppSchem ? *ppSchem : nullptr ;
-	if (Schem==nullptr)
-		Schem = new SCHEMA;
+	SCHEMA * pNewSchem = nullptr;
+	if (Schem == nullptr)
+	{
+		pNewSchem = Schem = new SCHEMA;
+	}
 	//ZeroMemory(Schem, sizeof(SCHEMA));
 	if (ppSchem)
 		_tcscpy_s(Path, _T("C:\\swork"));
@@ -557,7 +560,7 @@ bool CViewGeometry::LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePl
 	if(Schem->Read(NameIn, 10))
 #endif
 	{
-		delete Schem;
+		delete pNewSchem;
 		return false;
 	}
 	if (ppSchem)

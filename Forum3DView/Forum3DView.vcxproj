@@ -897,7 +897,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;SCADAPIX.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;SCADAPIX.lib;libdb62.lib;sprfem.lib;SprResult.lib;SprTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad21\lib\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
