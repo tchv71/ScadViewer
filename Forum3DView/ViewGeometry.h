@@ -85,11 +85,11 @@ public:
 
 struct SViewFactorVertex : public SViewVertex
 {
-	SViewFactorVertex(const SViewVertex& v)
+	SViewFactorVertex(const SViewVertex& v) : SViewFactorVertex()
 	{
 		memcpy(this, &v, sizeof(SViewVertex));
 	};
-	SViewFactorVertex(): fFactor(0), clr(0), nElement(0), nVertex(0), nVertexIndex(0)
+	SViewFactorVertex(): fFactor(0), clr(0), nElement(0), nVertex(0), nVertexIndex(0), nVertexs(0)
 	{
 	};
 
@@ -100,6 +100,7 @@ public:
 	NODE_NUM_TYPE		nElement;		// element number for this vertex (-1 for common vertex)
 	NODE_NUM_TYPE		nVertex;
 	byte	nVertexIndex;	// Vertex number (relative to the element)
+	int nVertexs;
 };
 
 enum ECutType { CUT, INV_CUT, HIDE_ELEMENT, HIDE_ELEMENT_PLATE, SHOW_ELEMENT_PLATE };

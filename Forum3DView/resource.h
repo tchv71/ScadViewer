@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by Forum3DView.rc
+// Включаемый файл, созданный в Microsoft Visual C++.
+// Используется Forum3DView.rc
 //
 #define IDD_ABOUTBOX                    100
 #define IDC_RECENT_COMBO                101
@@ -283,6 +283,7 @@
 #define ID_BAR_IMG                      40041
 #define ID_PLATE_IMG                    40042
 #define ID_PARAMS_CHANGED               40043
+#define ID_FACTOR                       40044
 
 // Next default values for new objects
 // 
@@ -290,7 +291,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        164
-#define _APS_NEXT_COMMAND_VALUE         40044
+#define _APS_NEXT_COMMAND_VALUE         40045
 #define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

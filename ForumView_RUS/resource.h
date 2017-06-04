@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by Forum3DView.rc
+// Включаемый файл, созданный в Microsoft Visual C++.
+// Используется ForumView_RUS.rc
 //
 #define IDD_ABOUTBOX                    100
 #define IDC_RECENT_COMBO                101
