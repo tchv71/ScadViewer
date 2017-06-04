@@ -762,6 +762,7 @@ bool CIsoViewGeometry::GetFactorForElVertexLoaded(int nNumElement, int nNumVerte
 	val = m_Factors[m_mapVertexFactors[nVertex]-1].fFactor;
 	if (pnResultPoints)
 		*pnResultPoints = ElementArray[nNumElement].NumVertexs() + 1;
+	return true;
 }
 
 bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, double &val, int* pnResultPoints)
