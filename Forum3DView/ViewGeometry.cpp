@@ -2209,6 +2209,40 @@ static void CopyAxes(TAxeSet &axe, COORD_LINE_AXIS_OLD Line[],WORD nCount, WORD 
 
 }
 
+
+namespace spr
+{
+	struct SDataLine
+	{
+		UINT nSize;
+		BYTE* pData;
+	};
+	struct SAxeData
+	{
+		char Name[16];
+		double fPos;
+	};
+	class CData
+	{
+	public:
+		 BYTE * GetData(UINT a2) const;
+		 SDataLine * Get(unsigned int)const;
+		 const char* GetText(UINT) const;
+	};
+}
+
+static void CopyAxes21(TAxeSet &axe, const spr::SDataLine * pD)
+{
+	for (int i = 0; i<pD->nSize; i++)
+	{
+		const spr::SAxeData *pAxe = ((spr::SAxeData*)(pD->pData)) + i;
+		SAxe a;
+		a.m_name = pAxe->Name;
+		a.m_pos = FLOAT_TYPE(pAxe->fPos);
+		axe.push_back(a);
+	}
+}
+
 void CViewGeometry::LoadAxesInfo(SCHEMA *Schem)
 {
 	if (!Schem)
@@ -2226,6 +2260,16 @@ COORD_LINE_OLD *pCoordLine = (COORD_LINE_OLD *)Schem->ReadDocument(21);
 	m_Axes.X.resize(0);
 	m_Axes.Y.resize(0);
 	m_Axes.Z.resize(0);
+#ifdef SCAD21
+	BYTE* pSchem = (BYTE*)*(DWORD*)Schem;
+	BYTE* pVCoordLine = pSchem + 0x2928;
+	spr::CData *pData = (spr::CData *)pVCoordLine;
+	DWORD dwSize = *((DWORD*)pData + 7);
+	spr::SDataLine * pD = (spr::SDataLine*) ((BYTE*)(pData->Get(1)) + 4);
+	CopyAxes21(m_Axes.X, pD++);
+	CopyAxes21(m_Axes.Y, pD++);
+	CopyAxes21(m_Axes.Z, pD++);
+#else
 	if (pCoordLine && (pCoordLine->XLineQuantity !=0 || pCoordLine->YLineQuantity !=0 || pCoordLine->HLineQuantity))
 	{
 		WORD index=0;
@@ -2233,6 +2277,7 @@ COORD_LINE_OLD *pCoordLine = (COORD_LINE_OLD *)Schem->ReadDocument(21);
 		CopyAxes(m_Axes.Y, pCoordLine->Line, pCoordLine->YLineQuantity, index);
 		CopyAxes(m_Axes.Z, pCoordLine->Line, pCoordLine->HLineQuantity, index);
 	}
+#endif
 #if !defined(SCAD11) && !defined(SCAD21) 
 	if (pCoordLine)
 		Schem->MemoryFree(pCoordLine);
