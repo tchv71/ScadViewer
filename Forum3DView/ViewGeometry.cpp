@@ -2265,7 +2265,12 @@ COORD_LINE_OLD *pCoordLine = (COORD_LINE_OLD *)Schem->ReadDocument(21);
 	BYTE* pVCoordLine = pSchem + 0x2928;
 	spr::CData *pData = (spr::CData *)pVCoordLine;
 	DWORD dwSize = *((DWORD*)pData + 7);
-	spr::SDataLine * pD = (spr::SDataLine*) ((BYTE*)(pData->Get(1)) + 4);
+	if (dwSize == 0)
+		return;
+	BYTE* pDataLine = (BYTE*)(pData->Get(1));
+	if (!pDataLine)
+		return;
+	spr::SDataLine * pD = (spr::SDataLine*) (pDataLine + 4);
 	CopyAxes21(m_Axes.X, pD++);
 	CopyAxes21(m_Axes.Y, pD++);
 	CopyAxes21(m_Axes.Z, pD++);
