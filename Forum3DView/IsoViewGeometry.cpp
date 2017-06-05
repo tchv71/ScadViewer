@@ -23,6 +23,48 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
+
+CString SOglIsoParam::GetFactorName() const
+{
+	CString str;
+	if (nTypeData == Iso_Disp)
+		switch (nTypeFactor)
+		{
+		case 0:	str = _T("X"); break;
+		case 1: str = _T("Y"); break;
+		case 2:	str = _T("Z"); break;
+		case 3:	str = _T("UX"); break;
+		case 4: str = _T("UY"); break;
+		case 5:	str = _T("UZ"); break;
+		case 6:	str = _T("SUM"); break;
+		}
+	else
+		switch (nTypeFactor)
+		{
+		case 0:	str = _T("NX"); break;
+		case 1: str = _T("NY"); break;
+		case 2:	str = _T("TXY"); break;
+		case 3:	str = _T("MX"); break;
+		case 4: str = _T("MY"); break;
+		case 5:	str = _T("MXY"); break;
+		case 6:	str = _T("QX"); break;
+		case 7:	str = _T("QY"); break;
+		case 8:	str = _T("Sx верх"); break;
+		case 9: str = _T("Sx низ"); break;
+		case 10:str = _T("Sy верх"); break;
+		case 11:str = _T("Sy низ"); break;
+		};
+	return str;
+}
+
+void  SOglIsoParam::SetTypeData(eTypeData val)
+{
+	nTypeData = val;
+	nTypeFactor = 0;
+}
+
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////

@@ -69,3 +69,4 @@ protected:
 };
 
 #endif // !defined(AFX_DIBGLRENDERER_H__CD01E6EC_CACC_475F_8B30_B4D70BE854EC__INCLUDED_)
+

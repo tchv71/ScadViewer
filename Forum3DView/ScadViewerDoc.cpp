@@ -65,7 +65,6 @@ void CScadViewerDoc::Clear()
 {
 	FREE(m_pViewGeometry);
 	FREE(m_IsoParams.Res);
-	FREE(m_IsoParams.pTypeInfo);
 #ifdef SCAD21
 	if (m_pIsoSchem)
 	{
@@ -222,7 +221,7 @@ void CScadViewerDoc::LoadIso()
 	CScadViewerView *pView = static_cast<CScadViewerView *>(GetNextView(pos));
 	ASSERT_KINDOF(CScadViewerView, pView);
 	Clear();
-	m_IsoParams.pTypeInfo = new TypeInformationOnSchema;
+	m_IsoParams.pTypeInfo = &m_TypeInfo;
 	m_pViewGeometry = pGeom = new CIsoViewGeometry(static_cast<CIsoViewerFrame*>(pView->GetParentFrame()),&pView->m_ViewOptions,&pView->m_DrawOptions);
 	m_pViewGeometry->m_bDeleteInnerPlates = pView->m_ViewOptions.bRemoveDupPlanes;
 	bool bOptimize = pView->m_ViewOptions.bDrawOptimize | pView->m_ViewOptions.bRemoveDupPlanes;
@@ -270,11 +269,6 @@ void CScadViewerDoc::LoadIso()
 	}
 #endif
 	//BOOL bRes = ApiYesDisplace(pSchem);
-	m_IsoParams.NPr = 0;
-	m_IsoParams.nTypeFactor = 0;
-	m_IsoParams.nTypeData = Iso_Disp;
-	m_IsoParams.bDrawIsoLines = false;
-	m_IsoParams.bDrawEggs = false;
 	FillIsoParams();
 	pGeom->SetParams(&m_IsoParams);
 	pGeom->LoadIso(m_bShowProfiles, pView->m_ViewOptions.bDrawOptimize);
@@ -308,18 +302,10 @@ static struct DefMapInfo DefDMI=
 						//BYTE IsSetScale;
 };
 
-struct TypeInformationOnSchema DefTypeInfo =
-{
-	0,	//	BYTE NumFactor; // Оцифровка фактора
-	0,	//	BYTE NumElem;   // Нумерация элементов
-	0,	//	BYTE NumNode;   // Нумерация узлов
-	1,	//	BYTE OutSupport;// Отображение связей
-	1	//BYTE OutNode;   // Отображение узлов
-};
 
 void CScadViewerDoc::FillIsoParams()
 {
-	*(m_IsoParams.pTypeInfo) = DefTypeInfo;
+	//*(m_IsoParams.pTypeInfo) = DefTypeInfo;
 	FillScale(&DMI);	
 }
 

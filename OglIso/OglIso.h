@@ -47,7 +47,14 @@ struct SOglIsoParam
 	SOglIsoParam() 
 	{
 		memset(this, 0, sizeof(SOglIsoParam));
+		NPr = 0;
+		nTypeFactor = 0;
+		nTypeData = (eTypeData)1;
+		bDrawIsoLines = false;
+		bDrawEggs = false;
 	};
+	CString GetFactorName() const;
+	void SetTypeData(eTypeData val);
 	RESULT* Res;
 #ifdef SCAD21
 	ScadAPI hAPI;

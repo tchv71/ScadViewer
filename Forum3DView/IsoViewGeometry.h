@@ -98,6 +98,7 @@ protected:
 	ptrdiff_t m_nRealElements;
 	double m_dblDefScaleMult;
 	CIsoViewerFrame* m_pFrm;
+	friend class CIsoViewerFrame;
 };
 
 #endif // !defined(AFX_ISOVIEWGEOMETRY_H__4C37CA27_C39F_4CA2_A109_B18A6D009D03__INCLUDED_)

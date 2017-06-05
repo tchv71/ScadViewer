@@ -400,16 +400,15 @@ void CIsoViewerFrame::OnUpdateFactorGroup(CCmdUI* pCmdUI)
 void CIsoViewerFrame::OnFactorDisplacements() 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pGeom->m_Params.nTypeData = Iso_Disp;
+	pGeom->m_Params.SetTypeData(Iso_Disp);
 	OnParamsChangedFactor();
 }
 
 void CIsoViewerFrame::OnFactorStressfields() 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pGeom->m_Params.nTypeData = Iso_Nap;	
+	pGeom->m_Params.SetTypeData(Iso_Nap);
 	OnParamsChangedFactor();
-	
 }
 
 
@@ -426,7 +425,7 @@ CIsoViewGeometry* CIsoViewerFrame::Geom() const
 void CIsoViewerFrame::OnFactorStresscolourmap() 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pGeom->m_Params.nTypeData = Iso_Nap_Flat;	
+	pGeom->m_Params.SetTypeData(Iso_Nap_Flat);	
 	OnParamsChangedFactor();
 }
 
@@ -458,6 +457,11 @@ void CIsoViewerFrame::OnUpdateFactorStresscolourmap(CCmdUI* pCmdUI)
 void CIsoViewerFrame::OnParamsChanged()
 {
 	CIsoViewGeometry *pGeom = Geom();
+	CScadViewerDoc* pDoc = (CScadViewerDoc*)GetActiveDocument();
+	DefMapInfo *pDMI = const_cast<DefMapInfo *>(pDoc->m_IsoParams.pDMI);
+	pDoc->m_IsoParams = pGeom->m_Params;
+	pDoc->m_IsoParams.pDMI = pDMI;
+	*pDMI = pGeom->m_DMI;
 	//pGeom->SetDefMapInfo(pGeom->m_Params.pDMI, &pGeom->m_Params);
 	pGeom->DrawOptionsChanged(&m_p3DView->m_DrawOptions, m_p3DView->m_ViewOptions.bShowUsedNodes);
 	pGeom->LoadIso(m_p3DView->GetDocument()->m_bShowProfiles, m_p3DView->m_ViewOptions.bDrawOptimize);
@@ -528,7 +532,7 @@ void CIsoViewerFrame::FillFactorCombo() const
 		pCombo->AddString(_T("Sy низ"));
 	}
 
-	pCombo->SetCurSel(0);
+	pCombo->SetCurSel(pGeom->m_Params.nTypeFactor);
 
 }
 // ReSharper disable once CppMemberFunctionMayBeStatic

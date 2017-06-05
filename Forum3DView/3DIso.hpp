@@ -16,6 +16,7 @@ enum eTypeData
 
 struct TypeInformationOnSchema
 {
+	TypeInformationOnSchema() : NumFactor(0), NumElem(0), NumNode(0), OutSupport(1), OutNode(1) {}
 	BYTE NumFactor; // Оцифровка фактора
 	BYTE NumElem;   // Нумерация элементов
 	BYTE NumNode;   // Нумерация узлов
