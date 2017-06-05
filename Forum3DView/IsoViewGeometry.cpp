@@ -807,7 +807,7 @@ bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, dou
 				*pnResultPoints = qP;
 			int nVertexs = ElementArray[nNumElement].NumVertexs();
 			int nPos = nNumVertex >= nVertexs ? nNumVertex : ( nVertexs == 4 ? N_S(nNumVertex) : nNumVertex);
-			val = res[qUs*(nPos) + m_Params.NPr];
+			val = res[qUs*(nPos) + m_Params.nTypeFactor];
 		}
 		return true;
 	case Iso_Arm: break;
