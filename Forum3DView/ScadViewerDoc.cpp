@@ -20,6 +20,7 @@
 #include "IsoViewGeometry.h"
 #include "ScadViewerView.h"
 #include "IsoViewerFrame.h"
+#include "MainScadViewerFrame.h"
 #include "3DIso.hpp"
 #pragma pack(pop, abc)
 
@@ -124,14 +125,18 @@ void CScadViewerDoc::Load(void)
 		//UpdateAllViews(nullptr);
 		return;
 	}
+	POSITION pos = GetFirstViewPosition();
+	CScadViewerView *pView = static_cast<CScadViewerView *>(GetNextView(pos));
+	ASSERT_KINDOF(CScadViewerView, pView);
+	CMainScadViewerFrame *pFrame = dynamic_cast<CMainScadViewerFrame *>(pView->GetParentFrame());
+	if (m_bViewResults && pFrame && !pFrame->IsResultsPresent(m_strFileName))
+		m_bViewResults = false;
+
 	if (m_bViewResults)
 	{
 		LoadIso();
 		return;
 	}
-	POSITION pos = GetFirstViewPosition();
-	CScadViewerView *pView = static_cast<CScadViewerView *>(GetNextView(pos));
-	ASSERT_KINDOF(CScadViewerView, pView);
 	Clear();
 	m_pViewGeometry = new CForumViewGeometry(&pView->m_ViewOptions,&pView->m_DrawOptions);
 	m_pViewGeometry->m_bDeleteInnerPlates = pView->m_ViewOptions.bRemoveDupPlanes;
