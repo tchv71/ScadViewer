@@ -130,7 +130,10 @@ void CScadViewerDoc::Load(void)
 	ASSERT_KINDOF(CScadViewerView, pView);
 	CMainScadViewerFrame *pFrame = dynamic_cast<CMainScadViewerFrame *>(pView->GetParentFrame());
 	if (m_bViewResults && pFrame && !pFrame->IsResultsPresent(m_strFileName))
+	{
 		m_bViewResults = false;
+		pView->UpdateToolbar();
+	}
 
 	if (m_bViewResults)
 	{
