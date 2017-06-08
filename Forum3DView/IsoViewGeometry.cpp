@@ -760,15 +760,27 @@ APICode _ApiGetEfforsXXX(unsigned NumElem, spr::CSchema * pSchem, ApiElemEffors 
 		//Eq_724 eax_67 = pSchem->t9CBC;
 		if (true)//pSchem->dw9CC0 - eax_67 >> 0x03 >= 0x01 && eax_67 != 0x00)
 		{
+#ifdef _AMD64_
+			spr::CElemData *pElem = reinterpret_cast<spr::CElemData*>((BYTE*)pSchem + 0x6906C);
+			spr::CElemForm const &rElemForm = reinterpret_cast<spr::CElemForm const &>(*((BYTE*)pSchem + 0x50DE));
+#else
 			spr::CElemData *pElem = reinterpret_cast<spr::CElemData*>((BYTE*)pSchem + 0x67d80);
-			if (pElem->SetElem(reinterpret_cast<spr::CElemForm const &>(*((BYTE*)pSchem + 0x433e)), NumElem, 0x00) != 0x00)
+			spr::CElemForm const &rElemForm = reinterpret_cast<spr::CElemForm const &>(*((BYTE*)pSchem + 0x433e));
+#endif
+
+			if (pElem->SetElem(rElemForm, NumElem, 0x00) != 0x00)
 			{
 				//Eq_724 eax_96 = pSchem->t9CBC;
 				//if (pSchem->dw9CC0 - eax_96 >> 0x03 < 0x01 || (eax_96 == 0x00 || (((eax_96 - 0x08))[ebx].dw0000 & *(eax_96 - 0x04)) == ~0x00))
 				//	return;
+#ifdef _AMD64_
+				spr::CResult *pRes = reinterpret_cast<spr::CResult*>((BYTE*)pSchem + 0x3CF7);
+				spr::CResultElemEffors &rEff = reinterpret_cast<spr::CResultElemEffors &>(*((BYTE*)pSchem + 0x692F4));
+#else
 				spr::CResult *pRes = reinterpret_cast<spr::CResult*>((BYTE*)pSchem + 0x2f67);
 				spr::CResultElemEffors &rEff = reinterpret_cast<spr::CResultElemEffors &>(*((BYTE*)pSchem + 0x67f54));
-				if (pRes->GetElemEffors(rEff, NumElem, 1, (BYTE)TypeRead, 2/*1*/) != 0x00)
+#endif
+				if (pRes->GetElemEffors(rEff, NumElem, 1, (BYTE)TypeRead, 1) != 0x00)
 				{
 					*ppEffors = &rEff;
 					return APICode::APICode_OK;
@@ -789,7 +801,7 @@ APICode _ApiGetEfforsXXX(unsigned NumElem, spr::CSchema * pSchem, ApiElemEffors 
 
 APICode ApiGetEfforsXXX(ScadAPI lpAPI, UINT NumElem, ApiElemEffors ** Effors, BYTE TypeRead)
 {
-	return _ApiGetEfforsXXX(NumElem, (spr::CSchema*)((DWORD*)lpAPI)[0], Effors, TypeRead);
+	return _ApiGetEfforsXXX(NumElem, (spr::CSchema*)((LPVOID*)lpAPI)[0], Effors, TypeRead);
 }
 #endif
 

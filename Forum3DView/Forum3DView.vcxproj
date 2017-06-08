@@ -460,7 +460,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\Scad21\include;..\Berkeley DB 4.4.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Scad21\include;..\Berkeley DB 4.4.20\include\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_AFXEXT;FORUM3DVIEW_EXPORTS;_SECDLL;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -469,16 +469,13 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\Release21\x64/Forum3DView.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Release21/</AssemblerListingLocation>
-      <ObjectFileName>.\Release21/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Release21/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;SCADAPIX.lib;libdb62.lib;sprfem.lib;SprResult.lib;SprTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -932,7 +929,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\Scad21\include;..\Berkeley DB 4.4.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Scad21\include;..\Berkeley DB 4.4.20\include\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_AMD64_;_DEBUG;WIN32;_WINDOWS;_AFXEXT;FORUM3DVIEW_EXPORTS;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -940,9 +937,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\Debug21\x64/Forum3DView.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Debug21/</AssemblerListingLocation>
-      <ObjectFileName>.\Debug21/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Debug21/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>

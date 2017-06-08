@@ -2261,16 +2261,22 @@ COORD_LINE_OLD *pCoordLine = (COORD_LINE_OLD *)Schem->ReadDocument(21);
 	m_Axes.Y.resize(0);
 	m_Axes.Z.resize(0);
 #ifdef SCAD21
-	BYTE* pSchem = (BYTE*)*(DWORD*)Schem;
+	BYTE* pSchem = (BYTE*)*((LPVOID*)Schem);
+#ifdef _AMD64_
+	BYTE* pVCoordLine = pSchem + 0x3360;
+#else
 	BYTE* pVCoordLine = pSchem + 0x2928;
+#endif
 	spr::CData *pData = (spr::CData *)pVCoordLine;
+/*
 	DWORD dwSize = *((DWORD*)pData + 7);
 	if (dwSize == 0)
 		return;
+*/
 	BYTE* pDataLine = (BYTE*)(pData->Get(1));
 	if (!pDataLine)
 		return;
-	spr::SDataLine * pD = (spr::SDataLine*) (pDataLine + 4);
+	spr::SDataLine * pD = (spr::SDataLine*) (pDataLine + sizeof(void*));
 	CopyAxes21(m_Axes.X, pD++);
 	CopyAxes21(m_Axes.Y, pD++);
 	CopyAxes21(m_Axes.Z, pD++);

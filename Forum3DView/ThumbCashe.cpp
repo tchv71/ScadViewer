@@ -48,21 +48,25 @@ bool CThumbCashe::Get(LPCTSTR pszFileName, const SThumbParam &rParam, HDC dc) co
 	try
 	{
 		// Open the database
-		db.open(nullptr, // Transaction pointer
+		int nRes = db.open(nullptr, // Transaction pointer
 			DbName(), // Database file name
 			nullptr, // Optional logical database name
 			DB_BTREE, // Database access method
 			oFlags, // Open flags
 			0); // File mode (using defaults)
+		if (nRes != 0)
+			return false;
 		// DbException is not subclassed from std::exception, so
 		// need to catch both of these.
 		// Use our own memory to retrieve the float.
 		// For data alignment purposes.
 		std::string vecKey;
 		GetKey(pszFileName, rParam, vecKey);
-		Dbt key(&vecKey[0], vecKey.size()),data;
+		Dbt key(&vecKey[0], vecKey.size());
+		Dbt data;
 		db.get(nullptr, &key, &data, 0);
 		
+		key.set_data(nullptr);
 		char* pdata = static_cast<char *>(data.get_data());
 		size_t nSize = data.get_size();
 		if (!pdata)
