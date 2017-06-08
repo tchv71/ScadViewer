@@ -435,7 +435,7 @@
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>.\Release21/Forum3DView21.lib</ImportLibrary>
+      <ImportLibrary>$(IntDir)Forum3DView21.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
@@ -453,7 +453,7 @@
       <Culture>0x0419</Culture>
     </ResourceCompile>
     <Manifest>
-      <AdditionalManifestFiles>..\ScadViewer.manifest</AdditionalManifestFiles>
+      <AdditionalManifestFiles>..\ScadViewer32.manifest</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">
@@ -468,7 +468,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Release21/Forum3DView.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release21\x64/Forum3DView.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release21/</AssemblerListingLocation>
       <ObjectFileName>.\Release21/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release21/</ProgramDataBaseFileName>
@@ -481,14 +481,14 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;SCADAPIX.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;SCADAPIX.lib;libdb62.lib;sprfem.lib;SprResult.lib;SprTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad21\lib\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>.\Release21_64/Forum3DView21.lib</ImportLibrary>
+      <ImportLibrary>$(IntDir)Forum3DView21.lib</ImportLibrary>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <Midl>
@@ -504,7 +504,7 @@
       <Culture>0x0419</Culture>
     </ResourceCompile>
     <Manifest>
-      <AdditionalManifestFiles>..\ScadViewer.manifest</AdditionalManifestFiles>
+      <AdditionalManifestFiles>..\ScadViewer64.manifest</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -922,7 +922,7 @@
       <Culture>0x0419</Culture>
     </ResourceCompile>
     <Manifest>
-      <AdditionalManifestFiles>..\ScadViewer.manifest</AdditionalManifestFiles>
+      <AdditionalManifestFiles>..\ScadViewer32.manifest</AdditionalManifestFiles>
     </Manifest>
     <Bscmake>
       <OutputFile />
@@ -939,7 +939,7 @@
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Debug21/Forum3DView.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug21\x64/Forum3DView.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug21/</AssemblerListingLocation>
       <ObjectFileName>.\Debug21/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug21/</ProgramDataBaseFileName>
@@ -949,7 +949,7 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;SCADAPIX.lib;libdb62.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;azip.lib;SCADAPIX.lib;libdb62.lib;sprfem.lib;SprResult.lib;SprTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad21\lib\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -957,7 +957,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug21/Forum3DView21.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>.\Debug21/Forum3DView21.lib</ImportLibrary>
+      <ImportLibrary>$(IntDir)Forum3DView21.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -972,7 +972,7 @@
       <Culture>0x0419</Culture>
     </ResourceCompile>
     <Manifest>
-      <AdditionalManifestFiles>..\ScadViewer.manifest</AdditionalManifestFiles>
+      <AdditionalManifestFiles>..\ScadViewer64.manifest</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
