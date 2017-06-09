@@ -33,6 +33,7 @@ protected:
 	void OnBnClickedButtonHot();
 	void OnBnClickedButtonGray();
 	void OnBnClickedButtonUniform();
+	void OnBnClickedButtonInvert();
 	void OnUpdateButton(CCmdUI* pCmdUI);
 
 public:

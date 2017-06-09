@@ -60,52 +60,6 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Set delimiter value"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,96,27,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,155,27,50,14
-    COMBOBOX        IDC_EDIT_VALUE,7,7,198,79,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_DIALOG_DELIM, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 205
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 41
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// AFX_DIALOG_LAYOUT
-//
-
-IDD_DIALOG_DELIM AFX_DIALOG_LAYOUT
-BEGIN
-    0
-END
-
 #endif    // Русский (Россия) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -295,16 +249,27 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,46,74,40,14
 END
 
+IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "??????? ???????? - ???????????"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,96,27,50,14
+    PUSHBUTTON      "??????",IDCANCEL,155,27,50,14
+    COMBOBOX        IDC_EDIT_VALUE,7,7,198,79,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+END
+
 IDD_SCALE DIALOGEX 0, 0, 130, 258
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_GRID,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,27,116,221
+    CONTROL         "",IDC_GRID,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,5,27,118,204
     COMBOBOX        IDC_COMBO_NUM,89,9,31,230,CBS_DROPDOWNLIST | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "?",IDC_BUTTON_HOT,29,7,18,16,BS_BITMAP
     PUSHBUTTON      "?",IDC_BUTTON_COLD,49,7,18,16,BS_BITMAP
     PUSHBUTTON      "?",IDC_BUTTON_GRAY,69,7,18,16,BS_BITMAP
-    PUSHBUTTON      "?",IDC_BUTTON_UNIFORM,7,7,18,16,BS_BITMAP
+    PUSHBUTTON      "?",IDC_BUTTON_UNIFORM,5,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Invert Scale",IDC_BTN_INVERT_SCALE,5,236,118,14
 END
 
 
@@ -361,12 +326,20 @@ BEGIN
     BEGIN
     END
 
-    IDD_SCALE, DIALOG
+    IDD_DIALOG_DELIM, DIALOG
     BEGIN
         LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 41
+    END
+
+    IDD_SCALE, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
         RIGHTMARGIN, 123
         TOPMARGIN, 7
-        BOTTOMMARGIN, 248
+        BOTTOMMARGIN, 250
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -624,6 +597,22 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_FORUM_VIEWER        ICON                    "res\\ForumView.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_DELIM AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SCALE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////

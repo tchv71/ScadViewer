@@ -2233,7 +2233,7 @@ namespace spr
 
 static void CopyAxes21(TAxeSet &axe, const spr::SDataLine * pD)
 {
-	for (int i = 0; i<pD->nSize; i++)
+	for (UINT i = 0; i<pD->nSize; i++)
 	{
 		const spr::SAxeData *pAxe = ((spr::SAxeData*)(pD->pData)) + i;
 		SAxe a;

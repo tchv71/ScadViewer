@@ -5,6 +5,7 @@
 #include "ScalePane.h"
 #include "..\OglIso\OglIso.h"
 #include "GridSrc\GridCellCheck.h"
+#include "..\ForumView_ENG\resource.h"
 #include "IsoViewerFrame.h"
 #include "IsoViewGeometry.h"
 #ifdef SCAD11
@@ -42,10 +43,12 @@ BEGIN_MESSAGE_MAP(CScalePane, CDockablePane)
 	ON_BN_CLICKED(IDC_BUTTON_COLD, OnBnClickedButtonCold)
 	ON_BN_CLICKED(IDC_BUTTON_GRAY, OnBnClickedButtonGray)
 	ON_BN_CLICKED(IDC_BUTTON_UNIFORM, OnBnClickedButtonUniform)
+	ON_BN_CLICKED(IDC_BTN_INVERT_SCALE, OnBnClickedButtonInvert)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_HOT, OnUpdateButton)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_COLD, OnUpdateButton)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_GRAY, OnUpdateButton)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_UNIFORM, OnUpdateButton)
+	ON_UPDATE_COMMAND_UI(IDC_BTN_INVERT_SCALE, OnUpdateButton)
 
 END_MESSAGE_MAP()
 
@@ -367,6 +370,18 @@ void CScalePane::OnBnClickedButtonUniform()
 		SetDmi(m_pDMI);
 		GetParent()->SendMessage(WM_COMMAND, ID_PARAMS_CHANGED, 0);
 	}
+}
+
+void CScalePane::OnBnClickedButtonInvert()
+{
+	int i = 0;
+	int j = m_pDMI->Scale_count - 1;
+	for (; i < j; i++, j--)
+	{
+		std::swap(m_pDMI->col[i], m_pDMI->col[j]);
+	}
+	SetDmi(m_pDMI);
+	GetParent()->SendMessage(WM_COMMAND, ID_PARAMS_CHANGED, 0);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeStatic

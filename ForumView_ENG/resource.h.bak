@@ -51,6 +51,7 @@
 #define IDI_ICON1                       162
 #define IDI_HOT                         162
 #define IDD_DIALOG_DELIM                163
+#define IDD_DIALOG_DELIM2               164
 #define IDR_FOLDER_LIST                 257
 #define IDD_TAB_RTF                     268
 #define IDD_TAB_MATERIAL                269
@@ -148,7 +149,6 @@
 #define IDC_BUTTON_GRAY                 1045
 #define IDC_BUTTON_UNIFORM              1046
 #define IDS_STRING1047                  1047
-#define IDC_BTN_INVERT_SCALE            1047
 #define IDC_PROGRESS                    2000
 #define IDC_CHECK_CHANGE_DIST           2000
 #define IDC_SLIDER_FLENGTH              2001
@@ -292,9 +292,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        167
+#define _APS_NEXT_RESOURCE_VALUE        164
 #define _APS_NEXT_COMMAND_VALUE         40044
-#define _APS_NEXT_CONTROL_VALUE         1048
+#define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
