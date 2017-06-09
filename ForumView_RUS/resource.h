@@ -38,6 +38,8 @@
 #define IDC_CURSOR_LOOKAROUND           136
 #define IDS_CAMERA_TOOLBAR_MM           136
 #define IDC_CURSOR_PAN                  137
+#define IDS_FOLDER_TREE_CAPTION2        137
+#define IDS_SCALE_CAPTION               137
 #define IDC_CURSOR_ROTATE               139
 #define IDC_CURSOR_WALK                 140
 #define IDC_CURSOR_ZOOM                 141
@@ -124,6 +126,7 @@
 #define IDC_UZ_COLOR_BTN                1025
 #define ID_IND_FILE_INFO                1025
 #define IDC_SOLIDS_COLOR_BTN            1026
+#define IDS_DELIM_OUT_OF_RANGE          1026
 #define IDC_WALL_COLOR_BTN              1027
 #define IDC_SLAB_COLOR_BTN              1028
 #define IDC_COLUMN_COLOR_BTN            1029

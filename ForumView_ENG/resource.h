@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by Forum3DView.rc
+// Включаемый файл, созданный в Microsoft Visual C++.
+// Используется ForumView_ENG.rc
 //
 #define IDD_ABOUTBOX                    100
 #define IDC_RECENT_COMBO                101
@@ -38,6 +38,7 @@
 #define IDC_CURSOR_LOOKAROUND           136
 #define IDS_CAMERA_TOOLBAR_MM           136
 #define IDC_CURSOR_PAN                  137
+#define IDS_SCALE_CAPTION               137
 #define IDC_CURSOR_ROTATE               139
 #define IDC_CURSOR_WALK                 140
 #define IDC_CURSOR_ZOOM                 141
@@ -50,6 +51,7 @@
 #define IDI_ICON1                       162
 #define IDI_HOT                         162
 #define IDD_DIALOG_DELIM                163
+#define IDD_DIALOG_DELIM2               164
 #define IDR_FOLDER_LIST                 257
 #define IDD_TAB_RTF                     268
 #define IDD_TAB_MATERIAL                269
@@ -124,6 +126,7 @@
 #define IDC_UZ_COLOR_BTN                1025
 #define ID_IND_FILE_INFO                1025
 #define IDC_SOLIDS_COLOR_BTN            1026
+#define IDS_DELIM_OUT_OF_RANGE          1026
 #define IDC_WALL_COLOR_BTN              1027
 #define IDC_SLAB_COLOR_BTN              1028
 #define IDC_COLUMN_COLOR_BTN            1029

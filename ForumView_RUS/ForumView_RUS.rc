@@ -14,6 +14,82 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
+// Русский resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+LANGUAGE LANG_RUSSIAN, SUBLANG_NEUTRAL
+#pragma code_page(1251)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SCALE DIALOGEX 0, 0, 130, 258
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_GRID,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,27,116,221
+    COMBOBOX        IDC_COMBO_NUM,89,9,31,230,CBS_DROPDOWNLIST | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Г",IDC_BUTTON_HOT,29,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Х",IDC_BUTTON_COLD,49,7,18,16,BS_BITMAP
+    PUSHBUTTON      "С",IDC_BUTTON_GRAY,69,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Г",IDC_BUTTON_UNIFORM,7,7,18,16,BS_BITMAP
+END
+
+IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Укажите значение - разделитель"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,96,27,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,155,27,50,14
+    COMBOBOX        IDC_EDIT_VALUE,7,7,198,79,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_SCALE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 123
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 248
+    END
+
+    IDD_DIALOG_DELIM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 41
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_DELIM AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // Русский resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
 // Русский (Россия) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
@@ -550,6 +626,7 @@ BEGIN
     IDS_FILTERS_TOOLBAR_CAPTION "Фильтры"
     IDS_CAMERA_TOOLBAR_CAPTION "Камера"
     IDS_CAMERA_TOOLBAR_MM   "мм"
+    IDS_SCALE_CAPTION       "Шкала"
 END
 
 STRINGTABLE
@@ -965,6 +1042,11 @@ STRINGTABLE
 BEGIN
     IDC_COMBO_FACTOR        "\nВыбор вида фактора"
     IDC_COMBO_LOAD          "\nВыбор загружения"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_DELIM_OUT_OF_RANGE  "Вы должны ввести число в диапазоне [%.2f ... %.2f)"
 END
 
 #endif    // Русский (Россия) resources

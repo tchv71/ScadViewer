@@ -14,6 +14,7 @@
 #include "ScadViewerView.h"
 #include "ScadViewerDoc.h"
 #include "3dIso.hpp"
+#include "..\ForumView_ENG\resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -115,7 +116,8 @@ int CIsoViewerFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	UINT nID = 110;
-	CString strCaption = _T("Ўкала");
+	CString strCaption;
+	strCaption.LoadString(IDS_SCALE_CAPTION);
 	//strCaption.LoadString(IDS_FOLDER_TREE_CAPTION);
 	if (!m_ScaleWnd.Create(IDD_SCALE, strCaption, this, CSize(200,200), TRUE, nID))
 	{
@@ -564,6 +566,9 @@ void CIsoViewerFrame::SetToolBarNames()
 	m_wndDefScaleDialogBar.SetWindowText(strName);
 	strName.LoadString(IDS_RESULT_TOOLBAR);
 	m_wndResParams.SetWindowText(strName);
+	strName.LoadString(IDS_SCALE_CAPTION);
+	m_ScaleWnd.SetWindowText(strName);
+
 }
 
 

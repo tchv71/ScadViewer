@@ -10,12 +10,11 @@
 #include "afxres.h"
 #include "..\Version.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Russian (Russia) resources
+// Русский (Россия) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
@@ -35,8 +34,8 @@ END
 2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
-	"#include ""..\Version.h""\r\n"
-	"\0"
+    "#include ""..\\Version.h""\r\n"
+    "\0"
 END
 
 3 TEXTINCLUDE 
@@ -61,12 +60,58 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Russian (Russia) resources
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Set delimiter value"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,96,27,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,155,27,50,14
+    COMBOBOX        IDC_EDIT_VALUE,7,7,198,79,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG_DELIM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 41
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_DELIM AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // Русский (Россия) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (United States) resources
+// Английский (США) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -97,7 +142,7 @@ FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     ICON            IDI_FORUM_VIEWER,IDC_STATIC,13,13,20,20
     LTEXT           "Scad/Forum Explorer  Version",IDC_STATIC,44,15,95,8,SS_NOPREFIX
-    LTEXT           SV_COPYRIGHT,IDC_STATIC,44,30,124,8
+    LTEXT           "Copyright (C) 2000-17 Dmitry Tcvetkov",IDC_STATIC,44,30,124,8
     DEFPUSHBUTTON   "OK",IDOK,59,50,50,14,WS_GROUP
     LTEXT           "",IDC_ABOUT_VER,143,15,73,8
 END
@@ -250,14 +295,16 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,46,74,40,14
 END
 
-IDD_SCALE DIALOGEX 0, 0, 310, 177
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Dialog"
+IDD_SCALE DIALOGEX 0, 0, 130, 258
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "??",IDOK,199,156,50,14
-    PUSHBUTTON      "??????",IDCANCEL,253,156,50,14
-    CONTROL         "",IDC_LIST,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,21,34,177,92
+    CONTROL         "",IDC_GRID,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,27,116,221
+    COMBOBOX        IDC_COMBO_NUM,89,9,31,230,CBS_DROPDOWNLIST | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "?",IDC_BUTTON_HOT,29,7,18,16,BS_BITMAP
+    PUSHBUTTON      "?",IDC_BUTTON_COLD,49,7,18,16,BS_BITMAP
+    PUSHBUTTON      "?",IDC_BUTTON_GRAY,69,7,18,16,BS_BITMAP
+    PUSHBUTTON      "?",IDC_BUTTON_UNIFORM,7,7,18,16,BS_BITMAP
 END
 
 
@@ -317,9 +364,9 @@ BEGIN
     IDD_SCALE, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 303
+        RIGHTMARGIN, 123
         TOPMARGIN, 7
-        BOTTOMMARGIN, 170
+        BOTTOMMARGIN, 248
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -578,16 +625,6 @@ END
 // remains consistent on all systems.
 IDI_FORUM_VIEWER        ICON                    "res\\ForumView.ico"
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// AFX_DIALOG_LAYOUT
-//
-
-IDD_SCALE AFX_DIALOG_LAYOUT 
-BEGIN
-    0x0000
-END
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -605,6 +642,7 @@ BEGIN
     IDS_FILTERS_TOOLBAR_CAPTION "Filters"
     IDS_CAMERA_TOOLBAR_CAPTION "Camera"
     IDS_CAMERA_TOOLBAR_MM   "mm"
+    IDS_SCALE_CAPTION       "Scale"
 END
 
 STRINGTABLE
@@ -1030,7 +1068,12 @@ BEGIN
     IDC_COMBO_LOAD          "\nLoad selection"
 END
 
-#endif    // English (United States) resources
+STRINGTABLE
+BEGIN
+    IDS_DELIM_OUT_OF_RANGE  "You must enter the value in range [%.2f ... %.2f)"
+END
+
+#endif    // Английский (США) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

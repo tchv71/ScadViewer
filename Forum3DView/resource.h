@@ -45,11 +45,9 @@
 #define IDC_CURSOR_SELECT               143
 #define IDR_FILTERS_TOOLBAR             144
 #define IDR_RESULTS_TOOLBAR             155
-#define IDD_SCALE                       158
 #define IDB_HOT                         161
 #define IDI_ICON1                       162
 #define IDI_HOT                         162
-#define IDD_DIALOG_DELIM                163
 #define IDR_FOLDER_LIST                 257
 #define IDD_TAB_RTF                     268
 #define IDD_TAB_MATERIAL                269
@@ -137,14 +135,7 @@
 #define IDC_DEFORM_SCALE_SPIN           1034
 #define IDC_FONT_RESULTS                1035
 #define IDC_FONT_AXES                   1036
-#define IDC_GRID                        1036
 #define IDC_COMBO1                      1041
-#define IDC_COMBO_NUM                   1041
-#define IDC_BUTTON_HOT                  1043
-#define IDC_BUTTON_COLD                 1044
-#define IDC_EDIT_VALUE                  1044
-#define IDC_BUTTON_GRAY                 1045
-#define IDC_BUTTON_UNIFORM              1046
 #define IDS_STRING1047                  1047
 #define IDC_PROGRESS                    2000
 #define IDC_CHECK_CHANGE_DIST           2000
@@ -283,14 +274,13 @@
 #define ID_BAR_IMG                      40041
 #define ID_PLATE_IMG                    40042
 #define ID_PARAMS_CHANGED               40043
-#define ID_FACTOR                       40044
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        164
+#define _APS_NEXT_RESOURCE_VALUE        165
 #define _APS_NEXT_COMMAND_VALUE         40045
 #define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           110
