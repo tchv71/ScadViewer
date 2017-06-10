@@ -39,6 +39,29 @@ struct DefMapInfo
 	BYTE LastOp;    // 1 - IsoLines 0 - IsoArea or Map
 	BYTE IsDopArm;
 	BYTE IsSetScale;
+	DefMapInfo() : Scale_count(14)
+	{
+		const COLORREF defDmiColors[] =
+		{
+			RGB(0,0,128),
+			RGB(0,0,255),
+			RGB(0,255,255),
+			RGB(128,255,255),
+			RGB(255,255,128),
+			RGB(255,255,64),
+			RGB(255,255,0),
+			RGB(128,255,128),
+			RGB(128,255,64),
+			RGB(128,255,0),
+			RGB(0,255,64),
+			RGB(0,255,0),
+			RGB(0,255,0),
+			RGB(0,128,0)
+		};
+		for (int i = 0; i< Scale_count; i++)
+			col[i]=defDmiColors[i];
+
+	}
 };
 #endif
 

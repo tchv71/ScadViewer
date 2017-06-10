@@ -1124,23 +1124,6 @@ bool CIsoViewGeometry::GetNumUs(unsigned char & i, const BYTE & nSel)
 }
 #endif
 
-COLORREF defDmiColors[]=
-{
-	RGB(0,0,128),
-	RGB(0,0,255),
-	RGB(0,255,255),
-	RGB(128,255,255),
-	RGB(255,255,128),
-	RGB(255,255,64),
-	RGB(255,255,0),
-	RGB(128,255,128),
-	RGB(128,255,64),
-	RGB(128,255,0),
-	RGB(0,255,64),
-	RGB(0,255,0),
-	RGB(0,255,0),
-	RGB(0,128,0)
-};
 
 // Set the default scale for the given factor
 void CIsoViewGeometry::SetDefMapInfo(DefMapInfo *pDMI, const SOglIsoParam *pParams)
@@ -1171,7 +1154,7 @@ void CIsoViewGeometry::SetDefMapInfo(DefMapInfo *pDMI, const SOglIsoParam *pPara
 	pDMI->Step = (dMaxFactor-dMinFactor)/(pDMI->Scale_count);
 	for (i=0; i<UINT(pDMI->Scale_count);i++)
 	{
-		pDMI->col[i]=defDmiColors[i];
+		//pDMI->col[i]=defDmiColors[i];
 		pDMI->binter[i]= dMinFactor+pDMI->Step*i;
 		pDMI->einter[i]= dMinFactor+pDMI->Step*(i+1);
 		pDMI->IsDrw[i] = TRUE;

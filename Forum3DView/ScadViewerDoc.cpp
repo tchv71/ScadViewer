@@ -55,7 +55,6 @@ CScadViewerDoc::CScadViewerDoc() :
 	m_pSchem(nullptr),
 	m_pIsoSchem(nullptr)
 {
-	memset(&DMI, 0 , sizeof(DMI));
 	m_IsoParams.pDMI = &DMI;
 
 }
@@ -289,26 +288,26 @@ void CScadViewerDoc::LoadIso()
 }
 
 
-static struct DefMapInfo DefDMI=
-{
-	3,					//short Scale_count;
-	0.2,				//double Max
-	-0.2,				//doublr Min
-	0.2,					//double Step;
-	{-0.2,-0.1,0},			//double binter[41];
-	{-0.1,0,0.2},			//double einter[41];
-	{0},					//double DopArmB[41];
-	{0},					//double DopArmE[41];
-	{1,1,1},				//char IsDrw[41];
-	{clRed, clGreen, clBlue},		//COLORREF col[41];
-	0,					//double Zero;
-	{0},					//int x[41];
-	{0},					//int y[41];
-	"Test"				//char Caption[8192];
-						//BYTE	LastOp;    // 1 - IsoLines 0 - IsoArea or Map
-						//BYTE	IsDopArm;
-						//BYTE IsSetScale;
-};
+//static struct DefMapInfo DefDMI=
+//{
+//	3,					//short Scale_count;
+//	0.2,				//double Max
+//	-0.2,				//doublr Min
+//	0.2,					//double Step;
+//	{-0.2,-0.1,0},			//double binter[41];
+//	{-0.1,0,0.2},			//double einter[41];
+//	{0},					//double DopArmB[41];
+//	{0},					//double DopArmE[41];
+//	{1,1,1},				//char IsDrw[41];
+//	{clRed, clGreen, clBlue},		//COLORREF col[41];
+//	0,					//double Zero;
+//	{0},					//int x[41];
+//	{0},					//int y[41];
+//	"Test"				//char Caption[8192];
+//						//BYTE	LastOp;    // 1 - IsoLines 0 - IsoArea or Map
+//						//BYTE	IsDopArm;
+//						//BYTE IsSetScale;
+//};
 
 
 void CScadViewerDoc::FillIsoParams()
@@ -320,7 +319,7 @@ void CScadViewerDoc::FillIsoParams()
 void CScadViewerDoc::FillScale(DefMapInfo *pDMI) const
 {
 	//*pDMI = DefDMI;
-	pDMI->Scale_count = 14;
+	//pDMI->Scale_count = 14;
 	(static_cast<CIsoViewGeometry *>(m_pViewGeometry))->SetDefMapInfo(pDMI, &m_IsoParams);
 	
 }
