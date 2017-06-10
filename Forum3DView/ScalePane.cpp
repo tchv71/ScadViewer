@@ -21,7 +21,7 @@
 
 IMPLEMENT_DYNAMIC(CScalePane, CDockablePane)
 
-CScalePane::CScalePane() : m_paletteType(),
+CScalePane::CScalePane() : m_paletteType(PT_COLD),
                            m_pDMI(nullptr), m_nRow(0)
 {
 
@@ -210,7 +210,7 @@ void CScalePane::DoDataExchange(CDataExchange* pDX)
 	m_combo.AddString(_T("32"));
 	m_combo.AddString(_T("48"));
 	m_combo.AddString(_T("64"));
-	m_combo.SetCurSel(14);
+	m_combo.SetCurSel(12);
 	CDockablePane::DoDataExchange(pDX);
 }
 
