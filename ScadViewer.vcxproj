@@ -728,9 +728,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\obj\Release21x64/ScadViewer.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\obj\Release21/</AssemblerListingLocation>
-      <ObjectFileName>.\obj\Release21/</ObjectFileName>
-      <ProgramDataBaseFileName>.\obj\Release21/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
