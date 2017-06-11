@@ -612,8 +612,8 @@ TElemType CElemInfApiExt::GetType() const
 	case 50: // 4..8
 		return EL_QUAD;
 	default:
-		DebugBreak();
-		return EL_LINE;
+		//DebugBreak();
+		return EL_UNKNOWN;
 	}
 }
 
@@ -1780,8 +1780,10 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 		CViewElement el(RGB(192, 192, 192));
 		el.OrgType = GetElemOrgType(e.TypeElem);
 		el.NumElem = i + 1;//e.NumElem;
-
-		if (e.GetType() == EL_LINE && TypeProfile)
+		TElemType eType = e.GetType();
+		if (eType == EL_UNKNOWN)
+			continue;
+		if (eType == EL_LINE && TypeProfile)
 		{
 			std::vector<S3dPoint> vecContour;
 			bool bClosed = false;
@@ -1832,7 +1834,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 		ElementArray.push_back(el);
 		const size_t nEl = ElementArray.size() - 1;
 		CViewElement *pE = &ElementArray[nEl];
-		pE->Type = e.GetType();
+		pE->Type = eType;
 
 		if (pE->Type == EL_QUAD)
 		{
