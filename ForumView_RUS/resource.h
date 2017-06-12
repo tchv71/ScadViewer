@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by Forum3DView.rc
+// Включаемый файл, созданный в Microsoft Visual C++.
+// Используется ForumView_RUS.rc
 //
 #define IDD_ABOUTBOX                    100
 #define IDC_RECENT_COMBO                101
@@ -38,6 +38,7 @@
 #define IDC_CURSOR_LOOKAROUND           136
 #define IDS_CAMERA_TOOLBAR_MM           136
 #define IDC_CURSOR_PAN                  137
+#define IDS_SCALE_CAPTION               137
 #define IDC_CURSOR_ROTATE               139
 #define IDC_CURSOR_WALK                 140
 #define IDC_CURSOR_ZOOM                 141
@@ -124,6 +125,7 @@
 #define IDC_UZ_COLOR_BTN                1025
 #define ID_IND_FILE_INFO                1025
 #define IDC_SOLIDS_COLOR_BTN            1026
+#define IDS_DELIM_OUT_OF_RANGE          1026
 #define IDC_WALL_COLOR_BTN              1027
 #define IDC_SLAB_COLOR_BTN              1028
 #define IDC_COLUMN_COLOR_BTN            1029
@@ -146,6 +148,7 @@
 #define IDC_BUTTON_GRAY                 1045
 #define IDC_BUTTON_UNIFORM              1046
 #define IDS_STRING1047                  1047
+#define IDC_BTN_INVERT_SCALE            1047
 #define IDC_PROGRESS                    2000
 #define IDC_CHECK_CHANGE_DIST           2000
 #define IDC_SLIDER_FLENGTH              2001
@@ -289,9 +292,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        164
+#define _APS_NEXT_RESOURCE_VALUE        165
 #define _APS_NEXT_COMMAND_VALUE         40044
-#define _APS_NEXT_CONTROL_VALUE         1045
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

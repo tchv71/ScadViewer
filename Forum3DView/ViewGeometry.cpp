@@ -612,8 +612,8 @@ TElemType CElemInfApiExt::GetType() const
 	case 50: // 4..8
 		return EL_QUAD;
 	default:
-		DebugBreak();
-		return EL_LINE;
+		//DebugBreak();
+		return EL_UNKNOWN;
 	}
 }
 
@@ -1761,6 +1761,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 	ElementArray.reserve(nElem);
 	ElementArray.resize(0);
 	m_vecExtraPoints.resize(0);
+	ElementArray.m_mapVertexs.clear();
 	//pEB = Video->ElemBody;
 	for (UINT i = 0; i < nElem; i++/*, pEB++*/)
 	{
@@ -1780,8 +1781,10 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 		CViewElement el(RGB(192, 192, 192));
 		el.OrgType = GetElemOrgType(e.TypeElem);
 		el.NumElem = i + 1;//e.NumElem;
-
-		if (e.GetType() == EL_LINE && TypeProfile)
+		TElemType eType = e.GetType();
+		if (eType == EL_UNKNOWN)
+			continue;
+		if (eType == EL_LINE && TypeProfile)
 		{
 			std::vector<S3dPoint> vecContour;
 			bool bClosed = false;
@@ -1832,7 +1835,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 		ElementArray.push_back(el);
 		const size_t nEl = ElementArray.size() - 1;
 		CViewElement *pE = &ElementArray[nEl];
-		pE->Type = e.GetType();
+		pE->Type = eType;
 
 		if (pE->Type == EL_QUAD)
 		{
@@ -2209,6 +2212,40 @@ static void CopyAxes(TAxeSet &axe, COORD_LINE_AXIS_OLD Line[],WORD nCount, WORD 
 
 }
 
+
+namespace spr
+{
+	struct SDataLine
+	{
+		UINT nSize;
+		BYTE* pData;
+	};
+	struct SAxeData
+	{
+		char Name[16];
+		double fPos;
+	};
+	class CData
+	{
+	public:
+		 BYTE * GetData(UINT a2) const;
+		 SDataLine * Get(unsigned int)const;
+		 const char* GetText(UINT) const;
+	};
+}
+
+static void CopyAxes21(TAxeSet &axe, const spr::SDataLine * pD)
+{
+	for (UINT i = 0; i<pD->nSize; i++)
+	{
+		const spr::SAxeData *pAxe = ((spr::SAxeData*)(pD->pData)) + i;
+		SAxe a;
+		a.m_name = pAxe->Name;
+		a.m_pos = FLOAT_TYPE(pAxe->fPos);
+		axe.push_back(a);
+	}
+}
+
 void CViewGeometry::LoadAxesInfo(SCHEMA *Schem)
 {
 	if (!Schem)
@@ -2226,6 +2263,27 @@ COORD_LINE_OLD *pCoordLine = (COORD_LINE_OLD *)Schem->ReadDocument(21);
 	m_Axes.X.resize(0);
 	m_Axes.Y.resize(0);
 	m_Axes.Z.resize(0);
+#ifdef SCAD21
+	BYTE* pSchem = (BYTE*)*((LPVOID*)Schem);
+#ifdef _AMD64_
+	BYTE* pVCoordLine = pSchem + 0x3360;
+#else
+	BYTE* pVCoordLine = pSchem + 0x2928;
+#endif
+	spr::CData *pData = (spr::CData *)pVCoordLine;
+/*
+	DWORD dwSize = *((DWORD*)pData + 7);
+	if (dwSize == 0)
+		return;
+*/
+	BYTE* pDataLine = (BYTE*)(pData->Get(1));
+	if (!pDataLine)
+		return;
+	spr::SDataLine * pD = (spr::SDataLine*) (pDataLine + sizeof(void*));
+	CopyAxes21(m_Axes.X, pD++);
+	CopyAxes21(m_Axes.Y, pD++);
+	CopyAxes21(m_Axes.Z, pD++);
+#else
 	if (pCoordLine && (pCoordLine->XLineQuantity !=0 || pCoordLine->YLineQuantity !=0 || pCoordLine->HLineQuantity))
 	{
 		WORD index=0;
@@ -2233,6 +2291,7 @@ COORD_LINE_OLD *pCoordLine = (COORD_LINE_OLD *)Schem->ReadDocument(21);
 		CopyAxes(m_Axes.Y, pCoordLine->Line, pCoordLine->YLineQuantity, index);
 		CopyAxes(m_Axes.Z, pCoordLine->Line, pCoordLine->HLineQuantity, index);
 	}
+#endif
 #if !defined(SCAD11) && !defined(SCAD21) 
 	if (pCoordLine)
 		Schem->MemoryFree(pCoordLine);

@@ -97,3 +97,5 @@ public:
 //typedef CIsoViewerFrame CIsoViewerFrameFull;
 
 #endif // !defined(AFX_ISOVIEWERFRAME_H__1CE64F71_91D1_4778_B88C_05FFFE9E3BA2__INCLUDED_)
+
+void SetTypeData(CIsoViewGeometry * pGeom);

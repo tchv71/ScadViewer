@@ -43,6 +43,7 @@ typedef byte	TElemType;		// {EL_LINE =1,EL_TRIANGLE,EL_QUAD};  // Тип примитива 
 const byte		EL_LINE = 0;
 const byte		EL_TRIANGLE = 1;
 const byte		EL_QUAD = 2;
+const byte      EL_UNKNOWN = 100;
 
 enum TOrgElemType // Оригинальный тип элемента
 {

@@ -60,6 +60,7 @@
     </SccProvider>
     <Keyword>MFCProj</Keyword>
     <ProjectGuid>{257AF08D-B051-1DE5-F09D-B5525EC55024}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release11|Win32'" Label="Configuration">
@@ -213,6 +214,14 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ScfExplorer</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ScfExplorer</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">
+    <IntDir>$(Platform)\$(Configuration)\Int\</IntDir>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">
+    <IntDir>$(Platform)\$(Configuration)\Int\</IntDir>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -254,6 +263,9 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer32.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -294,6 +306,9 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer64.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -336,6 +351,9 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer32.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -376,6 +394,9 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer64.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">
     <ClCompile>
@@ -418,6 +439,9 @@
       <PreprocessorDefinitions>_DEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer32.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">
     <ClCompile>
@@ -458,6 +482,9 @@
       <PreprocessorDefinitions>_DEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer64.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug21|Win32'">
     <ClCompile>
@@ -470,9 +497,9 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\obj\Debug21/ScadViewer.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\obj\Debug11/</AssemblerListingLocation>
-      <ObjectFileName>.\obj\Debug11/</ObjectFileName>
-      <ProgramDataBaseFileName>.\obj\Debug11/</ProgramDataBaseFileName>
+      <AssemblerListingLocation>.\obj\Debug21/</AssemblerListingLocation>
+      <ObjectFileName>.\obj\Debug21/</ObjectFileName>
+      <ProgramDataBaseFileName>.\obj\Debug21/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -502,8 +529,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Manifest>
-      <AdditionalManifestFiles>
-      </AdditionalManifestFiles>
+      <AdditionalManifestFiles>ScadViewer32.manifest</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">
@@ -516,7 +542,7 @@
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\obj\Debug21/ScadViewer.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\obj\Debug21x64/ScadViewer.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\obj\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\obj\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\Debug11/</ProgramDataBaseFileName>
@@ -532,6 +558,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug11/ScfExplorer.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
+      <ManifestFile>
+      </ManifestFile>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -546,9 +574,13 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Manifest>
-      <AdditionalManifestFiles>
-      </AdditionalManifestFiles>
+      <AdditionalManifestFiles>ScadViewer64.manifest</AdditionalManifestFiles>
+      <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embedx64.manifest</OutputManifestFile>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
     </Manifest>
+    <ManifestResourceCompile>
+      <ResourceOutputFileName>$(IntDir)$(TargetName)$(TargetExt).embedx64.manifest.res</ResourceOutputFileName>
+    </ManifestResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release11|Win32'">
     <ClCompile>
@@ -591,6 +623,9 @@
       <PreprocessorDefinitions>NDEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer32.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release11|x64'">
     <ClCompile>
@@ -631,6 +666,9 @@
       <PreprocessorDefinitions>NDEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer64.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release21|Win32'">
     <ClCompile>
@@ -673,6 +711,9 @@
       <PreprocessorDefinitions>NDEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer32.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">
     <ClCompile>
@@ -686,10 +727,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\obj\Release11/ScadViewer.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\obj\Release21/</AssemblerListingLocation>
-      <ObjectFileName>.\obj\Release21/</ObjectFileName>
-      <ProgramDataBaseFileName>.\obj\Release21/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>.\obj\Release21x64/ScadViewer.pch</PrecompiledHeaderOutputFile>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -700,6 +738,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release21/ScfExplorer.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
+      <ManifestFile>
+      </ManifestFile>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -713,6 +753,14 @@
       <PreprocessorDefinitions>NDEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>ScadViewer64.manifest</AdditionalManifestFiles>
+      <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embedx64.manifest</OutputManifestFile>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+    </Manifest>
+    <ManifestResourceCompile>
+      <ResourceOutputFileName>$(IntDir)$(TargetName)$(TargetExt).embedx64.manifest.res</ResourceOutputFileName>
+    </ManifestResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ScadViewer.cpp">
@@ -1069,9 +1117,6 @@ makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
     <None Include="res\ScadViewer.ico" />
     <None Include="res\ScadViewer.rc2" />
     <None Include="History.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="ScadViewer.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Forum3DView\Forum3DView.vcxproj">

@@ -5,6 +5,7 @@
 #include "ScalePane.h"
 #include "..\OglIso\OglIso.h"
 #include "GridSrc\GridCellCheck.h"
+#include "..\ForumView_ENG\resource.h"
 #include "IsoViewerFrame.h"
 #include "IsoViewGeometry.h"
 #ifdef SCAD11
@@ -20,7 +21,7 @@
 
 IMPLEMENT_DYNAMIC(CScalePane, CDockablePane)
 
-CScalePane::CScalePane() : m_paletteType(),
+CScalePane::CScalePane() : m_paletteType(PT_COLD),
                            m_pDMI(nullptr), m_nRow(0)
 {
 
@@ -42,10 +43,12 @@ BEGIN_MESSAGE_MAP(CScalePane, CDockablePane)
 	ON_BN_CLICKED(IDC_BUTTON_COLD, OnBnClickedButtonCold)
 	ON_BN_CLICKED(IDC_BUTTON_GRAY, OnBnClickedButtonGray)
 	ON_BN_CLICKED(IDC_BUTTON_UNIFORM, OnBnClickedButtonUniform)
+	ON_BN_CLICKED(IDC_BTN_INVERT_SCALE, OnBnClickedButtonInvert)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_HOT, OnUpdateButton)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_COLD, OnUpdateButton)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_GRAY, OnUpdateButton)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_UNIFORM, OnUpdateButton)
+	ON_UPDATE_COMMAND_UI(IDC_BTN_INVERT_SCALE, OnUpdateButton)
 
 END_MESSAGE_MAP()
 
@@ -207,7 +210,7 @@ void CScalePane::DoDataExchange(CDataExchange* pDX)
 	m_combo.AddString(_T("32"));
 	m_combo.AddString(_T("48"));
 	m_combo.AddString(_T("64"));
-	m_combo.SetCurSel(14);
+	m_combo.SetCurSel(12);
 	CDockablePane::DoDataExchange(pDX);
 }
 
@@ -317,12 +320,68 @@ void CScalePane::OnBnClickedButtonUniform()
 	CString str = reinterpret_cast<CIsoViewerFrame *>(GetParent())->Geom()->Format((m_pDMI->Max+m_pDMI->Min)/2);
 	double val;
 	_stscanf_s(str, _T("%lg"), &val);
-	CDelimDialog dlg(this, val );
+	CDelimDialog dlg(this, val, m_pDMI );
 	if (dlg.DoModal() == IDOK)
 	{
+		const double fDelim = dlg.m_dblValue;
+		int nDelimPos = 0;
+		for (; nDelimPos < m_pDMI->Scale_count; nDelimPos++)
+		{
+			if (fDelim < (m_pDMI->binter[nDelimPos] + m_pDMI->einter[nDelimPos]) / 2)
+				break;
+		}
+		if (nDelimPos == m_pDMI->Scale_count)
+			--nDelimPos;
+		int H = 170;
+		int S = 255;
+		int V = 128;
+		double fNextVal = nDelimPos == 0 ? m_pDMI->Max - ((m_pDMI->Max- fDelim)/m_pDMI->Scale_count * (m_pDMI->Scale_count-1)) : fDelim;
+		if (nDelimPos == 0)
+		{
+			m_pDMI->einter[0] = fNextVal;
+			m_pDMI->col[0] = RGB(255, 255, 255);
+		}
+		else
+		{
+			double fStep = (fDelim - m_pDMI->Min) / nDelimPos;
+			for (int i = 0; i < nDelimPos; i++)
+			{
+				m_pDMI->binter[i] = m_pDMI->Min + fStep*i;
+				m_pDMI->einter[i] = m_pDMI->Min + fStep*(i + 1);
+				V = 128 + 127 * i / nDelimPos;
+				m_pDMI->col[i] = CHSV2RGB::Hsl2Rgb255(H, S, V);
+			}
+		}
 
-
+		int nCount = nDelimPos == 0 ? m_pDMI->Scale_count - nDelimPos - 1 : m_pDMI->Scale_count - nDelimPos;
+		const double fStep = (m_pDMI->Max - fNextVal) / nCount;
+		H = 0;
+		S = 255;
+		V = 255;
+		int nSteps = m_pDMI->Scale_count - nDelimPos - 1;
+		int j = 1;
+		for (int i = nDelimPos == 0 ? 1 : nDelimPos; i < m_pDMI->Scale_count; i++, j++)
+		{
+			m_pDMI->binter[i] = fNextVal + (j - 1)*fStep;
+			m_pDMI->einter[i] = fNextVal + j * fStep;
+			V = nDelimPos == 0 ? 255 - 127 * j / nSteps : 255 - 127 * (j-1) / (nSteps+1);
+			m_pDMI->col[i] = CHSV2RGB::Hsl2Rgb255(H, S, V);
+		}
+		SetDmi(m_pDMI);
+		GetParent()->SendMessage(WM_COMMAND, ID_PARAMS_CHANGED, 0);
 	}
+}
+
+void CScalePane::OnBnClickedButtonInvert()
+{
+	int i = 0;
+	int j = m_pDMI->Scale_count - 1;
+	for (; i < j; i++, j--)
+	{
+		std::swap(m_pDMI->col[i], m_pDMI->col[j]);
+	}
+	SetDmi(m_pDMI);
+	GetParent()->SendMessage(WM_COMMAND, ID_PARAMS_CHANGED, 0);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeStatic

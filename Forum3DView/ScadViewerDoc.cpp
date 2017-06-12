@@ -20,6 +20,7 @@
 #include "IsoViewGeometry.h"
 #include "ScadViewerView.h"
 #include "IsoViewerFrame.h"
+#include "MainScadViewerFrame.h"
 #include "3DIso.hpp"
 #pragma pack(pop, abc)
 
@@ -54,7 +55,6 @@ CScadViewerDoc::CScadViewerDoc() :
 	m_pSchem(nullptr),
 	m_pIsoSchem(nullptr)
 {
-	memset(&DMI, 0 , sizeof(DMI));
 	m_IsoParams.pDMI = &DMI;
 
 }
@@ -65,7 +65,6 @@ void CScadViewerDoc::Clear()
 {
 	FREE(m_pViewGeometry);
 	FREE(m_IsoParams.Res);
-	FREE(m_IsoParams.pTypeInfo);
 #ifdef SCAD21
 	if (m_pIsoSchem)
 	{
@@ -125,14 +124,21 @@ void CScadViewerDoc::Load(void)
 		//UpdateAllViews(nullptr);
 		return;
 	}
+	POSITION pos = GetFirstViewPosition();
+	CScadViewerView *pView = static_cast<CScadViewerView *>(GetNextView(pos));
+	ASSERT_KINDOF(CScadViewerView, pView);
+	CMainScadViewerFrame *pFrame = dynamic_cast<CMainScadViewerFrame *>(pView->GetParentFrame());
+	if (m_bViewResults && pFrame && !pFrame->IsResultsPresent(m_strFileName))
+	{
+		m_bViewResults = false;
+		pView->UpdateToolbar();
+	}
+
 	if (m_bViewResults)
 	{
 		LoadIso();
 		return;
 	}
-	POSITION pos = GetFirstViewPosition();
-	CScadViewerView *pView = static_cast<CScadViewerView *>(GetNextView(pos));
-	ASSERT_KINDOF(CScadViewerView, pView);
 	Clear();
 	m_pViewGeometry = new CForumViewGeometry(&pView->m_ViewOptions,&pView->m_DrawOptions);
 	m_pViewGeometry->m_bDeleteInnerPlates = pView->m_ViewOptions.bRemoveDupPlanes;
@@ -222,7 +228,7 @@ void CScadViewerDoc::LoadIso()
 	CScadViewerView *pView = static_cast<CScadViewerView *>(GetNextView(pos));
 	ASSERT_KINDOF(CScadViewerView, pView);
 	Clear();
-	m_IsoParams.pTypeInfo = new TypeInformationOnSchema;
+	m_IsoParams.pTypeInfo = &m_TypeInfo;
 	m_pViewGeometry = pGeom = new CIsoViewGeometry(static_cast<CIsoViewerFrame*>(pView->GetParentFrame()),&pView->m_ViewOptions,&pView->m_DrawOptions);
 	m_pViewGeometry->m_bDeleteInnerPlates = pView->m_ViewOptions.bRemoveDupPlanes;
 	bool bOptimize = pView->m_ViewOptions.bDrawOptimize | pView->m_ViewOptions.bRemoveDupPlanes;
@@ -270,11 +276,6 @@ void CScadViewerDoc::LoadIso()
 	}
 #endif
 	//BOOL bRes = ApiYesDisplace(pSchem);
-	m_IsoParams.NPr = 0;
-	m_IsoParams.nTypeFactor = 0;
-	m_IsoParams.nTypeData = Iso_Disp;
-	m_IsoParams.bDrawIsoLines = false;
-	m_IsoParams.bDrawEggs = false;
 	FillIsoParams();
 	pGeom->SetParams(&m_IsoParams);
 	pGeom->LoadIso(m_bShowProfiles, pView->m_ViewOptions.bDrawOptimize);
@@ -287,46 +288,38 @@ void CScadViewerDoc::LoadIso()
 }
 
 
-static struct DefMapInfo DefDMI=
-{
-	3,					//short Scale_count;
-	0.2,				//double Max
-	-0.2,				//doublr Min
-	0.2,					//double Step;
-	{-0.2,-0.1,0},			//double binter[41];
-	{-0.1,0,0.2},			//double einter[41];
-	{0},					//double DopArmB[41];
-	{0},					//double DopArmE[41];
-	{1,1,1},				//char IsDrw[41];
-	{clRed, clGreen, clBlue},		//COLORREF col[41];
-	0,					//double Zero;
-	{0},					//int x[41];
-	{0},					//int y[41];
-	"Test"				//char Caption[8192];
-						//BYTE	LastOp;    // 1 - IsoLines 0 - IsoArea or Map
-						//BYTE	IsDopArm;
-						//BYTE IsSetScale;
-};
+//static struct DefMapInfo DefDMI=
+//{
+//	3,					//short Scale_count;
+//	0.2,				//double Max
+//	-0.2,				//doublr Min
+//	0.2,					//double Step;
+//	{-0.2,-0.1,0},			//double binter[41];
+//	{-0.1,0,0.2},			//double einter[41];
+//	{0},					//double DopArmB[41];
+//	{0},					//double DopArmE[41];
+//	{1,1,1},				//char IsDrw[41];
+//	{clRed, clGreen, clBlue},		//COLORREF col[41];
+//	0,					//double Zero;
+//	{0},					//int x[41];
+//	{0},					//int y[41];
+//	"Test"				//char Caption[8192];
+//						//BYTE	LastOp;    // 1 - IsoLines 0 - IsoArea or Map
+//						//BYTE	IsDopArm;
+//						//BYTE IsSetScale;
+//};
 
-struct TypeInformationOnSchema DefTypeInfo =
-{
-	0,	//	BYTE NumFactor; // Оцифровка фактора
-	0,	//	BYTE NumElem;   // Нумерация элементов
-	0,	//	BYTE NumNode;   // Нумерация узлов
-	1,	//	BYTE OutSupport;// Отображение связей
-	1	//BYTE OutNode;   // Отображение узлов
-};
 
 void CScadViewerDoc::FillIsoParams()
 {
-	*(m_IsoParams.pTypeInfo) = DefTypeInfo;
+	//*(m_IsoParams.pTypeInfo) = DefTypeInfo;
 	FillScale(&DMI);	
 }
 
 void CScadViewerDoc::FillScale(DefMapInfo *pDMI) const
 {
 	//*pDMI = DefDMI;
-	pDMI->Scale_count = 14;
+	//pDMI->Scale_count = 14;
 	(static_cast<CIsoViewGeometry *>(m_pViewGeometry))->SetDefMapInfo(pDMI, &m_IsoParams);
 	
 }

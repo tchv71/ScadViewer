@@ -24,6 +24,7 @@
 //#include "scad.h"
 //#include "Grand.h"
 #endif
+#include "3DIso.hpp"
 #include "..\ogliso\OglIso.h"
 
 
@@ -63,6 +64,7 @@ public:
 
 protected:
 	SOglIsoParam m_IsoParams;
+	TypeInformationOnSchema m_TypeInfo;
 	struct DefMapInfo DMI;
 // Generated message map functions
 protected:
@@ -88,6 +90,7 @@ public:
 	{
 		m_strPathName = strPathName;
 	}
+	friend class CIsoViewerFrame;
 };
 
 /////////////////////////////////////////////////////////////////////////////

@@ -14,6 +14,7 @@
 #include "ScadViewerView.h"
 #include "ScadViewerDoc.h"
 #include "3dIso.hpp"
+#include "..\ForumView_ENG\resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -93,14 +94,14 @@ int CIsoViewerFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create toolbar\n");
 		return -1;      // fail to create
 	}
-	m_wndToolBar.RemoveButton(m_wndToolBar.GetCount()-1);
+	//m_wndToolBar.RemoveButton(m_wndToolBar.GetCount()-1);
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	CMenu mnuPopup;
-	mnuPopup.LoadMenu(IDR_POPUP_MENUS);
-	CMenu *mnuPopupMenu = mnuPopup.GetSubMenu(7);
-	ASSERT(mnuPopupMenu);
-	CDropdownButton bn(ID_FACTOR_GROUP,mnuPopupMenu->m_hMenu, nullptr);
-	m_wndToolBar.ReplaceButton(ID_FACTOR_GROUP,bn);
+	//CMenu mnuPopup;
+	//mnuPopup.LoadMenu(IDR_POPUP_MENUS);
+	//CMenu *mnuPopupMenu = mnuPopup.GetSubMenu(7);
+	//ASSERT(mnuPopupMenu);
+	//CDropdownButton bn(ID_FACTOR_GROUP,mnuPopupMenu->m_hMenu, nullptr);
+	//m_wndToolBar.ReplaceButton(ID_FACTOR_GROUP,bn);
 
 	if (!m_wndDefScaleDialogBar.Create(IDD_DEFORM_SCALE, this, WS_CHILD | WS_VISIBLE | CBRS_RIGHT |CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_FIXED, IDD_DEFORM_SCALE ))
 	{
@@ -115,7 +116,8 @@ int CIsoViewerFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	UINT nID = 110;
-	CString strCaption = _T("Ўкала");
+	CString strCaption;
+	strCaption.LoadString(IDS_SCALE_CAPTION);
 	//strCaption.LoadString(IDS_FOLDER_TREE_CAPTION);
 	if (!m_ScaleWnd.Create(IDD_SCALE, strCaption, this, CSize(200,200), TRUE, nID))
 	{
@@ -400,16 +402,15 @@ void CIsoViewerFrame::OnUpdateFactorGroup(CCmdUI* pCmdUI)
 void CIsoViewerFrame::OnFactorDisplacements() 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pGeom->m_Params.nTypeData = Iso_Disp;
+	pGeom->m_Params.SetTypeData(Iso_Disp);
 	OnParamsChangedFactor();
 }
 
 void CIsoViewerFrame::OnFactorStressfields() 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pGeom->m_Params.nTypeData = Iso_Nap;	
+	pGeom->m_Params.SetTypeData(Iso_Nap);
 	OnParamsChangedFactor();
-	
 }
 
 
@@ -426,7 +427,7 @@ CIsoViewGeometry* CIsoViewerFrame::Geom() const
 void CIsoViewerFrame::OnFactorStresscolourmap() 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pGeom->m_Params.nTypeData = Iso_Nap_Flat;	
+	pGeom->m_Params.SetTypeData(Iso_Nap_Flat);	
 	OnParamsChangedFactor();
 }
 
@@ -434,27 +435,35 @@ void CIsoViewerFrame::OnFactorStresscolourmap()
 void CIsoViewerFrame::OnUpdateFactorDisplacements(CCmdUI* pCmdUI) 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pCmdUI->SetCheck(pGeom->m_Params.nTypeData == Iso_Disp);	
+	pCmdUI->Enable(pGeom != nullptr);
+	pCmdUI->SetCheck(pGeom && pGeom->m_Params.nTypeData == Iso_Disp);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void CIsoViewerFrame::OnUpdateFactorStressfields(CCmdUI* pCmdUI) 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pCmdUI->SetCheck(pGeom->m_Params.nTypeData == Iso_Nap);	
+	pCmdUI->Enable(pGeom!=nullptr);
+	pCmdUI->SetCheck(pGeom && pGeom->m_Params.nTypeData == Iso_Nap);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void CIsoViewerFrame::OnUpdateFactorStresscolourmap(CCmdUI* pCmdUI) 
 {
 	CIsoViewGeometry *pGeom = Geom();
-	pCmdUI->SetCheck(pGeom->m_Params.nTypeData == Iso_Nap_Flat);	
+	pCmdUI->Enable(pGeom != nullptr);
+	pCmdUI->SetCheck(pGeom && pGeom->m_Params.nTypeData == Iso_Nap_Flat);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void CIsoViewerFrame::OnParamsChanged()
 {
 	CIsoViewGeometry *pGeom = Geom();
+	CScadViewerDoc* pDoc = (CScadViewerDoc*)GetActiveDocument();
+	DefMapInfo *pDMI = const_cast<DefMapInfo *>(pDoc->m_IsoParams.pDMI);
+	pDoc->m_IsoParams = pGeom->m_Params;
+	pDoc->m_IsoParams.pDMI = pDMI;
+	*pDMI = pGeom->m_DMI;
 	//pGeom->SetDefMapInfo(pGeom->m_Params.pDMI, &pGeom->m_Params);
 	pGeom->DrawOptionsChanged(&m_p3DView->m_DrawOptions, m_p3DView->m_ViewOptions.bShowUsedNodes);
 	pGeom->LoadIso(m_p3DView->GetDocument()->m_bShowProfiles, m_p3DView->m_ViewOptions.bDrawOptimize);
@@ -525,7 +534,7 @@ void CIsoViewerFrame::FillFactorCombo() const
 		pCombo->AddString(_T("Sy низ"));
 	}
 
-	pCombo->SetCurSel(0);
+	pCombo->SetCurSel(pGeom->m_Params.nTypeFactor);
 
 }
 // ReSharper disable once CppMemberFunctionMayBeStatic
@@ -557,6 +566,9 @@ void CIsoViewerFrame::SetToolBarNames()
 	m_wndDefScaleDialogBar.SetWindowText(strName);
 	strName.LoadString(IDS_RESULT_TOOLBAR);
 	m_wndResParams.SetWindowText(strName);
+	strName.LoadString(IDS_SCALE_CAPTION);
+	m_ScaleWnd.SetWindowText(strName);
+
 }
 
 

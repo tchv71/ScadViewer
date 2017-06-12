@@ -23,6 +23,48 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
+
+CString SOglIsoParam::GetFactorName() const
+{
+	CString str;
+	if (nTypeData == Iso_Disp)
+		switch (nTypeFactor)
+		{
+		case 0:	str = _T("X"); break;
+		case 1: str = _T("Y"); break;
+		case 2:	str = _T("Z"); break;
+		case 3:	str = _T("UX"); break;
+		case 4: str = _T("UY"); break;
+		case 5:	str = _T("UZ"); break;
+		case 6:	str = _T("SUM"); break;
+		}
+	else
+		switch (nTypeFactor)
+		{
+		case 0:	str = _T("NX"); break;
+		case 1: str = _T("NY"); break;
+		case 2:	str = _T("TXY"); break;
+		case 3:	str = _T("MX"); break;
+		case 4: str = _T("MY"); break;
+		case 5:	str = _T("MXY"); break;
+		case 6:	str = _T("QX"); break;
+		case 7:	str = _T("QY"); break;
+		case 8:	str = _T("Sx верх"); break;
+		case 9: str = _T("Sx низ"); break;
+		case 10:str = _T("Sy верх"); break;
+		case 11:str = _T("Sy низ"); break;
+		};
+	return str;
+}
+
+void  SOglIsoParam::SetTypeData(eTypeData val)
+{
+	nTypeData = val;
+	nTypeFactor = 0;
+}
+
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -45,6 +87,8 @@ CIsoViewGeometry::~CIsoViewGeometry()
 
 void CIsoViewGeometry::SetDeformState(SOglIsoParam *pParam)
 {
+	const static UnitsAPI Un[] = { { "mm", 1000 },{ "T", 1 } };
+	ApiInitResult(pParam->hAPI, Un, "c:\\swork");
 	S3DBox box;
 	Get3DBox(nullptr, &box);
 	FLOAT_TYPE fSchemaSize = C3DVector<FLOAT_TYPE>(box.x_max-box.x_min, box.y_max-box.y_min, box.z_max - box.z_min).Length();
@@ -227,7 +271,7 @@ void CIsoViewGeometry::IsoElement(SOglIsoParam *pParam, int nElement)
 		for (UINT i=0; i<3; i++)
 		{
 			valVertexs[i].nVertex = El.Points[i];
-			GetFactorForElVertex(nElement, i, valVertexs[i].dblVal, nullptr) ;
+			GetFactorForElVertexLoaded(nElement, i, valVertexs[i].dblVal, nullptr) ;
 		}
 		IsoBreakTriangle(pParam->pDMI, valVertexs, bDrawIsoLines);
 	}
@@ -246,13 +290,13 @@ void CIsoViewGeometry::IsoElement(SOglIsoParam *pParam, int nElement)
 		int nResultPoints = nElPoints+1;
 		if (m_Params.nTypeData == Iso_Nap)
 		{
-			GetFactorForElVertex(nElement, 0, valMiddle.dblVal, &nResultPoints);
+			GetFactorForElVertexLoaded(nElement, 0, valMiddle.dblVal, &nResultPoints);
 		}
 		for (i=0; i<nResultPoints-1; i++)
 		{
 			valElVertexs[i].nVertex = i<nElPoints ? El.Points[i] : m_vecExtraPoints[El.m_nExtraPoints+1+i-nElPoints];
 			double val =  0;
-			GetFactorForElVertex(nElement, i, val, nullptr);
+			GetFactorForElVertexLoaded(nElement, i, val, nullptr);
 			valElVertexs[i].dblVal = val;
 			if (i==0)
 			{
@@ -297,9 +341,9 @@ void CIsoViewGeometry::IsoElement(SOglIsoParam *pParam, int nElement)
 		}
 		if (m_Params.nTypeData == Iso_Nap)
 		{
-			GetFactorForElVertex(nElement, nElPoints, valMiddle.dblVal, &nResultPoints);
+			GetFactorForElVertexLoaded(nElement, nElPoints, valMiddle.dblVal, &nResultPoints);
 			if (nResultPoints-1 != nElPoints)
-				GetFactorForElVertex(nElement, nResultPoints-1, valMiddle.dblVal, nullptr);
+				GetFactorForElVertexLoaded(nElement, nResultPoints-1, valMiddle.dblVal, nullptr);
 		}
 		else
 			valMiddle.dblVal = dblMiddle;
@@ -706,27 +750,39 @@ public:
 	void clear();
 };
 
-APICode _ApiGetEfforsXXX(unsigned NumElem, spr::CSchema* esi, ApiElemEffors ** ppEffors, DWORD dwArg08)
+APICode _ApiGetEfforsXXX(unsigned NumElem, spr::CSchema * pSchem, ApiElemEffors ** ppEffors, DWORD TypeRead)
 {
 	*ppEffors = nullptr;
-	std::vector<spr::CPhraseText, std::allocator<spr::CPhraseText>> *pVec = reinterpret_cast<std::vector<spr::CPhraseText, std::allocator<spr::CPhraseText>> *>((BYTE*)esi + 0x67fb6);
+	std::vector<spr::CPhraseText, std::allocator<spr::CPhraseText>> *pVec = reinterpret_cast<std::vector<spr::CPhraseText, std::allocator<spr::CPhraseText>> *>((BYTE*)pSchem + 0x67fb6);
 	pVec->clear();
-	*(WORD*)((BYTE*)esi + 0x67fb4) = 0;
-	//int edx_13 = SLICE((esi->dw67BFA - esi->ptr67BF6) *s 0x4EC4EC4F, word32, 32);
+	*(WORD*)((BYTE*)pSchem + 0x67fb4) = 0;
+	//int edx_13 = SLICE((pSchem->dw67BFA - pSchem->ptr67BF6) *s 0x4EC4EC4F, word32, 32);
 	if (true) //edx_13 >> 0x05 >> 0x1F != 0x00)
 	{
-		//Eq_724 eax_67 = esi->t9CBC;
-		if (true)//esi->dw9CC0 - eax_67 >> 0x03 >= 0x01 && eax_67 != 0x00)
+		//Eq_724 eax_67 = pSchem->t9CBC;
+		if (true)//pSchem->dw9CC0 - eax_67 >> 0x03 >= 0x01 && eax_67 != 0x00)
 		{
-			spr::CElemData *pElem = reinterpret_cast<spr::CElemData*>((BYTE*)esi + 0x67d80);
-			if (pElem->SetElem(reinterpret_cast<spr::CElemForm const &>(*((BYTE*)esi + 0x433e)), NumElem, 0x00) != 0x00)
+#ifdef _AMD64_
+			spr::CElemData *pElem = reinterpret_cast<spr::CElemData*>((BYTE*)pSchem + 0x6906C);
+			spr::CElemForm const &rElemForm = reinterpret_cast<spr::CElemForm const &>(*((BYTE*)pSchem + 0x50DE));
+#else
+			spr::CElemData *pElem = reinterpret_cast<spr::CElemData*>((BYTE*)pSchem + 0x67d80);
+			spr::CElemForm const &rElemForm = reinterpret_cast<spr::CElemForm const &>(*((BYTE*)pSchem + 0x433e));
+#endif
+
+			if (pElem->SetElem(rElemForm, NumElem, 0x00) != 0x00)
 			{
-				//Eq_724 eax_96 = esi->t9CBC;
-				//if (esi->dw9CC0 - eax_96 >> 0x03 < 0x01 || (eax_96 == 0x00 || (((eax_96 - 0x08))[ebx].dw0000 & *(eax_96 - 0x04)) == ~0x00))
+				//Eq_724 eax_96 = pSchem->t9CBC;
+				//if (pSchem->dw9CC0 - eax_96 >> 0x03 < 0x01 || (eax_96 == 0x00 || (((eax_96 - 0x08))[ebx].dw0000 & *(eax_96 - 0x04)) == ~0x00))
 				//	return;
-				spr::CResult *pRes = reinterpret_cast<spr::CResult*>((BYTE*)esi + 0x2f67);
-				spr::CResultElemEffors &rEff = reinterpret_cast<spr::CResultElemEffors &>(*((BYTE*)esi + 0x67f54));
-				if (pRes->GetElemEffors(rEff, NumElem, 1, (BYTE)dwArg08, 2/*1*/) != 0x00)
+#ifdef _AMD64_
+				spr::CResult *pRes = reinterpret_cast<spr::CResult*>((BYTE*)pSchem + 0x3CF7);
+				spr::CResultElemEffors &rEff = reinterpret_cast<spr::CResultElemEffors &>(*((BYTE*)pSchem + 0x692F4));
+#else
+				spr::CResult *pRes = reinterpret_cast<spr::CResult*>((BYTE*)pSchem + 0x2f67);
+				spr::CResultElemEffors &rEff = reinterpret_cast<spr::CResultElemEffors &>(*((BYTE*)pSchem + 0x67f54));
+#endif
+				if (pRes->GetElemEffors(rEff, NumElem, 1, (BYTE)TypeRead, 1) != 0x00)
 				{
 					*ppEffors = &rEff;
 					return APICode::APICode_OK;
@@ -747,10 +803,23 @@ APICode _ApiGetEfforsXXX(unsigned NumElem, spr::CSchema* esi, ApiElemEffors ** p
 
 APICode ApiGetEfforsXXX(ScadAPI lpAPI, UINT NumElem, ApiElemEffors ** Effors, BYTE TypeRead)
 {
-	return _ApiGetEfforsXXX(NumElem, (spr::CSchema*)((DWORD*)lpAPI)[0], Effors, TypeRead);
+	return _ApiGetEfforsXXX(NumElem, (spr::CSchema*)((LPVOID*)lpAPI)[0], Effors, TypeRead);
 }
 #endif
 
+
+bool CIsoViewGeometry::GetFactorForElVertexLoaded(int nNumElement, int nNumVertex, double &val, int* pnResultPoints)
+{
+	if ((m_Params.nTypeData != Iso_Nap && m_Params.nTypeData != Iso_Nap_Flat) || nNumVertex >= ElementArray[nNumElement].NumVertexs())
+	{
+		return GetFactorForElVertex(nNumElement, nNumVertex, val, pnResultPoints);
+	}
+	int nVertex = ElementArray[nNumElement].Points[nNumVertex];
+	val = m_Factors[m_mapVertexFactors[nVertex]-1].fFactor;
+	if (pnResultPoints)
+		*pnResultPoints = ElementArray[nNumElement].NumVertexs() + 1;
+	return true;
+}
 
 bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, double &val, int* pnResultPoints)
 {
@@ -774,22 +843,27 @@ bool CIsoViewGeometry::GetFactorForElVertex(int nNumElement, int nNumVertex, dou
 			res = Res;
 			static BYTE qUs;
 			static BYTE qP;
-
-			if (nNumVertex == 0)
+			static UINT nNumElemReaded = (UINT)-1;
+			UINT nNumElem = ElementArray[nNumElement].NumElem;
+			if (nNumVertex == 0 || nNumElem != nNumElemReaded)
 			{
+				nNumElemReaded = nNumElem;
 				ApiElemEffors *pEffors = nullptr;
-				UINT nNumElem = ElementArray[nNumElement].NumElem;
 				ApiGetEfforsXXX(m_Params.hAPI, nNumElem, &pEffors, 1);
+				//ApiGetEffors(m_Params.hAPI, nNumElem, &pEffors, 1);
 				// ReSharper disable once CppAssignedValueIsNeverUsed 
 				qP = pEffors->QuantityPoint;
 				if (pEffors->QuantityPoint < 4)
 					return false;
 				memcpy(Res, pEffors->Us, pEffors->QuantityDataUs * sizeof(double));
+
 				qUs = pEffors->QuantityUs;
 			}
 			if (pnResultPoints)
 				*pnResultPoints = qP;
-			val = res[qUs*nNumVertex + m_Params.NPr];
+			int nVertexs = ElementArray[nNumElement].NumVertexs();
+			int nPos = nNumVertex >= nVertexs ? nNumVertex : ( nVertexs == 4 ? N_S(nNumVertex) : nNumVertex);
+			val = res[qUs*(nPos) + m_Params.nTypeFactor];
 		}
 		return true;
 	case Iso_Arm: break;
@@ -836,8 +910,22 @@ void CIsoViewGeometry::LoadFactors()
 			off = 17;
 	}
 	m_nOff = off;
-	const static UnitsAPI Un[] = { { "m", 1 },{ "T", 1 } };
-	ApiInitResult(m_Params.hAPI, Un, "c:\\swork");
+	switch (m_Params.nTypeData)
+	{
+	case Iso_Disp:
+		{
+			const static UnitsAPI Un[] = { { "mm", 1000 },{ "T", 1 } };
+			ApiInitResult(m_Params.hAPI, Un, "c:\\swork");
+		}
+		break;
+	case Iso_Nap:
+	case Iso_Nap_Flat:
+		{
+			const static UnitsAPI Un[] = { { "m", 1 },{ "T", 1 } };
+			ApiInitResult(m_Params.hAPI, Un, "c:\\swork");
+		}
+		break;
+	}
 #else
 	SCHEMA *Prj = m_Params.Res->GetSchema();
 	int off = m_Params.nTypeFactor;
@@ -853,18 +941,21 @@ void CIsoViewGeometry::LoadFactors()
 	m_nOff = off;
 #endif
 	//UINT nVertexs = VertexArray.size();
-	m_Factors.resize(0);
+	m_Factors.clear();
+	m_mapVertexFactors.clear();
 	if (m_nRealElements<0)
 	{
 		LoadFromSchema(Prj, 0, 0, false);
 		m_nRealElements = ElementArray.size();
-	}	switch (m_Params.nTypeData)
+	}
+	switch (m_Params.nTypeData)
 	{
 	case 0:
 	case Iso_Disp:
 	case Iso_Nap:
 	case Iso_Nap_Flat:
-		for (int i=0; i<m_nRealElements; i++)
+	{
+		for (int i = 0; i < m_nRealElements; i++)
 		{
 			CViewElement el = ElementArray[i];
 			if (!el.DrawFlag || !el.FragmentFlag/* || el.Type == EL_LINE*/)
@@ -873,20 +964,20 @@ void CIsoViewGeometry::LoadFactors()
 			if (el.OrgType == EL_BAR && el.Type != EL_LINE)
 			{
 				if (m_Params.nTypeData != Iso_Disp)
- 					continue;
-				for (int j=0; j<el.NumVertexs(); j+= 2)
+					continue;
+				for (int j = 0; j < el.NumVertexs(); j += 2)
 				{
 					NODE_NUM_TYPE nVertex = el.Points[j];
 					nVertex = VertexArray[nVertex].nMainVertex;
-					if (nVertex== -1)
+					if (nVertex == -1)
 						continue;
-					if (m_Factors.size()>1 && m_Factors[m_Factors.size()-2].nVertex == nVertex)
+					if (m_Factors.size() > 1 && m_Factors[m_Factors.size() - 2].nVertex == nVertex)
 						continue;
 					SViewFactorVertex p = VertexArray[nVertex];
 #ifdef SCAD21
-					double val =  GetDispByOff(reinterpret_cast<RESULT *>(Prj), nVertex, m_Params.NPr, m_nOff);
+					double val = GetDispByOff(reinterpret_cast<RESULT *>(Prj), nVertex, m_Params.NPr, m_nOff);
 #else
-					double val =  GetDispByOff(m_Params.Res, nVertex, m_Params.NPr, m_nOff);
+					double val = GetDispByOff(m_Params.Res, nVertex, m_Params.NPr, m_nOff);
 #endif
 					p.fFactor = val;
 					p.clr = GetColorrefForFactor(val);
@@ -899,37 +990,54 @@ void CIsoViewGeometry::LoadFactors()
 				continue;
 			}
 
-			int j =0;
-			S3dPoint ptMiddle(0,0,0);
+			int j = 0;
+			S3dPoint ptMiddle(0, 0, 0);
 			double val = 0;
-			for (; j<el.NumVertexs() ; j++)
+			if (el.OrgType == EL_BAR)
+			{
+				continue;
+			}
+			for (; j < el.NumVertexs(); j++)
 			{
 				NODE_NUM_TYPE nVertex = el.Points[j];
-				if (!GetFactorForElVertex(i,j, val, nullptr))
+				if (!GetFactorForElVertex(i, j, val, nullptr))
 					continue;
-				if (UINT(nVertex)<m_Factors.size() && m_Factors[nVertex].fFactor == val)
+				if (m_mapVertexFactors[nVertex] > 0 && m_Factors[m_mapVertexFactors[nVertex] - 1].fFactor == val)
 					continue;
-				SViewFactorVertex p = VertexArray[nVertex];
-				ptMiddle.x += p.x; 
-				ptMiddle.y += p.y; 
-				ptMiddle.z += p.z; 
-				p.fFactor = val;
-				p.clr = GetColorrefForFactor(val);
+				if (m_mapVertexFactors[nVertex] == 0)
+				{
+					SViewFactorVertex pNew(VertexArray[nVertex]);
+					m_Factors.push_back(pNew);
+					m_mapVertexFactors[nVertex] = m_Factors.size();
+				}
+				SViewFactorVertex& p = m_Factors[m_mapVertexFactors[nVertex] - 1];
+				ptMiddle.x += p.x;
+				ptMiddle.y += p.y;
+				ptMiddle.z += p.z;
+				if (p.nVertexs == 0)
+				{
+					p.fFactor = val;
+				}
+				else
+				{
+					p.fFactor = (p.fFactor * p.nVertexs + val) / (p.nVertexs + 1);
+				}
+				++(p.nVertexs);
+				p.clr = GetColorrefForFactor(p.fFactor);
 				if (m_Params.bDrawEggs && (m_Params.nTypeData == Iso_Nap || p.clr == clIntervalOff))
 					continue;
 				p.nElement = i;
 				p.nVertex = nVertex;
 				p.nVertexIndex = j;
-				m_Factors.push_back(p);
 			}
 			int nResultPoints = el.NumVertexs();
-			if (m_Params.nTypeData == Iso_Nap && GetFactorForElVertex(i,el.NumVertexs(), val, &nResultPoints))
+			if (m_Params.nTypeData == Iso_Nap && GetFactorForElVertex(i, el.NumVertexs(), val, &nResultPoints))
 			{
-				GetFactorForElVertex(i,nResultPoints-1, val, nullptr);			
+				GetFactorForElVertex(i, nResultPoints - 1, val, nullptr);
 				SViewFactorVertex p = SViewVertex(ptMiddle);
-				p.x/= el.NumVertexs();
-				p.y/= el.NumVertexs();
-				p.z/= el.NumVertexs();
+				p.x /= el.NumVertexs();
+				p.y /= el.NumVertexs();
+				p.z /= el.NumVertexs();
 
 				p.fFactor = val;
 				p.clr = GetColorrefForFactor(val);
@@ -942,6 +1050,7 @@ void CIsoViewGeometry::LoadFactors()
 			}
 
 		}
+	}
 	case Iso_Arm: break;
 	case Iso_Lit: break;
 	case Iso_Energy: break;
@@ -1017,23 +1126,6 @@ bool CIsoViewGeometry::GetNumUs(unsigned char & i, const BYTE & nSel)
 }
 #endif
 
-COLORREF defDmiColors[]=
-{
-	RGB(0,0,128),
-	RGB(0,0,255),
-	RGB(0,255,255),
-	RGB(128,255,255),
-	RGB(255,255,128),
-	RGB(255,255,64),
-	RGB(255,255,0),
-	RGB(128,255,128),
-	RGB(128,255,64),
-	RGB(128,255,0),
-	RGB(0,255,64),
-	RGB(0,255,0),
-	RGB(0,255,0),
-	RGB(0,128,0)
-};
 
 // Set the default scale for the given factor
 void CIsoViewGeometry::SetDefMapInfo(DefMapInfo *pDMI, const SOglIsoParam *pParams)
@@ -1064,7 +1156,7 @@ void CIsoViewGeometry::SetDefMapInfo(DefMapInfo *pDMI, const SOglIsoParam *pPara
 	pDMI->Step = (dMaxFactor-dMinFactor)/(pDMI->Scale_count);
 	for (i=0; i<UINT(pDMI->Scale_count);i++)
 	{
-		pDMI->col[i]=defDmiColors[i];
+		//pDMI->col[i]=defDmiColors[i];
 		pDMI->binter[i]= dMinFactor+pDMI->Step*i;
 		pDMI->einter[i]= dMinFactor+pDMI->Step*(i+1);
 		pDMI->IsDrw[i] = TRUE;

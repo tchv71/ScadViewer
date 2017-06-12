@@ -35,6 +35,7 @@ public:
 	void OnViewInFolder(LPCTSTR pszPath);
 	BOOL SetCurViewFolder( const TCHAR * sFolderPath );
 	void ActivateFrame(int nCmdShow = -1) override;
+	bool IsResultsPresent(CString strFileName);
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -45,7 +46,7 @@ public:
 
 // Implementation
 protected:
-	CString GetSelWorkFileMask();
+	CString GetSelWorkFileMask(CString strFileName=CString());
 	CString m_strWorkDir;
 	void SetToolBarNames() override;
 	BOOL UpdateSettings(bool bLoad) override;
@@ -76,7 +77,8 @@ protected:
 	afx_msg void OnFileDelete();
 	afx_msg void OnTreeExplorer();
 	afx_msg void OnUpdateFileCalcresDelete(CCmdUI* pCmdUI);
-	afx_msg void OnFileCalcresDelete();
+	afx_msg
+	void OnFileCalcresDelete();
 	afx_msg void OnFileCalcresSelDelete();
 	afx_msg void OnMenuViewRefresh();
 	afx_msg void OnUpdateViewResults(CCmdUI* pCmdUI);

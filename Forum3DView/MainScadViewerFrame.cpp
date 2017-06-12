@@ -414,10 +414,11 @@ void CMainScadViewerFrame::OnUpdateFileCalcresDelete(CCmdUI* pCmdUI)
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
-CString CMainScadViewerFrame::GetSelWorkFileMask()
+CString CMainScadViewerFrame::GetSelWorkFileMask(CString strFileName)
 {
 	CScadViewerDoc *pDoc = m_p3DView->GetDocument();
-	CString strFileName = pDoc->GetPathName();
+	if (strFileName.IsEmpty())
+		strFileName = pDoc->GetPathName();
 	if (strFileName.IsEmpty())
 		return strFileName;
 	strFileName = PathFindFileName(strFileName);
@@ -456,13 +457,18 @@ void CMainScadViewerFrame::OnMenuViewRefresh()
 
 void CMainScadViewerFrame::OnUpdateViewResults(CCmdUI* pCmdUI) 
 {
-	CString strMask = GetSelWorkFileMask();
-	struct _tfinddata_t fd;
-	intptr_t hFindHandle = _tfindfirst( strMask, &fd );
-	pCmdUI->Enable(hFindHandle!=-1);
-	_findclose(hFindHandle);
+	pCmdUI->Enable(IsResultsPresent(CString()));
 	CScadViewerDoc *pDoc = m_p3DView->GetDocument();
 	pCmdUI->SetCheck(pDoc->m_bViewResults);
 	
 }
 
+bool CMainScadViewerFrame::IsResultsPresent(CString strFileName)
+{
+	CString strMask = GetSelWorkFileMask(strFileName);
+	struct _tfinddata_t fd;
+	intptr_t hFindHandle = _tfindfirst(strMask, &fd);
+	bool bRes = (hFindHandle != -1);
+	_findclose(hFindHandle);
+	return bRes;
+}

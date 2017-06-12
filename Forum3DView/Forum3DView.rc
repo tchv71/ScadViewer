@@ -13,53 +13,6 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Русский resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
-LANGUAGE LANG_RUSSIAN, SUBLANG_NEUTRAL
-#pragma code_page(1251)
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_SCALE DIALOGEX 0, 0, 130, 258
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_SYSMENU
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_GRID,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,27,116,221
-    COMBOBOX        IDC_COMBO_NUM,89,9,31,230,CBS_DROPDOWNLIST | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Г",IDC_BUTTON_HOT,29,7,18,16,BS_BITMAP
-    PUSHBUTTON      "Х",IDC_BUTTON_COLD,49,7,18,16,BS_BITMAP
-    PUSHBUTTON      "С",IDC_BUTTON_GRAY,69,7,18,16,BS_BITMAP
-    PUSHBUTTON      "Г",IDC_BUTTON_UNIFORM,7,7,18,16,BS_BITMAP
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_SCALE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 123
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 248
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-#endif    // Русский resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
 // Нейтральный (по умолчанию) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUD)
@@ -121,16 +74,6 @@ BEGIN
     COMBOBOX        IDC_COMBO_LOAD,36,0,91,95,CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Укажите значение - разделитель"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,96,27,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,155,27,50,14
-    EDITTEXT        IDC_EDIT_VALUE,7,7,198,14,ES_AUTOHSCROLL
-END
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -169,14 +112,6 @@ BEGIN
         RIGHTMARGIN, 127
         TOPMARGIN, 7
         BOTTOMMARGIN, 5
-    END
-
-    IDD_DIALOG_DELIM, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 205
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 41
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -442,8 +377,10 @@ BEGIN
     BUTTON      IDC_BTN_ISOLINES
     BUTTON      IDC_BTN_VALUES
     BUTTON      IDC_BTN_EGGS
-    BUTTON      ID_FACTOR_GROUP
-    BUTTON      ID_DROPARROW
+    SEPARATOR
+    BUTTON      ID_FACTOR_DISPLACEMENTS
+    BUTTON      ID_FACTOR_STRESSFIELDS
+    BUTTON      ID_FACTOR_STRESSCOLOURMAP
 END
 
 #endif    // Английский (США) resources
