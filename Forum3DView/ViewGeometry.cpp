@@ -1761,6 +1761,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 	ElementArray.reserve(nElem);
 	ElementArray.resize(0);
 	m_vecExtraPoints.resize(0);
+	ElementArray.m_mapVertexs.clear();
 	//pEB = Video->ElemBody;
 	for (UINT i = 0; i < nElem; i++/*, pEB++*/)
 	{
