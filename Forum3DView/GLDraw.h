@@ -86,7 +86,7 @@ private:
 	void SwapElements(CSortedViewElement& P, CSortedViewElement& Q) const;
 	static bool OrderIsRight(CSortedViewElement& P, CSortedViewElement& Q, const CViewVertexArray & Vertexs, const CViewVertexArray & ProjectedVertexs, CVectorType ptEye, bool bPersp);
 	bool SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & ProjectedVertexs, std::vector<CSortedViewElement> & vecSorted);
-	void SortElements(CViewElement * &Elements, size_t& NumElements);
+	void SortElements(CViewElementArray *& Elements, size_t& NumElements);
 
 
 	void SetSmoothing(void) const;

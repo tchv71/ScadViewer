@@ -325,7 +325,7 @@ void CGLDraw::Draw(void)
 		nStages = 3;
 	m_crCurColor = TColor(0);
 
-	CViewElement	*Elements = m_pGeometry->ElementArray.GetVector();
+	CViewElementArray	*Elements = &m_pGeometry->ElementArray;
 	size_t nOriginalVertexCount = m_pGeometry->VertexArray.size();
 	size_t				NumElements = m_pGeometry->ElementArray.size();
 	SViewVertex		*Vertexs = m_pGeometry->VertexArray.GetVector();
@@ -346,6 +346,7 @@ void CGLDraw::Draw(void)
 	{
 		SortElements(Elements, NumElements);
 #ifdef NEW_DEPTH_SORT
+		//Elements->BuildArrays(m_pGeometry->VertexArray, Elements->GetVector(), Elements->size());
 		m_pGeometry->GetNodeCashe()->Recreate();
 		m_pGeometry->GetNodeCashe()->Clear();
 		Vertexs = m_pGeometry->VertexArray.GetVector();
@@ -434,7 +435,7 @@ void CGLDraw::Draw(void)
 		}
 		for (size_t i = 0; i < NumElements; i++)
 		{
-			CViewElement &El = Elements[i];
+			CViewElement &El = Elements->at(i);
 			if (
 				!El.FragmentFlag || !El.DrawFlag ||
 				(Mode == M_FILL && El.IsContour())
@@ -470,7 +471,7 @@ void CGLDraw::Draw(void)
 	}					// for nCurrentStage
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if(Mode == M_FILL_AND_LINES_TRANSP && m_pDrawOptions->bSortPlanes)
-		delete[] Elements;
+		delete Elements;
 	if (nOriginalVertexCount != m_pGeometry->VertexArray.size())
 		m_pGeometry->VertexArray.resize(nOriginalVertexCount);
 }
@@ -1247,7 +1248,7 @@ bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & Pr
 	return bElementsWereReordered;
 }
 
-void CGLDraw::SortElements(CViewElement * &Elements, size_t& NumElements)
+void CGLDraw::SortElements(CViewElementArray *& Elements, size_t& NumElements)
 {
 	CViewVertexArray Vertexs(m_pGeometry->VertexArray);
 
@@ -1310,12 +1311,13 @@ void CGLDraw::SortElements(CViewElement * &Elements, size_t& NumElements)
 #endif
 	m_pTree = nullptr;
 	NumElements = vecSorted.size();
-	Elements = new CViewElement[NumElements];
+	Elements = new CViewElementArray(m_pGeometry->VertexArray);
+	Elements->resize(vecSorted.size());
 	for (size_t i=0;i< vecSorted.size();i++)
 	{
-		Elements[i] = CViewElement(vecSorted[i]);
-		Elements[i].Norm = Elements[i].OrgNorm;
-		Elements[i].FragmentFlag = true;
+		Elements->at(i) = CViewElement(vecSorted[i]);
+		Elements->at(i).Norm = Elements->at(i).OrgNorm;
+		Elements->at(i).FragmentFlag = true;
 	}
 }
 

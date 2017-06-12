@@ -52,7 +52,8 @@ typedef int SC3DRetCode;
 struct SLineStripRec
 {
 	NODE_NUM_TYPE Vertex;
-
+	SLineStripRec(NODE_NUM_TYPE v) : Vertex(v) {}
+	SLineStripRec() : Vertex(0) {}
 	//  FLOAT_TYPE x,y,z;
 };
 
@@ -124,6 +125,12 @@ public:
 	int				NumVertexs(void) const	{ return int(Type) + 2; };
 	CVectorType		Norm;
     CVectorType     OrgNorm;    // Normal to original element without profile or thickness
+	size_t			OrigPoints[4];
+	CViewElement& SetOrigPoints()
+	{
+		memcpy(OrigPoints, Points, sizeof(Points));
+		return *this;
+	}
 	void __fastcall SetNormal(SViewVertex *Vertexs);
 	CViewElement(const SElement &OldElem);
 	CViewElement();
@@ -231,6 +238,11 @@ public:
 	{
 		return m_SelElOrgType;
 	}
+	void push_back(const CViewElement& el)
+	{
+		__super::push_back(el);
+		at(size() - 1).SetOrigPoints();
+	}
 	std::vector<UINT32> m_triangles;
 	std::vector<UINT32> m_quads;
 	std::vector<UINT32> m_colors;
@@ -238,8 +250,8 @@ public:
 	std::vector<UINT32> m_linestrips;
 	std::vector<std::pair<UINT32, UINT32>> m_mapVertexs;
 	bool m_bRebuildArrays;
-protected:
 	void BuildArrays(CViewVertexArray & VertexArray, CViewElement* pElements, size_t nElements);
+protected:
 	NUM_ELEM_TYPE m_nNumElSelected;
 	TOrgElemType m_SelElOrgType;
 };
@@ -319,6 +331,7 @@ struct SAxes
 };
 
 class CViewGeometry;
+class CViewElementArray;
 
 class INodeCashe
 {
@@ -326,8 +339,8 @@ public:
 	virtual void 	Clear(void) = 0;
 	virtual void 	SetupLineStrips() =0;
 	virtual bool 	WasDrawed(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)=0;
-	virtual void 	Recreate(void)=0;
-	virtual void	Construct(void)=0;
+	virtual void 	Recreate(CViewElementArray*pElements=nullptr)=0;
+	virtual void	Construct(CViewElementArray*pElements = nullptr)=0;
 	virtual SLineStripRec* Strips(int n) = 0;
 	virtual ~INodeCashe() {};
 
@@ -376,15 +389,15 @@ public:
 		Destroy();
 	}
 
-	void	Construct(void) override;
+	void	Construct(CViewElementArray*pElements = nullptr) override;
 	void 	Clear(void) override;
 	bool 	WasDrawed(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2) override;
 	bool __fastcall	WasDrawed1(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2);
 
-	void 	Recreate(void) override
+	void 	Recreate(CViewElementArray*pElements = nullptr) override
 	{
 		Destroy();
-		Construct();
+		Construct(pElements);
 		SetupLineStrips();
 	};
 

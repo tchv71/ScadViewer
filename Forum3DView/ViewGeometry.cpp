@@ -52,9 +52,10 @@ const NODE_NUM_TYPE		NUM_RECODE[] = { 0, 1, 3, 2 };
 //#pragma package(smart_init)
 // =================== Работа с кэшем ребер ==========================
 
-#define CASHE_SORT // Если определена - упорядочивать узлы в ребре
-void CNodeCashe::Construct(void)
+//#define CASHE_SORT // Если определена - упорядочивать узлы в ребре
+void CNodeCashe::Construct(CViewElementArray*pElements)
 {
+	CViewElementArray &Elements = pElements ? *pElements : m_pGeom->ElementArray;
 	if (vecCashe.size()!=0)
 		return;
 
@@ -67,18 +68,18 @@ void CNodeCashe::Construct(void)
 		vecCashe[i].Next = 0;
 	}
 
-	size_t nElements = m_pGeom->ElementArray.size();
+	size_t nElements = Elements.size();
 	for(i = 0; i < nElements; i++)
 	{
-		CViewElement	El = m_pGeom->ElementArray[i];
+		CViewElement	El = Elements[i];
 		if(!El.FragmentFlag || !El.DrawFlag || !El.bContoured)
 			continue;
 
 		int				NumPoints = El.NumVertexs();
-		NODE_NUM_TYPE	pn1 = El.Points[0], pn0 = pn1;
+		NODE_NUM_TYPE	pn1 = El.OrigPoints[0], pn0 = pn1;
 		for(int j = 1; j < NumPoints; j++)
 		{
-			NODE_NUM_TYPE	pn2 = El.Points[j];
+			NODE_NUM_TYPE	pn2 = El.OrigPoints[j];
 			AddCacheElement(pn1, pn2);
 			pn1 = pn2;
 		}
@@ -96,7 +97,7 @@ void CNodeCashe::SetBarsDrawed(void)
 		if(!El.FragmentFlag || !El.DrawFlag || El.Type != EL_LINE || El.IsContour())
 			continue;
 
-		NODE_NUM_TYPE	pn0 = El.Points[0], pn1 = El.Points[1];
+		NODE_NUM_TYPE	pn0 = El.OrigPoints[0], pn1 = El.OrigPoints[1];
 		WasDrawed(pn0, pn1);
 	}
 };
@@ -111,11 +112,7 @@ void CNodeCashe::AddCacheElement(NODE_NUM_TYPE n1, NODE_NUM_TYPE n2)
 {
 #ifdef CASHE_SORT
 	if(n1 > n2)
-	{
-		NODE_NUM_TYPE	tmp = n1;
-		n1 = n2;
-		n2 = tmp;
-	}
+		std::swap(n1,n2);
 
 	AddCacheElement1(n1, n2);
 #else
@@ -226,8 +223,7 @@ void CNodeCashe::SetVertex(NODE_NUM_TYPE N)
 	Strip->Vertex = N;
 	Strip++;
 */
-	SLineStripRec rec;
-	rec.Vertex = N;
+	SLineStripRec rec(N);
 	LineStrips.push_back(rec);
 }
 
@@ -290,7 +286,7 @@ void  CNodeCashe::SetupLineStrips()
 					}
 
 					pnc1 = pnc2;
-					if(!pnc1->Drawed && fabs(dp) > Eps)
+					if(!pnc1->Drawed)
 					{
 						v = pnc1->v;
 						SetVertex(N);
@@ -302,7 +298,7 @@ void  CNodeCashe::SetupLineStrips()
 
 				SetVertex(N);
 #else
-				SetVertex(Vertexs, N);
+				SetVertex(N);
 				if(pnc1->SecondNode != -1)
 				{
 					do
@@ -312,12 +308,13 @@ void  CNodeCashe::SetupLineStrips()
 						pnc1->Drawed = true;
 						N = pnc1->SecondNode;
 						goto Restart;
-					} while(pnc1 = pnc1->Next);
+					} while(pnc1 = pnc1->Next ? &vecCashe[pnc1->Next] : nullptr);
 				}
 #endif
 				SetVertex(-1);	// glEnd();
 				pnc = pnc->Next ? &vecCashe[pnc->Next] : nullptr;
 			} while(pnc != nullptr);
+			//SetVertex(-1);
 		}
 	}
 
@@ -338,9 +335,9 @@ static inline int Compare(FLOAT_TYPE x1, FLOAT_TYPE x2)
 
 static int CompareInt(const void *v1, const void *v2)
 {
-	if(* reinterpret_cast<const int *> (v1) > * reinterpret_cast<const int *> (v2))
+	if(* reinterpret_cast<const unsigned int *> (v1) > * reinterpret_cast<const unsigned int *> (v2))
 		return 1;
-	if(* reinterpret_cast<const int *> (v1) < * reinterpret_cast<const int *> (v2))
+	if(* reinterpret_cast<const unsigned int *> (v1) < * reinterpret_cast<const unsigned int *> (v2))
 		return -1;
 	return 0;
 }
@@ -1104,8 +1101,8 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 	{
 		int nPoints = int(El->Type) + 2;
 		for(int j = 0; j < 4; j++)
-			Ei->Points[j] = (j < nPoints) ? El->Points[j] : -1;
-		qsort(Ei->Points, 4, sizeof(int), CompareInt);
+			Ei->Points[j] = (j < nPoints) ? El->Points[j] : 0;
+		qsort(Ei->Points, nPoints, sizeof(int), CompareInt);
 		Ei->N = i;
 		Ei->OrgType = El->OrgType;
 		Ei->Type = El->Type;
@@ -1847,7 +1844,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 			for (int j = 0; j < pE->NumVertexs(); j++)
 				pE->Points[j] = NUM(e.Node[j]);
 		}
-
+		pE->SetOrigPoints();
 		if (TypePlate && e.m_fThickness > 1e-5 && pE->Type != EL_LINE)
 		{
 			size_t nNewVertexsIdx = VertexArray.size();
@@ -1865,6 +1862,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 				}
 			for (int j = 0; j < pE->NumVertexs(); j++)
 				pE->Points[pE->NumVertexs()-1-j] = nNewVertexsIdx + j;
+			pE->SetOrigPoints();
 			for (int j = 0; j < pE->NumVertexs(); j++)
 			{
 				el.Points[0] = nNewVertexsIdx + j;

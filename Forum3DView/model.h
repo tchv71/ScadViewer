@@ -67,7 +67,10 @@ struct SElement
 	TColor			Color;			// Цвет примитива отрисовки
 	TColor			OriginalColor;
 	size_t			Points[4];		// Номера вершин примитива
-
+	SElement()
+	{
+		memset(this, 0, sizeof(*this));
+	}
     // ************ Methods ***************
 
 	int				NumVertexs(void) const
