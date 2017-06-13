@@ -78,7 +78,7 @@ void CSvGluTesselator::CallbackBegin(GLenum type)
 {
 	m_nVertexsReceived =0;
 	m_Type = type;
-	m_nFirstFanIndex = VertexArray.size();
+	m_nFirstFanIndex = 0;// VertexArray.size();
 }
 
 void CSvGluTesselator::CallbackVertex(void * vertex_data)
@@ -90,24 +90,28 @@ void CSvGluTesselator::CallbackVertex(void * vertex_data)
 	pt.x = FLOAT_TYPE(*pData++);
 	pt.y = FLOAT_TYPE(*pData++);
 	pt.z = FLOAT_TYPE(*pData++);
-
-	VertexArray.push_back(pt);
-	int nptInd= int(VertexArray.size()-1);
-	m_nVertexsReceived++;
+	static UINT vertIdxs[100];
+	int nIdx = (int)VertexArray.getIndex(pt);
+	if (nIdx == -1)
+	{
+		VertexArray.push_back(pt);
+		nIdx = int(VertexArray.size() - 1);
+	}
+	vertIdxs[m_nVertexsReceived++] = nIdx;
 
 	switch (m_Type)
 	{
 	case GL_TRIANGLES:
 		if (m_nVertexsReceived%3 == 0)
-			AddSimpleTriangle(m_elemID, nptInd-2, nptInd-1, nptInd);
+			AddSimpleTriangle(m_elemID, vertIdxs[m_nVertexsReceived-3], vertIdxs[m_nVertexsReceived - 2], vertIdxs[m_nVertexsReceived-1]);
 		break;
 	case GL_TRIANGLE_STRIP:
 		if (m_nVertexsReceived>2)
-			AddSimpleTriangle(m_elemID, nptInd-2, nptInd-1, nptInd);
+			AddSimpleTriangle(m_elemID, vertIdxs[m_nVertexsReceived - 3], vertIdxs[m_nVertexsReceived - 2], vertIdxs[m_nVertexsReceived - 1]);
 		break;
 	case GL_TRIANGLE_FAN:
 		if (m_nVertexsReceived>2)
-			AddSimpleTriangle(m_elemID, unsigned(m_nFirstFanIndex), nptInd-1, nptInd);
+			AddSimpleTriangle(m_elemID, vertIdxs[m_nFirstFanIndex], vertIdxs[m_nVertexsReceived - 2], vertIdxs[m_nVertexsReceived-1]);
 		break;
 	}
 }
