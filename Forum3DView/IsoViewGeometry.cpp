@@ -87,8 +87,10 @@ CIsoViewGeometry::~CIsoViewGeometry()
 
 void CIsoViewGeometry::SetDeformState(SOglIsoParam *pParam)
 {
+#ifdef SCAD21
 	const static UnitsAPI Un[] = { { "mm", 1000 },{ "T", 1 } };
 	ApiInitResult(pParam->hAPI, Un, "c:\\swork");
+#endif
 	S3DBox box;
 	Get3DBox(nullptr, &box);
 	FLOAT_TYPE fSchemaSize = C3DVector<FLOAT_TYPE>(box.x_max-box.x_min, box.y_max-box.y_min, box.z_max - box.z_min).Length();

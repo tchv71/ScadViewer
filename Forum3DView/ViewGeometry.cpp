@@ -1999,6 +1999,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 				VertexArray[pE->Points[3]].nMainVertex = NUM(Schem->pFormat[pEB->NumElem - 1].pNode[1]);
 			}
 		}
+		pE->SetOrigPoints();
 		FORMAT& frm = Schem->pFormat[pEB->NumElem - 1];
 		RIGID_STR * pRigid = Schem->_Rigid.Get(frm.TypeRigid);
 		RIGID_LIST_OLD *pRigidOld = Schem->_Rigid.GetRigid(frm.TypeRigid);
