@@ -92,13 +92,7 @@ void CSvGluTesselator::CallbackVertex(void * vertex_data)
 	pt.x = FLOAT_TYPE(*pData++);
 	pt.y = FLOAT_TYPE(*pData++);
 	pt.z = FLOAT_TYPE(*pData++);
-	int nIdx = (int)VertexArray.getIndex(pt);
-	if (nIdx == -1)
-	{
-		VertexArray.push_back(pt);
-		nIdx = int(VertexArray.size() - 1);
-	}
-	vertIdxs.push_back(nIdx);
+	vertIdxs.push_back((int)VertexArray.push_back_check(pt));
 	m_nVertexsReceived++;
 
 	switch (m_Type)
@@ -157,14 +151,7 @@ SC3DRetCode CSvGluTesselator::AddThickPolygon(FLOAT_TYPE fThickness, SCUINT32 el
 		pt.x+= vecNorm.v[0] * fThickness/2;
 		pt.y+= vecNorm.v[1] * fThickness/2;
 		pt.z+= vecNorm.v[2] * fThickness/2;
-		NODE_NUM_TYPE nIdx = VertexArray.getIndex(pt);
-		if (nIdx == -1)
-		{
-			VertexArray.push_back(pt);
-			ptIndUp[i] = UINT(VertexArray.size() - 1);
-		}
-		else
-			ptIndUp[i] = (UINT)nIdx;
+		ptIndUp[i] = UINT(VertexArray.push_back_check(pt));
 	}
 	for (i=0; i<nPt;i++)
 	{
@@ -172,14 +159,7 @@ SC3DRetCode CSvGluTesselator::AddThickPolygon(FLOAT_TYPE fThickness, SCUINT32 el
 		pt.x-= vecNorm.v[0] * fThickness/2;
 		pt.y-= vecNorm.v[1] * fThickness/2;
 		pt.z-= vecNorm.v[2] * fThickness/2;
-		NODE_NUM_TYPE nIdx = VertexArray.getIndex(pt);
-		if (nIdx == -1)
-		{
-			VertexArray.push_back(pt);
-			ptIndDown[i] = (UINT)unsigned(VertexArray.size() - 1);
-		}
-		else
-			ptIndDown[i] = (UINT)nIdx;
+		ptIndDown[i] = UINT(VertexArray.push_back_check(pt));
 	}
 	AddSimplePolygon( elemID,  nContour, nPtCount, &ptIndUp[0] );
 	AddSimplePolygon( elemID, nContour, nPtCount, &ptIndDown[0] );

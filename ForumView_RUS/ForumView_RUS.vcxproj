@@ -280,7 +280,6 @@
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDatabaseFile>.\Release11/ForumView11_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Release11/ForumView11_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -320,7 +319,6 @@
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDatabaseFile>.\Release11/ForumView11_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Release11/ForumView11_RUS.lib</ImportLibrary>
     </Link>
@@ -358,7 +356,6 @@
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDatabaseFile>.\Release21/ForumView21_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Release21/ForumView21_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -398,7 +395,6 @@
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDatabaseFile>.\Release21/ForumView21_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Release21/ForumView21_RUS.lib</ImportLibrary>
     </Link>
@@ -436,7 +432,6 @@
     <Link>
       <OutputFile>../Release/ForumView_RUS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDatabaseFile>.\Release/ForumView_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Release/ForumView_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -476,7 +471,6 @@
     <Link>
       <OutputFile>../Release/ForumView_RUS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDatabaseFile>.\Release/ForumView_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Release/ForumView_RUS.lib</ImportLibrary>
     </Link>
@@ -514,7 +508,6 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug11/ForumView11_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Debug11/ForumView11_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -554,7 +547,6 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug11/ForumView11_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Debug11/ForumView11_RUS.lib</ImportLibrary>
     </Link>
@@ -592,7 +584,6 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug21/ForumView11_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Debug21/ForumView21_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -632,7 +623,6 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug21/ForumView11_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Debug21/ForumView21_RUS.lib</ImportLibrary>
     </Link>
@@ -670,7 +660,6 @@
       <OutputFile>../Debug/ForumView_RUS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/ForumView_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Debug/ForumView_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -710,7 +699,6 @@
       <OutputFile>../Debug/ForumView_RUS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/ForumView_RUS.pdb</ProgramDatabaseFile>
       <NoEntryPoint>true</NoEntryPoint>
       <ImportLibrary>.\Debug/ForumView_RUS.lib</ImportLibrary>
     </Link>

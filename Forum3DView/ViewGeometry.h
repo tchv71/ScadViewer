@@ -270,6 +270,14 @@ public:
 		if (m_mapVertexs[v1]==0)
 			m_mapVertexs[v1] = size();
 	}
+	NODE_NUM_TYPE push_back_check(const SViewVertex& v)
+	{
+		NODE_NUM_TYPE nIdx = getIndex(v);
+		if (nIdx >= 0)
+			return nIdx;
+		push_back(v);
+		return size() - 1;
+	}
 	void clear()
 	{
 		m_mapVertexs.clear();

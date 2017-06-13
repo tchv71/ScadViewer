@@ -904,27 +904,26 @@ void CViewGeometry::AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, c
 		el.NumElem = i + 1;
 		if (TypePlate && e.m_fThickness > 1e-5)
 		{
-			size_t nVertexIdx = VertexArray.size();
+			NODE_NUM_TYPE	arrIdx[4];
 			const S3dPoint pt1 = VertexArray[NUM(pNodes[k])];
 			const S3dPoint pt1in = pt1 + Norm*(e.m_fThickness / 2);
 			const S3dPoint pt1out = pt1 + Norm*(-e.m_fThickness / 2);
-			VertexArray.push_back(pt1in);
-			VertexArray.push_back(pt1out);
+			arrIdx[0]=VertexArray.push_back_check(pt1in);
+			arrIdx[1] = VertexArray.push_back_check(pt1out);
 			const S3dPoint pt2 = VertexArray[NUM(pNodes[(k + 1) % nQuantNodes])];
 			const S3dPoint pt2in = pt2 + Norm*(e.m_fThickness / 2);
 			const S3dPoint pt2out = pt2 + Norm*(-e.m_fThickness / 2);
-			VertexArray.push_back(pt2in);
-			VertexArray.push_back(pt2out);
-			el.Points[0] = nVertexIdx;
-			el.Points[1] = nVertexIdx + 1;
+			arrIdx[2] = VertexArray.push_back_check(pt2in);
+			arrIdx[3] = VertexArray.push_back_check(pt2out);
+			el.Points[0] = arrIdx[0];
+			el.Points[1] = arrIdx[1];
 			ElementArray.push_back(el);
-			el.Points[0] = nVertexIdx;
-			el.Points[1] = nVertexIdx + 2;
+			el.Points[0] = arrIdx[0];
+			el.Points[1] = arrIdx[2];
 			ElementArray.push_back(el);
-			el.Points[0] = nVertexIdx + 1;
-			el.Points[1] = nVertexIdx + 3;
+			el.Points[0] = arrIdx[1];
+			el.Points[1] = arrIdx[3];
 			ElementArray.push_back(el);
-
 		}
 		else
 		{
@@ -1885,15 +1884,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 					pt.y += pE->Norm.v[1] * fShift;
 					pt.z += pE->Norm.v[2] * fShift;
 					pt.nMainVertex = pE->Points[j];
-					NODE_NUM_TYPE nIdx = VertexArray.getIndex(pt);
-					if (nIdx < 0)
-					{
-						VertexArray.push_back(SViewVertex(pt));
-						addVtxIdx[i*pE->NumVertexs() + j] = VertexArray.size() - 1;
-					}
-					else
-						addVtxIdx[i*pE->NumVertexs() + j] = nIdx;
-
+					addVtxIdx[i*pE->NumVertexs() + j] = VertexArray.push_back_check(SViewVertex(pt));
 				}
 			for (int j = 0; j < pE->NumVertexs(); j++)
 				pE->Points[pE->NumVertexs()-1-j] = addVtxIdx[j];
