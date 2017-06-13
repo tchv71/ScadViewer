@@ -11,7 +11,7 @@
 #include "ViewGeometry.h"
 #include "ForumViewGeometry.h"
 //#include "Qsort.h"
-#define Mqsort	qsort
+//#define Mqsort	qsort
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <stdio.h>
@@ -323,7 +323,7 @@ void  CNodeCashe::SetupLineStrips()
 
 //==========================================================================
 const FLOAT_TYPE	ComparePrecision = 1e-3f;
-
+/*
 static inline int Compare(FLOAT_TYPE x1, FLOAT_TYPE x2)
 {
 	if(x1 > x2 + ComparePrecision)
@@ -340,6 +340,11 @@ static int CompareInt(const void *v1, const void *v2)
 	if(* reinterpret_cast<const NODE_NUM_TYPE *> (v1) < * reinterpret_cast<const NODE_NUM_TYPE *> (v2))
 		return -1;
 	return 0;
+}
+
+static bool CompareInt1(const NODE_NUM_TYPE& v1, const NODE_NUM_TYPE& v2)
+{
+	return v1 < v2;
 }
 
 static int CompareVert(SSortVertex *p1, SSortVertex *p2)
@@ -381,6 +386,20 @@ static int CompareElem(const void *v1, const void *v2)
 
 	return 0;
 }
+*/
+
+inline bool operator <(const SElement& e1, const SElement& e2)
+{
+	for (int j = 0; j < 4; j++)
+	{
+		if (e1.Points[j] < e2.Points[j])
+			return true;
+		if (e2.Points[j] < e1.Points[j])
+			return false;
+	}
+
+	return false;
+}
 
 //extern bool bDeleteInnerPlates;
 typedef int (*CmpVertFunc) (const void *, const void *);
@@ -408,7 +427,7 @@ void __fastcall CViewGeometry::DeleteEqualNodes()
 	//int i;
 	for(v1 = VertexIndexes.begin(), v2 = v1 + 1; v1 < VertexIndexes.end();)
 	{
-		while (v2 < VertexIndexes.end() && CompareVert1(&*v1, &*v2) == 0)
+		while (v2 < VertexIndexes.end() && !(*v1 < *v2) && !(*v2 < *v1))
 		{
 			NodeSubst[v2->N] = v1->N;
 			++v2;
@@ -1102,7 +1121,7 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 		int nPoints = int(El->Type) + 2;
 		for(int j = 0; j < 4; j++)
 			Ei->Points[j] = (j < nPoints) ? El->Points[j] : 0;
-		qsort(Ei->Points, nPoints, sizeof(NODE_NUM_TYPE), CompareInt);
+		std::sort(Ei->Points, Ei->Points+nPoints);
 		Ei->N = i;
 		Ei->OrgType = El->OrgType;
 		Ei->Type = El->Type;
@@ -1111,7 +1130,7 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 		Ei++;
 	}
 
-	qsort(&ElemIndexes[0], nElements, sizeof(SSortElement), CompareElem);
+	std::sort(ElemIndexes.begin(), ElemIndexes.end());
 
 	std::vector<SSortElement>::iterator	v1, v2;
 	std::vector<bool> bvecKeepElements(ElementArray.size(), false);
@@ -1121,7 +1140,8 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 		while
 		(
 			v2 < ElemIndexes.end() &&
-			CompareElem(&*v1, &*v2) == 0 &&
+			! (*v1 < *v2) &&
+			!(*v2 < *v1) &&
 			v1->OrgType == v2->OrgType &&
 			(v1->Type == EL_PLATE || m_pFlatGeometry == nullptr)
 		)
