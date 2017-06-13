@@ -72,13 +72,15 @@ void _stdcall CSvGluTesselator::vertexData (void * vertex_data, void * polygon_d
 	static_cast<CSvGluTesselator *>(polygon_data)->CallbackVertex(vertex_data);
 }
 
+static std::vector<UINT> vertIdxs;
 
 
 void CSvGluTesselator::CallbackBegin(GLenum type)
 {
 	m_nVertexsReceived =0;
 	m_Type = type;
-	m_nFirstFanIndex = 0;// VertexArray.size();
+	m_nFirstFanIndex = 0;
+	vertIdxs.clear();
 }
 
 void CSvGluTesselator::CallbackVertex(void * vertex_data)
@@ -90,14 +92,14 @@ void CSvGluTesselator::CallbackVertex(void * vertex_data)
 	pt.x = FLOAT_TYPE(*pData++);
 	pt.y = FLOAT_TYPE(*pData++);
 	pt.z = FLOAT_TYPE(*pData++);
-	static UINT vertIdxs[100];
 	int nIdx = (int)VertexArray.getIndex(pt);
 	if (nIdx == -1)
 	{
 		VertexArray.push_back(pt);
 		nIdx = int(VertexArray.size() - 1);
 	}
-	vertIdxs[m_nVertexsReceived++] = nIdx;
+	vertIdxs.push_back(nIdx);
+	m_nVertexsReceived++;
 
 	switch (m_Type)
 	{
