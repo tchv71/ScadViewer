@@ -648,7 +648,7 @@ void CIsoViewGeometry::SetDefScale(double dblDefScale)
 	}
 	for (auto it = ElementArray.m_mapVertexs.begin(); it != ElementArray.m_mapVertexs.end(); ++it)
 	{
-		UINT i = it->first;
+		NODE_NUM_TYPE i = it->first;
 		SViewVertex& vO = m_OriginalVertexs[i];
 		SViewVertex &v1 = VertexArray[it->second];
 		NODE_NUM_TYPE nDispIndex = v1.nMainVertex == -1 ? i : v1.nMainVertex;
@@ -816,7 +816,7 @@ bool CIsoViewGeometry::GetFactorForElVertexLoaded(int nNumElement, int nNumVerte
 	{
 		return GetFactorForElVertex(nNumElement, nNumVertex, val, pnResultPoints);
 	}
-	int nVertex = ElementArray[nNumElement].Points[nNumVertex];
+	NODE_NUM_TYPE nVertex = ElementArray[nNumElement].Points[nNumVertex];
 	val = m_Factors[m_mapVertexFactors[nVertex]-1].fFactor;
 	if (pnResultPoints)
 		*pnResultPoints = ElementArray[nNumElement].NumVertexs() + 1;

@@ -411,10 +411,10 @@ void CGLDraw::Draw(void)
 				
 				glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOTriangles);
 				if (m_pGeometry->ElementArray.m_triangles.size() > 0)
-					glDrawElements(GL_TRIANGLES, m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, 0);
+					glDrawElements(GL_TRIANGLES, (GLsizei)m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, 0);
 				glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOQuads);
 				if (m_pGeometry->ElementArray.m_quads.size() > 0)
-					glDrawElements(GL_QUADS, m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, 0);
+					glDrawElements(GL_QUADS, (GLsizei)m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, 0);
 			}
 			else
 			{
@@ -423,9 +423,9 @@ void CGLDraw::Draw(void)
 				glNormalPointer(GL_FLOAT, sizeof(CVectorType), m_pGeometry->ElementArray.m_normals.data());
 
 				if (m_pGeometry->ElementArray.m_triangles.size() > 0)
-					glDrawElements(GL_TRIANGLES, m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_triangles.data());
+					glDrawElements(GL_TRIANGLES, (GLsizei)m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_triangles.data());
 				if (m_pGeometry->ElementArray.m_quads.size() > 0)
-					glDrawElements(GL_QUADS, m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_quads.data());
+					glDrawElements(GL_QUADS, (GLsizei)m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_quads.data());
 			}
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_COLOR_ARRAY);

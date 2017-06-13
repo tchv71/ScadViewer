@@ -93,7 +93,7 @@ protected:
 	double m_dblDefScale;
 	CViewVertexArray m_OriginalVertexs;
 	CViewFactorArray m_Factors;
-	std::map<int, int> m_mapVertexFactors;
+	std::map<NODE_NUM_TYPE, NODE_NUM_TYPE> m_mapVertexFactors;
 	int m_nOff;
 	ptrdiff_t m_nRealElements;
 	double m_dblDefScaleMult;

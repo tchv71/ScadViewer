@@ -10,6 +10,18 @@ struct S3dPoint
 	S3dPoint(): x(0), y(0), z(0)
 	{};
 	S3dPoint(FLOAT_TYPE ax, FLOAT_TYPE ay, FLOAT_TYPE az) : x(ax), y(ay), z(az) {};
+	bool operator <(const S3dPoint& other) const
+	{
+		if (x < other.x)
+			return true;
+		if (x > other.x)
+			return false;
+		if (y < other.y)
+			return true;
+		if (y > other.y)
+			return false;
+		return z < other.z;
+	}
 	FLOAT_TYPE	x;
 	FLOAT_TYPE	y;
 	FLOAT_TYPE	z;

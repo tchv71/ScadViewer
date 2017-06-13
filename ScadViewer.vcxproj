@@ -544,8 +544,6 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\obj\Debug21x64/ScadViewer.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\obj\Debug11/</AssemblerListingLocation>
-      <ObjectFileName>.\obj\Debug11/</ObjectFileName>
-      <ProgramDataBaseFileName>.\obj\Debug11/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -682,7 +680,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\obj\Release11/ScadViewer.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\obj\Release21/ScadViewer.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\obj\Release21/</AssemblerListingLocation>
       <ObjectFileName>.\obj\Release21/</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\Release21/</ProgramDataBaseFileName>

@@ -46,7 +46,7 @@ inline NODE_NUM_TYPE NUM(NODE_NUM_TYPE x)
 	return x - 1;
 }
 
-const NODE_NUM_TYPE		NUM_RECODE[] = { 0, 1, 3, 2 };
+const int NUM_RECODE[] = { 0, 1, 3, 2 };
 
 
 //#pragma package(smart_init)
@@ -335,9 +335,9 @@ static inline int Compare(FLOAT_TYPE x1, FLOAT_TYPE x2)
 
 static int CompareInt(const void *v1, const void *v2)
 {
-	if(* reinterpret_cast<const unsigned int *> (v1) > * reinterpret_cast<const unsigned int *> (v2))
+	if(* reinterpret_cast<const NODE_NUM_TYPE*> (v1) > * reinterpret_cast<const NODE_NUM_TYPE *> (v2))
 		return 1;
-	if(* reinterpret_cast<const unsigned int *> (v1) < * reinterpret_cast<const unsigned int *> (v2))
+	if(* reinterpret_cast<const NODE_NUM_TYPE *> (v1) < * reinterpret_cast<const NODE_NUM_TYPE *> (v2))
 		return -1;
 	return 0;
 }
@@ -981,7 +981,7 @@ void __fastcall CViewGeometry::SetupNormals(void)
         if (size_t(ElementArray[i].NumElem) > nMaxRealElementNumber)
             nMaxRealElementNumber = ElementArray[i].NumElem;
 
-    int *anFirstElements = new int[nMaxRealElementNumber];
+    NODE_NUM_TYPE *anFirstElements = new NODE_NUM_TYPE[nMaxRealElementNumber];
     for (i=0;i < nMaxRealElementNumber; i++)
         anFirstElements[i] = -1;
  	for(i = 0; i < nElements; i++)
@@ -1051,10 +1051,10 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 	m_triangles.resize(0);
 	m_quads.resize(0);
 	bool bMapExist = m_mapVertexs.size() > 0;
-	UINT32 nMaxIndex = VertexArray.size();
+	NODE_NUM_TYPE nMaxIndex = VertexArray.size();
 	m_colors.resize(nMaxIndex);
 	m_normals.resize(nMaxIndex);
-	std::map<UINT32, bool> mapVertexUsed;
+	std::map<NODE_NUM_TYPE, bool> mapVertexUsed;
 	for (size_t i=0; i<nElements; i++)
 	{
 		CViewElement &el = pElements[i];
@@ -1062,7 +1062,7 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 			continue;
 		for (int j = 0; j < el.NumVertexs(); j++)
 		{
-			UINT32 nPoint = el.Points[j];
+			NODE_NUM_TYPE nPoint = el.Points[j];
 			if (!mapVertexUsed[nPoint])
 			{
 				mapVertexUsed[nPoint] = true;
@@ -1073,7 +1073,7 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 			{
 				VertexArray.push_back(VertexArray[nPoint]);
 				if (!bMapExist)
-					m_mapVertexs.push_back(std::make_pair(nPoint, VertexArray.size() - 1));
+					m_mapVertexs.push_back(std::pair<NODE_NUM_TYPE, NODE_NUM_TYPE>(nPoint, VertexArray.size() - 1));
 				nPoint = VertexArray.size() - 1;
 				el.Points[j] = nPoint;
 				m_colors.push_back(el.Color | (128 << 24));
@@ -1081,9 +1081,9 @@ void CViewElementArray::BuildArrays( CViewVertexArray& VertexArray, CViewElement
 			}
 
 			if (el.NumVertexs() == 3)
-				m_triangles.push_back(nPoint);
+				m_triangles.push_back(UINT32(nPoint));
 			else if (el.NumVertexs()==4)
-				m_quads.push_back(nPoint);
+				m_quads.push_back(UINT32(nPoint));
 		}
 	}
 	m_bRebuildArrays = true;
@@ -1102,7 +1102,7 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 		int nPoints = int(El->Type) + 2;
 		for(int j = 0; j < 4; j++)
 			Ei->Points[j] = (j < nPoints) ? El->Points[j] : 0;
-		qsort(Ei->Points, nPoints, sizeof(int), CompareInt);
+		qsort(Ei->Points, nPoints, sizeof(NODE_NUM_TYPE), CompareInt);
 		Ei->N = i;
 		Ei->OrgType = El->OrgType;
 		Ei->Type = El->Type;
@@ -1399,7 +1399,7 @@ void CViewGeometry::BuildLineStrips()
 		UINT32 nCount = 0;
 		for (; Strip->Vertex != -1; Strip++)
 		{
-			linestrips.push_back(Strip->Vertex);
+			linestrips.push_back(UINT32(Strip->Vertex));
 			nCount++;
 		}
 		linestrips[nSize] = nCount;
@@ -1849,6 +1849,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 		{
 			size_t nNewVertexsIdx = VertexArray.size();
 			pE->SetNormal(VertexArray.GetVector());
+			NODE_NUM_TYPE addVtxIdx[8];
 			for (int i = 0; i < 2; i++)
 				for (int j = 0; j < pE->NumVertexs(); j++)
 				{
@@ -1858,17 +1859,25 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 					pt.y += pE->Norm.v[1] * fShift;
 					pt.z += pE->Norm.v[2] * fShift;
 					pt.nMainVertex = pE->Points[j];
-					VertexArray.push_back(SViewVertex(pt));
+					NODE_NUM_TYPE nIdx = VertexArray.getIndex(pt);
+					if (nIdx < 0)
+					{
+						VertexArray.push_back(SViewVertex(pt));
+						addVtxIdx[i*pE->NumVertexs() + j] = VertexArray.size() - 1;
+					}
+					else
+						addVtxIdx[i*pE->NumVertexs() + j] = nIdx;
+
 				}
 			for (int j = 0; j < pE->NumVertexs(); j++)
-				pE->Points[pE->NumVertexs()-1-j] = nNewVertexsIdx + j;
+				pE->Points[pE->NumVertexs()-1-j] = addVtxIdx[j];
 			pE->SetOrigPoints();
 			for (int j = 0; j < pE->NumVertexs(); j++)
 			{
-				el.Points[0] = nNewVertexsIdx + j;
-				el.Points[1] = nNewVertexsIdx + (j + 1) % pE->NumVertexs();
-				el.Points[2] = nNewVertexsIdx + (j + 1) % pE->NumVertexs() + pE->NumVertexs();
-				el.Points[3] = nNewVertexsIdx + j + pE->NumVertexs();
+				el.Points[0] = addVtxIdx[j];
+				el.Points[1] = addVtxIdx[(j + 1) % pE->NumVertexs()];
+				el.Points[2] = addVtxIdx[(j + 1) % pE->NumVertexs() + pE->NumVertexs()];
+				el.Points[3] = addVtxIdx[j + pE->NumVertexs()];
 				el.SetNormal(VertexArray.GetVector());
 				el.OrgNorm = pE->Norm;
 				el.Type = EL_QUAD;
@@ -1876,7 +1885,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 				pE = &ElementArray[nEl];
 			}
 			for (int j = 0; j < pE->NumVertexs(); j++)
-				el.Points[j] = nNewVertexsIdx + pE->NumVertexs() + j;
+				el.Points[j] = addVtxIdx[pE->NumVertexs() + j];
 			el.Norm = pE->Norm*(-1.0f);
 			el.OrgNorm = pE->OrgNorm;
 			el.Type = pE->Type;

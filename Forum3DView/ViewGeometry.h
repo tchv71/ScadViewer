@@ -248,17 +248,37 @@ public:
 	std::vector<UINT32> m_colors;
 	std::vector<CVectorType> m_normals;
 	std::vector<UINT32> m_linestrips;
-	std::vector<std::pair<UINT32, UINT32>> m_mapVertexs;
+	std::vector<std::pair<NODE_NUM_TYPE, NODE_NUM_TYPE>> m_mapVertexs;
 	bool m_bRebuildArrays;
 	void BuildArrays(CViewVertexArray & VertexArray, CViewElement* pElements, size_t nElements);
 protected:
 	NUM_ELEM_TYPE m_nNumElSelected;
 	TOrgElemType m_SelElOrgType;
 };
+
+const FLOAT_TYPE eps = 1e-5f;
+
 class CViewVertexArray : public std::vector <SViewVertex>
 {
+	std::map<S3dPoint, NODE_NUM_TYPE> m_mapVertexs;
 public:
 	SViewVertex * GetVector() { return size()>0?&(operator[](0)):nullptr; }
+	void push_back(const SViewVertex& v)
+	{
+		const S3dPoint v1(ceil(v.x/eps)*eps, ceil(v.y / eps)*eps, ceil(v.z / eps)*eps);
+		__super::push_back(v);
+		m_mapVertexs[v1] = size();
+	}
+	void clear()
+	{
+		m_mapVertexs.clear();
+		__super::clear();
+	}
+	NODE_NUM_TYPE getIndex(const S3dPoint& v)
+	{
+		const S3dPoint v1(ceil(v.x / eps)*eps, ceil(v.y / eps)*eps, ceil(v.z / eps)*eps);
+		return m_mapVertexs[v1] - 1;
+	}
 };
 
 typedef  std::vector<SViewFactorVertex> CViewFactorArray;
@@ -278,7 +298,7 @@ class SCHEMA;
 #endif
 struct SSortVertex : public S3dPoint
 {
-	int N;
+	NODE_NUM_TYPE N;
 	const FLOAT_TYPE cmpPrec = 0.001f;
 	bool operator <(const SSortVertex& other) const
 	{
@@ -522,7 +542,7 @@ protected:
 // Определение различий между ScadViewer и PipeViewer
 NODE_NUM_TYPE NUM(NODE_NUM_TYPE x);
 #define N_S(x)	NUM_RECODE[x]
-extern const NODE_NUM_TYPE	NUM_RECODE[];
+extern const int NUM_RECODE[];
 
 #ifdef SCAD21
 #include "SCADAPIX.hxx"
