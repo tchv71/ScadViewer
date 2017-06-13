@@ -181,6 +181,11 @@ BOOL CAboutDlg::OnInitDialog()
 		            TEXT("\\StringFileInfo\\040904b0\\FileVersion"),
 					(void **)&pData,
 					&uiDataSize);
+#ifdef _AMD64_
+	_tcscat_s(pData, uiDataSize + 3, _T("x64"));
+	uiDataSize += 3;
+#endif
+
 #ifdef _DEBUG
 	_tcscat_s(pData, uiDataSize+2, _T("D"));
 #endif
