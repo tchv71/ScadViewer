@@ -1695,10 +1695,16 @@ void CViewGeometry::ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const U
 		p[i] = S3dPoint(VertexArray[NUM(e.Node[i])]);
 
 	CVectorType	p1v(p[1].x - p[0].x, p[1].y - p[0].y, p[1].z - p[0].z);
-	CVectorType p2v(p[2].x - p[1].x, p[2].y - p[1].y, p[2].z - p[1].z);
 	CVectorType Norm;
-	Norm.SetCrossProduct(p1v, p2v);
-	Norm.Normalize();
+	for (UINT i = 1; i < e.QuantityNode; i++)
+	{
+		const S3dPoint& v = VertexArray[NUM(e.Node[i])];
+		CVectorType p2v(v.x - p[0].x, v.y - p[0].y, v.z - p[0].z);
+		Norm.SetCrossProduct(p1v, p2v);
+		Norm.Normalize();
+		if (Norm.Length() > 0.1)
+			break;
+	}
 
 	UINT nHoles = ApiElemGetQuantityHole(Schem, i + 1);
 	UINT nSumQuantHoleNodes = 0;

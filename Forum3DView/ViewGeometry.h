@@ -267,7 +267,8 @@ public:
 	{
 		const S3dPoint v1(ceil(v.x/eps)*eps, ceil(v.y / eps)*eps, ceil(v.z / eps)*eps);
 		__super::push_back(v);
-		m_mapVertexs[v1] = size();
+		if (m_mapVertexs[v1]==0)
+			m_mapVertexs[v1] = size();
 	}
 	void clear()
 	{
