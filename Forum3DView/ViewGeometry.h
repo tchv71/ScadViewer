@@ -485,10 +485,12 @@ public:
 	virtual void ClearCut(void) override;
 
 
+
 	bool LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize = true);
 #ifdef SCAD21
 	void ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const UINT & i, BYTE TypePlate);
 	bool ProcessSpecialTypes(CElemInfApiExt &e);
+	bool ProcessBarProfile(CElemInfApiExt & e, SCHEMA * Schem, CViewElement & el);
 	void AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm);
 #endif
 	bool LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePlate,  bool bOptimize = true, SCHEMA ** ppSchem = nullptr);
@@ -560,7 +562,8 @@ struct CElemInfApiExt : public CElemInfApi
 {
 	FLOAT_TYPE m_fThickness;
 	ScadAPI m_lpApi;
-	CElemInfApiExt(ScadAPI lpApi) : m_fThickness(0), m_lpApi(lpApi) {}
+	UINT NumElem;
+	CElemInfApiExt(ScadAPI lpApi) : m_fThickness(0), m_lpApi(lpApi), NumElem(0) {}
 	void UpdateThickness();
 	TElemType GetType() const;
 	void MakeContour(const S3dPoint arr[], int nSize, std::vector<S3dPoint> & contour, bool & bClosed, int nZScale=1);

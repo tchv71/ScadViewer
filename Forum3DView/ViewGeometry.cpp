@@ -841,7 +841,7 @@ bool CViewGeometry::ProcessSpecialTypes(CElemInfApiExt &e)
 		{
 			CViewElement el(RGB(192, 192, 192));
 			el.OrgType = GetElemOrgType(e.TypeElem);
-			el.NumElem = i1 + 1;
+			el.NumElem = e.NumElem;// i1 + 1;
 			el.Type = EL_QUAD;
 			for (UINT j = 0; j<4; j++)
 				el.Points[j] = NUM(e.Node[*pArr++]);
@@ -857,7 +857,7 @@ bool CViewGeometry::ProcessSpecialTypes(CElemInfApiExt &e)
 		{
 			CViewElement el(RGB(192, 192, 192));
 			el.OrgType = GetElemOrgType(e.TypeElem);
-			el.NumElem = i1 + 1;
+			el.NumElem = e.NumElem;// i1 + 1;
 			el.Type = EL_TRIANGLE;
 			for (UINT j = 0; j<3; j++)
 				el.Points[j] = NUM(e.Node[*pArr++]);
@@ -873,7 +873,7 @@ bool CViewGeometry::ProcessSpecialTypes(CElemInfApiExt &e)
 		{
 			CViewElement el(RGB(192, 192, 192));
 			el.OrgType = GetElemOrgType(e.TypeElem);
-			el.NumElem = i1 + 1;
+			el.NumElem = e.NumElem;// i1 + 1;
 			el.Type = EL_TRIANGLE;
 			for (UINT j = 0; j<3; j++)
 				el.Points[j] = NUM(e.Node[*pArr++]);
@@ -883,7 +883,7 @@ bool CViewGeometry::ProcessSpecialTypes(CElemInfApiExt &e)
 		{
 			CViewElement el(RGB(192, 192, 192));
 			el.OrgType = GetElemOrgType(e.TypeElem);
-			el.NumElem = i1 + 1;
+			el.NumElem = e.NumElem;// i1 + 1;
 			el.Type = EL_QUAD;
 			for (UINT j = 0; j<4; j++)
 				el.Points[j] = NUM(e.Node[*pArr++]);
@@ -901,7 +901,7 @@ void CViewGeometry::AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, c
 		CViewElement el(RGB(192, 192, 192));
 		el.OrgType = GetElemOrgType(e.TypeElem);
 		el.Type = EL_LINE;
-		el.NumElem = i + 1;
+		el.NumElem = e.NumElem;// i + 1;;
 		if (TypePlate && e.m_fThickness > 1e-5)
 		{
 			NODE_NUM_TYPE	arrIdx[4];
@@ -1142,7 +1142,8 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 			! (*v1 < *v2) &&
 			!(*v2 < *v1) &&
 			v1->OrgType == v2->OrgType &&
-			(v1->Type == EL_PLATE || m_pFlatGeometry == nullptr)
+			(v1->Type == EL_PLATE || m_pFlatGeometry == nullptr) &&
+			v1->OrgType != EL_SOLID && v2->OrgType!= EL_SOLID
 		)
 		{
 			bInner = true;
@@ -1718,6 +1719,56 @@ void CViewGeometry::ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const U
 	int nQantExt = e.QuantityNode - nSumQuantHoleNodes;
 	AddOprContours(nQantExt, e, i, TypePlate, e.Node, Norm);
 }
+
+bool CViewGeometry::ProcessBarProfile(CElemInfApiExt &e, SCHEMA * Schem, CViewElement &el)
+{
+	std::vector<S3dPoint> vecContour;
+	bool bClosed = false;
+	if (e.getContour(vecContour, bClosed))
+	{
+		double sk[16];
+		UINT nQnt = 0;
+		ApiGetSystemCoordElemOne(Schem, el.NumElem, (BYTE*)&e.TypeElem, &nQnt, sk);
+		const S3dPoint pt1 = VertexArray[NUM(e.Node[0])];
+		const S3dPoint pt2 = VertexArray[NUM(e.Node[1])];
+		const CVectorType v12 = CVectorType(pt2) - pt1;
+		const CVectorType vCan(1, 0, 0);
+		FLOAT_TYPE ang = vCan.AngleTo(v12);
+		CVectorType axis = vCan.CrossProduct(v12);
+		CVectorType vx(1, 0, 0);
+		CVectorType vy(0, 1, 0);
+		CVectorType vz(0, 0, 1);
+		vx.RotateAroundAxis(axis, ang);
+		vy.RotateAroundAxis(axis, ang);
+		vz.RotateAroundAxis(axis, ang);
+		//const size_t nIdx = VertexArray.size();
+		std::vector<NUM_ELEM_TYPE> arrIdx;
+		for (size_t i = 0; i < vecContour.size(); i++)
+		{
+			const S3dPoint& pti = vecContour[i];
+			CVectorType vecShift = vx*pti.x + vy*pti.y + vz*pti.z;
+			SViewVertex vtx1(pt1 + vecShift);
+			vtx1.nMainVertex = NUM(e.Node[0]);
+			SViewVertex vtx2(pt2 + vecShift);
+			vtx2.nMainVertex = NUM(e.Node[1]);
+
+			arrIdx.push_back(VertexArray.push_back_check(vtx1));
+			arrIdx.push_back(VertexArray.push_back_check(vtx2));
+		}
+		for (size_t i = 0; i < vecContour.size() + (bClosed ? 0 : -1); i++)
+		{
+			el.Type = EL_QUAD;
+			el.Points[3] = arrIdx[i * 2];
+			el.Points[2] = arrIdx[i * 2 + 1];
+			el.Points[1] = arrIdx[((i + 1) % vecContour.size()) * 2 + 1];
+			el.Points[0] = arrIdx[((i + 1) % vecContour.size()) * 2];
+			el.SetNormal(VertexArray.GetVector());
+			ElementArray.push_back(el);
+		}
+		return true;
+	}
+	return false;
+}
 #endif
 
 bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize)
@@ -1789,6 +1840,7 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 	{
 		CElemInfApiExt e(Schem);
 		ApiElemGetInf(Schem, i + 1, &e);
+		e.NumElem = i + 1;
 		if (e.IsDeletet)
 			continue;
 		e.UpdateThickness();
@@ -1802,57 +1854,14 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 			continue;
 		CViewElement el(RGB(192, 192, 192));
 		el.OrgType = GetElemOrgType(e.TypeElem);
-		el.NumElem = i + 1;//e.NumElem;
+		el.NumElem = e.NumElem;
 		TElemType eType = e.GetType();
 		if (eType == EL_UNKNOWN)
 			continue;
 		if (eType == EL_LINE && TypeProfile)
 		{
-			std::vector<S3dPoint> vecContour;
-			bool bClosed = false;
-			if (e.getContour(vecContour, bClosed))
-			{
-				double sk[16];
-				UINT nQnt = 0;
-				ApiGetSystemCoordElemOne(Schem, el.NumElem, (BYTE*)&e.TypeElem, &nQnt, sk);
-				const S3dPoint pt1 = VertexArray[NUM(e.Node[0])];
-				const S3dPoint pt2 = VertexArray[NUM(e.Node[1])];
-				const CVectorType v12 = CVectorType(pt2) - pt1;
-				const CVectorType vCan(1, 0, 0);
-				FLOAT_TYPE ang = vCan.AngleTo(v12);
-				CVectorType axis = vCan.CrossProduct(v12);
-				CVectorType vx(1, 0, 0);
-				CVectorType vy(0, 1, 0);
-				CVectorType vz(0, 0, 1);
-				vx.RotateAroundAxis(axis, ang);
-				vy.RotateAroundAxis(axis, ang);
-				vz.RotateAroundAxis(axis, ang);
-				const size_t nIdx = VertexArray.size();
-				for (size_t i = 0; i < vecContour.size(); i++)
-				{
-					const S3dPoint& pti = vecContour[i];
-					CVectorType vecShift = vx*pti.x + vy*pti.y + vz*pti.z;
-					SViewVertex vtx1(pt1 + vecShift);
-					vtx1.nMainVertex = NUM(e.Node[0]);
-					SViewVertex vtx2(pt2 + vecShift);
-					vtx2.nMainVertex = NUM(e.Node[1]);
-
-					VertexArray.push_back(vtx1);
-					VertexArray.push_back(vtx2);
-				}
-				for (size_t i = 0; i < vecContour.size()+ (bClosed ? 0:-1); i++)
-				{
-					el.Type = EL_QUAD;
-					el.Points[3] = nIdx + i * 2;
-					el.Points[2] = nIdx + i * 2+1;
-					el.Points[1] = nIdx + ((i+1)%vecContour.size()) * 2 + 1;
-					el.Points[0] = nIdx + ((i+1)%vecContour.size()) * 2;
-					el.SetNormal(VertexArray.GetVector());
-					ElementArray.push_back(el);
-				}
+			if (ProcessBarProfile(e, Schem, el))
 				continue;
-			}
-			int n = 0;
 		}
 		ElementArray.push_back(el);
 		const size_t nEl = ElementArray.size() - 1;
