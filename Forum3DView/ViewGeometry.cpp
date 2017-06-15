@@ -902,6 +902,7 @@ void CViewGeometry::AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, c
 		el.OrgType = GetElemOrgType(e.TypeElem);
 		el.Type = EL_LINE;
 		el.NumElem = e.NumElem;// i + 1;;
+		el.bContourOnly = true;
 		if (TypePlate && e.m_fThickness > 1e-5)
 		{
 			NODE_NUM_TYPE	arrIdx[4];

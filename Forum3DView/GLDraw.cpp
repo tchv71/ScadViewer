@@ -276,9 +276,7 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 			}
 
 			SetGlColor(m_pOptions->EdgeColor);
-#ifndef NEW_DEPTH_SORT
 			if (El.bContoured)
-#endif
 				DrawLines(El, p);
 		}
 		else
@@ -307,7 +305,7 @@ void CGLDraw::Draw(void)
 	CGLRenderer*pRenderer = (CGLRenderer*)m_pRenderer;
 	//glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
 	EDrawMode	Mode = m_pDrawOptions->Mode;
-	//m_pGeometry->SetupElementColors(m_pOptions, Mode);
+	m_pGeometry->SetupElementColors(m_pOptions, Mode);
 	c=0xff00;
 	//   glDisable(GL_DITHER);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -328,7 +326,6 @@ void CGLDraw::Draw(void)
 	CViewElementArray	*Elements = &m_pGeometry->ElementArray;
 	size_t nOriginalVertexCount = m_pGeometry->VertexArray.size();
 	size_t				NumElements = m_pGeometry->ElementArray.size();
-	SViewVertex		*Vertexs = m_pGeometry->VertexArray.GetVector();
 
 	S3dPoint		Z_Shift( 0, 0, -2 / m_pViewPos->ScrScale);
 	m_pViewPos->Rot->Rotate_1(Z_Shift.x, Z_Shift.y, Z_Shift.z);
@@ -347,11 +344,12 @@ void CGLDraw::Draw(void)
 		SortElements(Elements, NumElements);
 #ifdef NEW_DEPTH_SORT
 		//Elements->BuildArrays(m_pGeometry->VertexArray, Elements->GetVector(), Elements->size());
+#if 0
 		m_pGeometry->GetNodeCashe()->Recreate();
 		m_pGeometry->GetNodeCashe()->Clear();
 		Vertexs = m_pGeometry->VertexArray.GetVector();
 		m_pGeometry->BuildLineStrips();
-
+#endif
 #ifdef COLOR_PLATES
 		for (int i=0; i<NumElements; i++)
 		{
@@ -361,6 +359,7 @@ void CGLDraw::Draw(void)
 #endif
 #endif
 	}
+	SViewVertex		*Vertexs = m_pGeometry->VertexArray.GetVector();
 	bool bSmoothTransp = (m_pOptions->bLineSmooth && Mode == M_FILL_AND_LINES_TRANSP);
 	if(bSmoothTransp)
 		nStages = 1;
@@ -388,7 +387,7 @@ void CGLDraw::Draw(void)
 		ENABLE_LIGHTING(m_pDrawOptions->bLighting);
 		if (nCurrentStage == BAR_STAGE)
 			SetGlColor(m_pOptions->BarColor);
-		if (bDrawArrays && (nCurrentStage == FILL_STAGE) &&  Mode != M_FILL_AND_LINES_TRANSP)
+		if (bDrawArrays && (nCurrentStage == FILL_STAGE) &&  Mode != M_FILL_AND_LINES_TRANSP && Mode!= M_LINES)
 		{
 			if (m_pGeometry->ElementArray.size() == 0)
 				continue;
@@ -430,7 +429,6 @@ void CGLDraw::Draw(void)
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_COLOR_ARRAY);
 			glDisableClientState(GL_VERTEX_ARRAY);
-			int i = 0;
 			continue;
 		}
 		for (size_t i = 0; i < NumElements; i++)
@@ -453,9 +451,9 @@ void CGLDraw::Draw(void)
 				break;
 			case EL_QUAD:
 			case EL_TRIANGLE:
-				if (nCurrentStage == BAR_STAGE || (nCurrentStage == FILL_STAGE && bDrawArrays && Mode != M_FILL_AND_LINES_TRANSP))
+				if (nCurrentStage == BAR_STAGE || (nCurrentStage == FILL_STAGE && bDrawArrays && Mode != M_FILL_AND_LINES_TRANSP && !m_pOptions->bLineSmooth))
 					continue;
-				if (nCurrentStage == BORDER_STAGE && m_pOptions->bDrawOptimize && (Mode == M_FILL_AND_LINES || Mode == M_FILL_AND_LINES_TRANSP))
+				if (nCurrentStage == BORDER_STAGE && m_pOptions->bDrawOptimize && (Mode == M_FILL_AND_LINES || Mode == M_FILL_AND_LINES_TRANSP) )
 					continue;
 
 				DrawPlate(El, Vertexs, Mode, bSmoothTransp, nCurrentStage);

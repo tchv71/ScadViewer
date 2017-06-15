@@ -467,7 +467,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug11/ScfExplorer.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Debug11/ScfExplorerx64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
     </Link>
     <Midl>

@@ -329,7 +329,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Release11/Forum3DView11.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -382,7 +381,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Release11/Forum3DView11.lib</ImportLibrary>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
@@ -433,7 +431,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad21\lib\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>$(IntDir)Forum3DView21.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -483,7 +480,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad21\lib\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>.\Release11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>$(IntDir)Forum3DView21.lib</ImportLibrary>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
@@ -530,7 +526,6 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\Forum3DView11.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>.\Release/Forum3DView.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Release/Forum3DView.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -576,7 +571,6 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\Forum3DView11.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>.\Release/Forum3DView.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Release/Forum3DView.lib</ImportLibrary>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -619,7 +613,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/Forum3DView.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Debug/Forum3DView.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -664,7 +657,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/Forum3DView.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Debug/Forum3DView.lib</ImportLibrary>
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -712,7 +704,6 @@
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Forum3DView___Win32_Release11D/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Forum3DView___Win32_Release11D/Forum3DView11.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -764,7 +755,6 @@
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Forum3DView___Win32_Release11D/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Forum3DView___Win32_Release11D/Forum3DView11.lib</ImportLibrary>
     </Link>
@@ -807,7 +797,6 @@
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Debug11/Forum3DView11.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -855,7 +844,6 @@
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView11.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug11/Forum3DView11.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Debug11/Forum3DView11.lib</ImportLibrary>
     </Link>
@@ -903,7 +891,6 @@
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\32;..\Scad21\lib\32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug21/Forum3DView21.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\Debug21/Forum3DView21.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -952,7 +939,6 @@
       <AdditionalLibraryDirectories>..\Berkeley DB 4.4.20\lib\64;..\Scad21\lib\64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Forum3DView21.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug21/Forum3DView21.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>$(IntDir)Forum3DView21.lib</ImportLibrary>
     </Link>

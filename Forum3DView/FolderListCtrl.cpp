@@ -711,7 +711,7 @@ void CFolderListCtrl::OnRButtonUp(UINT nFlags, CPoint point )
 	m_ListPopup.LoadMenu( IDR_FOLDER_LIST );
 
 	CMenu * pListMenu = m_ListPopup.GetSubMenu( 0 )->GetSubMenu( 0 );
- 
+	pListMenu->SetDefaultItem(ID_FILE_EDIT);
 	ClientToScreen( &point );
 	pListMenu->TrackPopupMenu( TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, AfxGetMainWnd() );
 }
@@ -732,6 +732,7 @@ void CFolderListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 		CMenu m_ListPopup;
 		m_ListPopup.LoadMenu( IDR_FOLDER_LIST );
 		CMenu * pListMenu = m_ListPopup.GetSubMenu( 0 );
+		pListMenu->SetDefaultItem(ID_FILE_EDIT);
 		ClientToScreen( &point );
 		pListMenu->TrackPopupMenu( TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, AfxGetMainWnd() );
 	}
