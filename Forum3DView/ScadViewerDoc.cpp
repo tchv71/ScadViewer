@@ -64,7 +64,9 @@ CScadViewerDoc::CScadViewerDoc() :
 void CScadViewerDoc::Clear()
 {
 	FREE(m_pViewGeometry);
+#ifndef SCAD21
 	FREE(m_IsoParams.Res);
+#endif
 #ifdef SCAD21
 	if (m_pIsoSchem)
 	{

@@ -331,7 +331,8 @@ BOOL CSCAD3DMdlSettings::AddExtInfo( const TCHAR * sExtInfo )
 			return FALSE;
 
 	//LPCSTR sFunc = nDrawFunc < 0 ? sItems[eipFunc].GetBuffer( sItems[eipFunc].GetLength() ) : (LPSTR)MAKELONG( nDrawFunc, 0 );
-	LPSTR sFunc = nDrawFunc < 0 ? nullptr : LPSTR(MAKELONG( nDrawFunc, 0 ));
+	LPSTR sNewFunc = reinterpret_cast<LPSTR>(DWORD_PTR(nDrawFunc));
+	LPSTR sFunc = nDrawFunc < 0 ? nullptr : sNewFunc;
 
 	return AddExtInfo( sItems[eipExt], 
 						sItems[eipDesc], 
