@@ -407,6 +407,8 @@ typedef int (*CmpVertFunc) (const void *, const void *);
 void __fastcall CViewGeometry::DeleteEqualNodes()
 {
 	size_t nVertexs = VertexArray.size();
+	if (nVertexs == 0)
+		return;
 	size_t nElements = ElementArray.size();
 	std::vector<SSortVertex> VertexIndexes;
 	VertexIndexes.resize(nVertexs);
@@ -1112,6 +1114,8 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 {
 	//CViewElementArray ElementsCopy(ElementArray);
 	size_t			nElements = ElementArray.size();
+	if (nElements == 0)
+		return;
 	std::vector<SSortElement>	ElemIndexes(nElements);
 	SSortElement	*Ei = &ElemIndexes[0];
 	CViewElement	*El = ElementArray.GetVector();

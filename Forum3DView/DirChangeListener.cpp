@@ -60,7 +60,7 @@ void CDirChangeListener::ListenDirChange() const
 			(
 				m_strDirName,// directory to watch
 				FALSE, // do not watch the subtree
-				FILE_NOTIFY_CHANGE_FILE_NAME
+				FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
 			); // watch filename changes
 		if (hChange == INVALID_HANDLE_VALUE)
 			return;
