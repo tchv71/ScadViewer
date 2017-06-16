@@ -7,7 +7,7 @@
 #ifndef _VERSION_H
 #define _VERSION_H
 #define V_MINOR 4
-#define V_BUILD 3
+#define V_BUILD 4
 #define STR(x) #x
 #define STR1(x) STR(x)
 
