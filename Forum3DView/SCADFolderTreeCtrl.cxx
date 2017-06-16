@@ -123,7 +123,7 @@ BOOL CSCADFolderTreeCtrl::SetCurFolder( const TCHAR * sPathFolder, BOOL bExpand/
 	if( !piRoot )
 		return FALSE;
 
-	ITEMIDLIST * pCurIDL = GetPIDLByPath( piRoot, sPathFolder );
+	LPITEMIDLIST pCurIDL = GetPIDLByPath( piRoot, sPathFolder );
 	_STRRET strret;
 
 	piRoot->GetDisplayNameOf( pCurIDL, SHGDN_NORMAL | SHGDN_FORPARSING, &strret );
@@ -143,7 +143,7 @@ BOOL CSCADFolderTreeCtrl::SetCurFolder( const TCHAR * sPathFolder, BOOL bExpand/
 	return hItem ? TRUE : FALSE;
 }
 
-HTREEITEM CSCADFolderTreeCtrl::OpenFolder( HTREEITEM hItem, ITEMIDLIST * pidl, const TCHAR * sPathFolder )
+HTREEITEM CSCADFolderTreeCtrl::OpenFolder( HTREEITEM hItem, LPITEMIDLIST pidl, const TCHAR * sPathFolder )
 {
 	if( !hItem )
 		return nullptr;
@@ -162,7 +162,7 @@ HTREEITEM CSCADFolderTreeCtrl::OpenFolder( HTREEITEM hItem, ITEMIDLIST * pidl, c
 		pItemData = reinterpret_cast<CFTCItemData*>(GetItemData( hChildItem ));
 		if( !pItemData )
 			continue;
-		if( pidl && EqualRelativePIDLs( pidl, pItemData->m_pIDL ) )
+		if( pidl && EqualRelativePIDLs( pidl, pItemData->m_pIDL) )
 			return OpenFolder( hChildItem, reinterpret_cast<ITEMIDLIST*>(reinterpret_cast<BYTE*>(pidl) + pidl->mkid.cb), sPathFolder );
 		fcrRes = CmpPath( pItemData->m_sPath, sPathFolder );
 		if( fcrRes == fcrSubDir )
@@ -556,7 +556,11 @@ BOOL CSCADFolderTreeCtrl::GetIconsIndexes( ITEMIDLIST * pidl, int& nIcon, int& n
 
 	if( dwRes > 0 )
 	{
+#ifdef _AMD64_
+		_stprintf_s(shFI.szDisplayName, _T("%lld"), dwRes);
+#else
 		_stprintf_s( shFI.szDisplayName, _T("%d"), dwRes );
+#endif
 		shFI.hIcon = ImageList_ExtractIcon( nullptr, HIMAGELIST(dwRes), shFI.iIcon );
 
 		CFTCIconMap::iterator itIcon = m_miPresentIcon.find( CFTCIconInfo( shFI.szDisplayName, shFI.iIcon ) );
@@ -579,7 +583,11 @@ BOOL CSCADFolderTreeCtrl::GetIconsIndexes( ITEMIDLIST * pidl, int& nIcon, int& n
 
 	if( dwRes > 0 )
 	{
-		_stprintf_s( shFI.szDisplayName, _T("%d"), dwRes );
+#ifdef _AMD64_
+		_stprintf_s(shFI.szDisplayName, _T("%lld"), dwRes);
+#else
+		_stprintf_s(shFI.szDisplayName, _T("%d"), dwRes);
+#endif
 		shFI.hIcon = CImageList::FromHandle( HIMAGELIST(dwRes) )->ExtractIcon( shFI.iIcon );
 
 		CFTCIconMap::iterator itIcon = m_miPresentIcon.find( CFTCIconInfo( shFI.szDisplayName, shFI.iIcon ) );
@@ -616,7 +624,12 @@ BOOL CSCADFolderTreeCtrl::GetIconsIndexes( const TCHAR * sPath, int& nIcon, int&
 	
 	if( dwRes > 0 )
 	{
+#ifdef _AMD64_
+		_stprintf_s(shFI.szDisplayName, _T("%lld"), dwRes);
+#else
 		_stprintf_s( shFI.szDisplayName, _T("%d"), dwRes );
+#endif // _AMD64_
+
 		shFI.hIcon = ImageList_ExtractIcon( nullptr, HIMAGELIST(dwRes), shFI.iIcon );
 
 		CFTCIconMap::iterator itIcon = m_miPresentIcon.find( CFTCIconInfo( shFI.szDisplayName, shFI.iIcon ) );
@@ -639,7 +652,12 @@ BOOL CSCADFolderTreeCtrl::GetIconsIndexes( const TCHAR * sPath, int& nIcon, int&
 
 	if( dwRes > 0 )
 	{
-		_stprintf_s( shFI.szDisplayName, _T("%d"), dwRes );
+#ifdef _AMD64_
+		_stprintf_s(shFI.szDisplayName, _T("%lld"), dwRes);
+#else
+		_stprintf_s(shFI.szDisplayName, _T("%d"), dwRes);
+#endif // _AMD64_
+
 		shFI.hIcon = CImageList::FromHandle( HIMAGELIST(dwRes) )->ExtractIcon( shFI.iIcon );
 
 		CFTCIconMap::iterator itIcon = m_miPresentIcon.find( CFTCIconInfo( shFI.szDisplayName, shFI.iIcon ) );
@@ -800,7 +818,7 @@ LPITEMIDLIST CSCADFolderTreeCtrl::GetPIDLByPath( IShellFolder * piParent, const 
 	return pItem;
 }
 
-BOOL CSCADFolderTreeCtrl::EqualRelativePIDLs( ITEMIDLIST * pidl1, ITEMIDLIST * pidl2 )
+BOOL CSCADFolderTreeCtrl::EqualRelativePIDLs( LPITEMIDLIST pidl1, LPITEMIDLIST pidl2 )
 {
 	if( !pidl1 || !pidl2 || !pidl1->mkid.cb || !pidl2->mkid.cb || pidl1->mkid.cb != pidl2->mkid.cb )
 		return FALSE;
@@ -808,7 +826,7 @@ BOOL CSCADFolderTreeCtrl::EqualRelativePIDLs( ITEMIDLIST * pidl1, ITEMIDLIST * p
 	return memcmp( pidl1, pidl2, pidl1->mkid.cb ) == 0 ? TRUE : FALSE;
 }
 
-LPITEMIDLIST CSCADFolderTreeCtrl::GetLastPIDL( ITEMIDLIST * pidl )
+LPITEMIDLIST CSCADFolderTreeCtrl::GetLastPIDL(LPITEMIDLIST  pidl )
 {
 	if( !pidl )
 		return nullptr;
@@ -820,7 +838,7 @@ LPITEMIDLIST CSCADFolderTreeCtrl::GetLastPIDL( ITEMIDLIST * pidl )
 	return pidl;
 }
 
-UINT CSCADFolderTreeCtrl::GetPIDLSize( ITEMIDLIST * pidl )
+UINT CSCADFolderTreeCtrl::GetPIDLSize( LPITEMIDLIST pidl )
 {
 	if( !pidl )
 		return 0;

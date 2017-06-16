@@ -1742,8 +1742,7 @@ bool CViewGeometry::ProcessBarProfile(CElemInfApiExt &e, SCHEMA * Schem, CViewEl
 		vx.RotateAroundAxis(axis, ang);
 		vy.RotateAroundAxis(axis, ang);
 		vz.RotateAroundAxis(axis, ang);
-		//const size_t nIdx = VertexArray.size();
-		std::vector<NUM_ELEM_TYPE> arrIdx;
+		std::vector<NODE_NUM_TYPE> arrIdx;
 		for (size_t i = 0; i < vecContour.size(); i++)
 		{
 			const S3dPoint& pti = vecContour[i];

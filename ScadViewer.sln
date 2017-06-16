@@ -26,9 +26,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTree", "RTree\RTree.vcxproj", "{E7DB3F6C-5964-469B-97D0-D96DC5D88D53}"
 EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
@@ -140,9 +137,7 @@ Global
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Debug11|Win32.Build.0 = Debug11|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Debug11|x64.ActiveCfg = Debug11|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Debug21|Win32.ActiveCfg = Debug21|Win32
-		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Debug21|Win32.Build.0 = Debug21|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Debug21|x64.ActiveCfg = Debug21|x64
-		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Debug21|x64.Build.0 = Debug21|x64
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release|Win32.ActiveCfg = Release|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release|Win32.Build.0 = Release|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release|x64.ActiveCfg = Release|Win32
@@ -154,9 +149,7 @@ Global
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release11D|Win32.Build.0 = Release11D|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release11D|x64.ActiveCfg = Release11D|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release21|Win32.ActiveCfg = Release21|Win32
-		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release21|Win32.Build.0 = Release21|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release21|x64.ActiveCfg = Release21|x64
-		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Release21|x64.Build.0 = Release21|x64
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Template|Win32.ActiveCfg = Release|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Template|Win32.Build.0 = Release|Win32
 		{68AC12E4-AFB9-3B28-CDD3-FC6D4B3CB265}.Template|x64.ActiveCfg = Release21|Win32
@@ -225,5 +218,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

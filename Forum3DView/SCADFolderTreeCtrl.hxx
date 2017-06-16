@@ -95,7 +95,7 @@ protected:
 
 protected:
 	virtual	BOOL		OnExpanding		( HTREEITEM hItem, UINT nCode );
-	virtual	HTREEITEM	OpenFolder		( HTREEITEM hItem, ITEMIDLIST * pidl, const TCHAR * sPathFolder );
+	virtual	HTREEITEM	OpenFolder		( HTREEITEM hItem, LPITEMIDLIST pidl, const TCHAR * sPathFolder );
 	virtual	HTREEITEM	InsertFolder	( ITEMIDLIST * pidl, IShellFolder * piFolder, IExtractIcon * piIcon, const TCHAR * sName, const TCHAR * sPath, HTREEITEM hParent = TVI_ROOT, HTREEITEM hAfter = TVI_LAST, bool bExpand = false );
 	virtual	BOOL		IsFolderEmpty	( IShellFolder * piFolder ) const;
 	virtual	BOOL		DelItemRecursive( HTREEITEM hItem );
@@ -106,9 +106,9 @@ protected:
 	static	CSCADString		StrRetToStr			( LPITEMIDLIST pidl, _STRRET& strret, bool bMustFree = false, IMalloc * piMalloc = nullptr );
 	static	IShellFolder *	GetFolderByPath		( IShellFolder * piParent, const TCHAR * sPathFolder, /*out*/LPITEMIDLIST * ppItem, /*out*/CSCADString& sName, /*out*/IExtractIcon ** ppiIcon );
 	static	LPITEMIDLIST	GetPIDLByPath		( IShellFolder * piParent, const TCHAR * sPathFolder );
-	static	BOOL			EqualRelativePIDLs	( ITEMIDLIST * pidl1, ITEMIDLIST * pidl2 );
-	static	LPITEMIDLIST	GetLastPIDL			( ITEMIDLIST * pidl );
-	static	UINT			GetPIDLSize			( ITEMIDLIST * pidl );
+	static	BOOL			EqualRelativePIDLs	( LPITEMIDLIST pidl1, LPITEMIDLIST pidl2 );
+	static	LPITEMIDLIST	GetLastPIDL			( LPITEMIDLIST pidl );
+	static	UINT			GetPIDLSize			( LPITEMIDLIST pidl );
 
 	static	FTCFolderCmpRes	CmpPath				( const TCHAR * sParent, const TCHAR * sPath );
 	static	BOOL			PathIsUNCPath		( const TCHAR * sPathFolder );

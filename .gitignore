@@ -300,3 +300,13 @@ ModelManifest.xml
 /RTree/Debug21
 /glew-2.0.0
 /RTree/Release21/RTree.tlog
+/RTree/Win32/Release21/RTree.tlog
+/RTree/Win32/Release21/RTree.tlog/RTree.lastbuildstate
+/RTree/Win32/Release21/RTree.tlog/lib.command.1.tlog
+/RTree/Win32/Release21/RTree.tlog/Lib-link.write.1.tlog
+/RTree/Win32/Release21/RTree.tlog/Lib-link.read.1.tlog
+/RTree/Win32/Release21/RTree.tlog/CL.write.1.tlog
+/RTree/Win32/Release21/RTree.tlog/CL.read.1.tlog
+/RTree/Win32/Release21/RTree.tlog/CL.command.1.tlog
+/Win32/Release21/RTree.lib
+*.lib
