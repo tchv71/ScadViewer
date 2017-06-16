@@ -41,6 +41,8 @@ inline void CGLDraw::SetGlColor(TColor c)
 	glColor3ub(r, g, b);
 };
 
+static BYTE iCurAlpha = 128;
+
 inline void CGLDraw::SetGlColorAlpha(TColor c)
 {
 	if(c == m_crCurColor)
@@ -50,7 +52,7 @@ inline void CGLDraw::SetGlColorAlpha(TColor c)
 	GLubyte r = GetRValue(c), g = GetGValue(c), b = GetBValue(c);
 #ifndef NO_ALPHA
 //#ifndef NEW_DEPTH_SORT
-	glColor4ub(r, g, b, 128);
+	glColor4ub(r, g, b, iCurAlpha);
 #else
 	glColor4ub(r, g, b, 255);
 #endif
@@ -302,10 +304,12 @@ void CGLDraw::Draw(void)
 {
 	if (m_pGeometry == nullptr)
 		return;
+	CWaitCursor crWait;
 	CGLRenderer*pRenderer = (CGLRenderer*)m_pRenderer;
 	//glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
 	EDrawMode	Mode = m_pDrawOptions->Mode;
 	m_pGeometry->SetupElementColors(m_pOptions, Mode);
+	iCurAlpha = BYTE(m_pDrawOptions->fTransparency * 255);
 	c=0xff00;
 	//   glDisable(GL_DITHER);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -342,7 +346,7 @@ void CGLDraw::Draw(void)
 	if(m_pDrawOptions->bSortPlanes && Mode == M_FILL_AND_LINES_TRANSP)
 	{
 		SortElements(Elements, NumElements);
-#ifdef NEW_DEPTH_SORT
+//#ifdef NEW_DEPTH_SORT
 		//Elements->BuildArrays(m_pGeometry->VertexArray, Elements->GetVector(), Elements->size());
 #if 0
 		m_pGeometry->GetNodeCashe()->Recreate();
@@ -357,7 +361,7 @@ void CGLDraw::Draw(void)
 			c = (c * 123 + 76587) & 0xffffff;
 		}
 #endif
-#endif
+//#endif
 	}
 	SViewVertex		*Vertexs = m_pGeometry->VertexArray.GetVector();
 	bool bSmoothTransp = (m_pOptions->bLineSmooth && Mode == M_FILL_AND_LINES_TRANSP);
@@ -1304,9 +1308,8 @@ void CGLDraw::SortElements(CViewElementArray *& Elements, size_t& NumElements)
 		CSortedViewElement& El = vecSorted[i];
 		tree.Add(El.GetRect(), &vecSorted[i]);
 	}
-#ifdef NEW_DEPTH_SORT
-	SortElementsOnce(Vertexs, ProjectedVertexs, vecSorted);
-#endif
+	if (m_pOptions->bQualityTransp)
+		SortElementsOnce(Vertexs, ProjectedVertexs, vecSorted);
 	m_pTree = nullptr;
 	NumElements = vecSorted.size();
 	Elements = new CViewElementArray(m_pGeometry->VertexArray);

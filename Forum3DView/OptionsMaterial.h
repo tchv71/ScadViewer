@@ -61,4 +61,5 @@ protected:
 	CButton m_btnCheckRemoveDupPlanes;
 	CButton m_btnCheckDrawOptimize;
 	CButton m_btnShowUsedNodes;
+	CButton m_btnQualityTransp;
 };

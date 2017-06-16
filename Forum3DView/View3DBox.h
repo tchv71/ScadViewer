@@ -62,6 +62,7 @@ public:
 	void UpdateToolbar() const;
 	void SetCamera(int nFocusLength, bool bChangeDistance);
 	void OnDepthChange(FLOAT_TYPE fNewDepth);
+	void OnTransparencyChange(FLOAT_TYPE fNewVal);
 	void ZoomAll(void) override;
 
 	// Overrides

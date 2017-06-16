@@ -145,10 +145,10 @@ BEGIN
     PUSHBUTTON      "Координационных осей",IDC_FONT_AXES,33,65,85,11
 END
 
-IDD_TAB_MATERIAL DIALOG 0, 0, 294, 228
+IDD_TAB_MATERIAL DIALOGEX 0, 0, 294, 228
 STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
 CAPTION "&Панель просмотра"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     LTEXT           "Толщина границы",IDC_STATIC,12,9,62,8
     EDITTEXT        IDC_LINE_WIDTH_EDIT,82,6,26,14,ES_AUTOHSCROLL
@@ -180,32 +180,34 @@ BEGIN
     CONTROL         "Отображать узлы, принадлежащие",IDC_CHECK_SHOW_USED_NODES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,105,134,10
     LTEXT           "только видимым элементам",IDC_STATIC,163,114,118,8
-    GROUPBOX        "Цвета отображения связей",IDC_STATIC,5,120,211,43
-    LTEXT           "X",IDC_STATIC,13,133,8,8
-    PUSHBUTTON      "X",IDC_X_COLOR_BTN,31,130,33,12
-    LTEXT           "UX",IDC_STATIC,12,149,11,8
-    PUSHBUTTON      "UX",IDC_UX_COLOR_BTN,31,147,33,12
-    LTEXT           "Y",IDC_STATIC,83,133,8,8
-    PUSHBUTTON      "Y",IDC_Y_COLOR_BTN,101,130,33,12
-    LTEXT           "UY",IDC_STATIC,82,149,11,8
-    PUSHBUTTON      "UY",IDC_UY_COLOR_BTN,101,147,33,12
-    LTEXT           "Z",IDC_STATIC,153,133,8,8
-    PUSHBUTTON      "Z",IDC_Z_COLOR_BTN,171,130,33,12
-    LTEXT           "UZ",IDC_STATIC,151,149,11,8
-    PUSHBUTTON      "UZ",IDC_UZ_COLOR_BTN,171,147,33,12
-    GROUPBOX        "Цвет элементов Forum",IDC_STATIC,6,164,274,56
-    LTEXT           "Стен",IDC_STATIC,12,176,17,8
-    PUSHBUTTON      "Wall",IDC_WALL_COLOR_BTN,75,175,33,12
-    LTEXT           "Перекрытий",IDC_STATIC,10,190,43,8
-    PUSHBUTTON      "Slab",IDC_SLAB_COLOR_BTN,75,190,33,12
-    LTEXT           "Крыш",IDC_STATIC,10,205,20,8
-    PUSHBUTTON      "Roofs",IDC_ROOF_COLOR_BTN,75,205,33,12
-    LTEXT           "Колонн",IDC_STATIC,154,178,26,8
-    PUSHBUTTON      "Column",IDC_COLUMN_COLOR_BTN,215,175,33,12
-    LTEXT           "Балок",IDC_STATIC,154,194,22,8
-    PUSHBUTTON      "Beam",IDC_BEAM_COLOR_BTN,215,190,33,12
-    LTEXT           "Язык",IDC_STATIC_LANGUAGE,221,130,33,8
-    COMBOBOX        IDC_LANGUAGES,220,140,60,45,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Цвета отображения связей",IDC_STATIC,5,126,211,43
+    LTEXT           "X",IDC_STATIC,13,139,8,8
+    PUSHBUTTON      "X",IDC_X_COLOR_BTN,31,136,33,12
+    LTEXT           "UX",IDC_STATIC,12,155,11,8
+    PUSHBUTTON      "UX",IDC_UX_COLOR_BTN,31,153,33,12
+    LTEXT           "Y",IDC_STATIC,83,139,8,8
+    PUSHBUTTON      "Y",IDC_Y_COLOR_BTN,101,136,33,12
+    LTEXT           "UY",IDC_STATIC,82,155,11,8
+    PUSHBUTTON      "UY",IDC_UY_COLOR_BTN,101,153,33,12
+    LTEXT           "Z",IDC_STATIC,153,139,8,8
+    PUSHBUTTON      "Z",IDC_Z_COLOR_BTN,171,136,33,12
+    LTEXT           "UZ",IDC_STATIC,151,155,11,8
+    PUSHBUTTON      "UZ",IDC_UZ_COLOR_BTN,171,153,33,12
+    GROUPBOX        "Цвет элементов Forum",IDC_STATIC,6,170,274,56
+    LTEXT           "Стен",IDC_STATIC,12,182,17,8
+    PUSHBUTTON      "Wall",IDC_WALL_COLOR_BTN,75,181,33,12
+    LTEXT           "Перекрытий",IDC_STATIC,10,196,43,8
+    PUSHBUTTON      "Slab",IDC_SLAB_COLOR_BTN,75,196,33,12
+    LTEXT           "Крыш",IDC_STATIC,10,211,20,8
+    PUSHBUTTON      "Roofs",IDC_ROOF_COLOR_BTN,75,211,33,12
+    LTEXT           "Колонн",IDC_STATIC,154,184,26,8
+    PUSHBUTTON      "Column",IDC_COLUMN_COLOR_BTN,215,181,33,12
+    LTEXT           "Балок",IDC_STATIC,154,200,22,8
+    PUSHBUTTON      "Beam",IDC_BEAM_COLOR_BTN,215,196,33,12
+    LTEXT           "Язык",IDC_STATIC_LANGUAGE,221,136,33,8
+    COMBOBOX        IDC_LANGUAGES,220,146,60,45,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Качественная (медленная) прозрачность",IDC_CHECK_QUALITY_TRANSP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,115,149,10
 END
 
 IDD_TAB_GENERAL DIALOGEX 0, 0, 309, 232
@@ -304,6 +306,10 @@ BEGIN
         BOTTOMMARGIN, 64
     END
 
+    IDD_TAB_MATERIAL, DIALOG
+    BEGIN
+    END
+
     IDD_TAB_GENERAL, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -322,6 +328,17 @@ BEGIN
     END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_TAB_MATERIAL AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 
 #ifdef APSTUDIO_INVOKED
@@ -1000,6 +1017,7 @@ BEGIN
     IDC_CHECK_CHANGE_DIST   "Двигать камеру, сохраняя видимый размер модели\nИзменять дистанцию"
     IDC_SLIDER_FLENGTH      "Изменить фокусное расстояние объектива\nФокусное расстояние объектива"
     IDC_SLIDER_DEPTH        "Передвинуть плоскость отсечения по глубине\nПлоскость отсечения"
+    IDC_SLIDER_TRANSPARENCY "\nПрозрачность"
 END
 
 STRINGTABLE

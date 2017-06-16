@@ -90,6 +90,7 @@
 #define IDS_EXPORT_DXF_TITLE            1006
 #define IDC_HEIGHT_EDIT                 1007
 #define IDS_EXPORT_BMP_TITLE            1007
+#define IDC_CHECK_QUALITY_TRANSP        1007
 #define IDC_LANGUAGES                   1008
 #define IDC_ABOUT_VER                   1008
 #define IDS_RES_COLUMN_FILE             1008
@@ -154,6 +155,7 @@
 #define IDC_SLIDER_FLENGTH              2001
 #define IDS_STRING2002                  2002
 #define IDC_SLIDER_DEPTH                2002
+#define IDC_SLIDER_TRANSPARENCY         2003
 #define IDS_COLOR0                      20000
 #define IDS_COLOR1                      20001
 #define IDS_COLOR2                      20002
@@ -292,8 +294,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        165
-#define _APS_NEXT_COMMAND_VALUE         40044
+#define _APS_NEXT_RESOURCE_VALUE        168
+#define _APS_NEXT_COMMAND_VALUE         40045
 #define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

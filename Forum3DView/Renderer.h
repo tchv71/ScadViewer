@@ -118,6 +118,7 @@ public:
 	bool	bLighting;
 
 	FLOAT_TYPE	fDepth;
+	FLOAT_TYPE	fTransparency;
 	double  dblDefScale;
 	SLogFont arrLogFonts[SVF_SIZE];
 	CDrawOptions()
@@ -143,6 +144,7 @@ public:
 		bSlabs = true;
 		Mode = M_FILL_AND_LINES;
 		fDepth = 1.0f;
+		fTransparency = 0.5f;
 		dblDefScale = 1;
 		ZeroMemory(arrLogFonts, sizeof(arrLogFonts));
 		arrLogFonts[1].lfHeight *=7;

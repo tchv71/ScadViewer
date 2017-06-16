@@ -397,7 +397,12 @@ void C3DBoxView::OnDepthChange(FLOAT_TYPE fNewDepth)
 {
 	m_DrawOptions.fDepth = fNewDepth;
 	Invalidate();
+}
 
+void C3DBoxView::OnTransparencyChange(FLOAT_TYPE fNewVal)
+{
+	m_DrawOptions.fTransparency = fNewVal;
+	Invalidate();
 }
 
 void C3DBoxView::SetCamera(int nFocusLength, bool bChangeDistance)

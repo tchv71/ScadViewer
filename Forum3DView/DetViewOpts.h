@@ -44,6 +44,7 @@ struct SViewOptions
     int                 nPrintResolution;
     bool                bPerspective;
 	bool				bShowUsedNodes;
+	bool                bQualityTransp;
 
 	Graphics::TColor	WallColor;
 	Graphics::TColor	SlabColor;
@@ -85,6 +86,7 @@ public:
 		UpdateBool(bLoad,_T("RemoveDupPlanes"),	&bRemoveDupPlanes,		false);
 		UpdateBool(bLoad,_T("DrawOptimize"),	&bDrawOptimize,			false);
 		UpdateBool(bLoad,_T("ShowUsedNodes"),	&bShowUsedNodes,		true);
+		UpdateBool(bLoad, _T("QualityTransp"),  &bQualityTransp,        false);
 
 		UpdateInt(bLoad, _T("PrintResolution"),	&nPrintResolution,		600);
 		UpdateBool(bLoad,_T("Perspective"),		&bPerspective,			false);

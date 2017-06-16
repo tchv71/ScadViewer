@@ -74,7 +74,7 @@ static UINT indicators[] =
 
 CScadViewerFrame::CScadViewerFrame() :
 	m_pbClosed(nullptr),
-	m_wndDepthDialogBar(IDC_SLIDER_DEPTH),
+	m_wndDepthDialogBar(IDC_SLIDER_TRANSPARENCY),
 	m_p3DView(nullptr), m_pMp4View(nullptr), m_bFirstActivate(true)
 {
 	// enable bitmap menu support.
@@ -241,6 +241,10 @@ int CScadViewerFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CSliderCtrl *pWnd = static_cast<CSliderCtrl *>(m_wndDepthDialogBar.GetDlgItem(IDC_SLIDER_DEPTH));
 	pWnd->SetRange(0, 100);
 	pWnd->SetPos(100);
+	pWnd->SetTicFreq(10);
+	pWnd = static_cast<CSliderCtrl *>(m_wndDepthDialogBar.GetDlgItem(IDC_SLIDER_TRANSPARENCY));
+	pWnd->SetRange(0, 100);
+	pWnd->SetPos(50);
 	pWnd->SetTicFreq(10);
 	return 0;
 }
@@ -609,6 +613,14 @@ void CScadViewerFrame::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 		if (pSlider && pSlider->GetDlgCtrlID() == IDC_SLIDER_DEPTH)
 		{
 			m_p3DView->OnDepthChange(pSlider->GetPos() / 100.0f);
+		}
+	}
+	if (pScrollBar && pScrollBar->GetDlgCtrlID() == IDC_SLIDER_TRANSPARENCY)
+	{
+		CSliderCtrl *pSlider = reinterpret_cast<CSliderCtrl*>(m_wndDepthDialogBar.GetDlgItem(IDC_SLIDER_TRANSPARENCY));
+		if (pSlider && pSlider->GetDlgCtrlID() == IDC_SLIDER_TRANSPARENCY)
+		{
+			m_p3DView->OnTransparencyChange(pSlider->GetPos() / 100.0f);
 		}
 	}
 

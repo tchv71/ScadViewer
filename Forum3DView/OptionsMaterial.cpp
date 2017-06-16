@@ -85,6 +85,7 @@ void COptionsMaterial::DoDataExchange(CDataExchange* pDX)
 		m_ViewOptions.bRemoveDupPlanes = m_btnCheckRemoveDupPlanes.GetCheck() !=0;
 		m_ViewOptions.bDrawOptimize = m_btnCheckDrawOptimize.GetCheck() != 0;
 		m_ViewOptions.bShowUsedNodes = m_btnShowUsedNodes.GetCheck() != 0;
+		m_ViewOptions.bQualityTransp = m_btnQualityTransp.GetCheck() != 0;
 		if( m_Languages.GetCurSel() >= 0 )
 			m_nLangID = int(m_Languages.GetItemData( m_Languages.GetCurSel() ));
 
@@ -95,6 +96,8 @@ void COptionsMaterial::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK_DELETE_INNER_PLATES, m_btnCheckRemoveDupPlanes);
 	DDX_Control(pDX, IDC_CHECK_DRAW_OPTIMIZE, m_btnCheckDrawOptimize);
 	DDX_Control(pDX, IDC_CHECK_SHOW_USED_NODES, m_btnShowUsedNodes);
+	DDX_Control(pDX, IDC_CHECK_QUALITY_TRANSP, m_btnQualityTransp);
+
 }
 
 
@@ -123,6 +126,7 @@ BOOL COptionsMaterial::OnInitDialog()
 	m_btnCheckRemoveDupPlanes.SetCheck(m_ViewOptions.bRemoveDupPlanes);
 	m_btnCheckDrawOptimize.SetCheck(m_ViewOptions.bDrawOptimize);
 	m_btnShowUsedNodes.SetCheck(m_ViewOptions.bShowUsedNodes);
+	m_btnQualityTransp.SetCheck(m_ViewOptions.bQualityTransp);
 
 	m_btnClrBars.Color		= m_ViewOptions.BarColor;
 	m_btnClrPlate.Color		= m_ViewOptions.PlateColor;
