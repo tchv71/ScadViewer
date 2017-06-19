@@ -429,7 +429,7 @@ void __fastcall CViewGeometry::DeleteEqualNodes()
 	//int i;
 	for(v1 = VertexIndexes.begin(), v2 = v1 + 1; v1 < VertexIndexes.end();)
 	{
-		while (v2 < VertexIndexes.end() && !(*v1 < *v2) && !(*v2 < *v1))
+		while (v2 < VertexIndexes.end() && (CVectorType(*v1)-CVectorType(*v2)).Length()<0.001f)
 		{
 			NodeSubst[v2->N] = v1->N;
 			++v2;
@@ -444,8 +444,11 @@ void __fastcall CViewGeometry::DeleteEqualNodes()
 	for(size_t i = 0; i < nElements; i++)
 	{
 		CViewElement	*El = ElementArray.GetVector()+i;
-		for(int j = 0; j < int(El->Type) + 2; j++)
+		for (int j = 0; j < int(El->Type) + 2; j++)
+		{
 			El->Points[j] = NodeSubst[El->Points[j]];
+		}
+		El->SetOrigPoints();
 	}
 }
 
@@ -533,8 +536,8 @@ bool CViewGeometry::LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePl
 		ApiRelease(&Schem);
 		return false;
 	}
-	if (ppSchem)
-		return true;
+	//if (ppSchem)
+	//	return true;
 	bool bResult = LoadFromSchema(Schem, TypeProfile, TypePlate, bOptimize);
 	if (!ppSchem)
 		ApiRelease(&Schem);
@@ -581,8 +584,8 @@ bool CViewGeometry::LoadFromFile(LPCTSTR PathName, BYTE TypeProfile, BYTE TypePl
 		delete pNewSchem;
 		return false;
 	}
-	if (ppSchem)
-		return true;
+	//if (ppSchem)
+	//	return true;
 	bool bResult = LoadFromSchema(Schem, TypeProfile, TypePlate, bOptimize);
 	if (!ppSchem)
 	{
@@ -704,10 +707,10 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 		case 5:
 		{
 			const S3dPoint arr[] = {
-				{ 0, -f1/2, -f2/2},
-				{ 0,  f1/2, -f2/2},
-				{ 0,  f1/2,  f2/2},
-				{ 0,  -f1/2, f2/2}
+				S3dPoint( 0, -f1/2, -f2/2),
+				S3dPoint( 0,  f1/2, -f2/2),
+				S3dPoint( 0,  f1/2,  f2/2),
+				S3dPoint( 0,  -f1/2, f2/2)
 			};
 
 			for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
@@ -722,14 +725,14 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 			FLOAT_TYPE s2 = f3*f3;
 			FLOAT_TYPE dy = (((f2 - f4) / 2)*s1 + (f2 - f4 / 2)*s2) / (s1 + s2);
 			const S3dPoint arr[] = {
-				{ 0, -f3 / 2, dy - f2},		// Начальная точка
-				{ 0, f3, 0},				// Далее - Смещения
-				{ 0, 0, f4},
-				{ 0, -(f3 - f1) / 2, 0},
-				{ 0, 0, f2 - f4},
-				{ 0, -f1, 0},
-				{ 0, 0, -(f2 - f4)},
-				{ 0, -(f3 - f1) / 2, 0 },
+				S3dPoint(0, -f3 / 2, dy - f2),		// Начальная точка
+				S3dPoint( 0, f3, 0),				// Далее - Смещения
+				S3dPoint( 0, 0, f4),
+				S3dPoint( 0, -(f3 - f1) / 2, 0),
+				S3dPoint( 0, 0, f2 - f4),
+				S3dPoint( 0, -f1, 0),
+				S3dPoint( 0, 0, -(f2 - f4)),
+				S3dPoint( 0, -(f3 - f1) / 2, 0 )
 			};
 			MakeContour(arr, sizeof(arr) / sizeof(arr[0]), contour, bClosed, nKind == 1 ? 1 : -1);
 			bClosed = true;
@@ -742,18 +745,18 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 			FLOAT_TYPE s3 = f4*f3;
 			FLOAT_TYPE dy = ((f6/ 2)*s1 + (f6 + (f2- f4 -f6) / 2)*s2 + (f2-f4/2)*s3) / (s1 + s2+s3);
 			const S3dPoint arr[] = {
-				{ 0, -f3 / 2, dy - f2 },	// Начальная точка
-				{ 0, f3, 0 },				// Далее - Смещения
-				{ 0, 0, f4 },
-				{ 0, -(f3 - f1) / 2, 0 },
-				{ 0, 0, f2 - f4 - f6 },
-				{ 0, (f5 - f1) / 2, 0 },
-				{ 0, 0, f6 },
-				{ 0, -f5, 0 },
-				{ 0, 0, -f6 },
-				{ 0, -(f5 - f1) / 2, 0 },
-				{ 0, 0, -(f2 - f4 - f6) },
-				{ 0, -(f3 - f1) / 2, 0 },
+				S3dPoint( 0, -f3 / 2, dy - f2 ),	// Начальная точка
+				S3dPoint( 0, f3, 0 ),				// Далее - Смещения
+				S3dPoint( 0, 0, f4 ),
+				S3dPoint( 0, -(f3 - f1) / 2, 0 ),
+				S3dPoint( 0, 0, f2 - f4 - f6 ),
+				S3dPoint( 0, (f5 - f1) / 2, 0 ),
+				S3dPoint( 0, 0, f6 ),
+				S3dPoint( 0, -f5, 0 ),
+				S3dPoint( 0, 0, -f6 ),
+				S3dPoint( 0, -(f5 - f1) / 2, 0 ),
+				S3dPoint( 0, 0, -(f2 - f4 - f6) ),
+				S3dPoint( 0, -(f3 - f1) / 2, 0 )
 			};
 			MakeContour(arr, sizeof(arr) / sizeof(arr[0]), contour, bClosed);
 		}
@@ -765,14 +768,14 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 			FLOAT_TYPE s3 = f3*f4;
 			FLOAT_TYPE dx = ((f3 / 2)*s1 + (f3 -f1/2)*s2 + (f3/2)*s3) / (s1 + s2 + s3);
 			const S3dPoint arr[] = {
-				{ 0, dx-f3, -f2/2 },	// Начальная точка
-				{ 0, f3, 0 },				// Далее - Смещения
-				{ 0, 0, f4 },
-				{ 0, -(f3 - f1), 0 },
-				{ 0, 0, f2 - 2*f4},
-				{ 0,  (f3 - f1), 0 },
-				{ 0, 0, f4 },
-				{ 0, -f3, 0 }
+				S3dPoint(0, dx - f3, -f2 / 2),	// Начальная точка
+				S3dPoint(0, f3, 0),				// Далее - Смещения
+				S3dPoint(0, 0, f4),
+				S3dPoint(0, -(f3 - f1), 0),
+				S3dPoint(0, 0, f2 - 2 * f4),
+				S3dPoint(0,  (f3 - f1), 0),
+				S3dPoint(0, 0, f4),
+				S3dPoint(0, -f3, 0)
 			};
 			MakeContour(arr, sizeof(arr) / sizeof(arr[0]), contour, bClosed);
 		}
@@ -796,18 +799,18 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 			FLOAT_TYPE s4 = f6*f1;
 			FLOAT_TYPE dy = ((f2 - f4 - f5 - f6)/2*s1 + (f2 - f4/2 - f5 - f6)*s2 + (f2 - f5 - f5/3*(2*(f1+2*f3)+f1)/(2*(f1+f3)))*s3+ (f2-f6/2)*s4) / (s1 + s2 + s3 + s4);
 			const S3dPoint arr[] = {
-				{ 0, -f1/2, dy-f2 },	// Начальная точка
-				{ 0, f1, 0 },				// Далее - Смещения
-				{ 0, 0, f6},
-				{ 0, f3, f5 },
-				{ 0, 0, f4 },
-				{ 0, -f3, 0},
-				{ 0, 0, f2 - f4 - f5 - f6},
-				{ 0, -f1, 0},
-				{ 0, 0, -(f2 - f4 - f5 - f6) },
-				{ 0, -f3, 0 },
-				{ 0, 0, -f4 },
-				{ 0, f3, -f5}
+				S3dPoint( 0, -f1/2, dy-f2 ),	// Начальная точка
+				S3dPoint( 0, f1, 0 ),				// Далее - Смещения
+				S3dPoint( 0, 0, f6),
+				S3dPoint( 0, f3, f5 ),
+				S3dPoint( 0, 0, f4 ),
+				S3dPoint( 0, -f3, 0),
+				S3dPoint( 0, 0, f2 - f4 - f5 - f6),
+				S3dPoint( 0, -f1, 0),
+				S3dPoint( 0, 0, -(f2 - f4 - f5 - f6) ),
+				S3dPoint( 0, -f3, 0 ),
+				S3dPoint( 0, 0, -f4 ),
+				S3dPoint( 0, f3, -f5)
 			};
 			MakeContour(arr, sizeof(arr)/sizeof(arr[0]) , contour, bClosed);
 		}
@@ -1147,7 +1150,8 @@ void __fastcall CViewGeometry::DeleteEqualElements()
 			! (*v1 < *v2) &&
 			!(*v2 < *v1) &&
 			v1->OrgType == v2->OrgType &&
-			(v1->Type == EL_PLATE || m_pFlatGeometry == nullptr) &&
+			(v1->Type == EL_TRIANGLE || v1->Type == EL_QUAD)
+			&& m_pFlatGeometry != nullptr &&
 			v1->OrgType != EL_SOLID && v2->OrgType!= EL_SOLID
 		)
 		{
@@ -1693,7 +1697,7 @@ void CViewGeometry::ClearCut()
 }
 
 #ifdef SCAD21
-void CViewGeometry::ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const UINT & i, BYTE TypePlate)
+void CViewGeometry::ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const UINT & i1, BYTE TypePlate)
 {
 	S3dPoint	p[3];
 	for (int i = 0; i < 3; i++)
@@ -1711,18 +1715,18 @@ void CViewGeometry::ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const U
 			break;
 	}
 
-	UINT nHoles = ApiElemGetQuantityHole(Schem, i + 1);
+	UINT nHoles = ApiElemGetQuantityHole(Schem, i1 + 1);
 	UINT nSumQuantHoleNodes = 0;
 	for (UINT j = 0; j<nHoles; j++)
 	{
 		UINT nQuantNodes = 0;
 		const UINT *pNodes;
-		ApiElemGetHole(Schem, i + 1, j + 1, &nQuantNodes, &pNodes);
+		ApiElemGetHole(Schem, i1 + 1, j + 1, &nQuantNodes, &pNodes);
 		nSumQuantHoleNodes += nQuantNodes;
-		AddOprContours(nQuantNodes, e, i, TypePlate, pNodes, Norm);
+		AddOprContours(nQuantNodes, e, i1, TypePlate, pNodes, Norm);
 	}
 	int nQantExt = e.QuantityNode - nSumQuantHoleNodes;
-	AddOprContours(nQantExt, e, i, TypePlate, e.Node, Norm);
+	AddOprContours(nQantExt, e, i1, TypePlate, e.Node, Norm);
 }
 
 bool CViewGeometry::ProcessBarProfile(CElemInfApiExt &e, SCHEMA * Schem, CViewElement &el)
@@ -1777,7 +1781,8 @@ bool CViewGeometry::ProcessBarProfile(CElemInfApiExt &e, SCHEMA * Schem, CViewEl
 
 bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize)
 {
-
+	m_bProfiles = TypeProfile != 0;
+	m_bPlates = TypePlate != 0;
 	m_bOptimize = bOptimize;
 	m_DuplicatedElements.clear();
 #ifdef SCAD21
@@ -1796,9 +1801,8 @@ bool CViewGeometry::LoadFromSchema(SCHEMA * Schem, BYTE TypeProfile, BYTE TypePl
 	}
 #ifdef SCAD21
 	UINT nNodes = ApiGetQuantityNode(Schem);
+	VertexArray.clear();
 	VertexArray.reserve(nNodes);
-	VertexArray.resize(0/*Schem->QuantityNode + Schem->Video.QuantityNodeBody*/);
-
 	UINT nVertexs = 0;
 	for (UINT i = 0; i < nNodes; i++)
 	{

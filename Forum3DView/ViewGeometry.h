@@ -86,8 +86,9 @@ public:
 
 struct SViewFactorVertex : public SViewVertex
 {
-	SViewFactorVertex(const SViewVertex& v) : SViewFactorVertex()
+	SViewFactorVertex(const SViewVertex& v)
 	{
+		ZeroMemory(this, sizeof(*this)); //SViewFactorVertex();
 		memcpy(this, &v, sizeof(SViewVertex));
 	};
 	SViewFactorVertex(): fFactor(0), clr(0), nElement(0), nVertex(0), nVertexIndex(0), nVertexs(0)
@@ -305,10 +306,11 @@ typedef APIHandle_tag SCHEMA;
 #else
 class SCHEMA;
 #endif
+static const FLOAT_TYPE cmpPrec = 0.001f;
+
 struct SSortVertex : public S3dPoint
 {
 	NODE_NUM_TYPE N;
-	const FLOAT_TYPE cmpPrec = 0.001f;
 	bool operator <(const SSortVertex& other) const
 	{
 		if (x < other.x - cmpPrec)
@@ -323,7 +325,7 @@ struct SSortVertex : public S3dPoint
 			return true;
 		if (z > other.z + cmpPrec)
 			return false;
-		return  N < other.N;
+		return  N<other.N;
 	}
 	SSortVertex& operator =(const SSortVertex& other)
 	{
@@ -465,7 +467,9 @@ public:
 		m_bShowUsedNodes(false),
 		m_bForumGeometry(false),
 		m_pNodeCashe(nullptr),
-		ElementArray(VertexArray)
+		ElementArray(VertexArray),
+		m_bProfiles(false),
+		m_bPlates(false)
 	{
 	}
 	virtual ~CViewGeometry(void);
@@ -488,7 +492,7 @@ public:
 
 	bool LoadFromSchema(SCHEMA *Schem, BYTE TypeProfile, BYTE TypePlate, bool bOptimize = true);
 #ifdef SCAD21
-	void ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const UINT & i, BYTE TypePlate);
+	void ProcessOprElement(CElemInfApiExt &e, SCHEMA * Schem, const UINT & i1, BYTE TypePlate);
 	bool ProcessSpecialTypes(CElemInfApiExt &e);
 	bool ProcessBarProfile(CElemInfApiExt & e, SCHEMA * Schem, CViewElement & el);
 	void AddOprContours(const UINT &nQuantNodes, CElemInfApiExt &e, const UINT &i, const BYTE &TypePlate, const UINT * pNodes, CVectorType &Norm);
@@ -508,6 +512,8 @@ public:
 	bool	m_bDeleteInnerPlates;
 	bool	m_bForThumbs;
 	bool	m_bOptimize;
+	bool	m_bProfiles;
+	bool	m_bPlates;
 	bool   IsElDuplicated(NUM_ELEM_TYPE nEl) const
 	{
 		return m_DuplicatedElements.count(nEl)!=0;

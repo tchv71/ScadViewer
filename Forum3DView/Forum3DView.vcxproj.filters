@@ -374,7 +374,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
     <None Include="res\bitmap1.bmp">
       <Filter>Resource Files</Filter>
     </None>
@@ -458,6 +457,9 @@
     </None>
     <None Include="res\ThumbProp.bmp">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt">
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #include "Rectangle.h"
 #include <cmath>
 #include "RTree.h"
+#include <xutility>
 
 namespace RTreeLib
 {
@@ -37,12 +38,12 @@ namespace RTreeLib
 
 	void Rectangle::set(float x1, float y1, float x2, float y2, float z1, float z2)
 	{
-		min[0] = fmin(x1, x2);
-		min[1] = fmin(y1, y2);
-		min[2] = fmin(z1, z2);
-		max[0] = fmax(x1, x2);
-		max[1] = fmax(y1, y2);
-		max[2] = fmax(z1, z2);
+		min[0] = __min(x1, x2);
+		min[1] = __min(y1, y2);
+		min[2] = __min(z1, z2);
+		max[0] = __max(x1, x2);
+		max[1] = __max(y1, y2);
+		max[2] = __max(z1, z2);
 	}
 
 	void Rectangle::set(const float min[], const float max[])
@@ -114,8 +115,8 @@ namespace RTreeLib
 		float distanceSquared = 0;
 		for (int i = 0; i < DIMENSIONS; i++)
 		{
-			float greatestMin = fmax(min[i], p.coordinates[i]);
-			float leastMax = fmin(max[i], p.coordinates[i]);
+			float greatestMin = __max(min[i], p.coordinates[i]);
+			float leastMax = __min(max[i], p.coordinates[i]);
 			if (greatestMin > leastMax)
 			{
 				distanceSquared += ((greatestMin - leastMax) * (greatestMin - leastMax));
@@ -129,8 +130,8 @@ namespace RTreeLib
 		float distanceSquared = 0;
 		for (int i = 0; i < DIMENSIONS; i++)
 		{
-			float greatestMin = fmax(min[i], r.min[i]);
-			float leastMax = fmin(max[i], r.max[i]);
+			float greatestMin = __max(min[i], r.min[i]);
+			float leastMax = __min(max[i], r.max[i]);
 			if (greatestMin > leastMax)
 			{
 				distanceSquared += ((greatestMin - leastMax) * (greatestMin - leastMax));
@@ -161,9 +162,9 @@ namespace RTreeLib
 
 		for (int i = 0; i < DIMENSIONS; i++)
 		{
-			distanceSquared += fmax(r.min[i], r.max[i]);
+			distanceSquared += __max(r.min[i], r.max[i]);
 //#warning possible didn't convert properly
-			//distanceSquared += fmax(distanceSquared(i, r.min[i]), distanceSquared(i, r.max[i]));
+			//distanceSquared += __max(distanceSquared(i, r.min[i]), distanceSquared(i, r.max[i]));
 		}
 
 		return sqrt(distanceSquared);
@@ -171,8 +172,8 @@ namespace RTreeLib
 
 	float Rectangle::enlargement(Rectangle r)
 	{
-		float enlargedArea = (fmax(max[0], r.max[0]) - fmin(min[0], r.min[0])) *
-			(fmax(max[1], r.max[1]) - fmin(min[1], r.min[1]));
+		float enlargedArea = (__max(max[0], r.max[0]) - __min(min[0], r.min[0])) *
+			(__max(max[1], r.max[1]) - __min(min[1], r.min[1]));
 
 		return enlargedArea - area();
 	}

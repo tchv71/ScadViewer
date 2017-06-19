@@ -121,7 +121,7 @@ void CIsoViewGeometry::SetDeformState(SOglIsoParam *pParam)
 		v.y *= fNorm;
 		v.z *= fNorm;
 	}
-	LoadFactors();
+	//LoadFactors();
 }
 
 void CIsoViewGeometry::SetParams(SOglIsoParam *pParam)
@@ -133,16 +133,17 @@ void CIsoViewGeometry::SetParams(SOglIsoParam *pParam)
 
 bool CIsoViewGeometry::LoadIso(bool bShowProfile, bool bOptimize)
 {
+	bool bRes = true;
 #ifdef SCAD21
-	bool bRes = LoadFromSchema(m_Params.hAPI, bShowProfile, 0, false);
+	bRes = LoadFromSchema(m_Params.hAPI, bShowProfile, 0, false);
 #else
-	bool bRes = LoadFromSchema(m_Params.Res->GetSchema(), bShowProfile, 0, false);
+	bRes = LoadFromSchema(m_Params.Res->GetSchema(), bShowProfile, 0, false);
 #endif
 	m_nRealElements = ElementArray.size();
 	UINT i;
 	m_OriginalVertexs = VertexArray;
 	SetDeformState(&m_Params);
-	//LoadFactors();
+	LoadFactors();
 	// Set bContourOnly flag for all plates
 	size_t nElements = ElementArray.size();
     for (i=0; i<nElements; i++)
@@ -657,7 +658,7 @@ void CIsoViewGeometry::SetDefScale(double dblDefScale)
 		v1.z = vO.z + FLOAT_TYPE(m_vecDisp[nDispIndex].z*dblDefScale*m_dblDefScaleMult);
 	}
 
-	LoadFactors();
+	//LoadFactors();
 }
 
 #include "Cutter.h"
@@ -787,16 +788,16 @@ APICode _ApiGetEfforsXXX(unsigned NumElem, spr::CSchema * pSchem, ApiElemEffors 
 				if (pRes->GetElemEffors(rEff, NumElem, 1, (BYTE)TypeRead, 1) != 0x00)
 				{
 					*ppEffors = &rEff;
-					return APICode::APICode_OK;
+					return APICode_OK;
 				}
 				else
-					return APICode::APICode_InternalError;
+					return APICode_InternalError;
 			}
 			else
-				return APICode::APICode_IndexError;
+				return APICode_IndexError;
 		}
 	}
-	return APICode::APICode_NoResult;
+	return APICode_NoResult;
 }
 
 
@@ -947,7 +948,7 @@ void CIsoViewGeometry::LoadFactors()
 	m_mapVertexFactors.clear();
 	if (m_nRealElements<0)
 	{
-		LoadFromSchema(Prj, 0, 0, false);
+		LoadFromSchema(Prj, m_bProfiles, 0, false);
 		m_nRealElements = ElementArray.size();
 	}
 	switch (m_Params.nTypeData)
@@ -992,13 +993,13 @@ void CIsoViewGeometry::LoadFactors()
 				continue;
 			}
 
-			int j = 0;
-			S3dPoint ptMiddle(0, 0, 0);
-			double val = 0;
-			if (el.OrgType == EL_BAR)
+			if (el.OrgType == EL_BAR && m_Params.nTypeData != Iso_Disp)
 			{
 				continue;
 			}
+			int j = 0;
+			S3dPoint ptMiddle(0, 0, 0);
+			double val = 0;
 			for (; j < el.NumVertexs(); j++)
 			{
 				NODE_NUM_TYPE nVertex = el.Points[j];

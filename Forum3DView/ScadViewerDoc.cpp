@@ -244,9 +244,9 @@ void CScadViewerDoc::LoadIso()
 #endif
 	if (!m_strFileName.IsEmpty())
 		m_pViewGeometry->LoadFromFile(m_strFileName, m_bShowProfiles,
-			m_bShowPlateThickness, bOptimize, &pSchem);
+			0, bOptimize, &pSchem);
 	else
-		m_pViewGeometry->LoadFromSchema(pSchem, m_bShowProfiles, m_bShowPlateThickness, bOptimize);
+		m_pViewGeometry->LoadFromSchema(pSchem, m_bShowProfiles, 0, bOptimize);
 #ifdef SCAD21
 	m_IsoParams.hAPI = pSchem;
 	UnitsAPI theUnits[3] =
@@ -278,6 +278,9 @@ void CScadViewerDoc::LoadIso()
 	}
 #endif
 	//BOOL bRes = ApiYesDisplace(pSchem);
+	pGeom->m_bProfiles = m_bShowProfiles;
+	pGeom->m_bPlates = m_bShowPlateThickness;
+	pGeom->m_nRealElements = pGeom->ElementArray.size();
 	FillIsoParams();
 	pGeom->SetParams(&m_IsoParams);
 	pGeom->LoadIso(m_bShowProfiles, pView->m_ViewOptions.bDrawOptimize);

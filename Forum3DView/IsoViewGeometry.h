@@ -71,6 +71,7 @@ public:
 	void ClearCut(void) override;
 
 	SOglIsoParam m_Params;
+	ptrdiff_t m_nRealElements;
 
 protected:
 	struct DefMapInfo m_DMI;
@@ -95,7 +96,6 @@ protected:
 	CViewFactorArray m_Factors;
 	std::map<NODE_NUM_TYPE, NODE_NUM_TYPE> m_mapVertexFactors;
 	int m_nOff;
-	ptrdiff_t m_nRealElements;
 	double m_dblDefScaleMult;
 	CIsoViewerFrame* m_pFrm;
 	friend class CIsoViewerFrame;

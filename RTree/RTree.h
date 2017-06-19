@@ -51,14 +51,15 @@ namespace RTreeLib
 	/// Ported to C# By Dror Gluska, April 9th, 2009
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
+	const std::string version = "1.0b2p1";
+
 	template <class T>
 	class RTree
 	{
 	private:
-		const std::string version = "1.0b2p1";
 
 		// parameters of the tree
-		const int DEFAULT_MAX_NODE_ENTRIES = 10;
+		static const int DEFAULT_MAX_NODE_ENTRIES = 10;
 		int maxNodeEntries;
 		int minNodeEntries;
 
@@ -70,11 +71,11 @@ namespace RTreeLib
 		std::unordered_map<int, Node> nodeMap;
 
 		// internal consistency checking - set to true if debugging tree corruption
-		const bool INTERNAL_CONSISTENCY_CHECKING = false;
+		static const bool INTERNAL_CONSISTENCY_CHECKING = false;
 
 		// used to mark the status of entries during a Node split
-		const int ENTRY_STATUS_ASSIGNED = 0;
-		const int ENTRY_STATUS_UNASSIGNED = 1;
+		static const int ENTRY_STATUS_ASSIGNED = 0;
+		static const int ENTRY_STATUS_UNASSIGNED = 1;
 		std::vector<BYTE> entryStatus;
 		std::vector<BYTE> initialEntryStatus;
 
