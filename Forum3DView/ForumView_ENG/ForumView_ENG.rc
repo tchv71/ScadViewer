@@ -1,0 +1,1105 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "..\..\Version.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Русский (Россия) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""..\\Version.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT\r\n"
+    "#pragma code_page(1251)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ForumView_ENG.rc2""\r\n"
+    "//#include ""afxres.rc""         // Standard components\r\n"
+    "//#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\r\n"
+    "//#include ""toolkit\\secres.rc""    // Objective Toolkit Resources\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Русский (Россия) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Английский (США) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SAVE_BMP DIALOG 0, 0, 185, 57
+STYLE DS_SETFONT | DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",1119,0,3,185,13
+    GROUPBOX        "Bitmap size",IDC_STATIC,5,20,180,30
+    EDITTEXT        IDC_EDIT_BMP_WIDTH,10,30,20,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_BMP_HEIGHT,44,31,20,12,ES_AUTOHSCROLL
+    LTEXT           "X",IDC_STATIC,34,33,8,8
+    LTEXT           "pixels",IDC_STATIC,73,32,19,8
+    CONTROL         "Lock proportions",IDC_CHECK_LOCK_PROP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,101,31,64,12
+END
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 223, 71
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Scad/Forum Explorer"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    ICON            IDI_FORUM_VIEWER,IDC_STATIC,13,13,20,20
+    LTEXT           "Scad/Forum Explorer  Version",IDC_STATIC,44,15,95,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2000-17 Dmitry Tcvetkov",IDC_STATIC,44,30,124,8
+    DEFPUSHBUTTON   "OK",IDOK,59,50,50,14,WS_GROUP
+    LTEXT           "",IDC_ABOUT_VER,143,15,73,8
+END
+
+IDD_TAB_RTF DIALOG 0, 0, 227, 94
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "&Results"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Displacement scaling\nfactor",IDC_STATIC,10,6,112,16
+    EDITTEXT        IDC_DEFORM_SCALE_EDIT,126,6,26,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DEFORM_SCALE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,151,6,11,14
+    PUSHBUTTON      "Factor values",IDC_FONT_RESULTS,33,49,85,11
+    GROUPBOX        "Font tuning",IDC_STATIC,10,33,197,55
+    PUSHBUTTON      "Axes",IDC_FONT_AXES,33,65,85,11
+END
+
+IDD_TAB_MATERIAL DIALOGEX 0, 0, 299, 247
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "&View panel"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Border width",IDC_STATIC,12,9,62,8
+    EDITTEXT        IDC_LINE_WIDTH_EDIT,82,6,26,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_LINE_WIDTH_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,107,6,11,14
+    LTEXT           "Node marker size",IDC_STATIC,138,9,80,8
+    EDITTEXT        IDC_NODE_SIZE_EDIT,220,6,26,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_NODE_SIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,245,6,11,14
+    GROUPBOX        "Colors",IDC_STATIC,6,24,284,58
+    LTEXT           "Bars",IDC_STATIC,12,36,34,8
+    PUSHBUTTON      "Bar",IDC_BAR_COLOR_BTN,53,32,33,12
+    LTEXT           "Element borders",IDC_STATIC,12,46,40,17
+    PUSHBUTTON      "Border",IDC_BORDER_COLOR_BTN,53,48,33,12
+    LTEXT           "Plates",IDC_STATIC,12,64,20,8
+    PUSHBUTTON      "Plate",IDC_PLATE_COLOR_BTN,53,64,33,12
+    LTEXT           "Background",IDC_STATIC,109,34,41,8
+    PUSHBUTTON      "Back",IDC_BACKGROUND_COLOR_BTN,154,32,33,12
+    LTEXT           "Node markers",IDC_STATIC,109,44,38,17
+    PUSHBUTTON      "Node",IDC_NODE_COLOR_BTN,154,48,33,12
+    LTEXT           "Solids",IDC_STATIC,109,65,31,8
+    PUSHBUTTON      "Solid",IDC_SOLIDS_COLOR_BTN,154,64,33,12
+    LTEXT           "Duplicate elements",IDC_STATIC,195,31,40,17
+    PUSHBUTTON      "Dups",IDC_DUPES_COLOR_BTN,241,32,33,12
+    CONTROL         "OpenGL 1.0 &compartibility",IDC_CHECK_OGL10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,85,95,10
+    CONTROL         "&Hardware 3D acceleration",IDC_CHECK_HARDWARE_ACC,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,95,105,10
+    CONTROL         "Drawing &optimization",IDC_CHECK_DRAW_OPTIMIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,105,100,10
+    CONTROL         "Line &smoothing",IDC_CHECK_LINE_SMOOTH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,143,85,83,10
+    CONTROL         "Delete &inner plates",IDC_CHECK_DELETE_INNER_PLATES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,143,95,119,10
+    CONTROL         "Display nodes &belonging only to",IDC_CHECK_SHOW_USED_NODES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,143,105,112,10
+    LTEXT           "visible elements",IDC_STATIC,153,115,50,8
+    GROUPBOX        "Constraints color",IDC_STATIC,7,126,211,43
+    LTEXT           "X",IDC_STATIC,15,139,8,8
+    PUSHBUTTON      "X",IDC_X_COLOR_BTN,33,136,33,12
+    LTEXT           "UX",IDC_STATIC,14,155,11,8
+    PUSHBUTTON      "UX",IDC_UX_COLOR_BTN,33,152,33,12
+    LTEXT           "Y",IDC_STATIC,85,139,8,8
+    PUSHBUTTON      "Y",IDC_Y_COLOR_BTN,103,136,33,12
+    LTEXT           "UY",IDC_STATIC,84,155,11,8
+    PUSHBUTTON      "UY",IDC_UY_COLOR_BTN,103,152,33,12
+    LTEXT           "Z",IDC_STATIC,155,139,8,8
+    PUSHBUTTON      "Z",IDC_Z_COLOR_BTN,173,136,33,12
+    LTEXT           "UZ",IDC_STATIC,153,155,11,8
+    PUSHBUTTON      "UZ",IDC_UZ_COLOR_BTN,173,152,33,12
+    GROUPBOX        "Forum elements color",IDC_STATIC,6,174,284,66
+    LTEXT           "Walls",IDC_STATIC,12,186,17,8
+    PUSHBUTTON      "Wall",IDC_WALL_COLOR_BTN,78,186,33,12
+    LTEXT           "Slabs",IDC_STATIC,12,204,43,8
+    PUSHBUTTON      "Slab",IDC_SLAB_COLOR_BTN,78,204,33,12
+    LTEXT           "Roofs",IDC_STATIC,12,222,20,8
+    PUSHBUTTON      "Beam",IDC_ROOF_COLOR_BTN,78,222,33,12
+    LTEXT           "Columns",IDC_STATIC,160,188,26,8
+    PUSHBUTTON      "Column",IDC_COLUMN_COLOR_BTN,226,186,33,12
+    LTEXT           "Beams",IDC_STATIC,160,204,22,8
+    PUSHBUTTON      "Beam",IDC_BEAM_COLOR_BTN,226,204,33,12
+    LTEXT           "Language",IDC_STATIC_LANGUAGE,227,136,33,8
+    COMBOBOX        IDC_LANGUAGES,226,145,64,45,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Quality (slow) transparency",IDC_CHECK_QUALITY_TRANSP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,115,100,10
+END
+
+IDD_TAB_GENERAL DIALOGEX 0, 0, 309, 232
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "&General"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_SIZE_PROP,"Button",BS_AUTOCHECKBOX | BS_BITMAP | BS_PUSHLIKE | WS_TABSTOP,19,46,11,11
+    CONTROL         "Slider1",IDC_WIDTH_SLIDER,"msctls_trackbar32",TBS_AUTOTICKS | WS_TABSTOP,40,45,160,11,WS_EX_TRANSPARENT
+    CONTROL         "Slider2",IDC_HEIGHT_SLIDER,"msctls_trackbar32",TBS_AUTOTICKS | TBS_VERT | WS_TABSTOP,19,60,13,113
+    EDITTEXT        IDC_WIDTH_EDIT,78,173,26,14,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_HEIGHT_EDIT,119,173,26,14,ES_AUTOHSCROLL | WS_DISABLED
+    COMBOBOX        IDC_LANGUAGES,226,41,77,45,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_FILE_TYPES_LIST,226,66,76,46,LBS_SORT | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_DEF_PROJ_LIST,226,126,76,67,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Thumbnail size",IDC_STATIC,5,30,215,163
+    LTEXT           "",IDC_THUMBNAIL_VIEW,42,63,161,105,WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    CTEXT           "x",IDC_STATIC,108,176,8,8
+    LTEXT           "pixels",IDC_STATIC,151,177,18,8
+    LTEXT           "Language",IDC_STATIC,227,32,33,8
+    LTEXT           "File types",IDC_STATIC,228,57,30,8
+    LTEXT           "Default projection",IDC_STATIC,227,116,56,8
+    LTEXT           "",IDC_THUMBNAIL,80,90,85,55
+END
+
+IDD_RESULTS DIALOG 0, 0, 334, 201
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Delete files"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Exit",IDCANCEL,277,180,50,14
+    PUSHBUTTON      "&Select All",IDC_SELECT_ALL,215,180,50,14
+    CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | WS_BORDER | WS_TABSTOP,5,5,325,165
+    PUSHBUTTON      "&Delete",IDC_DELETE,5,180,50,14
+    PUSHBUTTON      "Create &ZIP Archive",IDC_CREATE_ZIP,105,180,65,14
+END
+
+IDD_ABORT_ZIP DIALOG 33, 32, 160, 70
+STYLE DS_SETFONT | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Archiving"
+FONT 8, "Ms Sans Serif"
+BEGIN
+    CTEXT           "Archiving:",200,0,7,160,8,NOT WS_GROUP
+    DEFPUSHBUTTON   "Cancel",202,60,47,45,15
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,10,26,139,11
+END
+
+AFX_IDD_PREVIEW_TOOLBAR DIALOG 0, 0, 330, 16
+STYLE DS_SETFONT | DS_3DLOOK | WS_CHILD
+FONT 8, "MS Shell Dlg"
+BEGIN
+    PUSHBUTTON      "&Print...",AFX_ID_PREVIEW_PRINT,2,2,44,12
+    PUSHBUTTON      "&Next Page",AFX_ID_PREVIEW_NEXT,48,2,44,12
+    PUSHBUTTON      "Pre&v Page",AFX_ID_PREVIEW_PREV,94,2,44,12
+    PUSHBUTTON      "",AFX_ID_PREVIEW_NUMPAGE,140,2,44,12
+    PUSHBUTTON      "Zoom &In",AFX_ID_PREVIEW_ZOOMIN,186,2,44,12
+    PUSHBUTTON      "Zoom &Out",AFX_ID_PREVIEW_ZOOMOUT,232,2,44,12
+    PUSHBUTTON      "&Close",AFX_ID_PREVIEW_CLOSE,278,2,44,12
+END
+
+AFX_IDD_PRINTDLG DIALOG 6, 18, 133, 95
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CTEXT           "Printing",IDC_STATIC,0,9,133,8
+    CTEXT           "",AFX_IDC_PRINT_DOCNAME,0,19,133,8
+    CTEXT           "on the",IDC_STATIC,0,29,133,8
+    CTEXT           "",AFX_IDC_PRINT_PRINTERNAME,0,39,133,8
+    CTEXT           "",AFX_IDC_PRINT_PORTNAME,0,49,133,8
+    CTEXT           "",AFX_IDC_PRINT_PAGENUM,0,59,133,8
+    PUSHBUTTON      "Cancel",IDCANCEL,46,74,40,14
+END
+
+IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "??????? ???????? - ???????????"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,96,27,50,14
+    PUSHBUTTON      "??????",IDCANCEL,155,27,50,14
+    COMBOBOX        IDC_EDIT_VALUE,7,7,198,79,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_SCALE DIALOGEX 0, 0, 130, 258
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_GRID,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,5,27,118,204
+    COMBOBOX        IDC_COMBO_NUM,89,9,31,230,CBS_DROPDOWNLIST | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "?",IDC_BUTTON_HOT,29,7,18,16,BS_BITMAP
+    PUSHBUTTON      "?",IDC_BUTTON_COLD,49,7,18,16,BS_BITMAP
+    PUSHBUTTON      "?",IDC_BUTTON_GRAY,69,7,18,16,BS_BITMAP
+    PUSHBUTTON      "?",IDC_BUTTON_UNIFORM,5,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Invert Scale",IDC_BTN_INVERT_SCALE,5,236,118,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_SAVE_BMP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 50
+    END
+
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 216
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_TAB_MATERIAL, DIALOG
+    BEGIN
+    END
+
+    IDD_TAB_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        VERTGUIDE, 222
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 225
+    END
+
+    IDD_RESULTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 327
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 194
+    END
+
+    IDD_ABORT_ZIP, DIALOG
+    BEGIN
+    END
+
+    AFX_IDD_PREVIEW_TOOLBAR, DIALOG
+    BEGIN
+    END
+
+    AFX_IDD_PRINTDLG, DIALOG
+    BEGIN
+    END
+
+    IDD_DIALOG_DELIM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 41
+    END
+
+    IDD_SCALE, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 123
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 250
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        POPUP "Export"
+        BEGIN
+            MENUITEM "Autocad DXF...",              ID_EXPORT_TO_DXF
+            MENUITEM "Folder -> RTF...",            ID_EXPORT_FOLDER_TO_RTF
+            MENUITEM "Windows &BMP",                ID_EXPORT_TO_BMP
+        END
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Sen&d...",                    ID_FILE_SEND_MAIL
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+    END
+    POPUP "&View"
+    BEGIN
+        POPUP "&Mode"
+        BEGIN
+            MENUITEM "&Wireframe",                  ID_VIEW_MODE_WIREFRAME
+            MENUITEM "&Solid",                      ID_VIEW_MODE_SOLID
+            MENUITEM "&Element borders",            ID_VIEW_MODE_ELEMENTBORDERS
+            MENUITEM "&Transparent",                ID_VIEW_MODE_TRANSPARENT
+        END
+        POPUP "&Navigate"
+        BEGIN
+            MENUITEM "&Zoom",                       ID_VIEW_MODE_ZOOM_WIN
+            MENUITEM "&Pan",                        ID_VIEW_MODE_PAN
+            MENUITEM "&Rotate",                     ID_VIEW_MODE_ROTATE
+            MENUITEM "&Select",                     ID_VIEW_MODE_SELECT
+            MENUITEM "&Look Around",                ID_VIEW_MODE_LOOK_AROUND
+            MENUITEM "Walk",                        ID_VIEW_MODE_WALK
+        END
+        POPUP "&Elements"
+        BEGIN
+            MENUITEM "&Nodes",                      ID_VIEW_ELEMENTS_NODES
+            MENUITEM "&Constraints",                ID_VIEW_ELEMENTS_CONSTRAINTS
+            MENUITEM "La&yout Axes",                ID_VIEW_ELEMENTS_AXES
+            MENUITEM "&Bars",                       ID_VIEW_ELEMENTS_BARS
+            MENUITEM "&Plates",                     ID_VIEW_ELEMENTS_PLATES
+            MENUITEM "&Solids",                     ID_VIEW_ELEMENTS_SOLIDS
+            MENUITEM SEPARATOR
+            MENUITEM "Co&lumns",                    ID_VIEW_ELEMENTS_COLUMNS
+            MENUITEM "B&eams",                      ID_VIEW_ELEMENTS_BEAMS
+            MENUITEM "&Walls",                      ID_VIEW_ELEMENTS_WALLS
+            MENUITEM "Sl&abs",                      ID_VIEW_ELEMENTS_SLABS
+            MENUITEM "&Roofs",                      ID_VIEW_ELEMENTS_ROOFS
+        END
+        POPUP "&Fragments"
+        BEGIN
+            MENUITEM "&Cut",                        ID_CUT
+            MENUITEM "&Inverse cut",                ID_INV_CUT
+            MENUITEM "&Undo cut",                   ID_CUT_UNDO
+            MENUITEM "Cance&l cut",                 ID_NO_CUT
+        END
+        POPUP "&3D Views"
+        BEGIN
+            MENUITEM "&Top",                        ID_VIEW_3DVIEWS_TOP
+            MENUITEM "&Bottom",                     ID_VIEW_3DVIEWS_BOTTOM
+            MENUITEM "&Left",                       ID_VIEW_3DVIEWS_LEFT
+            MENUITEM "&Right",                      ID_VIEW_3DVIEWS_RIGHT
+            MENUITEM "&Front",                      ID_VIEW_3DVIEWS_FRONT
+            MENUITEM "Ba&ck",                       ID_VIEW_3DVIEWS_BACK
+            MENUITEM SEPARATOR
+            MENUITEM "&SW Isometric",               ID_VIEW_3DVIEWS_SW_ISO
+            MENUITEM "S&E Isometric",               ID_VIEW_3DVIEWS_SE_ISO
+            MENUITEM "&NE Isometric",               ID_VIEW_3DVIEWS_NE_ISO
+            MENUITEM "N&W Isometric",               ID_VIEW_3DVIEWS_NW_ISO
+            MENUITEM SEPARATOR
+            MENUITEM "&Dimetry",                    ID_VIEW_3DVIEWS_DIMETRY
+        END
+        MENUITEM "Pe&rspective",                ID_VIEW_PERSPECTIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Show &bar profile",           ID_VIEW_SHOWBARPROFILE
+        MENUITEM "Show &plate thickness",       ID_VIEW_SHOWPLATETHICKNESS
+        MENUITEM SEPARATOR
+        MENUITEM "&Thumbnails",                 ID_VIEW_THUMBNAIL
+        MENUITEM "L&arge Icons",                ID_VIEW_LARGE_ICON
+        MENUITEM "Small &Icons",                ID_VIEW_SMALL_ICON
+        MENUITEM "&List",                       ID_VIEW_LIST
+        MENUITEM "&Details",                    ID_VIEW_DETAILS
+        MENUITEM SEPARATOR
+        MENUITEM "&Refresh\tF5",                ID_MENU_VIEW_REFRESH
+        MENUITEM SEPARATOR
+        MENUITEM "Folder tree",                 ID_VIEW_FOLDER_TREE
+        MENUITEM "Folder view",                 ID_VIEW_FOLDER_VIEW
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM "&Options...",                 ID_TOOLS_OPTIONS
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help Topics",                ID_HELP_FINDER
+        MENUITEM SEPARATOR
+        MENUITEM "&About Scad/Forum Explorer...", ID_APP_ABOUT
+    END
+END
+
+IDR_POPUP_MENUS MENU
+BEGIN
+    POPUP "Projection"
+    BEGIN
+        MENUITEM "&Top",                        ID_VIEW_3DVIEWS_TOP
+        MENUITEM "&Bottom",                     ID_VIEW_3DVIEWS_BOTTOM
+        MENUITEM "&Left",                       ID_VIEW_3DVIEWS_LEFT
+        MENUITEM "&Right",                      ID_VIEW_3DVIEWS_RIGHT
+        MENUITEM "&Front",                      ID_VIEW_3DVIEWS_FRONT
+        MENUITEM "Ba&ck",                       ID_VIEW_3DVIEWS_BACK
+        MENUITEM SEPARATOR
+        MENUITEM "&SW Isometric",               ID_VIEW_3DVIEWS_SW_ISO
+        MENUITEM "S&E Isometric",               ID_VIEW_3DVIEWS_SE_ISO
+        MENUITEM "&NE Isometric",               ID_VIEW_3DVIEWS_NE_ISO
+        MENUITEM "N&W Isometric",               ID_VIEW_3DVIEWS_NW_ISO
+        MENUITEM SEPARATOR
+        MENUITEM "&Dimetry",                    ID_VIEW_3DVIEWS_DIMETRY
+    END
+    POPUP "View context"
+    BEGIN
+        MENUITEM "&Zoom all",                   ID_VIEW_ZOOM_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "Z&oom window",                ID_VIEW_MODE_ZOOM_WIN
+        MENUITEM "&Pan",                        ID_VIEW_MODE_PAN
+        MENUITEM "Ro&tate",                     ID_VIEW_MODE_ROTATE
+        MENUITEM "Se&lect",                     ID_VIEW_MODE_SELECT
+        MENUITEM "Look &Around",                ID_VIEW_MODE_LOOK_AROUND
+        MENUITEM "Wal&k",                       ID_VIEW_MODE_WALK
+        MENUITEM SEPARATOR
+        MENUITEM "Perspecti&ve",                ID_VIEW_PERSPECTIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Top",                         ID_VIEW_3DVIEWS_TOP
+        MENUITEM "&Bottom",                     ID_VIEW_3DVIEWS_BOTTOM
+        MENUITEM "&Left",                       ID_VIEW_3DVIEWS_LEFT
+        MENUITEM "&Right",                      ID_VIEW_3DVIEWS_RIGHT
+        MENUITEM "&Front",                      ID_VIEW_3DVIEWS_FRONT
+        MENUITEM "Ba&ck",                       ID_VIEW_3DVIEWS_BACK
+        MENUITEM SEPARATOR
+        MENUITEM "&SW Isometric",               ID_VIEW_3DVIEWS_SW_ISO
+        MENUITEM "S&E Isometric",               ID_VIEW_3DVIEWS_SE_ISO
+        MENUITEM "&NE Isometric",               ID_VIEW_3DVIEWS_NE_ISO
+        MENUITEM "N&W Isometric",               ID_VIEW_3DVIEWS_NW_ISO
+        MENUITEM SEPARATOR
+        MENUITEM "&Dimetry",                    ID_VIEW_3DVIEWS_DIMETRY
+    END
+    POPUP "Bars"
+    BEGIN
+        MENUITEM "&Horizontal",                 ID_BARS_HORIZONTAL
+        MENUITEM "&Vertical",                   ID_BARS_VERTICAL
+        MENUITEM "&Slanted",                    ID_BARS_SLANTED
+        MENUITEM SEPARATOR
+        MENUITEM "Show &bar elements profile",  ID_VIEW_SHOWBARPROFILE
+    END
+    POPUP "Plates"
+    BEGIN
+        MENUITEM "&Horizontal",                 ID_PLATES_HORIZONTAL
+        MENUITEM "&Vertical",                   ID_PLATES_VERTICAL
+        MENUITEM "&Slanted",                    ID_PLATES_SLANTED
+        MENUITEM SEPARATOR
+        MENUITEM "Show &plate  elements thickness", ID_VIEW_SHOWPLATETHICKNESS
+    END
+    POPUP "Context"
+    BEGIN
+        MENUITEM "&Instruments",                ID_CONTEXT_INSTRUMENTS
+        MENUITEM "&Filters",                    ID_CONTEXT_FILTERS
+        MENUITEM "&Cut",                        ID_CONTEXT_CUT
+        MENUITEM "C&amera",                     ID_CONTEXT_CAMERA
+        MENUITEM "&Depth",                      ID_CONTEXT_DEPTH
+    END
+    POPUP "Tree"
+    BEGIN
+        MENUITEM "&Explorer",                   ID_TREE_EXPLORER
+    END
+    POPUP "Select"
+    BEGIN
+        MENUITEM "&Hide selected element",      ID_SELECT_HIDE_ELEMENT
+        MENUITEM "Hide elements in selected element &plate", ID_HIDE_ELEMENT_PLATE
+        MENUITEM "Show elemants in selected element plate", ID_SELECT_SHOW_ELEMENT_PLATE
+    END
+    POPUP "Factor"
+    BEGIN
+        MENUITEM "&Displacements",              ID_FACTOR_DISPLACEMENTS
+        MENUITEM "&Stress Fields",              ID_FACTOR_STRESSFIELDS
+        MENUITEM "Stress &colour map",          ID_FACTOR_STRESSCOLOURMAP
+    END
+END
+
+IDR_FOLDER_LIST MENU
+BEGIN
+    POPUP "Menu"
+    BEGIN
+        POPUP "View"
+        BEGIN
+            MENUITEM "&Thumbnails",                 ID_VIEW_THUMBNAIL
+            MENUITEM "&Large Icons",                ID_VIEW_LARGE_ICON
+            MENUITEM "&Small Icons",                ID_VIEW_SMALL_ICON
+            MENUITEM "L&ist",                       ID_VIEW_LIST
+            MENUITEM "&Details",                    ID_VIEW_DETAILS
+            MENUITEM SEPARATOR
+            MENUITEM "&Refresh\tF5",                ID_MENU_VIEW_REFRESH
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Edit",                       ID_FILE_EDIT
+        MENUITEM "&Delete\tDel",                ID_FILE_DELETE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        POPUP "&Calculation results"
+        BEGIN
+            MENUITEM "&Delete",                     ID_FILE_CALCRES_DELETE
+            MENUITEM "&Selective delete...",        ID_FILE_CALCRES_SEL_DELETE
+        END
+        MENUITEM SEPARATOR
+        POPUP "Export"
+        BEGIN
+            MENUITEM "Autocad DXF...",              ID_EXPORT_TO_DXF
+            MENUITEM "Folder -> RTF...",            ID_EXPORT_FOLDER_TO_RTF
+            MENUITEM "Windows &BMP",                ID_EXPORT_TO_BMP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "&Send...",                    ID_FILE_SEND_MAIL
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_FORUM_VIEWER        ICON                    "res\\ForumView.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_DELIM AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SCALE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_TAB_MATERIAL AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDR_MAINFRAME           "Scad/Forum Explorer\n\nScadVi\nScad/Forum model (*.spr;*.opr)\n.spr;*.opr\nScadViewer.Document\nScadVi Document"
+    IDS_FOLDER_TREE_CAPTION "Folder Tree"
+    IDS_FOLDER_CAPTION      "Folder View"
+    IDS_MAIN_TOOLBAR_CAPTION "Main"
+    IDS_CUT_TOOLBAR_CAPTION "Cut"
+    IDS_OPTIONS_DLG_NAME    "Options"
+    IDS_FILTERS_TOOLBAR_CAPTION "Filters"
+    IDS_CAMERA_TOOLBAR_CAPTION "Camera"
+    IDS_CAMERA_TOOLBAR_MM   "mm"
+    IDS_SCALE_CAPTION       "Scale"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_IDLEMESSAGE     "For Help, press F1"
+    AFX_IDS_HELPMODEMESSAGE "Select an object on which to get Help"
+END
+
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_OPEN            "Open an existing file\nOpen"
+    ID_FILE_SAVE_AS         "Save the active file with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the model\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display how the model will look on printed page\nPrint Preview"
+    ID_FILE_SEND_MAIL       "Send the active document through electronic mail\nSend Mail"
+END
+
+STRINGTABLE
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+    ID_HELP_INDEX           "Opens Help\nHelp Topics"
+    ID_HELP_FINDER          "List Help topics\nHelp Topics"
+    ID_HELP_USING           "Display instructions about how to use help\nHelp"
+    ID_CONTEXT_HELP         "Display help for clicked on buttons, menus and windows\nHelp"
+    ID_HELP                 "Display help for current task or command\nHelp"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Put the current view on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_TITLEOptionsPP      "Title"
+    IDS_HELPFILEOptionsPP   "Help File Name"
+    IDS_DOCSTRINGOptionsPP  "Your Help String"
+    IDS_RESULTS_TOOLBAR     "Results"
+    IDS_DEFORM_TOOLBAR      "Deformation"
+    IDS_DEPTH_TOOLBAR       "Depth"
+    IDS_DISPLACEMENTS       "Displacements  by %s(mm)"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_ZOOM_IN         "Zoom to increase model view size\nZoom In"
+    ID_VIEW_ZOOM_OUT        "Zoom to decrease model view size\nZoom Out"
+    ID_VIEW_ZOOM_ALL        "Display the entire model/fragment\nZoom All"
+    ID_VIEW_MODE_ZOOM_WIN   "Zooms to display a rectangular area\nZoom Window"
+    ID_VIEW_MODE_PAN        "Moves the view\nPan"
+    ID_VIEW_MODE_ROTATE     "Rotates the viewpoint\nRotate"
+    ID_VIEW_MODE_WALK       "Walk parallel to OXY plane (perspective mode only)\nWalk"
+    ID_VIEW_MODE_LOOK_AROUND 
+                            "Change the view direction (perspective mode only)\nLook Around"
+    ID_VIEW_PERSPECTIVE     "Change the view mode to perspective/parallel projection\nPerspective"
+    ID_VIEW_MODE_SELECT     "Select element\nSelection"
+END
+
+STRINGTABLE
+BEGIN
+    ID_PROJECTION           "Set the predefined view point\nProjection"
+    ID_VIEW_3DVIEWS_TOP     "Show model from top\nTop"
+    ID_VIEW_3DVIEWS_BOTTOM  "Show model from bottom\nBottom"
+    ID_VIEW_3DVIEWS_LEFT    "Show model from left\nLeft"
+    ID_VIEW_3DVIEWS_RIGHT   "Show model from right\nRight"
+    ID_VIEW_3DVIEWS_FRONT   "Show model from front\nFront"
+    ID_VIEW_3DVIEWS_BACK    "Show model from back\nBack"
+    ID_VIEW_3DVIEWS_SW_ISO  "Show model in southwest isometry\nSW Isometric"
+    ID_VIEW_3DVIEWS_SE_ISO  "Show model in southeast isometry\nSE Isometric"
+    ID_VIEW_3DVIEWS_NE_ISO  "Show model in northeast isometry\nTop"
+    ID_VIEW_3DVIEWS_NW_ISO  "Show model in northwest isometry\nNW Isometric"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_MODE_WIREFRAME  "Wireframe view\nWireframe"
+    ID_VIEW_MODE_SOLID      "Solid view without contours\nFill"
+    ID_VIEW_MODE_ELEMENTBORDERS 
+                            "Solid view with element contours\nFill with Borders"
+    ID_VIEW_MODE_TRANSPARENT "Transparent view with borders\nTransparent"
+    ID_TOOLS_OPTIONS        "Customizes settings\nOptions"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_SHOWBARPROFILE  "Show bar/column profile\nShow Profile"
+    ID_VIEW_SHOWPLATETHICKNESS 
+                            "Show plate/wall/slab thickness\nShow Thickness"
+    ID_VIEW_ELEMENTS_NODES  "Hide/show nodes\nShow Nodes"
+    ID_VIEW_ELEMENTS_CONSTRAINTS "Hide/show constraints\nShow Constraints"
+    ID_VIEW_ELEMENTS_BARS   "Hide/show bar elements\nShow Bar Elements"
+    ID_VIEW_ELEMENTS_PLATES "Hide/show plate Elements\nShow plate Elements"
+    ID_VIEW_ELEMENTS_SOLIDS "Hide/show solids\nShow Solids"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_ELEMENTS_WALLS  "Hide/show walls\nShow Walls"
+    ID_VIEW_ELEMENTS_SLABS  "Hide/show slabs\nShow Slabs"
+    ID_VIEW_ELEMENTS_ROOFS  "Hide/show roofs\nShow Roofs"
+    ID_VIEW_ELEMENTS_BEAMS  "Hide/show beams\nShow Beams"
+    ID_VIEW_ELEMENTS_COLUMNS "Hide/show columns\nShow Columns"
+    ID_CUT                  "Cut the model fragment by rectangular area\nCut"
+    ID_INV_CUT              "Cut off the part of model by rectangular window\nInverse cut"
+    ID_CUT_UNDO             "Undo one cut action\nUndo Cut"
+    ID_NO_CUT               "Display entire model\nCancel Cur"
+END
+
+STRINGTABLE
+BEGIN
+    ID_BARS_HORIZONTAL      "Show/hide horizontal bar elements\n"
+    ID_BARS_VERTICAL        "Show/hide vertical bar elements"
+    ID_BARS_SLANTED         "Show/hide vertical bar elements"
+    ID_PLATES_HORIZONTAL    "Show/hide horizontal plate elements"
+    ID_PLATES_SLANTED       "Show/hide slanted plate elements"
+    ID_PLATES_VERTICAL      "Show/hide vertical plate elements"
+    ID_FILE_EDIT            "Open current file for editing in Scad Office application\nEdit"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_COLOR0              "Black"
+    IDS_COLOR1              "Brown"
+    IDS_COLOR2              "Dark Olive Green"
+    IDS_COLOR3              "Dark Green"
+    IDS_COLOR4              "Dark Teal"
+    IDS_COLOR5              "Dark Blue"
+    IDS_COLOR6              "Indigo"
+    IDS_COLOR7              "Dark Grey"
+    IDS_COLOR8              "Dark Red"
+    IDS_COLOR9              "Orange"
+    IDS_COLOR10             "Dark Yellow"
+    IDS_COLOR11             "Green"
+    IDS_COLOR12             "Teal"
+    IDS_COLOR13             "Blue"
+    IDS_COLOR14             "Blue-Grey"
+    IDS_COLOR15             "Grey - 40"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_COLOR16             "Red"
+    IDS_COLOR17             "Light Orange"
+    IDS_COLOR18             "Lime"
+    IDS_COLOR19             "Sea Green"
+    IDS_COLOR20             "Aqua"
+    IDS_COLOR21             "Light Blue"
+    IDS_COLOR22             "Violet"
+    IDS_COLOR23             "Grey - 50"
+    IDS_COLOR24             "Pink"
+    IDS_COLOR25             "Gold"
+    IDS_COLOR26             "Yellow"
+    IDS_COLOR27             "Bright Green"
+    IDS_COLOR28             "Turquoise"
+    IDS_COLOR29             "Skyblue"
+    IDS_COLOR30             "Plum"
+    IDS_COLOR31             "Light Grey"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_COLOR32             "Rose"
+    IDS_COLOR33             "Tan"
+    IDS_COLOR34             "Light Yellow"
+    IDS_COLOR35             "Pale green"
+    IDS_COLOR36             "Pale Turquoise"
+    IDS_COLOR37             "Pale Blue"
+    IDS_COLOR38             "Lavender"
+    IDS_COLOR39             "White"
+    IDS_STRING_AUTOMATIC_COLOR "Automatic"
+    IDS_STRING_CUSTOM_COLOR "More Colors..."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FL_COLUMN_NAME      "Name"
+    IDS_FL_COLUMN_SIZE      "Size"
+    IDS_FL_COLUMN_TIME      "Modified"
+    IDS_FL_MODIFIED_FORMAT  "%d.%m.%Y %H:%M:%S"
+    IDS_FILE_COUNT_FORMAT   "%d file(s)"
+    IDS_FILE_INFO_FORMAT    "%d node(s), %d Element(s)"
+    IDS_EXPORT_DXF_TITLE    "Export to DXF"
+    IDS_EXPORT_BMP_TITLE    "Export to BMP"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_THUMBNAIL       "Display the current folder in thumbnail mode\nThumbnail View"
+    ID_VIEW_LARGE_ICON      "Display the current folder in large icon mode\nLarge Icon View"
+    ID_VIEW_SMALL_ICON      "Display the current folder in small icon mode\nSmall Icon View"
+    ID_FILE_DELETE          "Delete current file to Recycle Bin\nDelete"
+    ID_EXPORT_TO_DXF        "Export current file to Autocad's DXF\nExport DXF"
+    ID_EXPORT_FOLDER_TO_RTF "Export current folder thumbnails to RTF file\nExport RTF"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_LIST            "Display the current folder in list mode\nList View"
+    ID_VIEW_DETAILS         "Display the current folder in details mode\nDetails View"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_CALCRES_DELETE  "Delete all calculaton result files"
+    ID_FILE_CALCRES_SEL_DELETE 
+                            "Selective delete/archive calculation result files"
+    ID_EXPORT_TO_BMP        "Save the current view as windows bitmap\nExport to BMP"
+    ID_VIEW_ELEMENTS_AXES   "Show/hide layout axes\nShow Layout Axes"
+END
+
+STRINGTABLE
+BEGIN
+    9000                    "Scad project"
+    9001                    "Internal formats of finite elements"
+    9002                    "Stiffness matrix"
+    9003                    "Working file"
+    9004                    "Working file"
+    9005                    "Natural oscillation frequencies; oscillation modes; inertial loads; distribution of mass weights"
+    9006                    "Super-elements"
+    9007                    "Displacements"
+END
+
+STRINGTABLE
+BEGIN
+    9008                    "Stress values"
+    9009                    "Reactions in nodes"
+    9010                    "Design stress combinations; unified design stress combinations"
+    9011                    "Coefficients of stability; modes of buckling; unsupported lengths of elements"
+    9012                    "Coefficients of stability; modes of buckling; unsupported lengths of elements for combinations of loadings"
+    9013                    "Displacements under combination of loadings"
+    9014                    "Stress values under combination of loadings"
+    9015                    "Analysis log"
+    9016                    "Print source data"
+    9017                    "List of errors in source data"
+    9018                    "Working file of service information"
+    9019                    "Table of displacement values"
+    9020                    "Table of stress values"
+    9021                    "Table of reaction values"
+    9022                    "Table of design combinations and unified design combinations"
+    9023                    "Table of natural frequencies"
+END
+
+STRINGTABLE
+BEGIN
+    9024                    "Table of oscillation modes"
+    9025                    "Table of inertial loads"
+    9026                    "Super-element structure"
+    9027                    "Information of material state"
+    9028                    "Table of principal and equivalent stresses"
+    9029                    "Table of principal and equivalent stresses under combinations"
+    9030                    "Description note"
+    9031                    "Table of distribution of mass weights"
+    9032                    "Table of stability coefficients"
+    9033                    "Table of unsupported lengths of elements"
+    9034                    "Table of buckling modes"
+    9035                    "Table of foundation stiffness coefficients"
+    9036                    "Table of stress values under combinations of loadings"
+    9037                    "Table of displacement values under combinations of loadings"
+    9038                    "Table of principal and equivalent stresses under combinations of loadings"
+    9039                    "Table of loads from the structure fragment"
+END
+
+STRINGTABLE
+BEGIN
+    9040                    "Table of loads from the structure fragment under combinations of loadings"
+    9041                    "Table of stability coefficients under combination of loadings"
+    9042                    "Table of unsupported lengths of elements under combinations of loadings"
+    9043                    "Table of buckling modes under combinations of loadings"
+    9044                    "Inertia forces"
+    9045                    "Concrete"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_RES_COLUMN_FILE     "File"
+    IDS_RES_COLUMN_SIZE     "Size"
+    IDS_RES_COLUMN_COMMENT  "Comment"
+    IDS_ARCH_QUEST          "Delete files after archiving?"
+    IDS_ARCHIVING           "Archiving"
+    IDS_BMP_SIZE_ERR        "Null width or height specified. File will not be created."
+END
+
+STRINGTABLE
+BEGIN
+    IDC_CHECK_CHANGE_DIST   "Move the camera keeping visual size of model\nChange Distance"
+    IDC_SLIDER_FLENGTH      "Change the camera focal length\nFocal Length"
+    IDC_SLIDER_DEPTH        "Adjust depth cutting plane\nCut plane"
+    IDC_SLIDER_TRANSPARENCY "\nTransparency"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_PRINTONPORT     "on %1"
+    AFX_IDS_ONEPAGE         "&One Page"
+    AFX_IDS_TWOPAGE         "&Two Page"
+    AFX_IDS_PRINTPAGENUM    "Page %u"
+    AFX_IDS_PREVIEWPAGEDESC "Page %u\nPages %u-%u\n"
+    AFX_IDS_PRINTDEFAULTEXT "prn"
+    AFX_IDS_PRINTDEFAULT    "Output.prn"
+    AFX_IDS_PRINTFILTER     "Printer Files (*.prn)|*.prn|All Files (*.*)|*.*||"
+    AFX_IDS_PRINTCAPTION    "Print to File"
+    AFX_IDS_PRINTTOFILE     "\nPrint to file"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_RESULTS         "View calculation results\nCalculation results"
+    IDC_BTN_ISOLINES        "Draw isolines\nIsolines"
+    IDC_BTN_VALUES          "Draw result values\nValues"
+    IDC_BTN_EGGS            "Draw values by color points\nColor points"
+    ID_FACTOR_DISPLACEMENTS "Display displacement isofields"
+    ID_FACTOR_STRESSFIELDS  "Display stress isofields"
+    ID_FACTOR_STRESSCOLOURMAP "Display stress colour map"
+    ID_FACTOR_GROUP         "Change displaying factor\nFactor"
+    ID_LIGHT                "On/Off model lighting\nModel Lighting"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_STRESSES            "Stress values %s (T/m2)"
+    IDS_RESULT_TOOLBAR      "Result params"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_COMBO_NUM           "Palette size"
+    IDC_BUTTON_HOT          "\n""Hot"" palette"
+    IDC_BUTTON_COLD         "\n""Cold"" palette"
+    IDC_BUTTON_GRAY         "\nGray palette"
+    IDC_BUTTON_UNIFORM      "\n"
+    IDS_STRING1047          "\nUniform scale with delimiter"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_SLIDER_DEFORM_SCALE "\nThe scale of deformation"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_COMBO_FACTOR        "\nFactor type selection"
+    IDC_COMBO_LOAD          "\nLoad selection"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_DELIM_OUT_OF_RANGE  "You must enter the value in range [%.2f ... %.2f)"
+END
+
+#endif    // Английский (США) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+#include "res\ForumView_ENG.rc2"
+//#include "afxres.rc"         // Standard components
+//#include "afxprint.rc"       // printing/print preview resources
+#endif
+
+//#include "toolkit\secres.rc"    // Objective Toolkit Resources
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

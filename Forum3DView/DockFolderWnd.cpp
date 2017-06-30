@@ -22,11 +22,11 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDockFolderWnd
 
-CDockFolderWnd::CDockFolderWnd(): m_nCbHeight(0)
+FORUM3DVIEW_EXPORT CDockFolderWnd::CDockFolderWnd(): m_nCbHeight(0)
 {
 }
 
-CDockFolderWnd::~CDockFolderWnd()
+FORUM3DVIEW_EXPORT CDockFolderWnd::~CDockFolderWnd()
 {
 }
 
@@ -44,7 +44,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CDockFolderWnd message handlers
 
-int CDockFolderWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+FORUM3DVIEW_EXPORT int CDockFolderWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;

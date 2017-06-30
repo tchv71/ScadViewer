@@ -1008,7 +1008,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug21xp/ForumView21_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug11/ForumView11_ENG.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

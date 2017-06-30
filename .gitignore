@@ -310,3 +310,5 @@ ModelManifest.xml
 /RTree/Win32/Release21/RTree.tlog/CL.command.1.tlog
 /Win32/Release21/RTree.lib
 *.lib
+/Forum3DView/RTree/CMakeSettings.json
+/_build

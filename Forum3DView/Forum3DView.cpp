@@ -255,7 +255,7 @@ Exit:
 
 SCDefProjType ThumbProjection = DPT_Dimetry;
 
-extern "C" BOOL __stdcall SCForumMdl3DDraw( HDC hDC, const RECT * r, LPCTSTR sFileName, LPCTSTR sWorkDir, int nDrawFlags, HANDLE hStopEvent )
+FORUM3DVIEW_EXPORT BOOL __stdcall SCForumMdl3DDraw( HDC hDC, const RECT * r, LPCTSTR sFileName, LPCTSTR sWorkDir, int nDrawFlags, HANDLE hStopEvent )
 {
 	S3DBox			Box;
 	SParallelView			View;

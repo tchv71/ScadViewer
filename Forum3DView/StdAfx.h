@@ -11,6 +11,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#define _WIN32_WINNT 0x6000
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #include <afxwin.h>         // основные и стандартные компоненты MFC
 #include <afxext.h>         // расширения MFC

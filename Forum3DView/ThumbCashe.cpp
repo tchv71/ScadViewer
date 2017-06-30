@@ -6,6 +6,7 @@
 //#define __ATLCOMTIME_H__
 //#define __AFXOCC_H__
 //#include "stdafx.h"
+#define _X86_
 #include "ThumbCashe.h"
 #undef DB_UNKNOWN
 //#define DBTYPE _DBTYPE
@@ -32,8 +33,8 @@ CThumbCashe::CThumbCashe(LPCTSTR pszDirName) :
 	m_strDir(pszDirName), m_strDbName(m_strDir)
 
 {
-	m_strDbName+=_T("\\");
-	m_strDbName+=_T(DB_NAME);
+	m_strDbName+=std::wstring(_T("\\"));
+	m_strDbName+=std::wstring(_T(DB_NAME));
 }
 
 CThumbCashe::~CThumbCashe()

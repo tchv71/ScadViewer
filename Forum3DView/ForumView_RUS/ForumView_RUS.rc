@@ -1,0 +1,1101 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "..\..\Version.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Русский resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+LANGUAGE LANG_RUSSIAN, SUBLANG_NEUTRAL
+#pragma code_page(1251)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SCALE DIALOGEX 0, 0, 130, 258
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_GRID,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,5,27,118,204
+    COMBOBOX        IDC_COMBO_NUM,89,9,31,230,CBS_DROPDOWNLIST | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Г",IDC_BUTTON_HOT,29,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Х",IDC_BUTTON_COLD,49,7,18,16,BS_BITMAP
+    PUSHBUTTON      "С",IDC_BUTTON_GRAY,69,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Г",IDC_BUTTON_UNIFORM,5,7,18,16,BS_BITMAP
+    PUSHBUTTON      "Инвертировать шкалу",IDC_BTN_INVERT_SCALE,5,236,118,14
+END
+
+IDD_DIALOG_DELIM DIALOGEX 0, 0, 211, 48
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Укажите значение - разделитель"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,96,27,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,155,27,50,14
+    COMBOBOX        IDC_EDIT_VALUE,7,7,198,79,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_SCALE, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 123
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 250
+    END
+
+    IDD_DIALOG_DELIM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 41
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_DELIM AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SCALE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // Русский resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Русский (Россия) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SAVE_BMP DIALOG 0, 0, 232, 52
+STYLE DS_SETFONT | DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",1119,0,3,230,13
+    GROUPBOX        "Размер картинки",IDC_STATIC,5,20,190,30
+    EDITTEXT        IDC_EDIT_BMP_WIDTH,10,30,20,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_BMP_HEIGHT,44,31,20,12,ES_AUTOHSCROLL
+    LTEXT           "X",IDC_STATIC,34,33,8,8
+    LTEXT           "точек",IDC_STATIC,73,32,20,8
+    CONTROL         "Сохранять пропорции",IDC_CHECK_LOCK_PROP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,101,31,84,12
+END
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 218, 71
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "О программе Scad/Forum Explorer"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    ICON            IDI_FORUM_VIEWER,IDC_STATIC,13,13,20,20
+    LTEXT           "Проводник Scad/Forum  Версия",IDC_STATIC,37,15,110,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2000-17 Dmitry Tcvetkov",IDC_STATIC,61,31,125,8
+    DEFPUSHBUTTON   "OK",IDOK,98,50,50,14,WS_GROUP
+    LTEXT           "",IDC_ABOUT_VER,147,15,64,8
+END
+
+IDD_TAB_RTF DIALOG 0, 0, 227, 94
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "&Результаты"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Коэффициент масштабирования\nперемещений",IDC_STATIC,10,6,112,16
+    EDITTEXT        IDC_DEFORM_SCALE_EDIT,126,6,26,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DEFORM_SCALE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,151,6,11,14
+    PUSHBUTTON      "Значений факторов",IDC_FONT_RESULTS,33,49,85,11
+    GROUPBOX        "Настройка шрифтов",IDC_STATIC,10,33,197,55
+    PUSHBUTTON      "Координационных осей",IDC_FONT_AXES,33,65,85,11
+END
+
+IDD_TAB_MATERIAL DIALOGEX 0, 0, 294, 228
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "&Панель просмотра"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Толщина границы",IDC_STATIC,12,9,62,8
+    EDITTEXT        IDC_LINE_WIDTH_EDIT,82,6,26,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_LINE_WIDTH_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,107,6,11,14
+    LTEXT           "Размер маркера узлов",IDC_STATIC,138,9,80,8
+    EDITTEXT        IDC_NODE_SIZE_EDIT,220,6,26,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_NODE_SIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,245,6,11,14
+    GROUPBOX        "Цвет",IDC_STATIC,6,24,281,58
+    LTEXT           "Стержней",IDC_STATIC,12,33,34,8
+    PUSHBUTTON      "Bar",IDC_BAR_COLOR_BTN,53,32,33,12
+    LTEXT           "Границ элементов",IDC_STATIC,12,46,40,17
+    PUSHBUTTON      "Border",IDC_BORDER_COLOR_BTN,53,48,33,12
+    LTEXT           "Пластин",IDC_STATIC,12,65,30,8
+    PUSHBUTTON      "Plate",IDC_PLATE_COLOR_BTN,53,64,33,12
+    LTEXT           "Фона",IDC_STATIC,109,34,20,8
+    PUSHBUTTON      "Back",IDC_BACKGROUND_COLOR_BTN,154,32,33,12
+    LTEXT           "Маркеров узлов",IDC_STATIC,109,43,38,17
+    PUSHBUTTON      "Node",IDC_NODE_COLOR_BTN,154,48,33,12
+    LTEXT           "Объемных элементов",IDC_STATIC,109,61,41,19
+    PUSHBUTTON      "Solid",IDC_SOLIDS_COLOR_BTN,154,64,33,12
+    LTEXT           "Совпадающих элементов",IDC_STATIC,195,30,47,17
+    PUSHBUTTON      "Dups",IDC_DUPES_COLOR_BTN,247,32,33,12
+    CONTROL         "Совместимость с OpenGL 1.0",IDC_CHECK_OGL10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,85,124,10
+    CONTROL         "Аппаратное ускорение 3D",IDC_CHECK_HARDWARE_ACC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,95,105,10
+    CONTROL         "Оптимизация рисования",IDC_CHECK_DRAW_OPTIMIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,105,100,10
+    CONTROL         "Cглаживание линий",IDC_CHECK_LINE_SMOOTH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,85,83,10
+    CONTROL         "Удаление внутренних пластин",IDC_CHECK_DELETE_INNER_PLATES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,95,119,10
+    CONTROL         "Отображать узлы, принадлежащие",IDC_CHECK_SHOW_USED_NODES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,105,134,10
+    LTEXT           "только видимым элементам",IDC_STATIC,163,114,118,8
+    GROUPBOX        "Цвета отображения связей",IDC_STATIC,5,126,211,43
+    LTEXT           "X",IDC_STATIC,13,139,8,8
+    PUSHBUTTON      "X",IDC_X_COLOR_BTN,31,136,33,12
+    LTEXT           "UX",IDC_STATIC,12,155,11,8
+    PUSHBUTTON      "UX",IDC_UX_COLOR_BTN,31,153,33,12
+    LTEXT           "Y",IDC_STATIC,83,139,8,8
+    PUSHBUTTON      "Y",IDC_Y_COLOR_BTN,101,136,33,12
+    LTEXT           "UY",IDC_STATIC,82,155,11,8
+    PUSHBUTTON      "UY",IDC_UY_COLOR_BTN,101,153,33,12
+    LTEXT           "Z",IDC_STATIC,153,139,8,8
+    PUSHBUTTON      "Z",IDC_Z_COLOR_BTN,171,136,33,12
+    LTEXT           "UZ",IDC_STATIC,151,155,11,8
+    PUSHBUTTON      "UZ",IDC_UZ_COLOR_BTN,171,153,33,12
+    GROUPBOX        "Цвет элементов Forum",IDC_STATIC,6,170,274,56
+    LTEXT           "Стен",IDC_STATIC,12,182,17,8
+    PUSHBUTTON      "Wall",IDC_WALL_COLOR_BTN,75,181,33,12
+    LTEXT           "Перекрытий",IDC_STATIC,10,196,43,8
+    PUSHBUTTON      "Slab",IDC_SLAB_COLOR_BTN,75,196,33,12
+    LTEXT           "Крыш",IDC_STATIC,10,211,20,8
+    PUSHBUTTON      "Roofs",IDC_ROOF_COLOR_BTN,75,211,33,12
+    LTEXT           "Колонн",IDC_STATIC,154,184,26,8
+    PUSHBUTTON      "Column",IDC_COLUMN_COLOR_BTN,215,181,33,12
+    LTEXT           "Балок",IDC_STATIC,154,200,22,8
+    PUSHBUTTON      "Beam",IDC_BEAM_COLOR_BTN,215,196,33,12
+    LTEXT           "Язык",IDC_STATIC_LANGUAGE,221,136,33,8
+    COMBOBOX        IDC_LANGUAGES,220,146,60,45,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Качественная (медленная) прозрачность",IDC_CHECK_QUALITY_TRANSP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,115,149,10
+END
+
+IDD_TAB_GENERAL DIALOGEX 0, 0, 309, 232
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "&Общие"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_SIZE_PROP,"Button",BS_AUTOCHECKBOX | BS_BITMAP | BS_PUSHLIKE | WS_TABSTOP,19,46,11,11
+    CONTROL         "Slider1",IDC_WIDTH_SLIDER,"msctls_trackbar32",TBS_AUTOTICKS | WS_TABSTOP,40,45,160,11,WS_EX_TRANSPARENT
+    CONTROL         "Slider2",IDC_HEIGHT_SLIDER,"msctls_trackbar32",TBS_AUTOTICKS | TBS_VERT | WS_TABSTOP,19,60,13,113
+    EDITTEXT        IDC_WIDTH_EDIT,78,173,26,14,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_HEIGHT_EDIT,119,173,26,14,ES_AUTOHSCROLL | WS_DISABLED
+    COMBOBOX        IDC_LANGUAGES,226,41,77,45,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_FILE_TYPES_LIST,226,66,76,46,LBS_SORT | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_DEF_PROJ_LIST,226,126,76,67,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Размер эскизов",IDC_STATIC,5,30,215,163
+    LTEXT           "",IDC_THUMBNAIL_VIEW,42,63,161,105,WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    CTEXT           "x",IDC_STATIC,108,176,8,8
+    LTEXT           "точек",IDC_STATIC,151,177,19,8
+    LTEXT           "Язык",IDC_STATIC,227,31,33,8
+    LTEXT           "Типы файлов",IDC_STATIC,228,57,45,8
+    LTEXT           "Проекция по умолчанию",IDC_STATIC,223,116,85,8
+    LTEXT           "",IDC_THUMBNAIL,80,90,85,55
+END
+
+IDD_RESULTS DIALOG 0, 0, 334, 201
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Удаление файлов"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "В&ыход",IDCANCEL,277,180,50,14
+    PUSHBUTTON      "&Отметить все",IDC_SELECT_ALL,215,180,50,14
+    CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | WS_BORDER | WS_TABSTOP,4,5,325,165
+    PUSHBUTTON      "&Удалить",IDC_DELETE,5,180,50,14
+    PUSHBUTTON      "Создать &ZIP архив",IDC_CREATE_ZIP,105,180,65,14
+END
+
+IDD_ABORT_ZIP DIALOG 33, 32, 160, 70
+STYLE DS_SETFONT | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Архивация"
+FONT 8, "Ms Sans Serif"
+BEGIN
+    CTEXT           "Архивация:",200,0,7,160,8,NOT WS_GROUP
+    DEFPUSHBUTTON   "Отмена",202,60,47,45,15
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,10,26,139,11
+END
+
+AFX_IDD_PREVIEW_TOOLBAR DIALOG 0, 0, 352, 16
+STYLE DS_SETFONT | DS_3DLOOK | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Печать...",58116,2,2,44,12
+    PUSHBUTTON      "С&ледующая",58114,47,2,48,12
+    PUSHBUTTON      "Пр&едыдущая",58115,96,2,52,12
+    PUSHBUTTON      "",58113,149,2,57,12
+    PUSHBUTTON      "&Увеличить",58117,207,2,44,12
+    PUSHBUTTON      "У&меньшить",58118,252,2,48,12
+    PUSHBUTTON      "&Закрыть",58112,301,2,44,12
+END
+
+AFX_IDD_PRINTDLG DIALOG 6, 18, 133, 95
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CTEXT           "Печать",IDC_STATIC,0,9,133,8
+    CTEXT           "",AFX_IDC_PRINT_DOCNAME,0,19,133,8
+    CTEXT           "на",IDC_STATIC,0,29,133,8
+    CTEXT           "",AFX_IDC_PRINT_PRINTERNAME,0,39,133,8
+    CTEXT           "",AFX_IDC_PRINT_PORTNAME,0,49,133,8
+    CTEXT           "",AFX_IDC_PRINT_PAGENUM,0,59,133,8
+    PUSHBUTTON      "Отмена",IDCANCEL,46,74,40,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_SAVE_BMP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 225
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 45
+    END
+
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 211
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_TAB_MATERIAL, DIALOG
+    BEGIN
+    END
+
+    IDD_TAB_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        VERTGUIDE, 222
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 225
+    END
+
+    IDD_RESULTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 327
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 194
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_TAB_MATERIAL AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""..\\Version.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT\r\n"
+    "#pragma code_page(1251)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ForumView_RUS.rc2""\r\n"
+    "#endif\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&Файл"
+    BEGIN
+        MENUITEM "&Открыть...\tCtrl+O",         ID_FILE_OPEN
+        POPUP "&Экспорт"
+        BEGIN
+            MENUITEM "&Автокад DXF...",             ID_EXPORT_TO_DXF
+            MENUITEM "&Каталога в RTF...",          ID_EXPORT_FOLDER_TO_RTF
+            MENUITEM "&Windows BMP",                ID_EXPORT_TO_BMP
+        END
+        MENUITEM "Сохранить &как...",           ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Печать...\tCtrl+P",          ID_FILE_PRINT
+        MENUITEM "Пред&варительный просмотр",   ID_FILE_PRINT_PREVIEW
+        MENUITEM "&Настройка печати...",        ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Переслат&ь...",               ID_FILE_SEND_MAIL
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "В&ыход",                      ID_APP_EXIT
+    END
+    POPUP "&Правка"
+    BEGIN
+        MENUITEM "&Копировать\tCtrl+C",         ID_EDIT_COPY
+    END
+    POPUP "&Вид"
+    BEGIN
+        POPUP "&Режим"
+        BEGIN
+            MENUITEM "&Каркас",                     ID_VIEW_MODE_WIREFRAME
+            MENUITEM "&Заполнение",                 ID_VIEW_MODE_SOLID
+            MENUITEM "Заполнение с &границами элементов", ID_VIEW_MODE_ELEMENTBORDERS
+            MENUITEM "&Полупрозрачный",             ID_VIEW_MODE_TRANSPARENT
+        END
+        POPUP "&Навигация"
+        BEGIN
+            MENUITEM "&Увеличение рамкой",          ID_VIEW_MODE_ZOOM_WIN
+            MENUITEM "&Панорамирование",            ID_VIEW_MODE_PAN
+            MENUITEM "&Вращение",                   ID_VIEW_MODE_ROTATE
+            MENUITEM "В&ыбор",                      ID_VIEW_MODE_SELECT
+            MENUITEM "С&мотреть вокруг",            ID_VIEW_MODE_LOOK_AROUND
+            MENUITEM "&Обход",                      ID_VIEW_MODE_WALK
+        END
+        POPUP "&Элементы"
+        BEGIN
+            MENUITEM "&Узлы",                       ID_VIEW_ELEMENTS_NODES
+            MENUITEM "Св&язи",                      ID_VIEW_ELEMENTS_CONSTRAINTS
+            MENUITEM "Разб&ивочные оси",            ID_VIEW_ELEMENTS_AXES
+            MENUITEM "&Стержни",                    ID_VIEW_ELEMENTS_BARS
+            MENUITEM "&Пластины",                   ID_VIEW_ELEMENTS_PLATES
+            MENUITEM "&Объемные элементы",          ID_VIEW_ELEMENTS_SOLIDS
+            MENUITEM SEPARATOR
+            MENUITEM "&Колонны",                    ID_VIEW_ELEMENTS_COLUMNS
+            MENUITEM "&Балки",                      ID_VIEW_ELEMENTS_BEAMS
+            MENUITEM "С&тены",                      ID_VIEW_ELEMENTS_WALLS
+            MENUITEM "Перекр&ытия",                 ID_VIEW_ELEMENTS_SLABS
+            MENUITEM "К&рыши",                      ID_VIEW_ELEMENTS_ROOFS
+        END
+        POPUP "&Фрагменты"
+        BEGIN
+            MENUITEM "&Отсечение",                  ID_CUT
+            MENUITEM "&Инверсное отсечение",        ID_INV_CUT
+            MENUITEM "&Шаг назад",                  ID_CUT_UNDO
+            MENUITEM "От&менить отсечение",         ID_NO_CUT
+        END
+        POPUP "&3D виды"
+        BEGIN
+            MENUITEM "Свер&ху",                     ID_VIEW_3DVIEWS_TOP
+            MENUITEM "С&низу",                      ID_VIEW_3DVIEWS_BOTTOM
+            MENUITEM "С&лева",                      ID_VIEW_3DVIEWS_LEFT
+            MENUITEM "Сп&рава",                     ID_VIEW_3DVIEWS_RIGHT
+            MENUITEM "С&переди",                    ID_VIEW_3DVIEWS_FRONT
+            MENUITEM "Сза&ди",                      ID_VIEW_3DVIEWS_BACK
+            MENUITEM SEPARATOR
+            MENUITEM "&ЮЗ изометрия",               ID_VIEW_3DVIEWS_SW_ISO
+            MENUITEM "Ю&В изометрия",               ID_VIEW_3DVIEWS_SE_ISO
+            MENUITEM "&CВ изометрия",               ID_VIEW_3DVIEWS_NE_ISO
+            MENUITEM "С&З изометрия",               ID_VIEW_3DVIEWS_NW_ISO
+            MENUITEM SEPARATOR
+            MENUITEM "Д&иметрия",                   ID_VIEW_3DVIEWS_DIMETRY
+        END
+        MENUITEM "&Перспектива",                ID_VIEW_PERSPECTIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Показывать профиль &стержней", ID_VIEW_SHOWBARPROFILE
+        MENUITEM "Показывать толщину пласт&ин", ID_VIEW_SHOWPLATETHICKNESS
+        MENUITEM SEPARATOR
+        MENUITEM "&Эскизы",                     ID_VIEW_THUMBNAIL
+        MENUITEM "&Крупные значки",             ID_VIEW_LARGE_ICON
+        MENUITEM "&Мелкие значки",              ID_VIEW_SMALL_ICON
+        MENUITEM "Сп&исок",                     ID_VIEW_LIST
+        MENUITEM "&Таблица",                    ID_VIEW_DETAILS
+        MENUITEM SEPARATOR
+        MENUITEM "&Обновить\tF5",               ID_MENU_VIEW_REFRESH
+        MENUITEM SEPARATOR
+        MENUITEM "Дерево каталогов",            ID_VIEW_FOLDER_TREE
+        MENUITEM "Содержимое каталога",         ID_VIEW_FOLDER_VIEW
+        MENUITEM "Панель состо&яния",           ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Сервис"
+    BEGIN
+        MENUITEM "&Настройки...",               ID_TOOLS_OPTIONS
+    END
+    POPUP "&Справка"
+    BEGIN
+        MENUITEM "&Вызов справки",              ID_HELP_FINDER
+        MENUITEM SEPARATOR
+        MENUITEM "&О программе Проводник Scad/Forum...", ID_APP_ABOUT
+    END
+END
+
+IDR_POPUP_MENUS MENU
+BEGIN
+    POPUP "Projection"
+    BEGIN
+        MENUITEM "Свер&ху",                     ID_VIEW_3DVIEWS_TOP
+        MENUITEM "С&низу",                      ID_VIEW_3DVIEWS_BOTTOM
+        MENUITEM "С&лева",                      ID_VIEW_3DVIEWS_LEFT
+        MENUITEM "Сп&рава",                     ID_VIEW_3DVIEWS_RIGHT
+        MENUITEM "С&переди",                    ID_VIEW_3DVIEWS_FRONT
+        MENUITEM "Сза&ди",                      ID_VIEW_3DVIEWS_BACK
+        MENUITEM SEPARATOR
+        MENUITEM "&ЮЗ изометрия",               ID_VIEW_3DVIEWS_SW_ISO
+        MENUITEM "Ю&В изометрия",               ID_VIEW_3DVIEWS_SE_ISO
+        MENUITEM "&CВ изометрия",               ID_VIEW_3DVIEWS_NE_ISO
+        MENUITEM "С&З изометрия",               ID_VIEW_3DVIEWS_NW_ISO
+        MENUITEM SEPARATOR
+        MENUITEM "Д&иметрия",                   ID_VIEW_3DVIEWS_DIMETRY
+    END
+    POPUP "View context"
+    BEGIN
+        MENUITEM "Показать вс&е",               ID_VIEW_ZOOM_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Увеличение рамкой",          ID_VIEW_MODE_ZOOM_WIN
+        MENUITEM "П&анорамирование",            ID_VIEW_MODE_PAN
+        MENUITEM "Вра&щение",                   ID_VIEW_MODE_ROTATE
+        MENUITEM "В&ыбор",                      ID_VIEW_MODE_SELECT
+        MENUITEM "С&мотреть вокруг",            ID_VIEW_MODE_LOOK_AROUND
+        MENUITEM "&Обход",                      ID_VIEW_MODE_WALK
+        MENUITEM SEPARATOR
+        MENUITEM "Перспе&ктива",                ID_VIEW_PERSPECTIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Свер&ху",                     ID_VIEW_3DVIEWS_TOP
+        MENUITEM "С&низу",                      ID_VIEW_3DVIEWS_BOTTOM
+        MENUITEM "С&лева",                      ID_VIEW_3DVIEWS_LEFT
+        MENUITEM "Сп&рава",                     ID_VIEW_3DVIEWS_RIGHT
+        MENUITEM "С&переди",                    ID_VIEW_3DVIEWS_FRONT
+        MENUITEM "Сза&ди",                      ID_VIEW_3DVIEWS_BACK
+        MENUITEM SEPARATOR
+        MENUITEM "&ЮЗ изометрия",               ID_VIEW_3DVIEWS_SW_ISO
+        MENUITEM "Ю&В изометрия",               ID_VIEW_3DVIEWS_SE_ISO
+        MENUITEM "&CВ изометрия",               ID_VIEW_3DVIEWS_NE_ISO
+        MENUITEM "С&З изометрия",               ID_VIEW_3DVIEWS_NW_ISO
+        MENUITEM SEPARATOR
+        MENUITEM "Д&иметрия",                   ID_VIEW_3DVIEWS_DIMETRY
+    END
+    POPUP "Bars"
+    BEGIN
+        MENUITEM "&Горизонтальные",             ID_BARS_HORIZONTAL
+        MENUITEM "&Вертикальные",               ID_BARS_VERTICAL
+        MENUITEM "&Наклонные",                  ID_BARS_SLANTED
+        MENUITEM SEPARATOR
+        MENUITEM "Показывать &профиль стержневых элементов", ID_VIEW_SHOWBARPROFILE
+    END
+    POPUP "Plates"
+    BEGIN
+        MENUITEM "&Горизонтальные",             ID_PLATES_HORIZONTAL
+        MENUITEM "&Вертикальные",               ID_PLATES_VERTICAL
+        MENUITEM "&Наклонные",                  ID_PLATES_SLANTED
+        MENUITEM SEPARATOR
+        MENUITEM "Показывать &толщину пластинчатых элементов", ID_VIEW_SHOWPLATETHICKNESS
+    END
+    POPUP "Context"
+    BEGIN
+        MENUITEM "&Инструменты",                ID_CONTEXT_INSTRUMENTS
+        MENUITEM "&Фильтры",                    ID_CONTEXT_FILTERS
+        MENUITEM "&Отсечение",                  ID_CONTEXT_CUT
+        MENUITEM "&Камера",                     ID_CONTEXT_CAMERA
+        MENUITEM "&Глубина",                    ID_CONTEXT_DEPTH
+    END
+    POPUP "Tree"
+    BEGIN
+        MENUITEM "&Проводник",                  ID_TREE_EXPLORER
+    END
+    POPUP "Select"
+    BEGIN
+        MENUITEM "&Скрыть выбранный элемент",   ID_SELECT_HIDE_ELEMENT
+        MENUITEM "Скрыть элементы в &плоскости выбранного", ID_HIDE_ELEMENT_PLATE
+        MENUITEM "Элементы в плоскости выбранного", ID_SELECT_SHOW_ELEMENT_PLATE
+    END
+    POPUP "Factor"
+    BEGIN
+        MENUITEM "&Перемещения",                ID_FACTOR_DISPLACEMENTS
+        MENUITEM "&Напряжения",                 ID_FACTOR_STRESSFIELDS
+        MENUITEM "Напряжения ""клеёнка""",      ID_FACTOR_STRESSCOLOURMAP
+    END
+END
+
+IDR_FOLDER_LIST MENU
+BEGIN
+    POPUP "Menu"
+    BEGIN
+        POPUP "&Вид"
+        BEGIN
+            MENUITEM "&Эскизы",                     ID_VIEW_THUMBNAIL
+            MENUITEM "&Крупные значки",             ID_VIEW_LARGE_ICON
+            MENUITEM "&Мелкие значки",              ID_VIEW_SMALL_ICON
+            MENUITEM "Сп&исок",                     ID_VIEW_LIST
+            MENUITEM "&Таблица",                    ID_VIEW_DETAILS
+            MENUITEM SEPARATOR
+            MENUITEM "&Обновить\tF5",               ID_MENU_VIEW_REFRESH
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Редактировать",              ID_FILE_EDIT
+        MENUITEM "&Удалить\tDel",               ID_FILE_DELETE
+        MENUITEM "Сохранить &как...",           ID_FILE_SAVE_AS
+        POPUP "Ре&зультаты расчета"
+        BEGIN
+            MENUITEM "&Удалить",                    ID_FILE_CALCRES_DELETE
+            MENUITEM "&Выборочное удаление...",     ID_FILE_CALCRES_SEL_DELETE
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Экспорт"
+        BEGIN
+            MENUITEM "&Автокад DXF...",             ID_EXPORT_TO_DXF
+            MENUITEM "&Каталога в RTF...",          ID_EXPORT_FOLDER_TO_RTF
+            MENUITEM "&Windows BMP",                ID_EXPORT_TO_BMP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Печать...\tCtrl+P",          ID_FILE_PRINT
+        MENUITEM "Пред&варительный просмотр",   ID_FILE_PRINT_PREVIEW
+        MENUITEM "&Настройки печати...",        ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Отправит&ь...",               ID_FILE_SEND_MAIL
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_FORUM_VIEWER        ICON                    "res\\ForumView.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDR_MAINFRAME           "Проводник Scad/Forum\n\nScadVi\nМодель Scad/Forum/mp4 3D (*.spr;*.opr,*.MP4)\n.spr;*.opr;*.MP4\nScadViewer.Document\nScadVi Document"
+    IDS_FOLDER_TREE_CAPTION "Дерево каталогов"
+    IDS_FOLDER_CAPTION      "Просмотр каталога"
+    IDS_MAIN_TOOLBAR_CAPTION "Инструменты"
+    IDS_CUT_TOOLBAR_CAPTION "Отсечение"
+    IDS_OPTIONS_DLG_NAME    "Настройки"
+    IDS_FILTERS_TOOLBAR_CAPTION "Фильтры"
+    IDS_CAMERA_TOOLBAR_CAPTION "Камера"
+    IDS_CAMERA_TOOLBAR_MM   "мм"
+    IDS_SCALE_CAPTION       "Шкала"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_IDLEMESSAGE     "Готово"
+    AFX_IDS_HELPMODEMESSAGE "Select an object on which to get Help"
+END
+
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_OPEN            "Открыть существующий файл\nОткрыть"
+    ID_FILE_SAVE_AS         "Сохранить текущий файл под новым именем\nСохранить как"
+    ID_FILE_PRINT_SETUP     "Изменить принтер и параметры печати\nПараметры печати"
+    ID_FILE_PRINT           "Печатать модель\nПечать"
+    ID_FILE_PRINT_PREVIEW   "Предварительный просмотр модели перед печатью\nПредварительный просмотр"
+    ID_FILE_SEND_MAIL       "Послать текущую модель по электронной почте\nПереслать по почте"
+END
+
+STRINGTABLE
+BEGIN
+    ID_APP_ABOUT            "Показать информацию о программе\nО программе"
+    ID_APP_EXIT             "Выйти из приложения\nВыход"
+    ID_HELP_INDEX           "Открыть справку\nСправка"
+    ID_HELP_FINDER          "Показать справочную информацию\nВызов справки"
+    ID_HELP_USING           "Display instructions about how to use help\nHelp"
+    ID_CONTEXT_HELP         "Display help for clicked on buttons, menus and windows\nHelp"
+    ID_HELP                 "Display help for current task or command\nHelp"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_MRU_FILE1       "Открыть файл"
+    ID_FILE_MRU_FILE2       "Открыть файл"
+    ID_FILE_MRU_FILE3       "Открыть файл"
+    ID_FILE_MRU_FILE4       "Открыть файл"
+    ID_FILE_MRU_FILE5       "Открыть файл"
+    ID_FILE_MRU_FILE6       "Открыть файл"
+    ID_FILE_MRU_FILE7       "Открыть файл"
+    ID_FILE_MRU_FILE8       "Открыть файл"
+    ID_FILE_MRU_FILE9       "Открыть файл"
+    ID_FILE_MRU_FILE10      "Открыть файл"
+    ID_FILE_MRU_FILE11      "Открыть файл"
+    ID_FILE_MRU_FILE12      "Открыть файл"
+    ID_FILE_MRU_FILE13      "Открыть файл"
+    ID_FILE_MRU_FILE14      "Открыть файл"
+    ID_FILE_MRU_FILE15      "Открыть файл"
+    ID_FILE_MRU_FILE16      "Открыть файл"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Копировать текущий вид в буфер обмена\nКопировать"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_TOOLBAR         "Вывод и скрытие панели инструментов.\nПанель инструментов"
+    ID_VIEW_STATUS_BAR      "Вывод и скрытие строки состояния.\nСтрока состояния"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Изменение размеров окна."
+    AFX_IDS_SCMOVE          "Изменение положения окна."
+    AFX_IDS_SCMINIMIZE      "Свертывание окна в значок."
+    AFX_IDS_SCMAXIMIZE      "Развертывание окна до предельного размера."
+    AFX_IDS_SCCLOSE         "Закрытие активного окна."
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCRESTORE       "Восстановление исходных размеров окна."
+    AFX_IDS_SCTASKLIST      "Отображение списка задач."
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Закрытие окна предварительного просмотра.\nОтменить просмотр"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_TITLEOptionsPP      "Title"
+    IDS_HELPFILEOptionsPP   "Help File Name"
+    IDS_DOCSTRINGOptionsPP  "Your Help String"
+    IDS_RESULTS_TOOLBAR     "Результаты"
+    IDS_DEFORM_TOOLBAR      "Деформация"
+    IDS_DEPTH_TOOLBAR       "Глубина"
+    IDS_DISPLACEMENTS       "Перемещения по %s (мм)"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_ZOOM_IN         "Увеличить видимый размер модели\nУвеличение"
+    ID_VIEW_ZOOM_OUT        "Уменьшить видимый размер модели\nУменьшение"
+    ID_VIEW_ZOOM_ALL        "Показать всю модель/фрагмент\nПоказать все"
+    ID_VIEW_MODE_ZOOM_WIN   "Увеличить прямоугольную область\nУвеличение рамкой"
+    ID_VIEW_MODE_PAN        "Передвинуть область просмотра\nПанорамирование"
+    ID_VIEW_MODE_ROTATE     "Вращать модель\nВращение"
+    ID_VIEW_MODE_WALK       "Передвигаться параллельно плоскости OXY (только в перспективе)\nОбход"
+    ID_VIEW_MODE_LOOK_AROUND 
+                            "Изменить направление взгляда (только в перспективе)\nСмотреть вокруг"
+    ID_VIEW_PERSPECTIVE     "Изменить проекцию на перспективную/параллельную\nПерспектива"
+    ID_VIEW_MODE_SELECT     "Выбор элемента\nВыбор"
+END
+
+STRINGTABLE
+BEGIN
+    ID_PROJECTION           "Установить фиксированную проекцию\nПроекция"
+    ID_VIEW_3DVIEWS_TOP     "Показать модель сверху\nПлан"
+    ID_VIEW_3DVIEWS_BOTTOM  "Показать модель снизу\nСнизу"
+    ID_VIEW_3DVIEWS_LEFT    "Показать модель слева\nСлева"
+    ID_VIEW_3DVIEWS_RIGHT   "Показать модель справа\nСправа"
+    ID_VIEW_3DVIEWS_FRONT   "Показать модель спереди\nСпереди"
+    ID_VIEW_3DVIEWS_BACK    "Показать модель сзади\nСзади"
+    ID_VIEW_3DVIEWS_SW_ISO  "Показать модель в юго-западной изометрии\nЮЗ изометрия"
+    ID_VIEW_3DVIEWS_SE_ISO  "Показать модель в юго-восточной изометрии\nЮВ изометрия"
+    ID_VIEW_3DVIEWS_NE_ISO  "Показать модель в северо-восточной изометрии\nСВ изометрия"
+    ID_VIEW_3DVIEWS_NW_ISO  "Показать модель в северо-западной изометрии\nСЗ изометрия"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_MODE_WIREFRAME  "Каркасный режим просмотра\nКаркас"
+    ID_VIEW_MODE_SOLID      "Заполнение без границ элементов\nЗаполнение"
+    ID_VIEW_MODE_ELEMENTBORDERS 
+                            "Заполнение с границами элементов\nЗаполнение с границами элементов"
+    ID_VIEW_MODE_TRANSPARENT 
+                            "Полупрозрачный режим просмотра с границами элементов\nПолупрозрачные элементы"
+    ID_TOOLS_OPTIONS        "Вызвать диалог настроек\nНастройки"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_SHOWBARPROFILE  "Показывать профиль стержней, колонн или балок\nПоказывать профиль"
+    ID_VIEW_SHOWPLATETHICKNESS 
+                            "Показывать толщину пластин, стен, перекрытий или крыш\nПоказывать толщину пластин"
+    ID_VIEW_ELEMENTS_NODES  "Показать/скрыть узлы\nПоказать узлы"
+    ID_VIEW_ELEMENTS_CONSTRAINTS "Показать/скрыть связи\nПоказать связи"
+    ID_VIEW_ELEMENTS_BARS   "Показать/скрыть стержневые элементы\nПоказать стержневые элементы"
+    ID_VIEW_ELEMENTS_PLATES "Показать/скрыть пластинчатые элементы\nПоказать пластинчатые элементы"
+    ID_VIEW_ELEMENTS_SOLIDS "Показать/скрыть объемные элементы\nПоказать объемные элементы"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_ELEMENTS_WALLS  "Показать/скрыть стены\nПоказать стены"
+    ID_VIEW_ELEMENTS_SLABS  "Показать/скрыть перекрытия\nПоказать перекрытия"
+    ID_VIEW_ELEMENTS_ROOFS  "Показать/скрыть крыши\nПоказать крыши"
+    ID_VIEW_ELEMENTS_BEAMS  "Показать/скрыть балки\nПоказать балки"
+    ID_VIEW_ELEMENTS_COLUMNS "Показать/скрыть колонны\nПоказать колонны"
+    ID_CUT                  "Отсечение модели прямоугольной областью\nОтсечение окном"
+    ID_INV_CUT              "Скрыть элементы, лежащие в прямоугольной области\nИнверсное отсечение"
+    ID_CUT_UNDO             "Отменить одну операцию отсечения\nШаг назад"
+    ID_NO_CUT               "Показать всю модель без отсечения\nОтменить отсечение"
+END
+
+STRINGTABLE
+BEGIN
+    ID_BARS_HORIZONTAL      "Показать/скрыть горизонтальные стержневые элементы"
+    ID_BARS_VERTICAL        "Показать/скрыть вертикальные стержневые элементы"
+    ID_BARS_SLANTED         "Показать/скрыть наклонные стержневые элементы"
+    ID_PLATES_HORIZONTAL    "Показать/скрыть горизонтальные пластинчатые элементы"
+    ID_PLATES_SLANTED       "Показать/скрыть вертикальные пластинчатые элементы"
+    ID_PLATES_VERTICAL      "Показать/скрыть наклонные пластинчатые элементы"
+    ID_FILE_EDIT            "Открыть файл для редактирования в приложении Scad Office"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_COLOR0              "Черный"
+    IDS_COLOR1              "Коричневый"
+    IDS_COLOR2              "Оливковый"
+    IDS_COLOR3              "Темно-зеленый"
+    IDS_COLOR4              "Темно-сизый"
+    IDS_COLOR5              "Темно-синий"
+    IDS_COLOR6              "Индиго"
+    IDS_COLOR7              "Серый 80%"
+    IDS_COLOR8              "Темно-красный"
+    IDS_COLOR9              "Оранжевый"
+    IDS_COLOR10             "Коричнево-зеленый"
+    IDS_COLOR11             "Зеленый"
+    IDS_COLOR12             "Сине-зеленый"
+    IDS_COLOR13             "Синий"
+    IDS_COLOR14             "Сизый"
+    IDS_COLOR15             "Серый 50%"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_COLOR16             "Красный"
+    IDS_COLOR17             "Светло-оранжевый"
+    IDS_COLOR18             "Травяной"
+    IDS_COLOR19             "Изумрудный"
+    IDS_COLOR20             "Темно-бирюзовый"
+    IDS_COLOR21             "Темно-голубой"
+    IDS_COLOR22             "Фиолетовый"
+    IDS_COLOR23             "Серый 40%"
+    IDS_COLOR24             "Лиловый"
+    IDS_COLOR25             "Золотистый"
+    IDS_COLOR26             "Желтый"
+    IDS_COLOR27             "Ярко-зеленый"
+    IDS_COLOR28             "Бирюзовый"
+    IDS_COLOR29             "Голубой"
+    IDS_COLOR30             "Вишневый"
+    IDS_COLOR31             "Серый 25%"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_COLOR32             "Розовый"
+    IDS_COLOR33             "Светло-коричневый"
+    IDS_COLOR34             "Светло-желтый"
+    IDS_COLOR35             "Бледно-зеленый"
+    IDS_COLOR36             "Светло-бирюзовый"
+    IDS_COLOR37             "Бледно-голубой"
+    IDS_COLOR38             "Сиреневый"
+    IDS_COLOR39             "Белый"
+    IDS_STRING_AUTOMATIC_COLOR "Авто"
+    IDS_STRING_CUSTOM_COLOR "Другие цвета..."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FL_COLUMN_NAME      "Имя"
+    IDS_FL_COLUMN_SIZE      "Размер"
+    IDS_FL_COLUMN_TIME      "Дата"
+    IDS_FL_MODIFIED_FORMAT  "%d.%m.%Y %H:%M:%S"
+    IDS_FILE_COUNT_FORMAT   "Файлов: %d"
+    IDS_FILE_INFO_FORMAT    "Узлов %d  Элементов %d"
+    IDS_EXPORT_DXF_TITLE    "Экспорт в DXF"
+    IDS_EXPORT_BMP_TITLE    "Экспорт в BMP"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_THUMBNAIL       "Просмотр каталога в режиме эскизов\nЭскизы"
+    ID_VIEW_LARGE_ICON      "Просмотр каталога в режиме крупных значков\nКрупные значки"
+    ID_VIEW_SMALL_ICON      "Просмотр каталога в режиме мелких значков\nМелкие значки"
+    ID_FILE_DELETE          "Удалить указанный файл в корзину"
+    ID_EXPORT_TO_DXF        "Экспорт текущей модели в DXF файл Автокада\nЭкспорт в DXF"
+    ID_EXPORT_FOLDER_TO_RTF "Экспорт эскизов всех файлов текущего каталога в RTF-файл\nЭкспорт в RTF"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_LIST            "Просмотр каталога в режиме списка\nСписок"
+    ID_VIEW_DETAILS         "Просмотр каталога в режиме таблицы\nТаблица"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_CALCRES_DELETE  "Удалить все файлы с результатами расчета"
+    ID_FILE_CALCRES_SEL_DELETE 
+                            "Выборочное удаление/архивирование файлов результатов"
+    ID_EXPORT_TO_BMP        "Сохранить текущий вид в файл BMP\nЭкспорт в BMP"
+    ID_VIEW_ELEMENTS_AXES   "Показать/скрыть разбивочные оси\nПоказать разбивочные оси"
+END
+
+STRINGTABLE
+BEGIN
+    9000                    "Проект SCAD"
+    9001                    "Внутpенние фоpматы конечныx элементов"
+    9002                    "Матpица жесткости"
+    9003                    "Рабочий файл для xpанения пpомежуточныx вычислений"
+    9004                    "Рабочий файл для xpанения пpомежуточныx вычислений"
+    9005                    "Собственные частоты колебаний; фоpмы колебаний; инеpционные нагpузки; рaспpеделение весов масс"
+    9006                    "Супеpэлементы"
+    9007                    "Величины пеpемещений"
+END
+
+STRINGTABLE
+BEGIN
+    9008                    "Величины усилий"
+    9009                    "Величины pеакций"
+    9010                    "Расчетные сочетания усилий; унифициpованные pасчетные сочетания усилий"
+    9011                    "Коэффициенты запаса устойчивости; фоpмы потеpи устойчивости; cвободные длины элементов"
+    9012                    "Коэффициенты запаса устойчивости; фоpмы потеpи устойчивости; cвободные длины элементов для комбинаций загружений"
+    9013                    "Величины пеpемещения при комбинации нагружений"
+    9014                    "Величины усилий при комбинации нагружений"
+    9015                    "Протокол расчета"
+    9016                    "Распечатка исходных данных"
+    9017                    "Перечень ошибок в исходных данных"
+    9018                    "Рабочий файл со служебной информацией"
+    9019                    "Таблицы с величинами перемещений"
+    9020                    "Таблицы с величинами усилий"
+    9021                    "Таблицы с величинами pеакций"
+    9022                    "Таблицы расчетных сочетания и унифициpованных pасчетных сочетаний"
+    9023                    "Таблицы с частотами собственных колебаний"
+END
+
+STRINGTABLE
+BEGIN
+    9024                    "Таблицы с фоpмами колебаний"
+    9025                    "Таблицы с инеpционными нагpузками"
+    9026                    "Супеpэлементная стpуктуpа"
+    9027                    "Сведения о состоянии матеpиала"
+    9028                    "Таблицы главных и эквивалентных напpяжений по усилиям"
+    9029                    "Таблицы главных и эквивалентных напpяжений по комбинациям нагружений"
+    9030                    "Пояснительная записка"
+    9031                    "Таблицы с распpеделением весов масс"
+    9032                    "Таблицы с коэффициентами запаса устойчивости"
+    9033                    "Таблицы со свободными длинами элементов"
+    9034                    "Таблицы с фоpмами потеpи устойчивости"
+    9035                    "Таблицы с коэффициентами жесткости основания"
+    9036                    "Таблицы с величинами усилий при комбинаций нагружений"
+    9037                    "Таблицы с величинами пеpемещений при комбинаций нагружений"
+    9038                    "Таблицы главных и эквивалентных напpяжений при комбинации нагружений"
+    9039                    "Таблицы реакций от фрагмента схемы"
+END
+
+STRINGTABLE
+BEGIN
+    9040                    "Таблицы реакций от фрагмента схемы при комбинации нагружений"
+    9041                    "Таблицы коэффициентов запаса устойчивости при комбинации нагружений"
+    9042                    "Таблицы свободных длин элементов при комбинации нагружений"
+    9043                    "Таблицы с фоpмами потеpи устойчивости при комбинации нагружений"
+    9044                    "Инерционные силы"
+    9045                    "Армирование"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_RES_COLUMN_FILE     "Файл"
+    IDS_RES_COLUMN_SIZE     "Размер"
+    IDS_RES_COLUMN_COMMENT  "Комментарий"
+    IDS_ARCH_QUEST          "Удалять файлы после архивации?"
+    IDS_ARCHIVING           "Архивация"
+    IDS_BMP_SIZE_ERR        "Указана нулевая ширина или высота картинки. Файл не будет создан."
+END
+
+STRINGTABLE
+BEGIN
+    IDC_CHECK_CHANGE_DIST   "Двигать камеру, сохраняя видимый размер модели\nИзменять дистанцию"
+    IDC_SLIDER_FLENGTH      "Изменить фокусное расстояние объектива\nФокусное расстояние объектива"
+    IDC_SLIDER_DEPTH        "Передвинуть плоскость отсечения по глубине\nПлоскость отсечения"
+    IDC_SLIDER_TRANSPARENCY "\nПрозрачность"
+END
+
+STRINGTABLE
+BEGIN
+    61504                   "на %1"
+    61505                   "&Одна страница"
+    61506                   "&Две страницы"
+    61507                   "Страница %u"
+    61508                   "Страница %u\nСтраницы %u-%u\n"
+    61509                   "prn"
+    61510                   "Output.prn"
+    61511                   "Рисовать \nIsolines"
+    61512                   "Печать в файл"
+    61513                   "Напряжения ("
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_RESULTS         "Просмотр результатов расчета\nРезультаты расчета"
+    IDC_BTN_ISOLINES        "Рисовать изолинии\nИзолинии"
+    IDC_BTN_VALUES          "Оцифровка результатов\nОцифровка результатов"
+    IDC_BTN_EGGS            "Отображение величины цветными точками\nЦветные точки"
+    ID_FACTOR_DISPLACEMENTS "Показ изолиний/изополей перемещений"
+    ID_FACTOR_STRESSFIELDS  "Показ изолиний/изополей напряжений"
+    ID_FACTOR_STRESSCOLOURMAP "Цветовое отображение наряжений поэлементно"
+    ID_FACTOR_GROUP         "Смена отображаемого фактора\nФактор"
+    ID_LIGHT                "Учет освещения при показе модели\nОсвещение модели"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_STRESSES            "Напряжения %s (Т/кв.м)"
+    IDS_RESULT_TOOLBAR      "Параметры результатов"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_COMBO_NUM           "\nРазмер шкалы"
+    IDC_BUTTON_HOT          """Горячая"" палитра\n""Горячая"" палитра"
+    IDC_BUTTON_COLD         "\n""Холодная"" палитра"
+    IDC_BUTTON_GRAY         "\nСерая палитра"
+    IDC_BUTTON_UNIFORM      "\nРавномерная шкала с разделителем"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_COMBO_FACTOR        "\nВыбор вида фактора"
+    IDC_COMBO_LOAD          "\nВыбор загружения"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_DELIM_OUT_OF_RANGE  "Вы должны ввести число в диапазоне [%.2f ... %.2f)"
+END
+
+#endif    // Русский (Россия) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+#include "res\ForumView_RUS.rc2"
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

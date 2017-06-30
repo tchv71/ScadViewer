@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "../ForumView_ENG/resource.h"
 // CScaleDlg dialog
 
 class CScaleDlg : public CDialogEx

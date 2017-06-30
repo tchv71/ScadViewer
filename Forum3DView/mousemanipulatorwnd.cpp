@@ -345,7 +345,7 @@ void CMouseManipulatorWnd::OnMouseMove(UINT nFlags, CPoint point)
 			default: break;
 			}
 
-			if(State != ST_ZOOM && State != ST_CUT && State != ST_INV_CUT)
+			if(State != ST_ZOOM && State != ST_CUT && State != ST_INV_CUT && m_pOwner)
 				m_pOwner->Redraw();
 		}
 		else if((nFlags & MK_RBUTTON) != 0 && Down)

@@ -37,7 +37,7 @@ void FORUM3DVIEW_EXPORT __cdecl Forum3DView(SCHEMA *Prj,CString PathToFile,CWnd 
 void FORUM3DVIEW_EXPORT __cdecl Scad3DView(SCHEMA *Prj,LPCSTR strPath,HWND hWnd);
 extern "C"
 {
-BOOL __stdcall SCForumMdl3DDraw( HDC hdc, const RECT * r, LPCTSTR sFileName, LPCTSTR sWorkDir, int nDrawFlags, HANDLE nStopEvent);
+FORUM3DVIEW_EXPORT BOOL __stdcall SCForumMdl3DDraw( HDC hdc, const RECT * r, LPCTSTR sFileName, LPCTSTR sWorkDir, int nDrawFlags, HANDLE nStopEvent);
 }
 
 /////////////////////////////////////////////////////////////////////////////

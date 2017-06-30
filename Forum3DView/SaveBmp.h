@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // SaveBmp.h : header file
 //
-
+#include "../ForumView_ENG/resource.h"
 /////////////////////////////////////////////////////////////////////////////
 // CSaveBmp dialog
 
@@ -18,7 +18,7 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(CSaveBmp)
-	enum { IDD = IDD_SAVE_BMP1 };
+	enum { IDD = IDD_SAVE_BMP };
 	int		m_nBmpWidth;
 	int		m_nBmpHeight;
 	//}}AFX_DATA

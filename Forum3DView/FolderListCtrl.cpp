@@ -792,7 +792,7 @@ LRESULT CFolderListCtrl::OnDirChange( WPARAM wParam, LPARAM lParam )
 	return 0;
 }
 
-void CFolderListCtrl::AddFileTypeIcons(const _tfinddata_t &fd, int &nLargeIconInd, int &nSmallIconInd)
+void CFolderListCtrl::AddFileTypeIcons(const struct _tfinddata_t &fd, int &nLargeIconInd, int &nSmallIconInd)
 {
 	CSCADString sFileName;
 	

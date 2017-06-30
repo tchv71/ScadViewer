@@ -83,11 +83,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <SccProjectName>"$/Work/Projects/ScadSoft/ForumView/ForumView_ENG", ABJAAAAA</SccProjectName>
+    <SccProjectName>
+    </SccProjectName>
     <SccAuxPath />
-    <SccLocalPath>.</SccLocalPath>
-    <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>
-    <ProjectGuid>{FA7BAC6B-C588-3969-17CF-3F0AC79E55CC}</ProjectGuid>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProvider>
+    </SccProvider>
+    <ProjectGuid>{E68BC39E-5BBD-9514-2B28-71C68B8D8C39}</ProjectGuid>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -395,38 +398,38 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">ForumView11_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug11xp|Win32'">ForumView11_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">ForumView11_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug11xp|x64'">ForumView11_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug21|Win32'">ForumView21_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug21xp|Win32'">ForumView21_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">ForumView21_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug21xp|x64'">ForumView21_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ForumView_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ForumView_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release11|Win32'">ForumView11_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release11xp|Win32'">ForumView11_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release11|x64'">ForumView11_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release11xp|x64'">ForumView11_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release21|Win32'">ForumView21_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release21xp|Win32'">ForumView21_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">ForumView21_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release21xp|x64'">ForumView21_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ForumView_ENG</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ForumView_ENG</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">ForumView11_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug11xp|Win32'">ForumView11_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">ForumView11_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug11xp|x64'">ForumView11_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug21|Win32'">ForumView21_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug21xp|Win32'">ForumView21_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">ForumView21_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug21xp|x64'">ForumView21_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ForumView_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ForumView_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release11|Win32'">ForumView11_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release11xp|Win32'">ForumView11_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release11|x64'">ForumView11_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release11xp|x64'">ForumView11_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release21|Win32'">ForumView21_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release21xp|Win32'">ForumView21_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">ForumView21_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release21xp|x64'">ForumView21_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ForumView_RUS</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ForumView_RUS</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release11|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release11/</AssemblerListingLocation>
       <ObjectFileName>.\Release11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release11/</ProgramDataBaseFileName>
@@ -437,7 +440,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release11/ForumView11_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -445,27 +448,27 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release11xp|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release11/</AssemblerListingLocation>
       <ObjectFileName>.\Release11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release11/</ProgramDataBaseFileName>
@@ -476,7 +479,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release11/ForumView11_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -484,27 +487,27 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release11|x64'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release11/</AssemblerListingLocation>
       <ObjectFileName>.\Release11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release11/</ProgramDataBaseFileName>
@@ -515,33 +518,33 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release11/ForumView11_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Release11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release11xp|x64'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release11/</AssemblerListingLocation>
       <ObjectFileName>.\Release11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release11/</ProgramDataBaseFileName>
@@ -552,33 +555,33 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release11/ForumView11_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Release11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release21|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release11/</AssemblerListingLocation>
       <ObjectFileName>.\Release11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release11/</ProgramDataBaseFileName>
@@ -589,7 +592,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release21/ForumView21_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release21/ForumView21_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -597,27 +600,27 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release21xp|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release11/</AssemblerListingLocation>
       <ObjectFileName>.\Release11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release11/</ProgramDataBaseFileName>
@@ -628,7 +631,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release21/ForumView21_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release21/ForumView21_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -636,27 +639,27 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release21|x64'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release11/</AssemblerListingLocation>
       <ObjectFileName>.\Release11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release11/</ProgramDataBaseFileName>
@@ -667,33 +670,33 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release21/ForumView21_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release21/ForumView21_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Release11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release21xp|x64'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release11/</AssemblerListingLocation>
       <ObjectFileName>.\Release11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release11/</ProgramDataBaseFileName>
@@ -704,33 +707,33 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release21/ForumView21_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release21/ForumView21_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Release11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
       <ObjectFileName>.\Release/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
@@ -738,10 +741,10 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
-      <OutputFile>../Release/ForumView_ENG.dll</OutputFile>
+      <OutputFile>../Release/ForumView_RUS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release/ForumView_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release/ForumView_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -749,27 +752,27 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Release/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
       <ObjectFileName>.\Release/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
@@ -777,34 +780,34 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
-      <OutputFile>../Release/ForumView_ENG.dll</OutputFile>
+      <OutputFile>../Release/ForumView_RUS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Release/ForumView_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Release/ForumView_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Release/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Release/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Release/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug11/</ProgramDataBaseFileName>
@@ -817,7 +820,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug11/ForumView11_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -825,25 +828,25 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug11xp|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug11/</ProgramDataBaseFileName>
@@ -856,7 +859,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug11/ForumView11_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -864,25 +867,25 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug11/</ProgramDataBaseFileName>
@@ -895,31 +898,31 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug11/ForumView11_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Debug11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug11xp|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug11/</ProgramDataBaseFileName>
@@ -932,31 +935,31 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug11/ForumView11_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Debug11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;SCAD11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug21|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug11/</ProgramDataBaseFileName>
@@ -969,7 +972,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug21/ForumView21_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -977,25 +980,25 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug21xp|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug11/</ProgramDataBaseFileName>
@@ -1008,34 +1011,33 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug21xp/ForumView21_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug21/ForumView21_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug21|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug11/</ProgramDataBaseFileName>
@@ -1048,31 +1050,31 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug21/ForumView21_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Debug11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug21xp|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug11/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug11/</AssemblerListingLocation>
       <ObjectFileName>.\Debug11/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug11/</ProgramDataBaseFileName>
@@ -1085,31 +1087,31 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug11/ForumView11_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug21/ForumView21_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Debug11/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug11/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;SCAD21;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
       <ObjectFileName>.\Debug/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
@@ -1118,11 +1120,11 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>../Debug/ForumView_ENG.dll</OutputFile>
+      <OutputFile>../Debug/ForumView_RUS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug/ForumView_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug/ForumView_RUS.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
@@ -1130,25 +1132,25 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_ENG_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FORUMVIEW_RUS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\Debug/ForumView_ENG.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug/ForumView_RUS.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
       <ObjectFileName>.\Debug/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
@@ -1157,28 +1159,28 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>../Debug/ForumView_ENG.dll</OutputFile>
+      <OutputFile>../Debug/ForumView_RUS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <ImportLibrary>.\Debug/ForumView_ENG.lib</ImportLibrary>
+      <ImportLibrary>.\Debug/ForumView_RUS.lib</ImportLibrary>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Debug/ForumView_ENG.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug/ForumView_RUS.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <ResourceOutputFileName>Debug/FV_Eng.res</ResourceOutputFileName>
+      <ResourceOutputFileName>Debug/FV_RUS.res</ResourceOutputFileName>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ResourceCompile Include="ForumView_ENG.rc">
+    <ResourceCompile Include="ForumView_RUS.rc">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug11|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug11xp|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug11|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -1218,7 +1220,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\ForumView.ico" />
-    <None Include="res\ForumView_ENG.rc2" />
+    <None Include="res\ForumView_RUS.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

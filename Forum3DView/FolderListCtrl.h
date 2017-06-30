@@ -13,6 +13,8 @@
 #include "Forum3DView.h"
 #include "DetViewOpts.h"
 #include "DirChangeListener.h"
+//#include <corecrt_io.h>
+#include <tchar.h>
 
 #pragma	pack(push,1)
 
