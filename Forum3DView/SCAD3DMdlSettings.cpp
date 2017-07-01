@@ -243,6 +243,10 @@ BOOL CSCAD3DMdlSettings::AddExtInfo( const TCHAR * sExt, const TCHAR * sDescript
 	DHRFileDrawProc * pfnProc = reinterpret_cast<DHRFileDrawProc*>(GetProcAddress(hModule, sFuncName));
 
 	if( !pfnProc )
+	{
+		 pfnProc = reinterpret_cast<DHRFileDrawProc*>(GetProcAddress(hModule, (LPSTR)3));
+	}
+	if( !pfnProc )
 		return FALSE;
 
 	FPTExtFuncInfo	efi;

@@ -4,6 +4,7 @@ include_directories(
     .
 )
 
+if (WIN32)
 add_library(ForumView21_ENG SHARED ForumView_Eng.rc)
 set_target_properties(ForumView21_ENG PROPERTIES  LINK_FLAGS "/NOENTRY")
 set_target_properties (ForumView21_ENG PROPERTIES LINKER_LANGUAGE "CXX")
@@ -15,5 +16,5 @@ install(TARGETS ForumView21_ENG
 	RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/_install
 	LIBRARY DESTINATION ${PROJECT_SOURCE_DIR}/_install
 	)
-
+endif(WIN32)
 

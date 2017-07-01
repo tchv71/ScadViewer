@@ -5,7 +5,7 @@
 // All Rights Reserved
 //
 // Disclaimer : this text is under authority of goverment laws, US and Russian Federation
-// Unauthorizing compilation, modification and re-engineering is strictly prohibited
+// Unauthorized compilation, modification and re-engineering is strictly prohibited
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

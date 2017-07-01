@@ -742,9 +742,11 @@ void CFolderListCtrl::OnSelChanged( NMHDR* pNMHDR, LRESULT* pResult )
 {
 	NMLISTVIEW * pNM = reinterpret_cast<NMLISTVIEW*>(pNMHDR);
 
-	if( ( pNM->uNewState & LVIS_SELECTED ) && pNM->iItem != -1 && pNM->iItem != m_nSelectedItem )
+	if( pNM && ( pNM->uNewState & LVIS_SELECTED ) && pNM->iItem != -1 && pNM->iItem != m_nSelectedItem )
 	{
 		CFLCItemData * pData = reinterpret_cast<CFLCItemData*>(GetItemData( pNM->iItem ));
+		if (!pData)
+			return;
 		m_strSelectedPath = pData->m_sFilePath;
 		CSCAD3DMdlSettings::Get3DS()->SetViewFilePath( pData->m_sFilePath, pData->m_sExt );
 		m_nSelectedItem = pNM->iItem;
