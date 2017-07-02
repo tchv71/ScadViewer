@@ -1,7 +1,7 @@
 #pragma once
 #include "Resource.h"
-#include "depthdialogbar.h"
-#include "GridSrc\GridCtrl.h"
+#include "DepthDialogbar.h"
+#include "GridSrc/GridCtrl.h"
 
 struct DefMapInfo;
 

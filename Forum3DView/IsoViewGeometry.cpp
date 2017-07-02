@@ -11,7 +11,7 @@
 #include "stdafx.h"
 #if defined(SCAD11) || defined(SCAD21)
 #include "IsoViewGeometry.h"
-#include "..\ogliso\OglIso.h"
+#include "../OglIso/OglIso.h"
 #include "GlDraw.h"
 #include "3diso.hpp"
 #include "Renderer.h"

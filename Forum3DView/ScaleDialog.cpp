@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "ScaleDialog.h"
 #include "Resource.h"
-#include "..\OglIso\OglIso.h"
-#include "GridSrc\GridCellCheck.h"
+#include "../OglIso/OglIso.h"
+#include "GridSrc/GridCellCheck.h"
 
 
 // диалоговое окно CScaleDialog

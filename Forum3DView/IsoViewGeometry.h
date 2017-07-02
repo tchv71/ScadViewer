@@ -16,7 +16,7 @@
 #endif // _MSC_VER > 1000
 
 #include "ViewGeometry.h"
-#include "..\ogliso\OglIso.h"
+#include "../OglIso/OglIso.h"
 
 struct SOglIsoParam;
 //struct DefMapInfo;

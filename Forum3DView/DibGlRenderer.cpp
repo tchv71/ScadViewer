@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include <gl\gl.h>
+#include <gl/gl.h>
 #include "DibGlRenderer.h"
 #include "shlwapi.h"
 
@@ -26,7 +26,7 @@
 //#include "scad.h"
 //#include "Grand.h"
 #endif
-#include "..\ogliso\OglIso.h"
+#include "../ogliso/OglIso.h"
 #include "resource.h"
 #include "3DIso.hpp"
 

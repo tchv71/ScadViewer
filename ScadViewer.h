@@ -18,8 +18,8 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "ForumView_ENG\resource.h"       // main symbols
-#include "Forum3DView\SCAD3DMdlSettings.h"
+#include "ForumView_ENG/resource.h"       // main symbols
+#include "Forum3DView/SCAD3DMdlSettings.h"
 /////////////////////////////////////////////////////////////////////////////
 // CScadViewerApp:
 // See ScadViewer.cpp for the implementation of this class

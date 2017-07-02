@@ -25,7 +25,7 @@
 //#include "Grand.h"
 #endif
 #include "3DIso.hpp"
-#include "..\ogliso\OglIso.h"
+#include "../OglIso/OglIso.h"
 
 
 class FORUM3DVIEW_EXPORT CScadViewerDoc : public CDocument

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GridSrc\GridCtrl.h"
+#include "GridSrc/GridCtrl.h"
 
 // CScalePane
 

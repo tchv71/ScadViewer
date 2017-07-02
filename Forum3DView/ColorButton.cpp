@@ -5,7 +5,7 @@
 //***************************************************************************
 #include "stdafx.h"
 #include "ColorButton.h"
-#include "..\ForumView_ENG\resource.h"       // main symbols
+#include "../ForumView_ENG/resource.h"       // main symbols
 #include "ColourPopup.h"
 //***********************************************************************
 //**                         MFC Debug Symbols                         **

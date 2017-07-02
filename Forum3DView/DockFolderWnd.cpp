@@ -11,7 +11,7 @@
 #include "stdafx.h"
 #include "DockFolderWnd.h"
 #include "SCAD3DMdlSettings.h"
-#include "..\ForumView_ENG\resource.h"
+#include "../ForumView_ENG/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -22,7 +22,8 @@
 //#include "SCADString.hxx"
 #include <map>
 using namespace std;
-#include "Forum3DView\Forum3DView.h"
+#include "Forum3DView/Forum3DView.h"
+
 #include <atlbase.h>
 
 /*

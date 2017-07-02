@@ -8,7 +8,7 @@
 // Unauthorizing compilation, modification and re-engineering is strictly prohibited
 
 #include "stdafx.h"
-#include "ForumView_ENG\resource.h"
+#include "ForumView_ENG/resource.h"
 //#include "SCAD3DMdlSettings.h"
 #include "PropertiesCtrl.h"
 #include <shlwapi.h>
