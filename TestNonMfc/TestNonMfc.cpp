@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "resource.h"
-#include "..\Forum3DView\Forum3DView.h"
+#include "../Forum3DView/Forum3DView.h"
 #include "Schema.h"
 #include <shlwapi.h>
 

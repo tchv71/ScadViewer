@@ -14,8 +14,8 @@ GLDraw.cpp - Вывод модели с использованием OpenGL
 // Unauthorizing compilation, modification and re-engineering is strictly prohibited
 #include "stdafx.h" //<vcl.h>
 #include <math.h>
-#include <gl\gl.h>
-#include <gl\glu.h>
+#include <gl/gl.h>
+#include <gl/glu.h>
 #include "glext.h"
 #include <algorithm>
 

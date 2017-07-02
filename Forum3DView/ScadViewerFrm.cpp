@@ -13,7 +13,7 @@
 #include "ScadViewerFrm.h"
 #include "ScadViewerView.h"
 #include "ViewerOptions.h"
-#include "..\Forum3DView\resource.h"
+#include "../Forum3DView/resource.h"
 #include "OptionsMaterial.h"
 #include "OptionsRtf.h"
 //#include "mp4view.h"

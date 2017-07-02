@@ -1,7 +1,7 @@
 //
 // ForumView_RUS.RC2 - resources Microsoft Visual C++ does not edit directly
 //
-#include "..\..\Version.h"
+#include "../../Version.h"
 
 #ifdef APSTUDIO_INVOKED
 	#error this file is not editable by Microsoft Visual C++

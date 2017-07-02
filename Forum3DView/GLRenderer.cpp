@@ -9,14 +9,14 @@
 // Unauthorizing compilation, modification and re-engineering is strictly prohibited
 
 #include "stdafx.h"
-#include <gl\gl.h>
-#include <gl\glu.h>
+#include <gl/gl.h>
+#include <gl/glu.h>
 //#define GL_GLEXT_PROTOTYPES
 #include "glext.h"
 #include "GLRenderer.h"
 #include "GLDraw.h"
 #include <locale.h>
-#include <WinUser.h>
+#include <winuser.h>
 #include <wingdi.h>
 
 //////////////////////////////////////////////////////////////////////

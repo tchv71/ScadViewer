@@ -11,7 +11,7 @@
 #include "resource.h"
 #include "MouseManipulatorWnd.h"
 #include "View3DBox.h"
-#include <gl\gl.h>
+#include <gl/gl.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

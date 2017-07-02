@@ -13,7 +13,7 @@
 #else
 class CString;
 #endif
-#include "..\Forum3dView\Forum3DView.h"
+#include "../Forum3dView/Forum3DView.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 

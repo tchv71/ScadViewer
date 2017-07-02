@@ -12,7 +12,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "..\Forum3DView\Forum3DView.h"
+#include "../Forum3DView/Forum3DView.h"
 #include "DetViewOpts.h"
 //#include "SC3DPoint.hxx"
 

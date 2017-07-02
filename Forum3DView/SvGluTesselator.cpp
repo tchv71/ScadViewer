@@ -10,8 +10,8 @@
 
 #include "stdafx.h"
 #include "SvGluTesselator.h"
-#include <gl\gl.h>
-#include <gl\glu.h>
+#include <gl/gl.h>
+#include <gl/glu.h>
 
 #ifdef _DEBUG
 #undef THIS_FILE

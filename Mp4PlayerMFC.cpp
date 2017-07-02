@@ -3,9 +3,9 @@
 
 #include "stdafx.h"
 #include "Mp4PlayerMFC.h"
-#include "Forum3DView\MainScadViewerFrame.h"
-#include "Forum3DView\ScadViewerDoc.h"
-#include "Forum3DView\Mp4View.h"
+#include "Forum3DView/MainScadViewerFrame.h"
+#include "Forum3DView/ScadViewerDoc.h"
+#include "Forum3DView/Mp4View.h"
 
 
 #ifdef _DEBUG

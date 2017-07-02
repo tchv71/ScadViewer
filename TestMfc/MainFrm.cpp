@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "TestMfc.h"
-#include "..\Forum3DView\Forum3DView.h"
+#include "../Forum3DView/Forum3DView.h"
 #include "Schema.h"
 #include "MainFrm.h"
 #include <Shlwapi.h>

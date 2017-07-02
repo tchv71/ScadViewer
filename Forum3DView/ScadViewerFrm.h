@@ -16,7 +16,7 @@
 #endif // _MSC_VER > 1000
 
 class CScadViewerView;
-#include "..\Forum3DView\Forum3DView.h"
+#include "../Forum3DView/Forum3DView.h"
 #include "DepthDialogBar.h"
 #include "CameraDialogBar.h"
 #include "SCADViewerStatBar.h"

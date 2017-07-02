@@ -15,7 +15,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 #include "SvTesselator.h"
-#include <gl\glu.h>
+#include <gl/glu.h>
 
 class CSvGluTesselator : public ISvTesselator
 {

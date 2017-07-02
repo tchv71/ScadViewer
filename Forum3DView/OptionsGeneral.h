@@ -7,7 +7,7 @@
 #pragma once
 
 #include "DetViewOpts.h"
-#include "Resource.h"
+#include "resource.h"
 // COptionsGeneral dialog
 
 class COptionsGeneral : public CPropertyPage

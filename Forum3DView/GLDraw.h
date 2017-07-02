@@ -12,7 +12,7 @@
 #include "ViewLib.h"
 #include "Renderer.h"
 #include "model.h"
-#include <gl\GL.h>// Added by ClassView
+#include <gl/gl.h>// Added by ClassView
 #include "../RTree/RTree.h"
 
 const Graphics::TColor WIREFRAME_COLOR = clSilver;

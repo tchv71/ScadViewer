@@ -9,9 +9,9 @@
 #include "stdafx.h"
 #include "ScadViewer.h"
 
-#include "Forum3DView\MainScadViewerFrame.h"
-#include "Forum3DView\ScadViewerDoc.h"
-#include "Forum3DView\ScadViewerView.h"
+#include "Forum3DView/MainScadViewerFrame.h"
+#include "Forum3DView/ScadViewerDoc.h"
+#include "Forum3DView/ScadViewerView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
