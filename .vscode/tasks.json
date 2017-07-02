@@ -1,0 +1,21 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "tasks": [
+        {
+            "taskName": "build",
+            "command": "bash",
+            "isShellCommand": true,
+            "args": ["./make.sh"],
+            "showOutput": "always"
+        },
+        {
+            "taskName": "run",
+            "command": "wine",
+            "isShellCommand": true,
+            "args": ["_buildRel/bin/ScfExplorer.exe"],
+            "showOutput": "never"
+        }
+    ]
+}
