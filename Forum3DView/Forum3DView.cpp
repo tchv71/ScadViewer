@@ -81,6 +81,9 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 		//  result.
 
 		new CDynLinkLibrary(Forum3DViewDLL);
+		m_hResDLL = ::LoadLibrary(_T("ForumView21_RUS.DLL"));
+		AfxSetResourceHandle(m_hResDLL);
+
 		//new CDynLinkLibrary(Forum3DViewRES);
 	}
 	else if (dwReason == DLL_PROCESS_DETACH)

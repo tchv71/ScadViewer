@@ -2,7 +2,7 @@
 
 #ifndef _3DISO_HPP
 #define _3DISO_HPP
-#pragma pack(push,1)
+//#pragma pack(push,1)
 enum eTypeData
 {
 	Iso_Nothing=0,	// ничего не отображать только схема
@@ -48,6 +48,6 @@ enum EIntegralFunc
 #define OGL_SETOUTINFO 0x503  // Установка типа информации отображаемой на схеме
 							  // WPARAM - 0 LPARAM 	struct *TypeInformationOnSchema
 
-#pragma pack(pop,1)
+//#pragma pack(pop,1)
 
 #endif

@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "SCADDefProj.h"
 //#include "SCADRes.h"
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

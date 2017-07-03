@@ -69,6 +69,7 @@ BOOL CScadViewerApp::InitInstance()
 	SetRegistryKey(_T("Scad Soft"));
 
 	LoadStdProfileSettings(10);  // Load standard INI file options (including MRU)
+	LoadLanguage(1049);
 
 	// Register document templates
 
@@ -83,7 +84,6 @@ BOOL CScadViewerApp::InitInstance()
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-	LoadLanguage(1049);
 	// Dispatch commands specified on the command line
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;

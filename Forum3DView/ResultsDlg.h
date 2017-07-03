@@ -10,7 +10,7 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 // ResultsDlg.h : header file
 //
 

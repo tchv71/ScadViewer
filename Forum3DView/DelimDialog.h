@@ -1,6 +1,6 @@
 #pragma once
 #include "afxwin.h"
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 
 
 // CDelimDialog dialog

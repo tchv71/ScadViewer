@@ -23,7 +23,7 @@
 typedef bool SCBOOL;
 typedef float SCDOUBLE32;
 
-#pragma	pack(push,1)
+//#pragma	pack(push,1)
 
 /*
 	Name:
@@ -445,7 +445,7 @@ inline SCDOUBLE32 SC3DCube::GetRadius() const
 	return SCDOUBLE32(sqrt( pt.m_fX * pt.m_fX + pt.m_fY * pt.m_fY + pt.m_fZ * pt.m_fZ ));
 }
 
-#pragma	pack(pop)
+//#pragma	pack(pop)
 
 
 #endif //SC3DPoint_hxx__

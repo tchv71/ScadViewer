@@ -14,7 +14,7 @@
 #include "ScadViewerView.h"
 #include "ScadViewerDoc.h"
 #include "3dIso.hpp"
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // SaveBmp.h : header file
 //
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 /////////////////////////////////////////////////////////////////////////////
 // CSaveBmp dialog
 

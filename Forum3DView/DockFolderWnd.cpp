@@ -11,7 +11,7 @@
 #include "stdafx.h"
 #include "DockFolderWnd.h"
 #include "SCAD3DMdlSettings.h"
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -146,7 +146,8 @@ BOOL CDockFolderWnd::UpdateSettings(bool bLoad)
 {
 	SetKey(_T(""));
 	UpdateStringVector(bLoad, _T("RecentDirs"), &m_VecRecentDirs, _T(""));
-	FillCombo();
+	if (bLoad)
+		FillCombo();
 	if (m_VecRecentDirs.size()>0 && CSCAD3DMdlSettings::Get3DS())
 		CSCAD3DMdlSettings::Get3DS()->SetCurViewFolder(m_VecRecentDirs[0]);
 	return TRUE;

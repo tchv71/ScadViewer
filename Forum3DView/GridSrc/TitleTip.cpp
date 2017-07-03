@@ -60,7 +60,7 @@ CTitleTip::CTitleTip()
 		wndcls.cbClsExtra = wndcls.cbWndExtra = 0;
 		wndcls.hInstance = hInst;
 		wndcls.hIcon = nullptr;
-		wndcls.hCursor = LoadCursor(hInst, IDC_ARROW);
+		wndcls.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wndcls.hbrBackground = HBRUSH(COLOR_INFOBK + 1);
 		wndcls.lpszMenuName = nullptr;
 		wndcls.lpszClassName = TITLETIP_CLASSNAME;

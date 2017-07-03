@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 //#include "SCAD3DMdlSettings.h"
 #include "SCADFolderTreeCtrl.hxx"
 #include <shlwapi.h>

@@ -5,7 +5,7 @@
 #include "DelimDialog.h"
 #include "afxdialogex.h"
 #include "../OglIso/OglIso.h"
-#include "../ForumView_RUS/resource.h"
+#include "ForumView_RUS/resource.h"
 
 
 // CDelimDialog dialog

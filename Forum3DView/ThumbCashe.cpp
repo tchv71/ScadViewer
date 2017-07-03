@@ -6,7 +6,6 @@
 //#define __ATLCOMTIME_H__
 //#define __AFXOCC_H__
 //#include "stdafx.h"
-#define _X86_
 #include "ThumbCashe.h"
 #undef DB_UNKNOWN
 //#define DBTYPE _DBTYPE

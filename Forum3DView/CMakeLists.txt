@@ -12,7 +12,7 @@ link_directories(
 	"../Berkeley DB 4.4.20/lib/32"
 )
 
-add_definitions(-D_AFXDLL -DSCAD21 -DFORUM3DVIEW_EXPORTS -D_UNICODE -DUNICODE)
+add_definitions(-D_AFXDLL -DSCAD21 -DFORUM3DVIEW_EXPORTS -D_UNICODE -DUNICODE -D_X86_)
 set(CMAKE_MFC_FLAG 2)
 
 add_subdirectory(RTree)
@@ -51,15 +51,12 @@ set(CXX_SRCS
 	ResultsDialogBar.cpp
 	ResultsDlg.cpp
 	Rotate.cpp
-	SaveBmp.cpp
 	SCAD3DMdlSettings.cpp
 	SCADDefProj.cpp
 	ScadViewerDoc.cpp
 	ScadViewerFrm.cpp
 	SCADViewerStatBar.cpp
 	ScadViewerView.cpp
-	ScaleDialog.cpp
-	ScaleDlg.cpp
 	ScalePane.cpp
 	SettingManager.cpp
 	SvGluTesselator.cpp

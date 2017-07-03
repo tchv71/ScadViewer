@@ -13,7 +13,7 @@
 
 #include "ScadViewerDoc.h"
 
-#pragma pack( push, abc, 1)
+//#pragma pack( push, abc, 1)
 //#include "GeomStub.h"
 //#include ".\scadviewerdoc.h"
 #include "ForumViewGeometry.h"
@@ -22,7 +22,7 @@
 #include "IsoViewerFrame.h"
 #include "MainScadViewerFrame.h"
 #include "3DIso.hpp"
-#pragma pack(pop, abc)
+//#pragma pack(pop, abc)
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -5,7 +5,7 @@
 #include "ScalePane.h"
 #include "../OglIso/OglIso.h"
 #include "GridSrc/GridCellCheck.h"
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 #include "IsoViewerFrame.h"
 #include "IsoViewGeometry.h"
 #ifdef SCAD11

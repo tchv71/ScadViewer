@@ -16,7 +16,7 @@
 #include "DetViewOpts.h"
 //#include "SC3DPoint.hxx"
 
-#pragma	pack(push,1)
+//#pragma	pack(push,1)
 
 /*
 	Name:
@@ -62,6 +62,6 @@ public:
 	static	SCDefProjInfo	m_Info[DPT_Size];
 };
 
-#pragma	pack(pop)
+//#pragma	pack(pop)
 
 #endif //SCADDefProj_h

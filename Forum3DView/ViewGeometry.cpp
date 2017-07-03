@@ -668,7 +668,7 @@ bool CElemInfApiExt::getContour(std::vector<S3dPoint>& contour, bool & bClosed)
 	FLOAT_TYPE f6 = 0;
 
 	CStringA strText(Text);
-	strText.Replace(".", ",");
+	//strText.Replace(".", ",");
 	char c = 0;
 	int nKind;
 	int nPos = 0;
@@ -830,7 +830,7 @@ void  CElemInfApiExt::UpdateThickness()
 		ApiGetRigid(m_lpApi, TypeRigid, Text, sizeof(Text), &nQnt, &ListElem);
 		double f1 = 0, f2 = 0, f3 = 0;
 		CStringA strText(Text);
-		strText.Replace(".", ",");
+		//strText.Replace(".", ",");
 		sscanf_s((LPCSTR)strText, "%lg %lg %lg", &f1, &f2, &f3);
 		m_fThickness = (FLOAT_TYPE)f3;
 	}
@@ -2254,7 +2254,7 @@ static void CopyAxes(TAxeSet &axe, COORD_LINE_AXIS_OLD Line[],WORD nCount, WORD 
 
 }
 
-
+#pragma pack(push,1)
 namespace spr
 {
 	struct SDataLine
@@ -2275,6 +2275,7 @@ namespace spr
 		 const char* GetText(UINT) const;
 	};
 }
+#pragma pack(pop)
 
 static void CopyAxes21(TAxeSet &axe, const spr::SDataLine * pD)
 {

@@ -18,7 +18,7 @@ struct TypeInformationOnSchema;
 struct	APIHandle_tag;
 typedef	APIHandle_tag      * ScadAPI;
 
-#pragma pack(push,1)
+//#pragma pack(push,1)
 
 #if defined(SCAD21) || defined(SCAD11) 
 struct DefMapInfo
@@ -93,7 +93,7 @@ struct SOglIsoParam
 	bool bDrawIsoLines;
 	bool bDrawEggs;
 };
-#pragma pack(pop)
+//#pragma pack(pop)
 
 OGLISO_API  HWND __stdcall OGL_3DIso(RESULT *Res, // Указатель на класс результатов
 									 int NPr,     // Номер правой части

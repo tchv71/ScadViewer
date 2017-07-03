@@ -2056,6 +2056,7 @@ bool CGLRenderer::Select(CViewGeometry* pGeometry, CPoint pt, FLOAT_TYPE fDepth)
 void CGLRenderer::BuildFont(ESvFont fontNo, const LOGFONT* pLogFont)
 {
 	_tsetlocale(LC_ALL, _T("Russian"));
+	_tsetlocale(LC_NUMERIC, _T("C"));
 	if (m_fontBases[fontNo])
 		ReleaseFont(fontNo);
 	m_fontBases[fontNo] = glGenLists(FONT_LIST_SIZE); // Storage For All Characters

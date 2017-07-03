@@ -8,7 +8,7 @@
 // Unauthorizing compilation, modification and re-engineering is strictly prohibited
 
 #include "stdafx.h"
-#include "../ForumView_ENG/resource.h"
+#include "ForumView_ENG/resource.h"
 #include "FileProc.h"
 #include "FolderListCtrl.h"
 #include <algorithm>

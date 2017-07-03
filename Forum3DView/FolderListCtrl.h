@@ -16,7 +16,6 @@
 //#include <corecrt_io.h>
 #include <tchar.h>
 
-#pragma	pack(push,1)
 
 #define	FLC_IMAGE_EMPTY		0
 
@@ -168,8 +167,6 @@ protected:
 	static	DWORD			m_ListStyles[flvtSize];
 	static	FLColumnInfo	m_flciColumns[flcSize];
 };
-
-#pragma	pack(pop)
 
 /////////////////////////////////////////////////////////////////////////////
 

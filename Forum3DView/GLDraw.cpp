@@ -20,7 +20,7 @@ GLDraw.cpp - Вывод модели с использованием OpenGL
 #include <algorithm>
 
 #include "GLDraw.h"
-#include "../RTree/RTree.h"
+#include "RTree/RTree.h"
 #include <complex>
 #include "GLRenderer.h"
 #define Eps 1e-3
