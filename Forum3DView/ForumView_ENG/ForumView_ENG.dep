@@ -1,9 +1,0 @@
-# Microsoft Developer Studio Generated Dependency File, included by ForumView_ENG.mak
-
-.\ForumView_ENG.rc : \
-	"..\Version.h"\
-	".\res\ForumView.ico"\
-	".\res\ForumView_ENG.rc2"\
-	{$(INCLUDE)}"Foundation\sflres.h"\
-	{$(INCLUDE)}"toolkit\secres.h"\
-	
