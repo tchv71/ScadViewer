@@ -281,6 +281,8 @@ void CFolderListCtrl::CreateImageList()
 		SetImageList( pImgList, LVSIL_NORMAL );
 }
 
+static bool bSetBmp = false;
+
 LRESULT CFolderListCtrl::OnSendFileBmp( WPARAM wParam, LPARAM lParam )
 {
 	FPTFileBmp * pImgInfo = reinterpret_cast<FPTFileBmp*>(lParam);
@@ -290,6 +292,7 @@ LRESULT CFolderListCtrl::OnSendFileBmp( WPARAM wParam, LPARAM lParam )
 	if( !pImgInfo )
 		return 0;
 
+	bSetBmp = true;
 	lvFI.flags = LVFI_PARAM;
 	lvFI.lParam = pImgInfo->m_nItemID;
 	nItem = FindItem( &lvFI );
@@ -337,6 +340,7 @@ LRESULT CFolderListCtrl::OnSendFileBmp( WPARAM wParam, LPARAM lParam )
 
 	}
 #endif
+	bSetBmp = false;
 	return 1;
 }
 
@@ -742,7 +746,7 @@ void CFolderListCtrl::OnSelChanged( NMHDR* pNMHDR, LRESULT* pResult )
 {
 	NMLISTVIEW * pNM = reinterpret_cast<NMLISTVIEW*>(pNMHDR);
 
-	if( pNM && ( pNM->uNewState & LVIS_SELECTED ) && pNM->iItem != -1 && pNM->iItem != m_nSelectedItem )
+	if( pNM && ( pNM->uNewState & LVIS_SELECTED ) && pNM->iItem != -1 && pNM->iItem != m_nSelectedItem && !bSetBmp)
 	{
 		CFLCItemData * pData = reinterpret_cast<CFLCItemData*>(GetItemData( pNM->iItem ));
 		if (!pData)

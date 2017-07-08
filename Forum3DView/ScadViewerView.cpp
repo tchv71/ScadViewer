@@ -581,12 +581,14 @@ void CScadViewerView::DrawOptionsChanged()
 {
 	CWaitCursor cur;
 	if (GetDocument() && GetDocument()->m_pViewGeometry)
+	{
 		GetDocument()->m_pViewGeometry->DrawOptionsChanged(&m_DrawOptions, m_ViewOptions.bShowUsedNodes);
-	//m_DrawOptions.arrLogFonts[SVF_AXES].lfCharSet = RUSSIAN_CHARSET;
-	//m_pRenderer->BuildFont(SVF_AXES, m_DrawOptions.arrLogFonts+SVF_AXES);
-	//m_pRenderer->BuildFont(SVF_VALUES, m_DrawOptions.arrLogFonts+SVF_VALUES);
+		//m_DrawOptions.arrLogFonts[SVF_AXES].lfCharSet = RUSSIAN_CHARSET;
+		//m_pRenderer->BuildFont(SVF_AXES, m_DrawOptions.arrLogFonts+SVF_AXES);
+		//m_pRenderer->BuildFont(SVF_VALUES, m_DrawOptions.arrLogFonts+SVF_VALUES);
 
-	Invalidate();
+		Invalidate();
+	}
 }
 
 
