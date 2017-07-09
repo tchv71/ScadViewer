@@ -811,7 +811,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;SCADAPIX.lib;libdb62.lib;sprfem.lib;SprResult.lib;SprTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
