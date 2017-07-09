@@ -76,9 +76,6 @@
     <ClCompile Include="GridSrc\GridCellCheck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridSrc\GridCtrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GridSrc\GridDropTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -160,10 +157,13 @@
     <ClCompile Include="ThumbCashe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridSrc\TitleTip.cpp">
+    <ClCompile Include="BmpSaveDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BmpSaveDlg.cpp">
+    <ClCompile Include="GridSrc\GridCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridSrc\TitleTip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
