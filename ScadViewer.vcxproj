@@ -1140,7 +1140,7 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;Version.lib;Forum3DView/Release21/Forum3DView21.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;glu32.lib;Shlwapi.lib;Version.lib;Forum3DView/Release21xp/Forum3DView21.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release21/ScfExplorer.pdb</ProgramDatabaseFile>
