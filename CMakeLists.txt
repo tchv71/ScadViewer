@@ -21,11 +21,11 @@ set(CMAKE_MFC_FLAG 2)
 add_subdirectory(Forum3DView)
 
 set(CXX_SRCS
-	ScadViewer.cpp
+ 	ScadViewer.cpp
 )
 
 add_executable(ScfExplorer WIN32 ${CXX_SRCS} ScadViewer.rc)
-#set_target_properties(ScfExplorer PROPERTIES  LINK_FLAGS "/NODEFAULTLIB ")
+set_target_properties(ScfExplorer PROPERTIES  LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
 
 target_link_libraries(ScfExplorer
 	azip
