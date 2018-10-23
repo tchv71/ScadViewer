@@ -312,3 +312,7 @@ ModelManifest.xml
 *.lib
 /Forum3DView/RTree/CMakeSettings.json
 /_build
+*.lastbuildstate
+*.tlog
+/Forum3DView/Release21xp
+/Release21xp
