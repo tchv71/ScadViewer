@@ -1009,7 +1009,7 @@ public:
 		return (d-Norm.DotProduct(p0))/ d1;
 	}
 	bool BreakByPlaneOf(CSortedViewElement &Q, CGLDraw &glDraw, CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-	                    std::vector <CSortedViewElement> &vecSorted, size_t k)
+						std::vector <CSortedViewElement> &vecSorted, size_t k)
 	{
 		if (Type == EL_QUAD)
 			return glDraw.BreakQuad(Vertexs, ProjectedVertexs, vecSorted, k, Q,  *this);
@@ -1323,7 +1323,7 @@ void CGLDraw::SortElements(CViewElementArray *& Elements, size_t& NumElements)
 }
 
 bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& ProjectedVertexs,
-                            std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement& Q, CSortedViewElement& P) const
+							std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement& Q, CSortedViewElement& P) const
 {
 	// Split P by plane of Q
 	// Mark and insert pieces of P
@@ -1403,113 +1403,113 @@ bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& Project
 }
 
 bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-                        std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement &Q,
-                        CSortedViewElement &P) const
+						std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement &Q,
+						CSortedViewElement &P) const
 {
 	// Split P by plane of Q
 	// Mark and insert pieces of P
 	for (int i=0; i<P.NumVertexs()-1; i++)
-     {
-         SViewVertex &p0 = Vertexs[P.Points[i]];
-         SViewVertex &p1 = Vertexs[P.Points[(i+1)%P.NumVertexs()]];
-         FLOAT_TYPE t = Q.SectByPlane(p0,p1,Vertexs);
-         if (t>Eps1 && t<1-Eps1)
-         {
-             SViewVertex &p_0 = m_pGeometry->VertexArray[P.Points[i]];
-             SViewVertex &p_1 = m_pGeometry->VertexArray[P.Points[(i+1)%P.NumVertexs()]];
-             SViewVertex pn1 = p_0;
-             pn1.x = p_0.x + t*(p_1.x-p_0.x); pn1.y = p_0.y+t*(p_1.y-p_0.y); pn1.z = p_0.z+t*(p_1.z-p_0.z);
-             for (int j=i+1; j<P.NumVertexs(); j++)
-             {
-                 SViewVertex &p0_ = Vertexs[P.Points[j]];
-                 SViewVertex &p1_ = Vertexs[P.Points[(j+1)%P.NumVertexs()]];
-                 FLOAT_TYPE t1 = Q.SectByPlane(p0_,p1_,Vertexs);
-                 if (t1>Eps1 && t1<1-Eps1)
-                 {
-                     SViewVertex &p_0_ = m_pGeometry->VertexArray[P.Points[j]];
-                     SViewVertex &p_1_ = m_pGeometry->VertexArray[P.Points[(j+1)%P.NumVertexs()]];
-                     SViewVertex pn2 = m_pGeometry->VertexArray[P.Points[j]];
-                     pn2.x = p_0_.x + t1*(p_1_.x-p_0_.x); pn2.y = p_0_.y+t1*(p_1_.y-p_0_.y); pn2.z = p_0_.z+t1*(p_1_.z-p_0_.z);
-                     size_t nNewPoints = Vertexs.size();
-                     Vertexs.push_back(pn1);
-                     Vertexs.push_back(pn2);
-                     m_pGeometry->VertexArray.push_back(pn1);
-                     m_pGeometry->VertexArray.push_back(pn2);
-                     ProjectedVertexs.push_back(pn1);
-                     ProjectedVertexs.push_back(pn2);
-                     ProjectVertex(ProjectedVertexs[nNewPoints], Vertexs[nNewPoints]);
-                     ProjectVertex(ProjectedVertexs[nNewPoints+1], Vertexs[nNewPoints+1]);
-                     CSortedViewElement elNew = P;
-                     CSortedViewElement el = P;
-                     if (j==i+2)
-                     {
+	 {
+		 SViewVertex &p0 = Vertexs[P.Points[i]];
+		 SViewVertex &p1 = Vertexs[P.Points[(i+1)%P.NumVertexs()]];
+		 FLOAT_TYPE t = Q.SectByPlane(p0,p1,Vertexs);
+		 if (t>Eps1 && t<1-Eps1)
+		 {
+			 SViewVertex &p_0 = m_pGeometry->VertexArray[P.Points[i]];
+			 SViewVertex &p_1 = m_pGeometry->VertexArray[P.Points[(i+1)%P.NumVertexs()]];
+			 SViewVertex pn1 = p_0;
+			 pn1.x = p_0.x + t*(p_1.x-p_0.x); pn1.y = p_0.y+t*(p_1.y-p_0.y); pn1.z = p_0.z+t*(p_1.z-p_0.z);
+			 for (int j=i+1; j<P.NumVertexs(); j++)
+			 {
+				 SViewVertex &p0_ = Vertexs[P.Points[j]];
+				 SViewVertex &p1_ = Vertexs[P.Points[(j+1)%P.NumVertexs()]];
+				 FLOAT_TYPE t1 = Q.SectByPlane(p0_,p1_,Vertexs);
+				 if (t1>Eps1 && t1<1-Eps1)
+				 {
+					 SViewVertex &p_0_ = m_pGeometry->VertexArray[P.Points[j]];
+					 SViewVertex &p_1_ = m_pGeometry->VertexArray[P.Points[(j+1)%P.NumVertexs()]];
+					 SViewVertex pn2 = m_pGeometry->VertexArray[P.Points[j]];
+					 pn2.x = p_0_.x + t1*(p_1_.x-p_0_.x); pn2.y = p_0_.y+t1*(p_1_.y-p_0_.y); pn2.z = p_0_.z+t1*(p_1_.z-p_0_.z);
+					 size_t nNewPoints = Vertexs.size();
+					 Vertexs.push_back(pn1);
+					 Vertexs.push_back(pn2);
+					 m_pGeometry->VertexArray.push_back(pn1);
+					 m_pGeometry->VertexArray.push_back(pn2);
+					 ProjectedVertexs.push_back(pn1);
+					 ProjectedVertexs.push_back(pn2);
+					 ProjectVertex(ProjectedVertexs[nNewPoints], Vertexs[nNewPoints]);
+					 ProjectVertex(ProjectedVertexs[nNewPoints+1], Vertexs[nNewPoints+1]);
+					 CSortedViewElement elNew = P;
+					 CSortedViewElement el = P;
+					 if (j==i+2)
+					 {
 
-                         EraseElement(P);
-                         vecSorted[k].Points[i+1]=nNewPoints;
-                         vecSorted[k].Points[i+2]=nNewPoints+1;
-                         vecSorted[k].SetExtents(ProjectedVertexs);
-                         InsertElement(&vecSorted[k]);
+						 EraseElement(P);
+						 vecSorted[k].Points[i+1]=nNewPoints;
+						 vecSorted[k].Points[i+2]=nNewPoints+1;
+						 vecSorted[k].SetExtents(ProjectedVertexs);
+						 InsertElement(&vecSorted[k]);
 
-                         elNew.Points[0] = nNewPoints;
-                         elNew.Points[1] = el.Points[i+1];
-                         elNew.Points[2] = el.Points[i+2];
-                         elNew.Points[3] = nNewPoints+1;
-                         elNew.SetExtents(ProjectedVertexs);
-                         vecSorted.push_back(elNew);
-                         InsertElement(&vecSorted[vecSorted.size()-1]);
+						 elNew.Points[0] = nNewPoints;
+						 elNew.Points[1] = el.Points[i+1];
+						 elNew.Points[2] = el.Points[i+2];
+						 elNew.Points[3] = nNewPoints+1;
+						 elNew.SetExtents(ProjectedVertexs);
+						 vecSorted.push_back(elNew);
+						 InsertElement(&vecSorted[vecSorted.size()-1]);
 						 return true;
-                     } else if (j==i+1)
-                     {
-                         EraseElement(P);
-                         vecSorted[k].Points[(i+1)]=nNewPoints;
-                         vecSorted[k].Points[(i+2)%P.NumVertexs()]=nNewPoints+1;
-                         vecSorted[k].SetExtents(ProjectedVertexs);
-                         InsertElement(&vecSorted[k]);
+					 } else if (j==i+1)
+					 {
+						 EraseElement(P);
+						 vecSorted[k].Points[(i+1)]=nNewPoints;
+						 vecSorted[k].Points[(i+2)%P.NumVertexs()]=nNewPoints+1;
+						 vecSorted[k].SetExtents(ProjectedVertexs);
+						 InsertElement(&vecSorted[k]);
 
 						 elNew.Type = EL_TRIANGLE;
-                         elNew.Points[0] = nNewPoints;
-                         elNew.Points[1] = el.Points[i+1];
-                         elNew.Points[2] = nNewPoints+1;
-                         elNew.SetExtents(ProjectedVertexs);
-                         vecSorted.push_back(elNew);
-                         InsertElement(&vecSorted[vecSorted.size()-1]);
+						 elNew.Points[0] = nNewPoints;
+						 elNew.Points[1] = el.Points[i+1];
+						 elNew.Points[2] = nNewPoints+1;
+						 elNew.SetExtents(ProjectedVertexs);
+						 vecSorted.push_back(elNew);
+						 InsertElement(&vecSorted[vecSorted.size()-1]);
 
-                         elNew.Points[0] = nNewPoints+1;
-                         elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
-                         elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
-                         elNew.SetExtents(ProjectedVertexs);
-                         vecSorted.push_back(elNew);
-                         InsertElement(&vecSorted[vecSorted.size()-1]);
+						 elNew.Points[0] = nNewPoints+1;
+						 elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
+						 elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
+						 elNew.SetExtents(ProjectedVertexs);
+						 vecSorted.push_back(elNew);
+						 InsertElement(&vecSorted[vecSorted.size()-1]);
 						 return true;
-                     }
-                     else if (j==i+3)
-                     {
-                         EraseElement(P);
-                         vecSorted[k].Points[i]=nNewPoints;
-                         vecSorted[k].Points[i+3]=nNewPoints+1;
-                         vecSorted[k].SetExtents(ProjectedVertexs);
-                         InsertElement(&vecSorted[k]);
+					 }
+					 else if (j==i+3)
+					 {
+						 EraseElement(P);
+						 vecSorted[k].Points[i]=nNewPoints;
+						 vecSorted[k].Points[i+3]=nNewPoints+1;
+						 vecSorted[k].SetExtents(ProjectedVertexs);
+						 InsertElement(&vecSorted[k]);
 
-                         elNew.Type = EL_TRIANGLE;
-                         elNew.Points[0] = nNewPoints;
-                         elNew.Points[1] = nNewPoints+1;
-                         elNew.Points[2] = el.Points[i];
-                         elNew.SetExtents(ProjectedVertexs);
-                         vecSorted.push_back(elNew);
-                         InsertElement(&vecSorted[vecSorted.size()-1]);
+						 elNew.Type = EL_TRIANGLE;
+						 elNew.Points[0] = nNewPoints;
+						 elNew.Points[1] = nNewPoints+1;
+						 elNew.Points[2] = el.Points[i];
+						 elNew.SetExtents(ProjectedVertexs);
+						 vecSorted.push_back(elNew);
+						 InsertElement(&vecSorted[vecSorted.size()-1]);
 
-                         elNew.Points[0] = nNewPoints+1;
-                         elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
-                         elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
-                         elNew.SetExtents(ProjectedVertexs);
-                         vecSorted.push_back(elNew);
-                         InsertElement(&vecSorted[vecSorted.size()-1]);
+						 elNew.Points[0] = nNewPoints+1;
+						 elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
+						 elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
+						 elNew.SetExtents(ProjectedVertexs);
+						 vecSorted.push_back(elNew);
+						 InsertElement(&vecSorted[vecSorted.size()-1]);
 						 return true;
-                     }
-                 }
-             }
-         }
-     }
+					 }
+				 }
+			 }
+		 }
+	 }
 	 return false;
 }
 
