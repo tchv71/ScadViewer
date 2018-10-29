@@ -21,46 +21,12 @@ GLDraw.cpp - Вывод модели с использованием OpenGL
 
 #include "GLDraw.h"
 #include "RTree/RTree.h"
-#include <complex>
 #include "GLRenderer.h"
-#define Eps 1e-3
 
 //#define NO_DRAW
-#define NEW_DEPTH_SORT
 //#define COLOR_PLATES
-//#define NO_ALPHA
 
-
-inline void CGLDraw::SetGlColor(TColor c)
-{
-	if(c == m_crCurColor)
-		return;
-	m_crCurColor = c;
-
-	GLubyte r = GetRValue(c), g = GetGValue(c), b = static_cast<GLbyte>(GetBValue(c));
-	glColor3ub(r, g, b);
-};
-
-static BYTE iCurAlpha = 128;
-
-inline void CGLDraw::SetGlColorAlpha(TColor c)
-{
-	if(c == m_crCurColor)
-		return;
-	m_crCurColor = c;
-
-	GLubyte r = GetRValue(c), g = GetGValue(c), b = GetBValue(c);
-#ifndef NO_ALPHA
-//#ifndef NEW_DEPTH_SORT
-	glColor4ub(r, g, b, iCurAlpha);
-#else
-	glColor4ub(r, g, b, 255);
-#endif
-};
 //#define SORT_BY_1ST
-
-
-
 
 /*
 inline void AddShift(S3dPoint &p, S3dPoint &s)
@@ -92,7 +58,6 @@ inline void CGLDraw::SetVertex(SViewVertex *Vertexs, NODE_NUM_TYPE n)
 //#define COLOR_STRIPS
 // Отрисовка линий через GL_LINE_STRIP
 //#define SORT_FURTHEST
-static UINT c = 0xff00;
 
 bool CGLDraw::PreDrawStage(EDrawMode Mode, S3dPoint Z_Shift, bool bSmoothTransp, int nCurrentStage)
 {
@@ -191,13 +156,14 @@ static void ENABLE_LIGHTING(bool bLighting)
 	}
 }
 
-void CGLDraw::DrawBar(const CViewElement & El, const SViewVertex* Vertexs, S3dPoint Z_Shift)
+void CGLDraw::DrawBar(const CViewElement & El, const SViewVertex* Vertexs,const S3dPoint& Z_Shift)
 {
 	DISABLE_LIGHTING();
 	//						if(bSmoothTransp)
 	//							SetGlColor(m_pOptions->BarColor);
 	SetGlColor(El.Color);
-	NODE_NUM_TYPE n1 = El.Points[0], n2 = El.Points[1];
+	const NODE_NUM_TYPE n1 = El.Points[0];
+	const NODE_NUM_TYPE n2 = El.Points[1];
 	S3dPoint p1 = S3dPoint(Vertexs[n1]);
 	S3dPoint p2 = S3dPoint(Vertexs[n2]);
 	m_pGeometry->GetNodeCashe()->WasDrawed(n1, n2);
@@ -209,12 +175,12 @@ void CGLDraw::DrawBar(const CViewElement & El, const SViewVertex* Vertexs, S3dPo
 	}
 	else if (m_pViewPos->bPerspective)
 	{
-		CVectorType p0(m_pViewPos->Xorg, m_pViewPos->Yorg, m_pViewPos->Zorg);
+		const CVectorType p0(m_pViewPos->Xorg, m_pViewPos->Yorg, m_pViewPos->Zorg);
 		CVectorType v1 = CVectorType(p1.x - p0.v[0], p1.y - p0.v[1], p1.z - p0.v[2]);
 		CVectorType v2 = CVectorType(p2.x - p0.v[0], p2.y - p0.v[1], p2.z - p0.v[2]);
 		v1.Normalize();
 		v2.Normalize();
-		FLOAT_TYPE zs = -2 / m_pViewPos->ScrScale;
+		const FLOAT_TYPE zs = -2 / m_pViewPos->ScrScale;
 		p1.x += v1.v[0] * zs;
 		p1.y += v1.v[1] * zs;
 		p1.z += v1.v[2] * zs;
@@ -249,8 +215,7 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 	case M_LINES:
 		{
 			DISABLE_LIGHTING();
-			TColor c = El.Color;
-			SetGlColor(c);
+			SetGlColor(El.Color);
 			if (El.bContoured)
 				DrawLines(El, p);
 		}
@@ -307,10 +272,9 @@ void CGLDraw::Draw(void)
 	CWaitCursor crWait;
 	CGLRenderer*pRenderer = (CGLRenderer*)m_pRenderer;
 	//glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
-	EDrawMode	Mode = m_pDrawOptions->Mode;
+	const EDrawMode Mode = m_pDrawOptions->Mode;
 	m_pGeometry->SetupElementColors(m_pOptions, Mode);
-	iCurAlpha = BYTE(m_pDrawOptions->fTransparency * 255);
-	c=0xff00;
+	m_iCurAlpha = BYTE(m_pDrawOptions->fTransparency * 255);
 	//   glDisable(GL_DITHER);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLineWidth(GLfloat(m_pOptions->LineWidth));
@@ -328,7 +292,7 @@ void CGLDraw::Draw(void)
 	m_crCurColor = TColor(0);
 
 	CViewElementArray	*Elements = &m_pGeometry->ElementArray;
-	size_t nOriginalVertexCount = m_pGeometry->VertexArray.size();
+	const size_t nOriginalVertexCount = m_pGeometry->VertexArray.size();
 	size_t				NumElements = m_pGeometry->ElementArray.size();
 
 	S3dPoint		Z_Shift( 0, 0, -2 / m_pViewPos->ScrScale);
@@ -393,7 +357,7 @@ void CGLDraw::Draw(void)
 			SetGlColor(m_pOptions->BarColor);
 		if (bDrawArrays && (nCurrentStage == FILL_STAGE) &&  Mode != M_FILL_AND_LINES_TRANSP && Mode!= M_LINES)
 		{
-			if (m_pGeometry->ElementArray.size() == 0)
+			if (m_pGeometry->ElementArray.empty())
 				continue;
 			
 			if (m_pGeometry->VertexArray.size() != m_pGeometry->ElementArray.m_normals.size())
@@ -413,11 +377,11 @@ void CGLDraw::Draw(void)
 				glNormalPointer(GL_FLOAT, 0, 0);
 				
 				glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOTriangles);
-				if (m_pGeometry->ElementArray.m_triangles.size() > 0)
-					glDrawElements(GL_TRIANGLES, (GLsizei)m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, 0);
+				if (!m_pGeometry->ElementArray.m_triangles.empty())
+					glDrawElements(GL_TRIANGLES, GLsizei(m_pGeometry->ElementArray.m_triangles.size()), GL_UNSIGNED_INT, 0);
 				glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOQuads);
-				if (m_pGeometry->ElementArray.m_quads.size() > 0)
-					glDrawElements(GL_QUADS, (GLsizei)m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, 0);
+				if (!m_pGeometry->ElementArray.m_quads.empty())
+					glDrawElements(GL_QUADS, GLsizei(m_pGeometry->ElementArray.m_quads.size()), GL_UNSIGNED_INT, 0);
 			}
 			else
 			{
@@ -425,10 +389,10 @@ void CGLDraw::Draw(void)
 				glColorPointer(Mode == M_FILL_AND_LINES_TRANSP ? 4 : 3, GL_UNSIGNED_BYTE, 4, m_pGeometry->ElementArray.m_colors.data());
 				glNormalPointer(GL_FLOAT, sizeof(CVectorType), m_pGeometry->ElementArray.m_normals.data());
 
-				if (m_pGeometry->ElementArray.m_triangles.size() > 0)
-					glDrawElements(GL_TRIANGLES, (GLsizei)m_pGeometry->ElementArray.m_triangles.size(), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_triangles.data());
-				if (m_pGeometry->ElementArray.m_quads.size() > 0)
-					glDrawElements(GL_QUADS, (GLsizei)m_pGeometry->ElementArray.m_quads.size(), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_quads.data());
+				if (!m_pGeometry->ElementArray.m_triangles.empty())
+					glDrawElements(GL_TRIANGLES, GLsizei(m_pGeometry->ElementArray.m_triangles.size()), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_triangles.data());
+				if (!m_pGeometry->ElementArray.m_quads.empty())
+					glDrawElements(GL_QUADS, GLsizei(m_pGeometry->ElementArray.m_quads.size()), GL_UNSIGNED_INT, m_pGeometry->ElementArray.m_quads.data());
 			}
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_COLOR_ARRAY);
@@ -535,7 +499,9 @@ void CGLDraw::DrawBounds(void)
 			double	NS = m_pOptions->NodeSize;
 
 			glBegin(GL_LINE_LOOP);	// Ограничивающий прямоугольник
-			double	sx = (int(NS) + 1) % 2, sx1 = (int(NS)) % 2, sy = 1;
+			const double sx = (int(NS) + 1) % 2;
+			const double sx1 = (int(NS)) % 2;
+			const double sy = 1;
 
 			glVertex3d(wx - 1.5 * NS - sx+0.5, wy - NS - sy+0.5, -wz);
 			glVertex3d(wx - 1.5 * NS - sx+0.5, wy + NS + 0.5, -wz);
@@ -882,23 +848,23 @@ public:
 		}
 	}
 	
-	bool IsOwerlappingDepth(const CSortedViewElement &El) const
+	bool __forceinline IsOverlappingDepth(const CSortedViewElement &El) const
 	{
 		return zMax > El.zMin && zMin<El.zMax;
 	}
 	
-	bool IsOnOppositeSideOf(const CSortedViewElement &El, const CViewVertexArray &Vertexs, CVectorType &ptEye, bool bPersp)
+	bool __forceinline  IsOnOppositeSideOf(const CSortedViewElement &El, const CViewVertexArray &Vertexs, CVectorType &ptEye, bool bPersp)
 	{
 		if (El.NumVertexs() == 2)
 			return true;
-		FLOAT_TYPE d = El.Norm.DotProduct(Vertexs[El.Points[0]]);
+		const FLOAT_TYPE d = El.Norm.DotProduct(Vertexs[El.Points[0]]);
 		FLOAT_TYPE resEye = bPersp ? ptEye.DotProduct(El.Norm) -d : El.Norm.v[2];
 		if (fabs(resEye)<Eps1)
 			return true;
 		resEye = resEye>0 ? 1.0f: -1.0f;
 		for (int i=0; i<NumVertexs(); i++)
 		{
-			FLOAT_TYPE res = (CVectorType(Vertexs[Points[i]]).DotProduct(El.Norm)-d)*resEye;
+			const FLOAT_TYPE res = (CVectorType(Vertexs[Points[i]]).DotProduct(El.Norm)-d)*resEye;
 			if (fabs(res)<Eps1)
 				continue;
 			if (res>0)
@@ -907,18 +873,18 @@ public:
 		return true;
 	}
 
-	bool IsOnSameSideOf(const CSortedViewElement &El, const CViewVertexArray &Vertexs, CVectorType &ptEye, bool bPersp)
+	bool __forceinline  IsOnSameSideOf(const CSortedViewElement &El, const CViewVertexArray &Vertexs, CVectorType &ptEye, bool bPersp)
 	{
 		if (El.NumVertexs() == 2)
 			return false;
-		FLOAT_TYPE d = El.Norm.DotProduct(Vertexs[El.Points[0]]);
+		const FLOAT_TYPE d = El.Norm.DotProduct(Vertexs[El.Points[0]]);
 		FLOAT_TYPE resEye = bPersp ? ptEye.DotProduct(El.Norm) -d : El.Norm.v[2];
 		if (fabs(resEye)<Eps1)
 			return true;
 		resEye = resEye>0 ? 1.0f: -1.0f;
 		for (int i=0; i<NumVertexs(); i++)
 		{
-			FLOAT_TYPE res = (CVectorType(Vertexs[Points[i]]).DotProduct(El.Norm)-d)*resEye;
+			const FLOAT_TYPE res = (CVectorType(Vertexs[Points[i]]).DotProduct(El.Norm)-d)*resEye;
 			if (fabs(res)<Eps1)
 				continue;
 			if (res<0)
@@ -929,11 +895,11 @@ public:
 
 	static FLOAT_TYPE GetDistanceToLine(const SViewVertex &pt, NODE_NUM_TYPE nPoint1, NODE_NUM_TYPE nPoint2, const CViewVertexArray &Vertexs)
 	{
-		S3dPoint pt1 = S3dPoint(Vertexs[nPoint1]);
-		S3dPoint pt2 = S3dPoint(Vertexs[nPoint2]);
-		FLOAT_TYPE a= pt2.y-pt1.y;
-		FLOAT_TYPE b= pt1.x-pt2.x;
-		FLOAT_TYPE c = a*pt1.x+b*pt1.y;
+		const S3dPoint& pt1 = Vertexs[nPoint1];
+		const S3dPoint& pt2 = Vertexs[nPoint2];
+		const FLOAT_TYPE a= pt2.y-pt1.y;
+		const FLOAT_TYPE b= pt1.x-pt2.x;
+		const FLOAT_TYPE c = a*pt1.x+b*pt1.y;
 		return a*pt.x+b*pt.y-c;
 	}
 
@@ -946,16 +912,16 @@ public:
 			return false;
 		for (int i=1; i<NumVertexs();i++)
 		{
-			FLOAT_TYPE fDist=GetDistanceToLine(pt, Points[i], Points[(i+1)%NumVertexs()], Vertexs);
-			FLOAT_TYPE f=fDist*fOldDist;
+			const FLOAT_TYPE fDist=GetDistanceToLine(pt, Points[i], Points[(i+1)%NumVertexs()], Vertexs);
+			const FLOAT_TYPE f=fDist*fOldDist;
 			if (fabs(fDist)<Eps1 || f<0)
 				return false;
-			fOldDist = fDist;			
+			fOldDist = fDist;
 		}
 		return true;
 	}
 
-	bool AnyPointIsInside(const CSortedViewElement &El, const CViewVertexArray &Vertexs) const
+	bool __forceinline AnyPointIsInside(const CSortedViewElement &El, const CViewVertexArray &Vertexs) const
 	{
 		// Либо одна из вершин, либо центр полигона
 		SViewVertex pt;
@@ -973,25 +939,23 @@ public:
 		return El.PointIsInside(pt,Vertexs);
 	}
 	// Проверка, пересекаются ли ПРОЕКЦИИ отрезков [p1,p2] и [p2,p3]
-	static bool IsRibsIntersecting(NODE_NUM_TYPE p1, NODE_NUM_TYPE p2, NODE_NUM_TYPE p3, NODE_NUM_TYPE p4, const CViewVertexArray &Vertexs)
+	static __forceinline bool IsRibsIntersecting(NODE_NUM_TYPE p1, NODE_NUM_TYPE p2, NODE_NUM_TYPE p3, NODE_NUM_TYPE p4, const CViewVertexArray &Vertexs)
 	{
-		S3dPoint pt1 = S3dPoint(Vertexs[p1]);
-		S3dPoint pt2 = S3dPoint(Vertexs[p2]);
-		S3dPoint pt3 = S3dPoint(Vertexs[p3]);
-		S3dPoint pt4 = S3dPoint(Vertexs[p4]);
-		FLOAT_TYPE db = (pt4.y - pt3.y)*(pt2.x-pt1.x)+(pt3.x-pt4.x)*(pt2.y-pt1.y);
+		const S3dPoint& pt1 = Vertexs[p1];
+		const S3dPoint& pt2 = Vertexs[p2];
+		const S3dPoint& pt3 = Vertexs[p3];
+		const S3dPoint& pt4 = Vertexs[p4];
+		const FLOAT_TYPE db = (pt4.y - pt3.y)*(pt2.x-pt1.x)+(pt3.x-pt4.x)*(pt2.y-pt1.y);
 		if (fabs(db)<Eps1)
 			return false;
-		FLOAT_TYPE t=((pt4.y-pt3.y)*(pt3.x-pt1.x)+(pt3.x-pt4.x)*(pt3.y-pt1.y))/db;
+		const FLOAT_TYPE t=((pt4.y-pt3.y)*(pt3.x-pt1.x)+(pt3.x-pt4.x)*(pt3.y-pt1.y))/db;
 		if (t<0+Eps1 || t>1.0f-Eps1)
 			return false;
-		FLOAT_TYPE u=((pt2.y-pt1.y)*(pt3.x-pt1.x)+(pt1.x-pt2.x)*(pt3.y-pt1.y))/db;
-		if (u<0+Eps1 || u>1.0f-Eps1)
-			return false;
-		return true;
+		const FLOAT_TYPE u=((pt2.y-pt1.y)*(pt3.x-pt1.x)+(pt1.x-pt2.x)*(pt3.y-pt1.y))/db;
+		return !(u < 0 + Eps1 || u > 1.0f - Eps1);
 	}
 
-	bool ProjectedFacesAreOwerlapped(const CSortedViewElement &El, const CViewVertexArray &Vertexs)
+	bool ProjectedFacesAreOverlapped(const CSortedViewElement &El, const CViewVertexArray &Vertexs) const
 	{
 		for (int i=0;i<NumVertexs(); i++)
 			for (int j=0; j<El.NumVertexs(); j++)
@@ -1000,10 +964,10 @@ public:
 		return AnyPointIsInside(El, Vertexs) || El.AnyPointIsInside(*this, Vertexs);
 	}
 	// Сечение отрезка [p1,p0] плоскостью этого элемента. Результат лежит в диапазоне [0,1] если плоскость пересекает отрезок
-	FLOAT_TYPE SectByPlane(const SViewVertex& p0, const SViewVertex& p1, const CViewVertexArray &Vertexs)
+	FLOAT_TYPE SectByPlane(const SViewVertex& p0, const SViewVertex& p1, const CViewVertexArray &Vertexs) const
 	{
-		FLOAT_TYPE d = Norm.DotProduct(Vertexs[Points[0]]);
-		FLOAT_TYPE d1 = CVectorType(p1.x-p0.x, p1.y-p0.y,p1.z-p0.z).DotProduct(Norm);
+		const FLOAT_TYPE d = Norm.DotProduct(Vertexs[Points[0]]);
+		const FLOAT_TYPE d1 = CVectorType(p1.x-p0.x, p1.y-p0.y,p1.z-p0.z).DotProduct(Norm);
 		if (fabs(d1)<Eps1)
 			return 2;
 		return (d-Norm.DotProduct(p0))/ d1;
@@ -1031,6 +995,7 @@ public:
 
 };
 
+/*
 static int ElCompare(const void *a, const void *b)
 {
 	FLOAT_TYPE d1 = reinterpret_cast<const CSortedViewElement *>(a)->zMin;
@@ -1054,10 +1019,10 @@ static int ElCompareProj(const void *a, const void *b)
 		return 0;
 	return 1;
 }
+*/
 
 
-
-static bool IsDisjoint(FLOAT_TYPE p1Min, FLOAT_TYPE p1Max, FLOAT_TYPE p2Min, FLOAT_TYPE p2Max)
+static __forceinline bool IsDisjoint(FLOAT_TYPE p1Min, FLOAT_TYPE p1Max, FLOAT_TYPE p2Min, FLOAT_TYPE p2Max)
 {
 	return p2Max <p1Min || p2Min>p1Max;
 }
@@ -1131,21 +1096,29 @@ bool CGLDraw::OrderIsRight(CSortedViewElement& P, CSortedViewElement& Q, const C
 		IsDisjoint(P.yMin, P.yMax, Q.yMin, Q.yMax) ||
 		P.IsOnOppositeSideOf(Q, Vertexs, ptEye, bPersp) ||
 		Q.IsOnSameSideOf(P, Vertexs, ptEye, bPersp) ||
-		!P.ProjectedFacesAreOwerlapped(Q, ProjectedVertexs);
+		!P.ProjectedFacesAreOverlapped(Q, ProjectedVertexs);
 }
 
 bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & ProjectedVertexs, std::vector<CSortedViewElement> & vecSorted)
 {
+	RTreeLib::RTree<CSortedViewElement*> tree;
+	m_pTree = &tree;
+	for (size_t i = 0; i<vecSorted.size(); i++)
+	{
+		CSortedViewElement& El = vecSorted[i];
+		tree.Add(El.GetRect(), &vecSorted[i]);
+	}
+
 	CVectorType ptEye(m_pViewPos->Xorg,m_pViewPos->Yorg,m_pViewPos->Zorg);
 	m_pViewPos->Rot->Rotate(ptEye.v[0], ptEye.v[1], ptEye.v[2]);
-	bool bPersp = m_pViewPos->bPerspective; 
+	const bool bPersp = m_pViewPos->bPerspective; 
 	std::vector<CSortedViewElement> vecSwapped;
 	std::vector<CSortedViewElement> vecSwappedPrev;
 	std::vector<CSortedViewElement> vecSwappedPrev1;
 	int nSwapCount = 0;
 	bool bElementsWereReordered = false;
 
-	for (size_t k=0; k< vecSorted.size() && vecSorted.size()!=0;)
+	for (size_t k=0; k< vecSorted.size()/* && vecSorted.size()!=0*/;)
 	{
 		
 		bool bCheckNextElement = true;
@@ -1155,12 +1128,14 @@ bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & Pr
 			k++;
 			continue;
 		}
-		std::list<CSortedViewElement*> list = m_pTree->Intersects(P.GetRect());
+		static std::vector<CSortedViewElement*> list;
+		list.clear();
+		m_pTree->Intersects(P.GetRect(), list);
 
 		for (auto it = list.begin(); it != list.end() && bCheckNextElement; ++it)
 		{
 			CSortedViewElement &Q = **it;
-			ptrdiff_t dist = &Q -&P;
+			const ptrdiff_t dist = &Q -&P;
 			if (dist<=0)
 				continue;
 
@@ -1247,6 +1222,7 @@ bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & Pr
 		}
 #endif
 	}
+	m_pTree = nullptr;
 	return bElementsWereReordered;
 }
 
@@ -1301,16 +1277,9 @@ void CGLDraw::SortElements(CViewElementArray *& Elements, size_t& NumElements)
 	//	qsort(&vecSorted[0], NumElements, sizeof(CSortedViewElement), ElCompare);
 	std::sort(vecSorted.begin(), vecSorted.end(), ElLessZMin);
 
-	RTreeLib::RTree<CSortedViewElement*> tree;
-	m_pTree = &tree;
-	for (size_t i=0; i<vecSorted.size(); i++)
-	{
-		CSortedViewElement& El = vecSorted[i];
-		tree.Add(El.GetRect(), &vecSorted[i]);
-	}
 	if (m_pOptions->bQualityTransp)
 		SortElementsOnce(Vertexs, ProjectedVertexs, vecSorted);
-	m_pTree = nullptr;
+
 	NumElements = vecSorted.size();
 	Elements = new CViewElementArray(m_pGeometry->VertexArray);
 	Elements->resize(vecSorted.size());

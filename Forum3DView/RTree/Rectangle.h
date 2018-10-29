@@ -108,7 +108,7 @@ namespace RTreeLib
 		*
 		* @return true if the rectangles intersect, false if they do not intersect
 		*/
-		bool intersects(Rectangle r) const;
+		bool intersects(const Rectangle& r) const;
 
 		/**
 		* Determine whether this rectangle contains the passed rectangle
@@ -118,7 +118,7 @@ namespace RTreeLib
 		* @return true if this rectangle contains the passed rectangle, false if
 		*         it does not
 		*/
-		bool contains(Rectangle r) const;
+		bool contains(const Rectangle& r) const;
 
 		/**
 		* Determine whether this rectangle is contained by the passed rectangle
@@ -128,7 +128,7 @@ namespace RTreeLib
 		* @return true if the passed rectangle contains this rectangle, false if
 		*         it does not
 		*/
-		bool containedBy(Rectangle r) const;
+		bool containedBy(const Rectangle& r) const;
 
 		/**
 		* Return the distance between this rectangle and the passed point.
@@ -138,7 +138,7 @@ namespace RTreeLib
 		*
 		* @return distance beween this rectangle and the passed point.
 		*/
-		float distance(Point p) const;
+		float distance(const Point& p) const;
 
 		/**
 		* Return the distance between this rectangle and the passed rectangle.
@@ -149,7 +149,7 @@ namespace RTreeLib
 		* @return distance between this rectangle and the passed rectangle
 		*/
 
-		float distance(Rectangle r);
+		float distance(const Rectangle& r);
 
 		/**
 		* Return the squared distance from this rectangle to the passed point
@@ -164,7 +164,7 @@ namespace RTreeLib
 		* passed rectangle, and use the maximum.
 		*
 		*/
-		float furthestDistance(Rectangle r) const;
+		float furthestDistance(const Rectangle& r) const;
 
 		/**
 		* Calculate the area by which this rectangle would be enlarged if
@@ -174,7 +174,7 @@ namespace RTreeLib
 		*          compute the difference in area of the union and the
 		*          original rectangle
 		*/
-		float enlargement(Rectangle r);
+		float enlargement(const Rectangle& r);
 
 		/**
 		* Compute the area of this rectangle.
@@ -189,7 +189,7 @@ namespace RTreeLib
 		*
 		* @param r Rectangle to add to this rectangle
 		*/
-		void add(Rectangle r);
+		void add(const Rectangle& r);
 
 		/**
 		* Find the the union of this rectangle and the passed rectangle.
@@ -197,7 +197,7 @@ namespace RTreeLib
 		*
 		* @param r The rectangle to union with this rectangle
 		*/
-		Rectangle Union(Rectangle r) const;
+		Rectangle Union(const Rectangle& r) const;
 
 		static bool CompareArrays(const float a1[], const float a2[]);
 

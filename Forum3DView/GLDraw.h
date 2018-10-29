@@ -38,11 +38,11 @@ public:
 		IFemRenderer *pRenderer
 		//int FontSize
 	) :
-	m_pGeometry(Geometry),
-	m_pViewPos(ViewPos),
-	m_pOptions(Options),
-	m_pDrawOptions(DrawOptions),
-	m_pRenderer(pRenderer), m_pTree(nullptr), m_crCurColor(0), BAR_STAGE(0), BORDER_STAGE(0), FILL_STAGE(0)
+		m_pGeometry(Geometry),
+		m_pViewPos(ViewPos),
+		m_pOptions(Options),
+		m_pDrawOptions(DrawOptions),
+		m_pRenderer(pRenderer), m_pTree(nullptr), m_crCurColor(0), m_iCurAlpha(128), BAR_STAGE(0), BORDER_STAGE(0), FILL_STAGE(0)
 	//m_FontSize(FontSize)
 	{
 	};
@@ -52,7 +52,7 @@ public:
 	};
 
 	bool PreDrawStage(EDrawMode Mode, S3dPoint Z_Shift, bool bSmoothTransp, int nCurrentStage);
-	void DrawBar(const CViewElement & El, const SViewVertex* Vertexs, S3dPoint Z_Shift);
+	void DrawBar(const CViewElement& El, const SViewVertex* Vertexs, const S3dPoint& Z_Shift);
 	void DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode Mode, bool bSmoothTransp, int nCurrentStage);
 	virtual void	Draw(void);
 	static void CorrectNormal(CVectorType &rNorm, const SViewVertex * p, const SPerspectiveView* m_pViewPos);
@@ -92,11 +92,24 @@ private:
 	void SetSmoothing(void) const;
 	void DrawLineStrips(void) const;
 	void DrawLines(const CViewElement & El, const SViewVertex * p) const;
-	inline	void			SetGlColor(TColor c);
-	void			SetGlColorAlpha(TColor c);
+	void SetGlColor(TColor c)
+	{
+		if (c == m_crCurColor)
+			return;
+		m_crCurColor = c;
+		glColor3ub(GetRValue(c), GetGValue(c), GetBValue(c));
+	}
+	void SetGlColorAlpha(TColor c)
+	{
+		if (c == m_crCurColor)
+			return;
+		m_crCurColor = c;
+
+		glColor4ub(GetRValue(c), GetGValue(c), GetBValue(c), m_iCurAlpha);
+	}
 	static inline void			DrawPolygon(const SViewVertex * p, NODE_NUM_TYPE NumPoints);
 	static void			SetVertex(SViewVertex* Vertexs, NODE_NUM_TYPE n);
-	static __inline void			glVertex3fs(S3dPoint &p, S3dPoint &s)
+	static __inline void glVertex3fs(S3dPoint &p,const S3dPoint &s)
 	{
 		p.x -= s.x;
 		p.y -= s.y;
@@ -105,6 +118,8 @@ private:
 	}
 	void			DrawTextList(int nFontNo, LPCTSTR pszName) const;
 	TColor			m_crCurColor;
+	BYTE			m_iCurAlpha;
+
 	// Определение порядка отрисовки
 	int BAR_STAGE;		// отрисовка стержней
 	int BORDER_STAGE;	// отрисовка границ элементов

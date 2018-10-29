@@ -326,7 +326,7 @@ namespace RTreeLib
 			nearestIds.clear();
 		}
 		template <class V>
-		void intersects(Rectangle r, V v)
+		void intersects(const Rectangle& r, V v)
 		{
 			Node rootNode = getNode(rootNodeId);
 			intersects(r, v, rootNode);
@@ -458,7 +458,7 @@ namespace RTreeLib
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		std::list<T> Intersects(Rectangle r)
+		std::list<T> Intersects(const Rectangle& r)
 		{
 			std::list<T> retval;
 			intersects(r, [&](int id)
@@ -466,6 +466,14 @@ namespace RTreeLib
 				retval.push_back(IdsToItems[id]);
 			});
 			return retval;
+		}
+
+		void Intersects(const Rectangle& r, std::vector<T>& retval)
+		{
+			intersects(r, [&](int id)
+				{
+					retval.push_back(IdsToItems[id]);
+				});
 		}
 
 

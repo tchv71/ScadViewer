@@ -72,7 +72,7 @@ namespace RTreeLib
 		return false;
 	}
 
-	bool Rectangle::intersects(Rectangle r) const
+	bool Rectangle::intersects(const Rectangle& r) const
 	{
 		// Every dimension must intersect. If any dimension
 		// does not intersect, return false immediately.
@@ -86,7 +86,7 @@ namespace RTreeLib
 		return true;
 	}
 
-	bool Rectangle::contains(Rectangle r) const
+	bool Rectangle::contains(const Rectangle& r) const
 	{
 		for (int i = 0; i < DIMENSIONS; i++)
 		{
@@ -98,7 +98,7 @@ namespace RTreeLib
 		return true;
 	}
 
-	bool Rectangle::containedBy(Rectangle r) const
+	bool Rectangle::containedBy(const Rectangle& r) const
 	{
 		for (int i = 0; i < DIMENSIONS; i++)
 		{
@@ -110,7 +110,7 @@ namespace RTreeLib
 		return true;
 	}
 
-	float Rectangle::distance(Point p) const
+	float Rectangle::distance(const Point& p) const
 	{
 		float distanceSquared = 0;
 		for (int i = 0; i < DIMENSIONS; i++)
@@ -125,7 +125,7 @@ namespace RTreeLib
 		return sqrt(distanceSquared);
 	}
 
-	float Rectangle::distance(Rectangle r)
+	float Rectangle::distance(const Rectangle& r)
 	{
 		float distanceSquared = 0;
 		for (int i = 0; i < DIMENSIONS; i++)
@@ -156,7 +156,7 @@ namespace RTreeLib
 		return distanceSquared;
 	}
 
-	float Rectangle::furthestDistance(Rectangle r) const
+	float Rectangle::furthestDistance(const Rectangle& r) const
 	{
 		float distanceSquared = 0;
 
@@ -170,7 +170,7 @@ namespace RTreeLib
 		return sqrt(distanceSquared);
 	}
 
-	float Rectangle::enlargement(Rectangle r)
+	float Rectangle::enlargement(const Rectangle& r)
 	{
 		float enlargedArea = (__max(max[0], r.max[0]) - __min(min[0], r.min[0])) *
 			(__max(max[1], r.max[1]) - __min(min[1], r.min[1]));
@@ -183,7 +183,7 @@ namespace RTreeLib
 		return (max[0] - min[0]) * (max[1] - min[1]);
 	}
 
-	void Rectangle::add(Rectangle r)
+	void Rectangle::add(const Rectangle& r)
 	{
 		for (int i = 0; i < DIMENSIONS; i++)
 		{
@@ -198,7 +198,7 @@ namespace RTreeLib
 		}
 	}
 
-	Rectangle Rectangle::Union(Rectangle r) const
+	Rectangle Rectangle::Union(const Rectangle& r) const
 	{
 		Rectangle _union = copy();
 		_union.add(r);
