@@ -26,6 +26,7 @@ class CSortedViewElement;
 class CGLDraw
 {
 	friend class CSortedViewElement;
+	typedef size_t ElementType;
 public:
 	void DrawEggs(const CViewFactorArray &rFactors);
 	void DrawFactorValues(const CViewFactorArray &rFactors, bool bUpFactors = false);
@@ -63,17 +64,18 @@ protected:
 	const SViewOptions	*m_pOptions;
 	const CDrawOptions	*m_pDrawOptions;
 	IFemRenderer *m_pRenderer;
-	RTreeLib::RTree<CSortedViewElement*>* m_pTree;
+	RTreeLib::RTree<ElementType>* m_pTree;
+	const std::vector <CSortedViewElement>* m_pVector;
 	//int m_FontSize;
 private:
 	//S3dPoint GetFontExtents(LPCTSTR pszText);
 	bool			BreakTriangle(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-	    			              std::vector <CSortedViewElement> &vecSorted, size_t k, CSortedViewElement &ElTest,
-	    			              CSortedViewElement & ElCurr) const;
+	    			              std::vector <CSortedViewElement> &vecSorted, size_t k, CSortedViewElement & Q,
+	    			              CSortedViewElement & P) const;
 
 	bool			BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVertexs,
-	    			          std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement &ElTest,
-	    			          CSortedViewElement & ElCurr) const;
+	    			          std::vector<CSortedViewElement>& vecSorted, size_t k, CSortedViewElement & Q,
+	    			          CSortedViewElement & P) const;
 	void DrawAxeMarks(const S3dPoint &p1, const S3dPoint &p2, double len, double rad,  LPCTSTR pszName, double MVM[], double PJM[], int VP[]);
 	void DrawAxeMark(double wx, double wy, double wz, double nx, double ny, double MarkLen, double radius, LPCTSTR pszrName);
 	void DrawAxeZMark(const S3dPoint &p, LPCTSTR pszName, double MVM[], double PJM[], int VP[]);
@@ -82,7 +84,7 @@ private:
 	void DrawAxes(void);
 	void ProjectVertex(SViewVertex &pt, SViewVertex &v) const;
 	void EraseElement(CSortedViewElement& El) const;
-	void InsertElement(CSortedViewElement* pEl) const;
+	void InsertElement(CSortedViewElement& El) const;
 	void SwapElements(CSortedViewElement& P, CSortedViewElement& Q) const;
 	static bool OrderIsRight(CSortedViewElement& P, CSortedViewElement& Q, const CViewVertexArray & Vertexs, const CViewVertexArray & ProjectedVertexs, CVectorType ptEye, bool bPersp);
 	bool SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & ProjectedVertexs, std::vector<CSortedViewElement> & vecSorted);
@@ -91,7 +93,7 @@ private:
 
 	void SetSmoothing(void) const;
 	void DrawLineStrips(void) const;
-	void DrawLines(const CViewElement & El, const SViewVertex * p) const;
+	static void DrawLines(const CViewElement & El, const SViewVertex * p);
 	void SetGlColor(TColor c)
 	{
 		if (c == m_crCurColor)

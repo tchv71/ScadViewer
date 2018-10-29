@@ -12,10 +12,10 @@ GLDraw.cpp - Вывод модели с использованием OpenGL
 //
 // Disclaimer : this text is under authority of goverment laws, US and Russian Federation
 // Unauthorizing compilation, modification and re-engineering is strictly prohibited
-#include "stdafx.h" //<vcl.h>
+#include "StdAfx.h" //<vcl.h>
 #include <math.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
+#include <gl/GL.h>
+#include <gl/GLU.h>
 #include "glext.h"
 #include <algorithm>
 
@@ -202,7 +202,7 @@ void CGLDraw::DrawBar(const CViewElement & El, const SViewVertex* Vertexs,const 
 
 void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode Mode, bool bSmoothTransp, int nCurrentStage)
 {
-	int NumPoints = El.NumVertexs();
+	const int NumPoints = El.NumVertexs();
 
 	SViewVertex p[4];
 	for (int i1 = 0; i1 < NumPoints; i1++)
@@ -248,11 +248,10 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 		}
 		else
 		{
-			TColor c = El.Color;
 			if (Mode == M_FILL_AND_LINES_TRANSP)
-				SetGlColorAlpha(c);
+				SetGlColorAlpha(El.Color);
 			else
-				SetGlColor(c);
+				SetGlColor(El.Color);
 			if (!El.bContourOnly)
 				DrawPolygon(p, NumPoints);
 		};
@@ -265,12 +264,14 @@ void CGLDraw::DrawPlate(CViewElement & El, const SViewVertex* Vertexs, EDrawMode
 extern PFNGLBINDBUFFERARBPROC glBindBufferARB;					// VBO Bind Procedure
 
 //-Refactored---------------------------------------------------------------------
-void CGLDraw::Draw(void)
+void CGLDraw::Draw()
 {
 	if (m_pGeometry == nullptr)
 		return;
 	CWaitCursor crWait;
-	CGLRenderer*pRenderer = (CGLRenderer*)m_pRenderer;
+	CGLRenderer*pRenderer = dynamic_cast<CGLRenderer*>(m_pRenderer);
+	if (!pRenderer)
+		return;
 	//glVertexPointer(3, GL_FLOAT, sizeof(SViewVertex), m_pGeometry->VertexArray.GetVector());
 	const EDrawMode Mode = m_pDrawOptions->Mode;
 	m_pGeometry->SetupElementColors(m_pOptions, Mode);
@@ -328,7 +329,7 @@ void CGLDraw::Draw(void)
 //#endif
 	}
 	SViewVertex		*Vertexs = m_pGeometry->VertexArray.GetVector();
-	bool bSmoothTransp = (m_pOptions->bLineSmooth && Mode == M_FILL_AND_LINES_TRANSP);
+	const bool bSmoothTransp = (m_pOptions->bLineSmooth && Mode == M_FILL_AND_LINES_TRANSP);
 	if(bSmoothTransp)
 		nStages = 1;
 
@@ -346,7 +347,7 @@ void CGLDraw::Draw(void)
 		FILL_STAGE = 2;
 	};
 
-	bool bDrawArrays = m_pDrawOptions->bLighting; // true
+	const bool bDrawArrays = m_pDrawOptions->bLighting; // true
 	for(int nCurrentStage = 0; nCurrentStage < nStages; nCurrentStage++)
 	{
 		if (PreDrawStage(Mode, Z_Shift, bSmoothTransp, nCurrentStage)) continue;
@@ -370,18 +371,18 @@ void CGLDraw::Draw(void)
 			if (pRenderer->IsVBOSupported())
 			{
 				glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBOVertices);
-				glVertexPointer(3, GL_FLOAT, 0, 0);
+				glVertexPointer(3, GL_FLOAT, 0, nullptr);
 				glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBOColors);
-				glColorPointer(Mode == M_FILL_AND_LINES_TRANSP ? 4 : 3, GL_UNSIGNED_BYTE, 4, 0);
+				glColorPointer(Mode == M_FILL_AND_LINES_TRANSP ? 4 : 3, GL_UNSIGNED_BYTE, 4, nullptr);
 				glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBONormals);
-				glNormalPointer(GL_FLOAT, 0, 0);
+				glNormalPointer(GL_FLOAT, 0, nullptr);
 				
 				glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOTriangles);
 				if (!m_pGeometry->ElementArray.m_triangles.empty())
-					glDrawElements(GL_TRIANGLES, GLsizei(m_pGeometry->ElementArray.m_triangles.size()), GL_UNSIGNED_INT, 0);
+					glDrawElements(GL_TRIANGLES, GLsizei(m_pGeometry->ElementArray.m_triangles.size()), GL_UNSIGNED_INT, nullptr);
 				glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOQuads);
 				if (!m_pGeometry->ElementArray.m_quads.empty())
-					glDrawElements(GL_QUADS, GLsizei(m_pGeometry->ElementArray.m_quads.size()), GL_UNSIGNED_INT, 0);
+					glDrawElements(GL_QUADS, GLsizei(m_pGeometry->ElementArray.m_quads.size()), GL_UNSIGNED_INT, nullptr);
 			}
 			else
 			{
@@ -426,6 +427,7 @@ void CGLDraw::Draw(void)
 
 				DrawPlate(El, Vertexs, Mode, bSmoothTransp, nCurrentStage);
 				break;
+			default: ;
 			} // switch (el.Type)
 		} // for i
 		if(m_pOptions->OGL10 && nCurrentStage == FILL_STAGE)
@@ -443,7 +445,7 @@ void CGLDraw::Draw(void)
 }
 
 // Отрисовка связей
-void CGLDraw::DrawBounds(void)
+void CGLDraw::DrawBounds()
 {
 	CViewVertexArray &Vertexs = m_pGeometry->VertexArray;
 	double		MVM[16];
@@ -467,7 +469,7 @@ void CGLDraw::DrawBounds(void)
 
 	for(UINT i = 0; i < m_pGeometry->NumRealVertexs; i++)
 	{
-		SViewVertex p = Vertexs[i];
+		const SViewVertex& p = Vertexs[i];
 		if(!p.FragmentFlag || (p.Flag & VF_DELETED))
 			continue;
 
@@ -496,7 +498,7 @@ void CGLDraw::DrawBounds(void)
 			wy = int(wy + 0.5);
 			SetGlColor(BOUNDS_FRAME_COLOR);
 
-			double	NS = m_pOptions->NodeSize;
+			const double	NS = m_pOptions->NodeSize;
 
 			glBegin(GL_LINE_LOOP);	// Ограничивающий прямоугольник
 			const double sx = (int(NS) + 1) % 2;
@@ -532,7 +534,7 @@ void CGLDraw::UpdateMaxAxesetSize(const TAxeSet &axeSet, int &size) const
 {
 	for (UINT i=0; i<axeSet.size(); i++)
 	{
-		CSize sz = m_pRenderer->GetFontExtent(SVF_AXES, axeSet[i].m_name, nullptr);
+		const CSize sz = m_pRenderer->GetFontExtent(SVF_AXES, axeSet[i].m_name, nullptr);
 		if (sz.cx>size)
 			size = sz.cx;
 		if (sz.cy>size)
@@ -563,7 +565,7 @@ void CGLDraw::DrawAxes()
 		TAxeSet& axeSet = axes.X;
 		for (i=0; i<axeSet.size(); i++)
 		{
-			FLOAT_TYPE pos = axeSet[i].m_pos;
+			const FLOAT_TYPE pos = axeSet[i].m_pos;
 			if (pos>=box.x_min && pos<= box.x_max)
 			{
 				_glVertex3(pos, box.y_min, box.z_min);
@@ -575,7 +577,7 @@ void CGLDraw::DrawAxes()
 		TAxeSet& axeSet = axes.Y;
 		for (i=0; i<axeSet.size(); i++)
 		{
-			FLOAT_TYPE pos = axeSet[i].m_pos;
+			const FLOAT_TYPE pos = axeSet[i].m_pos;
 			if (pos>=box.y_min && pos<= box.y_max)
 			{
 				_glVertex3(box.x_min, pos, box.z_min);
@@ -598,17 +600,17 @@ void CGLDraw::DrawAxes()
 	int nMaxSize = 0;
 	UpdateMaxAxesetSize(axes.X, nMaxSize);
 	UpdateMaxAxesetSize(axes.Y, nMaxSize);
-	int len = nMaxSize*10/18;
-	int rad = len;
+	const int len = nMaxSize*10/18;
+	const int rad = len;
 
 	{
 		TAxeSet& axeSet = axes.X;
 		for (i=0; i<axeSet.size(); i++)
 		{
-			FLOAT_TYPE pos = axeSet[i].m_pos;
+			const FLOAT_TYPE pos = axeSet[i].m_pos;
 			if (pos>=box.x_min && pos<= box.x_max)
 			{
-				FLOAT_TYPE d = (box.y_max-box.y_min)/400;
+				const FLOAT_TYPE d = (box.y_max-box.y_min)/400;
 				S3dPoint p1(pos, box.y_min-d, box.z_min);
 				S3dPoint p2(pos, box.y_max+d, box.z_min);
 				DrawAxeMarks(p1, p2, len, rad, axeSet[i].m_name, MVM, PJM, VP);
@@ -619,10 +621,10 @@ void CGLDraw::DrawAxes()
 		TAxeSet& axeSet = axes.Y;
 		for (i=0; i<axeSet.size(); i++)
 		{
-			FLOAT_TYPE pos = axeSet[i].m_pos;
+			const FLOAT_TYPE pos = axeSet[i].m_pos;
 			if (pos>=box.y_min && pos<= box.y_max)
 			{
-				FLOAT_TYPE d = (box.x_max-box.x_min)/400;
+				const FLOAT_TYPE d = (box.x_max-box.x_min)/400;
 				S3dPoint p1(box.x_min-d, pos, box.z_min);
 				S3dPoint p2(box.x_max+d, pos, box.z_min);
 				DrawAxeMarks(p1, p2, len, rad, axeSet[i].m_name, MVM, PJM, VP);
@@ -633,10 +635,10 @@ void CGLDraw::DrawAxes()
 		TAxeSet& axeSet = axes.Z;
 		for (i=0; i<axeSet.size(); i++)
 		{
-			FLOAT_TYPE pos = axeSet[i].m_pos;
+			const FLOAT_TYPE pos = axeSet[i].m_pos;
 			if (pos>=box.z_min && pos<= box.z_max &&  axeSet[i].m_name.GetLength()>0)
 			{
-				FLOAT_TYPE d = (box.x_max-box.x_min)/400;
+				const FLOAT_TYPE d = (box.x_max-box.x_min)/400;
 				S3dPoint p1(box.x_min-d, box.y_min - d, pos);
 				DrawAxeZMark(p1, axeSet[i].m_name, MVM, PJM, VP);
 			}
@@ -667,9 +669,9 @@ void CGLDraw::DrawTextList(int nFontNo, LPCTSTR pszName) const
 void CGLDraw::DrawAxeZMark(const S3dPoint &p1, LPCTSTR pszName, double MVM[], double PJM[], int VP[])
 {
 	double wx,wy,wz;
-	double fScale=m_pRenderer->m_fontSizes[SVF_AXES];
+	const double fScale=m_pRenderer->m_fontSizes[SVF_AXES];
 	gluProject(p1.x, p1.y, p1.z, MVM, PJM, VP, &wx, &wy, &wz);
-	double M_PI_2 = 2*atan(1.0);
+	const double M_PI_2 = 2*atan(1.0);
 	double a = atan2(sin(m_pViewPos->Rot->Fz_rot), cos(m_pViewPos->Rot->Fz_rot))/M_PI_2;
 	if (a<-1)
 		a=-1+2*(a+2);
@@ -692,9 +694,9 @@ void CGLDraw::DrawAxeZMark(const S3dPoint &p1, LPCTSTR pszName, double MVM[], do
 	glEnd();
 
 	TEXTMETRIC tm;
-	CSize sz = m_pRenderer->GetFontExtent(SVF_AXES, pszName, &tm);
+	const CSize sz = m_pRenderer->GetFontExtent(SVF_AXES, pszName, &tm);
 	glPushMatrix();
-	double fNameX = wx+fScale*1.2;
+	const double fNameX = wx+fScale*1.2;
 	//glTranslated(fNameX, wy+tm.tmDescent, 0);
 	glRasterPos3d(0, 0, wz);
 	glBitmap(0, 0, 0, 0, static_cast<GLfloat>(fNameX), GLfloat(wy+tm.tmDescent), nullptr);
@@ -703,7 +705,7 @@ void CGLDraw::DrawAxeZMark(const S3dPoint &p1, LPCTSTR pszName, double MVM[], do
 
 	SetGlColor(m_pOptions->BackgroundColor);
 	glPolygonOffset(0,1);
-	double dBorder = fScale*0.1;
+	const double dBorder = fScale*0.1;
 	glBegin(GL_POLYGON);
 		glVertex3d(fNameX-dBorder, wy+dBorder, wz);
 		glVertex3d(fNameX+/*3*fScale*/+ sz.cx +dBorder, wy+dBorder, wz);
@@ -727,8 +729,8 @@ void CGLDraw::DrawAxeMarks(const S3dPoint &p1, const S3dPoint &p2, double len, d
 	double nx2,ny2;
 	gluProject(p1.x, p1.y, p1.z, MVM, PJM, VP, &w1x, &w1y, &w1z);
 	gluProject(p2.x, p2.y, p2.z, MVM, PJM, VP, &w2x, &w2y, &w2z);
-	double dx = w1x-w2x;
-	double dy = w1y-w2y;
+	const double dx = w1x-w2x;
+	const double dy = w1y-w2y;
 	if (fabs(dx)<1 && fabs(dy)<1)
 	{
 		nx1 = nx2 = 0;
@@ -736,7 +738,7 @@ void CGLDraw::DrawAxeMarks(const S3dPoint &p1, const S3dPoint &p2, double len, d
 	}
 	else
 	{
-		double len1 = sqrt(dx*dx+dy*dy);
+		const double len1 = sqrt(dx*dx+dy*dy);
 		nx1 = dx/len1;
 		ny1 = dy/len1;
 		nx2 = -nx1;
@@ -766,8 +768,8 @@ void CGLDraw::DrawAxeMark(double wx, double wy, double wz, double nx, double ny,
 	wy += ny*radius;
 	glEnd();
 	glBegin(GL_LINE_LOOP);
-		int nSegments = 16;
-		double M_2PI = 8*atan(1.0);
+		const int nSegments = 16;
+		const double M_2PI = 8*atan(1.0);
 		for (int i=0;i<nSegments;i++)
 		{
 			glVertex3d(wx+radius*sin(i*M_2PI/nSegments), wy+radius*cos(i*M_2PI/nSegments), wz);
@@ -785,10 +787,10 @@ void CGLDraw::DrawAxeMark(double wx, double wy, double wz, double nx, double ny,
 #else
 		//glTranslated(wx, wy,  wz);
 		TEXTMETRIC tm;
-		CSize sz = m_pRenderer->GetFontExtent(SVF_AXES, pszName, &tm);
+		const CSize sz = m_pRenderer->GetFontExtent(SVF_AXES, pszName, &tm);
 		glRasterPos3d(0, 0, wz);
 		//glTranslated(wx - sz.cx/2, wy + tm.tmDescent -sz.cy/2, 0);
-		glBitmap(0, 0, 0, 0, GLfloat(wx - sz.cx/2), GLfloat(wy + tm.tmDescent -sz.cy/2), nullptr);
+		glBitmap(0, 0, 0, 0, GLfloat(wx - GLfloat(sz.cx)/2), GLfloat(wy + tm.tmDescent -GLfloat(sz.cy)/2), nullptr);
 		DrawTextList(SVF_AXES, pszName);
 #endif
 //		glBegin(GL_LINES);
@@ -983,7 +985,7 @@ public:
 	}
 	RTreeLib::Rectangle GetRect() const
 	{
-		return RTreeLib::Rectangle(xMin, yMin, xMax, yMax, 0, 0);
+		return RTreeLib::Rectangle(xMin, yMin, xMax, yMax, 0,0/*zMin, zMax*/);
 	}
 
 	FLOAT_TYPE xMax;
@@ -1059,18 +1061,19 @@ typedef std::vector<CSortedViewElement> VecS;
 
 void CGLDraw::EraseElement(CSortedViewElement& El) const
 {
-	if (!m_pTree)
+	if (!m_pTree || !m_pVector)
 		return;
 	
-	m_pTree->Delete(El.GetRect(), &El);
+	m_pTree->Delete(El.GetRect(), &El-m_pVector->data());
 }
 
-void CGLDraw::InsertElement(CSortedViewElement* pEl) const
+
+void CGLDraw::InsertElement(CSortedViewElement& El) const
 {
-	pEl->FragmentFlag = true;
-	if (!m_pTree)
+	El.FragmentFlag = true;
+	if (!m_pTree || !m_pVector)
 		return;
-	m_pTree->Add(pEl->GetRect(), pEl);
+	m_pTree->Add(El.GetRect(), &El-m_pVector->data());
 }
 
 
@@ -1084,9 +1087,11 @@ void CGLDraw::SwapElements(CSortedViewElement &P, CSortedViewElement &Q) const
 	ElTmp.FragmentFlag = false;
 	Q = P;
 	P = ElTmp;
+	if (!m_pTree || !m_pVector)
+		return;
 	//m_pTree->Add(P.GetRect(), &P);
 	//m_pTree->Add(Q.GetRect(), &Q);
-	m_pTree->Swap(&P, &Q);
+	m_pTree->Swap(&P-m_pVector->data(), &Q-m_pVector->data());
 }
 
 bool CGLDraw::OrderIsRight(CSortedViewElement& P, CSortedViewElement& Q, const CViewVertexArray & Vertexs, const CViewVertexArray & ProjectedVertexs, CVectorType ptEye, bool bPersp)
@@ -1101,12 +1106,13 @@ bool CGLDraw::OrderIsRight(CSortedViewElement& P, CSortedViewElement& Q, const C
 
 bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & ProjectedVertexs, std::vector<CSortedViewElement> & vecSorted)
 {
-	RTreeLib::RTree<CSortedViewElement*> tree;
+	RTreeLib::RTree<ElementType> tree;
 	m_pTree = &tree;
+	m_pVector = &vecSorted;
 	for (size_t i = 0; i<vecSorted.size(); i++)
 	{
 		CSortedViewElement& El = vecSorted[i];
-		tree.Add(El.GetRect(), &vecSorted[i]);
+		tree.Add(El.GetRect(), i);
 	}
 
 	CVectorType ptEye(m_pViewPos->Xorg,m_pViewPos->Yorg,m_pViewPos->Zorg);
@@ -1128,13 +1134,13 @@ bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & Pr
 			k++;
 			continue;
 		}
-		static std::vector<CSortedViewElement*> list;
+		static std::vector<ElementType> list;
 		list.clear();
 		m_pTree->Intersects(P.GetRect(), list);
 
 		for (auto it = list.begin(); it != list.end() && bCheckNextElement; ++it)
 		{
-			CSortedViewElement &Q = **it;
+			CSortedViewElement &Q = vecSorted[*it];
 			const ptrdiff_t dist = &Q -&P;
 			if (dist<=0)
 				continue;
@@ -1223,6 +1229,7 @@ bool CGLDraw::SortElementsOnce(CViewVertexArray & Vertexs, CViewVertexArray & Pr
 #endif
 	}
 	m_pTree = nullptr;
+	m_pVector = nullptr;
 	return bElementsWereReordered;
 }
 
@@ -1238,10 +1245,9 @@ void CGLDraw::SortElements(CViewElementArray *& Elements, size_t& NumElements)
 	glGetDoublev( GL_PROJECTION_MATRIX, projection );
 	glGetIntegerv( GL_VIEWPORT, viewport );
 
-	SViewVertex *vptr;
 	CViewVertexArray ProjectedVertexs;
 	ProjectedVertexs.resize(Vertexs.size());
-	vptr = Vertexs.GetVector();
+	SViewVertex* vptr = Vertexs.GetVector();
 	for(UINT i = 0; i<Vertexs.size(); i++,vptr++)
 	{
 		GLdouble x,y,z;
@@ -1254,7 +1260,7 @@ void CGLDraw::SortElements(CViewElementArray *& Elements, size_t& NumElements)
 
 
 	std::vector<CSortedViewElement> vecSorted;
-	vecSorted.reserve(NumElements*4);
+	//vecSorted.reserve(NumElements*4);
 
 	int k = 0;
 
@@ -1298,75 +1304,75 @@ bool CGLDraw::BreakTriangle(CViewVertexArray& Vertexs, CViewVertexArray& Project
 	// Mark and insert pieces of P
 	for (int i=0; i<P.NumVertexs()-1; i++)
 	{
-		 SViewVertex &p0 = Vertexs[P.Points[i]];
-		 SViewVertex &p1 = Vertexs[P.Points[(i+1)%P.NumVertexs()]];
-		 FLOAT_TYPE t = Q.SectByPlane(p0,p1,Vertexs);
-		 if (t>Eps1 && t<1-Eps1)
-		 {
-			 SViewVertex &p_0 = m_pGeometry->VertexArray[P.Points[i]];
-			 SViewVertex &p_1 = m_pGeometry->VertexArray[P.Points[(i+1)%P.NumVertexs()]];
-			 SViewVertex pn1 = p_0;
-			 pn1.x = p_0.x + t*(p_1.x-p_0.x); pn1.y = p_0.y+t*(p_1.y-p_0.y); pn1.z = p_0.z+t*(p_1.z-p_0.z);
-			 for (int j=i+1; j<P.NumVertexs(); j++)
-			 {
-				 SViewVertex &p0_ = Vertexs[P.Points[j]];
-				 SViewVertex &p1_ = Vertexs[P.Points[(j+1)%P.NumVertexs()]];
-				 FLOAT_TYPE t1 = Q.SectByPlane(p0_,p1_,Vertexs);
-				 if (t1>Eps1 && t1<1-Eps1)
-				 {
-					 SViewVertex &p_0_ = m_pGeometry->VertexArray[P.Points[j]];
-					 SViewVertex &p_1_ = m_pGeometry->VertexArray[P.Points[(j+1)%P.NumVertexs()]];
-					 SViewVertex pn2 = m_pGeometry->VertexArray[P.Points[j]];
-					 pn2.x = p_0_.x + t1*(p_1_.x-p_0_.x); pn2.y = p_0_.y+t1*(p_1_.y-p_0_.y); pn2.z = p_0_.z+t1*(p_1_.z-p_0_.z);
-					 size_t nNewPoints = Vertexs.size();
-					 Vertexs.push_back(pn1);
-					 Vertexs.push_back(pn2);
-					 m_pGeometry->VertexArray.push_back(pn1);
-					 m_pGeometry->VertexArray.push_back(pn2);
-					 ProjectedVertexs.push_back(pn1);
-					 ProjectedVertexs.push_back(pn2);
-					 ProjectVertex(ProjectedVertexs[nNewPoints], Vertexs[nNewPoints]);
-					 ProjectVertex(ProjectedVertexs[nNewPoints+1], Vertexs[nNewPoints+1]);
-					 CSortedViewElement elNew = P;
-					 CSortedViewElement el = P;
-					 if (j==i+2)
-					 {
-						 EraseElement(P);
-						 vecSorted[k].Points[i+1]=nNewPoints;
-						 vecSorted[k].Points[i+2]=nNewPoints+1;
-						 vecSorted[k].SetExtents(ProjectedVertexs);
-						 InsertElement( &vecSorted[k]);
+		SViewVertex &p0 = Vertexs[P.Points[i]];
+		SViewVertex &p1 = Vertexs[P.Points[(i+1)%P.NumVertexs()]];
+		const FLOAT_TYPE t = Q.SectByPlane(p0,p1,Vertexs);
+		if (t>Eps1 && t<1-Eps1)
+		{
+			SViewVertex &p_0 = m_pGeometry->VertexArray[P.Points[i]];
+			SViewVertex &p_1 = m_pGeometry->VertexArray[P.Points[(i+1)%P.NumVertexs()]];
+			SViewVertex pn1 = p_0;
+			pn1.x = p_0.x + t*(p_1.x-p_0.x); pn1.y = p_0.y+t*(p_1.y-p_0.y); pn1.z = p_0.z+t*(p_1.z-p_0.z);
+			for (int j=i+1; j<P.NumVertexs(); j++)
+			{
+				SViewVertex &p0_ = Vertexs[P.Points[j]];
+				SViewVertex &p1_ = Vertexs[P.Points[(j+1)%P.NumVertexs()]];
+				const FLOAT_TYPE t1 = Q.SectByPlane(p0_,p1_,Vertexs);
+				if (t1>Eps1 && t1<1-Eps1)
+				{
+					SViewVertex &p_0_ = m_pGeometry->VertexArray[P.Points[j]];
+					SViewVertex &p_1_ = m_pGeometry->VertexArray[P.Points[(j+1)%P.NumVertexs()]];
+					SViewVertex pn2 = m_pGeometry->VertexArray[P.Points[j]];
+					pn2.x = p_0_.x + t1*(p_1_.x-p_0_.x); pn2.y = p_0_.y+t1*(p_1_.y-p_0_.y); pn2.z = p_0_.z+t1*(p_1_.z-p_0_.z);
+					const size_t nNewPoints = Vertexs.size();
+					Vertexs.push_back(pn1);
+					Vertexs.push_back(pn2);
+					m_pGeometry->VertexArray.push_back(pn1);
+					m_pGeometry->VertexArray.push_back(pn2);
+					ProjectedVertexs.push_back(pn1);
+					ProjectedVertexs.push_back(pn2);
+					ProjectVertex(ProjectedVertexs[nNewPoints], Vertexs[nNewPoints]);
+					ProjectVertex(ProjectedVertexs[nNewPoints+1], Vertexs[nNewPoints+1]);
+					CSortedViewElement elNew = P;
+					CSortedViewElement el = P;
+					if (j==i+2)
+					{
+						EraseElement(P);
+						vecSorted[k].Points[i+1]=nNewPoints;
+						vecSorted[k].Points[i+2]=nNewPoints+1;
+						vecSorted[k].SetExtents(ProjectedVertexs);
+						InsertElement( vecSorted[k]);
 
-						 elNew.Type = EL_QUAD;
-						 elNew.Points[0] = nNewPoints;
-						 elNew.Points[1] = el.Points[i+1];
-						 elNew.Points[2] = el.Points[i+2];
-						 elNew.Points[3] = nNewPoints+1;
-						 elNew.SetExtents(ProjectedVertexs);
-						 vecSorted.push_back(elNew);
-						 InsertElement(&vecSorted[vecSorted.size()-1]);
-						 return true;
-					 } else if (j==i+1)
-					 {
-						 EraseElement(P);
-						 vecSorted[k].Points[i]=nNewPoints;
-						 vecSorted[k].Points[(i+2)%P.NumVertexs()]=nNewPoints+1;
-						 vecSorted[k].SetExtents(ProjectedVertexs);
-						 InsertElement(&vecSorted[k]);
+						elNew.Type = EL_QUAD;
+						elNew.Points[0] = nNewPoints;
+						elNew.Points[1] = el.Points[i+1];
+						elNew.Points[2] = el.Points[i+2];
+						elNew.Points[3] = nNewPoints+1;
+						elNew.SetExtents(ProjectedVertexs);
+						vecSorted.push_back(elNew);
+						InsertElement(vecSorted.back());
+						return true;
+					} else if (j==i+1)
+					{
+						EraseElement(P);
+						vecSorted[k].Points[i]=nNewPoints;
+						vecSorted[k].Points[(i+2)%P.NumVertexs()]=nNewPoints+1;
+						vecSorted[k].SetExtents(ProjectedVertexs);
+						InsertElement(vecSorted[k]);
 
-						 elNew.Type = EL_QUAD;
-						 elNew.Points[0] = nNewPoints;
-						 elNew.Points[1] = nNewPoints+1;
-						 elNew.Points[2] = el.Points[(i+2)%el.NumVertexs()];
-						 elNew.Points[3] = el.Points[i];
-						 elNew.SetExtents(ProjectedVertexs);
-						 vecSorted.push_back(elNew);
-						 InsertElement(&vecSorted[vecSorted.size()-1]);
-						 return true;
-					 }
-				 }
-			 }
-		 }
+						elNew.Type = EL_QUAD;
+						elNew.Points[0] = nNewPoints;
+						elNew.Points[1] = nNewPoints+1;
+						elNew.Points[2] = el.Points[(i+2)%el.NumVertexs()];
+						elNew.Points[3] = el.Points[i];
+						elNew.SetExtents(ProjectedVertexs);
+						vecSorted.push_back(elNew);
+						InsertElement(vecSorted.back());
+						return true;
+					}
+				}
+			}
+		}
 	}
 	return false;
 }
@@ -1379,107 +1385,107 @@ bool CGLDraw::BreakQuad(CViewVertexArray &Vertexs, CViewVertexArray &ProjectedVe
 	// Mark and insert pieces of P
 	for (int i=0; i<P.NumVertexs()-1; i++)
 	 {
-		 SViewVertex &p0 = Vertexs[P.Points[i]];
-		 SViewVertex &p1 = Vertexs[P.Points[(i+1)%P.NumVertexs()]];
-		 FLOAT_TYPE t = Q.SectByPlane(p0,p1,Vertexs);
-		 if (t>Eps1 && t<1-Eps1)
-		 {
-			 SViewVertex &p_0 = m_pGeometry->VertexArray[P.Points[i]];
-			 SViewVertex &p_1 = m_pGeometry->VertexArray[P.Points[(i+1)%P.NumVertexs()]];
-			 SViewVertex pn1 = p_0;
-			 pn1.x = p_0.x + t*(p_1.x-p_0.x); pn1.y = p_0.y+t*(p_1.y-p_0.y); pn1.z = p_0.z+t*(p_1.z-p_0.z);
-			 for (int j=i+1; j<P.NumVertexs(); j++)
-			 {
-				 SViewVertex &p0_ = Vertexs[P.Points[j]];
-				 SViewVertex &p1_ = Vertexs[P.Points[(j+1)%P.NumVertexs()]];
-				 FLOAT_TYPE t1 = Q.SectByPlane(p0_,p1_,Vertexs);
-				 if (t1>Eps1 && t1<1-Eps1)
-				 {
-					 SViewVertex &p_0_ = m_pGeometry->VertexArray[P.Points[j]];
-					 SViewVertex &p_1_ = m_pGeometry->VertexArray[P.Points[(j+1)%P.NumVertexs()]];
-					 SViewVertex pn2 = m_pGeometry->VertexArray[P.Points[j]];
-					 pn2.x = p_0_.x + t1*(p_1_.x-p_0_.x); pn2.y = p_0_.y+t1*(p_1_.y-p_0_.y); pn2.z = p_0_.z+t1*(p_1_.z-p_0_.z);
-					 size_t nNewPoints = Vertexs.size();
-					 Vertexs.push_back(pn1);
-					 Vertexs.push_back(pn2);
-					 m_pGeometry->VertexArray.push_back(pn1);
-					 m_pGeometry->VertexArray.push_back(pn2);
-					 ProjectedVertexs.push_back(pn1);
-					 ProjectedVertexs.push_back(pn2);
-					 ProjectVertex(ProjectedVertexs[nNewPoints], Vertexs[nNewPoints]);
-					 ProjectVertex(ProjectedVertexs[nNewPoints+1], Vertexs[nNewPoints+1]);
-					 CSortedViewElement elNew = P;
-					 CSortedViewElement el = P;
-					 if (j==i+2)
-					 {
+		SViewVertex &p0 = Vertexs[P.Points[i]];
+		SViewVertex &p1 = Vertexs[P.Points[(i+1)%P.NumVertexs()]];
+		 const FLOAT_TYPE t = Q.SectByPlane(p0,p1,Vertexs);
+		if (t>Eps1 && t<1-Eps1)
+		{
+			SViewVertex &p_0 = m_pGeometry->VertexArray[P.Points[i]];
+			SViewVertex &p_1 = m_pGeometry->VertexArray[P.Points[(i+1)%P.NumVertexs()]];
+			SViewVertex pn1 = p_0;
+			pn1.x = p_0.x + t*(p_1.x-p_0.x); pn1.y = p_0.y+t*(p_1.y-p_0.y); pn1.z = p_0.z+t*(p_1.z-p_0.z);
+			for (int j=i+1; j<P.NumVertexs(); j++)
+			{
+				SViewVertex &p0_ = Vertexs[P.Points[j]];
+				SViewVertex &p1_ = Vertexs[P.Points[(j+1)%P.NumVertexs()]];
+				const FLOAT_TYPE t1 = Q.SectByPlane(p0_,p1_,Vertexs);
+				if (t1>Eps1 && t1<1-Eps1)
+				{
+					SViewVertex &p_0_ = m_pGeometry->VertexArray[P.Points[j]];
+					SViewVertex &p_1_ = m_pGeometry->VertexArray[P.Points[(j+1)%P.NumVertexs()]];
+					SViewVertex pn2 = m_pGeometry->VertexArray[P.Points[j]];
+					pn2.x = p_0_.x + t1*(p_1_.x-p_0_.x); pn2.y = p_0_.y+t1*(p_1_.y-p_0_.y); pn2.z = p_0_.z+t1*(p_1_.z-p_0_.z);
+					const size_t nNewPoints = Vertexs.size();
+					Vertexs.push_back(pn1);
+					Vertexs.push_back(pn2);
+					m_pGeometry->VertexArray.push_back(pn1);
+					m_pGeometry->VertexArray.push_back(pn2);
+					ProjectedVertexs.push_back(pn1);
+					ProjectedVertexs.push_back(pn2);
+					ProjectVertex(ProjectedVertexs[nNewPoints], Vertexs[nNewPoints]);
+					ProjectVertex(ProjectedVertexs[nNewPoints+1], Vertexs[nNewPoints+1]);
+					CSortedViewElement elNew = P;
+					CSortedViewElement el = P;
+					if (j==i+2)
+					{
 
-						 EraseElement(P);
-						 vecSorted[k].Points[i+1]=nNewPoints;
-						 vecSorted[k].Points[i+2]=nNewPoints+1;
-						 vecSorted[k].SetExtents(ProjectedVertexs);
-						 InsertElement(&vecSorted[k]);
+						EraseElement(P);
+						vecSorted[k].Points[i+1]=nNewPoints;
+						vecSorted[k].Points[i+2]=nNewPoints+1;
+						vecSorted[k].SetExtents(ProjectedVertexs);
+						InsertElement(vecSorted[k]);
 
-						 elNew.Points[0] = nNewPoints;
-						 elNew.Points[1] = el.Points[i+1];
-						 elNew.Points[2] = el.Points[i+2];
-						 elNew.Points[3] = nNewPoints+1;
-						 elNew.SetExtents(ProjectedVertexs);
-						 vecSorted.push_back(elNew);
-						 InsertElement(&vecSorted[vecSorted.size()-1]);
-						 return true;
+						elNew.Points[0] = nNewPoints;
+						elNew.Points[1] = el.Points[i+1];
+						elNew.Points[2] = el.Points[i+2];
+						elNew.Points[3] = nNewPoints+1;
+						elNew.SetExtents(ProjectedVertexs);
+						vecSorted.push_back(elNew);
+						InsertElement(vecSorted.back());
+						return true;
 					 } else if (j==i+1)
 					 {
-						 EraseElement(P);
-						 vecSorted[k].Points[(i+1)]=nNewPoints;
-						 vecSorted[k].Points[(i+2)%P.NumVertexs()]=nNewPoints+1;
-						 vecSorted[k].SetExtents(ProjectedVertexs);
-						 InsertElement(&vecSorted[k]);
+						EraseElement(P);
+						vecSorted[k].Points[(i+1)]=nNewPoints;
+						vecSorted[k].Points[(i+2)%P.NumVertexs()]=nNewPoints+1;
+						vecSorted[k].SetExtents(ProjectedVertexs);
+						InsertElement(vecSorted[k]);
 
-						 elNew.Type = EL_TRIANGLE;
-						 elNew.Points[0] = nNewPoints;
-						 elNew.Points[1] = el.Points[i+1];
-						 elNew.Points[2] = nNewPoints+1;
-						 elNew.SetExtents(ProjectedVertexs);
-						 vecSorted.push_back(elNew);
-						 InsertElement(&vecSorted[vecSorted.size()-1]);
+						elNew.Type = EL_TRIANGLE;
+						elNew.Points[0] = nNewPoints;
+						elNew.Points[1] = el.Points[i+1];
+						elNew.Points[2] = nNewPoints+1;
+						elNew.SetExtents(ProjectedVertexs);
+						vecSorted.push_back(elNew);
+						InsertElement(vecSorted.back());
 
-						 elNew.Points[0] = nNewPoints+1;
-						 elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
-						 elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
-						 elNew.SetExtents(ProjectedVertexs);
-						 vecSorted.push_back(elNew);
-						 InsertElement(&vecSorted[vecSorted.size()-1]);
-						 return true;
-					 }
-					 else if (j==i+3)
-					 {
-						 EraseElement(P);
-						 vecSorted[k].Points[i]=nNewPoints;
-						 vecSorted[k].Points[i+3]=nNewPoints+1;
-						 vecSorted[k].SetExtents(ProjectedVertexs);
-						 InsertElement(&vecSorted[k]);
+						elNew.Points[0] = nNewPoints+1;
+						elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
+						elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
+						elNew.SetExtents(ProjectedVertexs);
+						vecSorted.push_back(elNew);
+						InsertElement(vecSorted.back());
+						return true;
+					}
+					else if (j==i+3)
+					{
+						EraseElement(P);
+						vecSorted[k].Points[i]=nNewPoints;
+						vecSorted[k].Points[i+3]=nNewPoints+1;
+						vecSorted[k].SetExtents(ProjectedVertexs);
+						InsertElement(vecSorted[k]);
 
-						 elNew.Type = EL_TRIANGLE;
-						 elNew.Points[0] = nNewPoints;
-						 elNew.Points[1] = nNewPoints+1;
-						 elNew.Points[2] = el.Points[i];
-						 elNew.SetExtents(ProjectedVertexs);
-						 vecSorted.push_back(elNew);
-						 InsertElement(&vecSorted[vecSorted.size()-1]);
+						elNew.Type = EL_TRIANGLE;
+						elNew.Points[0] = nNewPoints;
+						elNew.Points[1] = nNewPoints+1;
+						elNew.Points[2] = el.Points[i];
+						elNew.SetExtents(ProjectedVertexs);
+						vecSorted.push_back(elNew);
+						InsertElement(vecSorted.back());
 
-						 elNew.Points[0] = nNewPoints+1;
-						 elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
-						 elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
-						 elNew.SetExtents(ProjectedVertexs);
-						 vecSorted.push_back(elNew);
-						 InsertElement(&vecSorted[vecSorted.size()-1]);
-						 return true;
-					 }
-				 }
-			 }
-		 }
-	 }
-	 return false;
+						elNew.Points[0] = nNewPoints+1;
+						elNew.Points[1] = el.Points[(i+2)%el.NumVertexs()];
+						elNew.Points[2] = el.Points[(i+3)%el.NumVertexs()];
+						elNew.SetExtents(ProjectedVertexs);
+						vecSorted.push_back(elNew);
+						InsertElement(vecSorted.back());
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
 }
 
 // Отрисовка узлов
@@ -1491,7 +1497,7 @@ void CGLDraw::DrawNodes(bool bBounds)
 	glBegin(GL_POINTS);
 	for(UINT i = 0; i < m_pGeometry->NumRealVertexs; i++)
 	{
-		SViewVertex p = Vertexs[i];
+		const SViewVertex& p = Vertexs[i];
 		if(!p.FragmentFlag || (p.Flag & VF_DELETED))
 			continue;
 
@@ -1501,7 +1507,7 @@ void CGLDraw::DrawNodes(bool bBounds)
 	glEnd();
 }
 
-void CGLDraw::SetSmoothing(void) const
+void CGLDraw::SetSmoothing() const
 {
 	if(m_pOptions->bLineSmooth)
 	{
@@ -1539,15 +1545,17 @@ void CGLDraw::CorrectNormal(CVectorType &rNorm, const SViewVertex * p, const SPe
 // Отрисовка линий через GL_LINE_STRIP
 // Скорректировать направление нормали, чтобы смотрела всегда на нас
 //#define SORT_FURTHEST
-void CGLDraw::DrawLineStrips(void) const
+void CGLDraw::DrawLineStrips() const
 {
 	glDisable(GL_LIGHTING);
 	glEnableClientState(GL_VERTEX_ARRAY);
-	CGLRenderer *pRenderer = static_cast<CGLRenderer*>(m_pRenderer);
+	CGLRenderer *pRenderer = dynamic_cast<CGLRenderer*>(m_pRenderer);
+	if (!pRenderer)
+		return;
 	if (pRenderer->IsVBOSupported())
 	{
 		glBindBufferARB(GL_ARRAY_BUFFER, pRenderer->m_nVBOVertices);
-		glVertexPointer(3, GL_FLOAT, 0, 0);
+		glVertexPointer(3, GL_FLOAT, 0, nullptr);
 		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, pRenderer->m_nVBOLinestrips);
 	}
 	else
@@ -1557,9 +1565,9 @@ void CGLDraw::DrawLineStrips(void) const
 	std::vector<UINT32>& linestrips = m_pGeometry->ElementArray.m_linestrips;
 	for (size_t i = 0; i < linestrips.size();)
 	{
-		UINT32 nSize = linestrips[i++];
+		const UINT32 nSize = linestrips[i++];
 		if (pRenderer->IsVBOSupported())
-			glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, (void*)(i * sizeof(UINT)));
+			glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, reinterpret_cast<void*>(i * sizeof(UINT)));
 		else
 			glDrawElements(GL_LINE_STRIP, nSize, GL_UNSIGNED_INT, &(linestrips[i]));
 
@@ -1609,12 +1617,12 @@ void CGLDraw::DrawLineStrips(void) const
 #endif
 }
 
-inline void CGLDraw::DrawLines(const CViewElement & El, const SViewVertex * p) const
+inline void CGLDraw::DrawLines(const CViewElement & El, const SViewVertex * p)
 {
 #ifdef NO_DRAW
 	return;
 #endif
-	NODE_NUM_TYPE	NumPoints = El.NumVertexs();
+	const NODE_NUM_TYPE NumPoints = El.NumVertexs();
 	glBegin(GL_LINE_LOOP);
 	for(int i = 0; i < NumPoints; i++)
 		_glVertex3(p[i].x, p[i].y, p[i].z);
@@ -1658,11 +1666,12 @@ public:
 	CGlDrawGeomHelper(const CViewGeometry* pGeom) : m_pGeometry(pGeom) {};
 	double GetShift(const SViewFactorVertex &p, const CViewElement &el,const  CRect &rct, double MVM[], double PJM[], int VP[]) const
 	{
+		// ReSharper disable once CppLocalVariableMayBeConst
 		C3DVector<double> wp;
 		gluProject(p.x, p.y, p.z, MVM, PJM, VP, wp.v, wp.v+1, wp.v+2);
 
-		C3DVector<double> X(rct.left, rct.top, wp.v[2]);
-		C3DVector<double> Y(rct.left, rct.bottom, wp.v[2]);
+		const C3DVector<double> X(rct.left, rct.top, wp.v[2]);
+		const C3DVector<double> Y(rct.left, rct.bottom, wp.v[2]);
 
 		signed char  p1i=-1, p2i=-1;
 		if (el.NumVertexs()>2)
@@ -1683,30 +1692,33 @@ public:
 			const S3dPoint &p1 = m_pGeometry->VertexArray[el.Points[p1i]];
 			const S3dPoint &p2 = m_pGeometry->VertexArray[el.Points[p2i]];
 
+			// ReSharper disable CppLocalVariableMayBeConst
 			C3DVector<double> wp1,wp2;
+			// ReSharper restore CppLocalVariableMayBeConst
 			gluProject(p1.x, p1.y, p1.z, MVM, PJM, VP, wp1.v, wp1.v+1, wp1.v+2);
 			gluProject(p2.x, p2.y, p2.z, MVM, PJM, VP, wp2.v, wp2.v+1, wp2.v+2);
 
-			C3DVector<double> L = wp1-wp, M = wp2-wp;
+			const C3DVector<double> L = wp1-wp;
+			const C3DVector<double> M = wp2-wp;
 			//N = (wp1 - wp)x(wp2 - wp)
 			//N = N / | N |  - нормаль к плоскости  // в принципе это можно и не делать
 			C3DVector<double> N; N.SetCrossProduct(L, M);
 
-			C3DVector<double> V = wp - X;
+			const C3DVector<double> V = wp - X;
 			// расстояние до плоскости по нормали
-			double d = N.DotProduct(V);  
-			C3DVector<double> W = Y - X;
+			const double d = N.DotProduct(V);
+			const C3DVector<double> W = Y - X;
 			// приближение к плоскости по нормали при прохождении отрезка
-			double e = N.DotProduct(W); 
+			const double e = N.DotProduct(W); 
 
 			//C3DVector<double> P12;
 			if( fabs(e)>1e-15)
 			{
 			  //P12 = X + W * (d/e);          // одна точка
-			  double D = N.DotProduct(wp);
-			  double D1 = -(N.DotProduct(C3DVector<double>(X.v[0],X.v[1],0))-D)/N.v[2]-wp.v[2];
+				const double D = N.DotProduct(wp);
+				const double D1 = -(N.DotProduct(C3DVector<double>(X.v[0],X.v[1],0))-D)/N.v[2]-wp.v[2];
 			  //if (D1<0) D1 = 0;
-			  double D2 = -(N.DotProduct(C3DVector<double>(Y.v[0],Y.v[1],0))-D)/N.v[2]-wp.v[2];
+				const double D2 = -(N.DotProduct(C3DVector<double>(Y.v[0],Y.v[1],0))-D)/N.v[2]-wp.v[2];
 			  //if (D2<0) D2 = 0;
 			  return -max (fabs(D1),fabs(D2));
 			}
@@ -1770,7 +1782,7 @@ void CGLDraw::DrawFactorValues(const CViewFactorArray &rFactors, bool bUpFactors
 #else
 		//glTranslated(wx, wy,  wz);
 		TEXTMETRIC tm;
-		CSize sz = m_pRenderer->GetFontExtent(SVF_VALUES, str, &tm);
+		const CSize sz = m_pRenderer->GetFontExtent(SVF_VALUES, str, &tm);
 
 
 		CRect rect(int(wx)-sz.cx, int(wy), int(wx), int(wy+sz.cy+tm.tmDescent));
@@ -1787,8 +1799,8 @@ void CGLDraw::DrawFactorValues(const CViewFactorArray &rFactors, bool bUpFactors
 		else
 		{
 			if (bUpFactors)
-				wy+=m_pOptions->NodeSize+sz.cy/2+1;
-			glBitmap(0, 0, 0, 0, GLfloat(wx - sz.cx/2), GLfloat(wy + tm.tmDescent - sz.cy/2), nullptr);
+				wy+=m_pOptions->NodeSize+double(sz.cy)/2+1;
+			glBitmap(0, 0, 0, 0, GLfloat(wx - GLfloat(sz.cx)/2), GLfloat(wy + tm.tmDescent - GLfloat(sz.cy)/2), nullptr);
 		}
 		DrawTextList(SVF_VALUES, str);
 #endif
@@ -1813,7 +1825,7 @@ void CGLDraw::DrawEggs(const CViewFactorArray &rFactors)
 	glBegin(GL_POINTS);
 	for(UINT i = 0; i < Vertexs.size()/*m_pGeometry->NumRealVertexs*/; i++)
 	{
-		SViewFactorVertex p = Vertexs[i];
+		const SViewFactorVertex& p = Vertexs[i];
 		if(!p.FragmentFlag || (p.Flag & VF_DELETED))
 			continue;
 		SetGlColor(p.clr);
