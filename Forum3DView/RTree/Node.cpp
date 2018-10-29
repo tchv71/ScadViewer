@@ -17,7 +17,7 @@ namespace RTreeLib
 		//ids.resize(maxNodeEntries);
 	}
 
-	void Node::addEntry(Rectangle r, int id)
+	void Node::addEntry(const Rectangle& r, int id)
 	{
 		ids[entryCount] = id;
 		entries[entryCount] = r.copy();
@@ -33,7 +33,7 @@ namespace RTreeLib
 		}
 	}
 
-	void Node::addEntryNoCopy(Rectangle r, int id)
+	void Node::addEntryNoCopy(const Rectangle& r, int id)
 	{
 		ids[entryCount] = id;
 		entries[entryCount] = r;
@@ -49,7 +49,7 @@ namespace RTreeLib
 		}
 	}
 
-	int Node::findEntry(Rectangle r, int id)
+	int Node::findEntry(const Rectangle& r, int id)
 	{
 		for (int i = 0; i < entryCount; i++)
 		{
@@ -64,7 +64,7 @@ namespace RTreeLib
 	void Node::deleteEntry(int i, int minNodeEntries)
 	{
 		int lastIndex = entryCount - 1;
-		Rectangle deletedRectangle = entries[i];
+		const Rectangle& deletedRectangle = entries[i];
 		entries[i] = NullRect;
 		if (i != lastIndex)
 		{
@@ -83,7 +83,7 @@ namespace RTreeLib
 		}
 	}
 
-	void Node::recalculateMBR(Rectangle deletedRectangle)
+	void Node::recalculateMBR(const Rectangle& deletedRectangle)
 	{
 		if (mbr.edgeOverlaps(deletedRectangle))
 		{
@@ -147,7 +147,7 @@ namespace RTreeLib
 		return level;
 	}
 
-	Rectangle Node::getMBR() const
+	const Rectangle& Node::getMBR() const
 	{
 		return mbr;
 	}

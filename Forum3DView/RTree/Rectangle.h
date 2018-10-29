@@ -99,7 +99,7 @@ namespace RTreeLib
 		* Determine whether an edge of this rectangle overlies the equivalent
 		* edge of the passed rectangle
 		*/
-		bool edgeOverlaps(Rectangle r) const;
+		bool edgeOverlaps(const Rectangle& r) const;
 
 		/**
 		* Determine whether this rectangle intersects the passed rectangle

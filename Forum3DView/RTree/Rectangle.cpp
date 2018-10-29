@@ -60,7 +60,7 @@ namespace RTreeLib
 		return *this;
 	}
 
-	bool Rectangle::edgeOverlaps(Rectangle r) const
+	bool Rectangle::edgeOverlaps(const Rectangle& r) const
 	{
 		for (int i = 0; i < DIMENSIONS; i++)
 		{

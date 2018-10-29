@@ -178,7 +178,7 @@ namespace RTreeLib
 		}
 
 
-		void add(Rectangle r, int id)
+		void add(const Rectangle& r, int id)
 		{
 			//if (log.IsDebugEnabled)
 			//{
@@ -196,7 +196,7 @@ namespace RTreeLib
 		/// <param name="r"></param>
 		/// <param name="id"></param>
 		/// <param name="level"></param>
-		void add(Rectangle r, int id, int level)
+		void add(const Rectangle& r, int id, int level)
 		{
 			// I1 [Find position for new record] Invoke ChooseLeaf to select a 
 			// leaf Node L in which to place r
@@ -239,7 +239,7 @@ namespace RTreeLib
 				checkConsistency(rootNodeId, treeHeight, NullRect);
 			}
 		}
-		bool _delete(Rectangle r, int id)
+		bool _delete(const Rectangle& r, int id)
 		{
 			// FindLeaf algorithm inlined here. Note the "official" algorithm 
 			// searches all overlapping entries. This seems inefficient to me, 
@@ -315,9 +315,9 @@ namespace RTreeLib
 
 			return foundIndex != -1;
 		}
-		void nearest(Point p, FN v, float furthestDistance)
+		void nearest(const Point& p, FN v, float furthestDistance)
 		{
-			Node rootNode = getNode(rootNodeId);
+			const Node& rootNode = getNode(rootNodeId);
 
 			nearest(p, rootNode, furthestDistance);
 
@@ -331,7 +331,7 @@ namespace RTreeLib
 			Node rootNode = getNode(rootNodeId);
 			intersects(r, v, rootNode);
 		}
-		void contains(Rectangle r, FN v)
+		void contains(const Rectangle& r, FN v)
 		{
 			// find all rectangles in the tree that are contained by the passed rectangle
 			// written to be non-recursive (should model other searches on this?)
@@ -395,7 +395,7 @@ namespace RTreeLib
 		/// </summary>
 		/// <param name="r"></param>
 		/// <param name="item"></param>
-		void Add(Rectangle r, T item)
+		void Add(const Rectangle& r, T item)
 		{
 			idcounter++;
 			int id = idcounter;
@@ -421,7 +421,7 @@ namespace RTreeLib
 		/// <param name="r"></param>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		bool Delete(Rectangle r, T item)
+		bool Delete(const Rectangle& r, T item)
 		{
 			int id = ItemsToIds[item];
 
@@ -441,7 +441,7 @@ namespace RTreeLib
 		/// <param name="p">Point of origin</param>
 		/// <param name="furthestDistance">maximum distance</param>
 		/// <returns>std::list of items</returns>
-		std::list<T> Nearest(Point p, float furthestDistance)
+		std::list<T> Nearest(const Point& p, float furthestDistance)
 		{
 			std::list<T> retval;
 			nearest(p, [&](int id)
@@ -580,7 +580,7 @@ private:
 		/// <param name="newRect"></param>
 		/// <param name="newId"></param>
 		/// <returns>return new Node object.</returns>
-		Node* splitNode(Node & n, Rectangle newRect, int newId)
+		Node* splitNode(Node & n, const Rectangle& newRect, int newId)
 		{
 			// [Pick first entry for each group] Apply algorithm pickSeeds to 
 			// choose two entries to be the first elements of the groups. Assign
@@ -681,7 +681,7 @@ private:
 		/// <param name="newRect"></param>
 		/// <param name="newId"></param>
 		/// <param name="newNode"></param>
-		void pickSeeds(Node & n, Rectangle newRect, int newId, Node & newNode)
+		void pickSeeds(Node & n, const Rectangle& newRect, int newId, Node & newNode)
 		{
 			// Find extreme rectangles along all dimension. Along each dimension,
 			// find the entry whose rectangle has the highest low side, and the one 
@@ -888,7 +888,7 @@ private:
 		/// <param name="n"></param>
 		/// <param name="nearestDistance"></param>
 		/// <returns></returns>
-		float nearest(Point p, Node n, float nearestDistance)
+		float nearest(const Point& p, const Node& n, float nearestDistance)
 		{
 			for (int i = 0; i < n.entryCount; i++)
 			{
@@ -1022,7 +1022,7 @@ private:
 		/**
 		*  Used by add(). Chooses a leaf to add the rectangle to.
 		*/
-		Node& chooseNode(Rectangle r, int level)
+		Node& chooseNode(const Rectangle& r, int level)
 		{
 			// CL1 [Initialize] Set N to be the root node
 			Node* n = &getNode(rootNodeId);
@@ -1139,7 +1139,7 @@ private:
 		/**
 		* Check the consistency of the tree.
 		*/
-		void checkConsistency(int nodeId, int expectedLevel, Rectangle expectedMBR)
+		void checkConsistency(int nodeId, int expectedLevel, const Rectangle& expectedMBR)
 		{
 			// go through the tree, and check that the internal data structures of 
 			// the tree are not corrupted.    

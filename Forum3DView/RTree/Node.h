@@ -50,19 +50,19 @@ namespace RTreeLib
 
 		Node(int nodeId, int level, int maxNodeEntries);
 
-		void addEntry(Rectangle r, int id);
+		void addEntry(const Rectangle& r, int id);
 
-		void addEntryNoCopy(Rectangle r, int id);
+		void addEntryNoCopy(const Rectangle& r, int id);
 
 		// Return the index of the found entry, or -1 if not found
-		int findEntry(Rectangle r, int id);
+		int findEntry(const Rectangle& r, int id);
 
 		// delete entry. This is done by setting it to null and copying the last entry into its space.
 		void deleteEntry(int i, int minNodeEntries);
 
 		// oldRectangle is a rectangle that has just been deleted or made smaller.
 		// Thus, the MBR is only recalculated if the OldRectangle influenced the old MBR
-		void recalculateMBR(Rectangle deletedRectangle);
+		void recalculateMBR(const Rectangle& deletedRectangle);
 
 		int getEntryCount() const;
 
@@ -79,7 +79,7 @@ namespace RTreeLib
 
 		int getLevel() const;
 
-		Rectangle getMBR() const;
+		const Rectangle& getMBR() const;
 	};
 
 }
