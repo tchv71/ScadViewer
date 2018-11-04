@@ -34,5 +34,5 @@
 #define SV_PRODUCT_NAME		"Scad Office 7.31 R5\0"
 #endif
 #endif
-#define SV_COPYRIGHT		"Copyright (C) 2000-17 Dmitry Tcvetkov\0"
+#define SV_COPYRIGHT		"Copyright (C) 2000-18 Dmitry Tcvetkov\0"
 #endif
