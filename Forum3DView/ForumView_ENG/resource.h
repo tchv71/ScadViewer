@@ -151,6 +151,7 @@
 #define IDC_BUTTON_UNIFORM              1046
 #define IDS_STRING1047                  1047
 #define IDC_BTN_INVERT_SCALE            1047
+#define IDC_COPYRIGHT                   1048
 #define IDC_PROGRESS                    2000
 #define IDC_CHECK_CHANGE_DIST           2000
 #define IDC_SLIDER_FLENGTH              2001
@@ -297,7 +298,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        168
 #define _APS_NEXT_COMMAND_VALUE         40045
-#define _APS_NEXT_CONTROL_VALUE         1048
+#define _APS_NEXT_CONTROL_VALUE         1049
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

@@ -176,11 +176,8 @@ BOOL CAboutDlg::OnInitDialog()
 
 	// Get the version information block
 	::GetFileVersionInfo(strExeName, 0, dwSize, pBuffer);
-     //Use the version information block to obtain the file version.
-	::VerQueryValue(pBuffer,
-		            TEXT("\\StringFileInfo\\040904b0\\FileVersion"),
-					(void **)&pData,
-					&uiDataSize);
+	//Use the version information block to obtain the file version.
+	::VerQueryValue(pBuffer, _T("\\StringFileInfo\\040904b0\\FileVersion"), (void **)&pData, &uiDataSize);
 #ifdef _AMD64_
 	_tcscat_s(pData, uiDataSize + 3, _T("x64"));
 	uiDataSize += 3;
@@ -190,9 +187,12 @@ BOOL CAboutDlg::OnInitDialog()
 	_tcscat_s(pData, uiDataSize+2, _T("D"));
 #endif
 
-    if (pData)
-        GetDlgItem(IDC_ABOUT_VER)->SetWindowText(pData);
-    free(pBuffer);
+	if (pData)
+		GetDlgItem(IDC_ABOUT_VER)->SetWindowText(pData);
+	::VerQueryValue(pBuffer, _T("\\StringFileInfo\\040904b0\\LegalCopyright"), (void **)&pData, &uiDataSize);
+	if (pData)
+		GetDlgItem(IDC_COPYRIGHT)->SetWindowText(pData);
+	free(pBuffer);
 	// TODO: Add extra initialization here
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
